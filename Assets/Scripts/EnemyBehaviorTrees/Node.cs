@@ -1,6 +1,13 @@
 using WUG.BehaviorTreeVisualizer;
 
-// This is the base abstract superclass for all nodes in a behavior tree - it includes 
+// This is the base abstract superclass for all nodes in a behavior tree - it includes:
+/*
+ * public int EvaluationCount - how many times this node has been evaluated in a single run of it
+ * public virtual NodeStatus Run() - overridable function to run any node's custom logic
+ * public void Reset() - resets the node for another new run -- used at the end of all its logic
+ * protected abstract NodeStatus OnRun() - provides any custom logic for when node is run (this is what we'll override to provide custom logic)
+ * protected abstract void OnReset() - provides any custom logic for when node is reset
+ */
 
 // Node class inherits:
 /*
