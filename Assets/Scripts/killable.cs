@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;//used for displaying damage text
 
-public class killable : MonoBehaviou
+public class killable : MonoBehaviour
 {
     public int health = 1; //player health
 
@@ -13,11 +13,10 @@ public class killable : MonoBehaviou
 
     public GameObject textDisplayDeath;//will be used to display text on death
 
-    public UnityEvent OnDie();
+    public UnityEvent OnDie;
      
     void Start()
     {
-        UiObject.SetActive(false);//S
     }
     
 
@@ -49,12 +48,4 @@ public class killable : MonoBehaviou
             takeDamage();
         }
     }
-
-
-    /* Currently Unnecessary
-    void Ping()
-    {
-        Debug.Log("Ping");
-    }
-    */
 }

@@ -27,8 +27,8 @@ public class dash : MonoBehaviour
 
     private Vector3 delayedForceToApply;//used to apply a delayed force to dash to allow smooth player movement
 
-    public UnityEvent OnDashStart();
-    public UnityEvent OnDashEnd();
+    public UnityEvent OnDashStart;
+    public UnityEvent OnDashEnd;
 
     // Start is called before the first frame update
     void Start()
@@ -55,10 +55,10 @@ public class dash : MonoBehaviour
         if (dashCdTimer > 0)//if dash is still on cooldown, return
             return;
         else//else, dash and then start timer
-            dashCdTimer = dashCd;
+            dashCdTimer = dashCooldown;
         pm.dashing = true;
 
-        Vector3 forceToApply() = orientation.forward * dashForce + orientation.up * dashUpwardForce;
+        Vector3 forceToApply = orientation.forward * dashDistance + orientation.up * dashUpwardForce;
         delayedForceToApply = forceToApply;
         Invoke(nameof(DelayedDashForce), 0.025f);
         rb.AddForce(forceToApply, ForceMode.Impulse);
