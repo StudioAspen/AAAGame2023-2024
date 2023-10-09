@@ -21,13 +21,13 @@ namespace EnemyBehaviorTrees.Conditions
         // OnReset() - empty
         protected override void OnReset() { }
         
-        protected override NodeStatus OnRun()
+        protected override NODE_STATUS OnRun()
         {
             // Check for references
             if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager and/or NPC is null";
-                return NodeStatus.Failure;
+                return NODE_STATUS.Failure;
             }
             
             // Get the closest item
@@ -37,17 +37,17 @@ namespace EnemyBehaviorTrees.Conditions
             if (item == null)
             {
                 StatusReason = "No items near by";
-                return NodeStatus.Failure;
+                return NODE_STATUS.Failure;
             }
             // Failure - no items in range
             else if (Vector3.Distance(item.transform.position, BehaviorTreeTestGameManager.Instance.NPC.transform.position) > distanceToCheck)
             {
                 StatusReason = $"No items within range of {distanceToCheck} meters";
-                return NodeStatus.Failure;
+                return NODE_STATUS.Failure;
             }
             
             // Else, there is something to pick up, return Success
-            return NodeStatus.Success;
+            return NODE_STATUS.Success;
         }
     }
 }

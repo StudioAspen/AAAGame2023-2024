@@ -25,16 +25,16 @@ namespace EnemyBehaviorTrees
         public int EvaluationCount;
         
         // Runs the logic for the node
-        public virtual NodeStatus Run()
+        public virtual NODE_STATUS Run()
         {
             // Runs the 'custom' logic
-            NodeStatus nodeStatus = OnRun();
+            NODE_STATUS nodeStatus = OnRun();
             
             // Increments the tracker for how many times the node has been evaluated this 'run'
             EvaluationCount++;
             
             // If the nodeStatus is not Running, then it is Success or Failure and can be Reset
-            if (nodeStatus != NodeStatus.Running)
+            if (nodeStatus != NODE_STATUS.Running)
             {
                 Reset();
             }
@@ -49,7 +49,7 @@ namespace EnemyBehaviorTrees
              OnReset();
         }
         
-        protected abstract NodeStatus OnRun();
+        protected abstract NODE_STATUS OnRun();
         protected abstract void OnReset();
     }
 }

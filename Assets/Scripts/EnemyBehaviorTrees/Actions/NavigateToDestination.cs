@@ -22,13 +22,13 @@ namespace EnemyBehaviorTrees.Actions
         // OnReset() - empty
         protected override void OnReset() { }
         
-        protected override NodeStatus OnRun()
+        protected override NODE_STATUS OnRun()
         {
             //Confirm all references exist
             if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager or NPC is null";
-                return NodeStatus.Failure;
+                return NODE_STATUS.Failure;
             }
         
             //Perform logic that should only run once
@@ -36,14 +36,14 @@ namespace EnemyBehaviorTrees.Actions
             {
                 //Get destination from Game Manager 
                 GameObject destinationGO = BehaviorTreeTestGameManager.Instance.NPC.MyActivity == 
-                                           NavigationActivity.PickupItem ?  BehaviorTreeTestGameManager.Instance.GetClosestItem() 
+                                           NAVIGATION_ACTIVITY.PickupItem ?  BehaviorTreeTestGameManager.Instance.GetClosestItem() 
                     : BehaviorTreeTestGameManager.Instance.GetNextWayPoint();
         
                 //Confirm that the destination is valid - If not, fail.
                 if (destinationGO == null)
                 {
                     StatusReason = $"Unable to find game object for {BehaviorTreeTestGameManager.Instance.NPC.MyActivity}";
-                    return NodeStatus.Failure;
+                    return NODE_STATUS.Failure;
                 }
         
                 //Get a valid location on the NavMesh that's near the target destination
@@ -57,7 +57,7 @@ namespace EnemyBehaviorTrees.Actions
                 StatusReason = $"Starting to navigate to {destinationGO.transform.position}";
                 
                 //Return running, as we want to continue to have this node evaluate
-                return NodeStatus.Running;
+                return NODE_STATUS.Running;
             }
         
             //Calculate how far the AI is from the destination
@@ -71,12 +71,12 @@ namespace EnemyBehaviorTrees.Actions
                     $"\n - Target Destination: {targetDestination}" +
                     $"\n - Distance to target: {Math.Round(distanceToTarget, 1)}";
         
-                return NodeStatus.Success;
+                return NODE_STATUS.Success;
             }
         
             //Otherwise, the AI is still on the move
             StatusReason = $"Distance to target: {distanceToTarget}";
-            return NodeStatus.Running;
+            return NODE_STATUS.Running;
         
         }
     }

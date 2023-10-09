@@ -9,7 +9,7 @@ using EnemyBehaviorTrees.Decorators;
 
 namespace EnemyBehaviorTrees.Agents
 {
-    public enum NavigationActivity
+    public enum NAVIGATION_ACTIVITY
     {
         Waypoint, 
         PickupItem
@@ -18,7 +18,7 @@ namespace EnemyBehaviorTrees.Agents
     public class BehaviorTreeTestNPCController : MonoBehaviour, IBehaviorTree
     {
         public NavMeshAgent MyNavMesh { get; private set; }
-        public NavigationActivity MyActivity { get; set; }
+        public NAVIGATION_ACTIVITY MyActivity { get; set; }
         public NodeBase BehaviorTree { get; set; }
 
         private Coroutine behaviorTreeRoutine;
@@ -27,7 +27,7 @@ namespace EnemyBehaviorTrees.Agents
         private void Start()
         {
             MyNavMesh = GetComponent<NavMeshAgent>();
-            MyActivity = NavigationActivity.Waypoint;
+            MyActivity = NAVIGATION_ACTIVITY.Waypoint;
 
             GenerateBehaviorTree();
 
@@ -41,19 +41,19 @@ namespace EnemyBehaviorTrees.Agents
         {
             BehaviorTree = new Selector("Control NPC",
                                 new Sequence("Pickup Item",
-                                    new IsNavigationActivityTypeOf(NavigationActivity.PickupItem),
+                                    new IsNavigationActivityTypeOf(NAVIGATION_ACTIVITY.PickupItem),
                                     new Selector("Look for or move to items",
                                         new Sequence("Look for items",
                                             new Inverter("Inverter",
                                                 new AreItemsNearBy(5f)),
-                                            new SetNavigationActivityTo(NavigationActivity.Waypoint)),
+                                            new SetNavigationActivityTo(NAVIGATION_ACTIVITY.Waypoint)),
                                         new Sequence("Navigate to Item",
                                             new NavigateToDestination()))),
                                 new Sequence("Move to Waypoint",
-                                    new IsNavigationActivityTypeOf(NavigationActivity.Waypoint),
+                                    new IsNavigationActivityTypeOf(NAVIGATION_ACTIVITY.Waypoint),
                                     new NavigateToDestination(),
                                     new Timer(2f,
-                                        new SetNavigationActivityTo(NavigationActivity.PickupItem))));
+                                        new SetNavigationActivityTo(NAVIGATION_ACTIVITY.PickupItem))));
         }
 
         private IEnumerator RunBehaviorTree()
