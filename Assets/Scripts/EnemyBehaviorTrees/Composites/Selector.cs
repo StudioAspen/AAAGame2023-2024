@@ -34,7 +34,7 @@ namespace EnemyBehaviorTrees.Composites
             // If this point as been hit - then the current child is still running
             return NodeStatus.Running;
         }
-    
+        
         // Reset all nodes and index
         protected override void OnReset()
         {
