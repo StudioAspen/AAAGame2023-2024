@@ -15,7 +15,7 @@ namespace EnemyBehaviorTrees.Composites
             // We've reached the end of the ChildNodes and no one was successful
             if (CurrentChildIndex >= ChildNodes.Count)
             {
-                return NodeStatus.Failure;
+                return NodeStatus.FAILURE;
             }
             
             // Call the current child
@@ -24,15 +24,15 @@ namespace EnemyBehaviorTrees.Composites
             // Check the child's status - failure means try a new child, Success means done.
             switch (nodeStatus)
             {
-                case NodeStatus.Failure:
+                case NodeStatus.FAILURE:
                     CurrentChildIndex++;
                     break;
-                case NodeStatus.Success:
-                    return NodeStatus.Success;
+                case NodeStatus.SUCCESS:
+                    return NodeStatus.SUCCESS;
             }
             
             // If this point as been hit - then the current child is still running
-            return NodeStatus.Running;
+            return NodeStatus.RUNNING;
         }
         
         // Reset all nodes and index

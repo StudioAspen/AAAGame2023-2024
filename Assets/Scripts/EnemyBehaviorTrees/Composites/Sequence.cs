@@ -20,10 +20,10 @@ namespace EnemyBehaviorTrees.Composites
             switch (childNodeStatus)
             {
                 // Failed, return failure
-                case NodeStatus.Failure:
+                case NodeStatus.FAILURE:
                     return childNodeStatus;
                 // Succeeded, run next child
-                case NodeStatus.Success:
+                case NodeStatus.SUCCESS:
                     CurrentChildIndex++;
                     break;
             }
@@ -31,11 +31,11 @@ namespace EnemyBehaviorTrees.Composites
             // All children have run successfully, return success
             if (CurrentChildIndex >= ChildNodes.Count)
             {
-                return NodeStatus.Success;
+                return NodeStatus.SUCCESS;
             }
             
             // The child was a success but we may have more children to run, so call this method again or return that it's running.
-            return childNodeStatus == NodeStatus.Success ? OnRun() : NodeStatus.Running;
+            return childNodeStatus == NodeStatus.SUCCESS ? OnRun() : NodeStatus.RUNNING;
         }
 
         // Reset all nodes and index

@@ -26,13 +26,13 @@ namespace EnemyBehaviorTrees.Actions
             if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager and/or NPC is null";
-                return NodeStatus.Failure;
+                return NodeStatus.FAILURE;
             }
     
             // Set Agent's Navigation Activity to new activity and return Success
             BehaviorTreeTestGameManager.Instance.NPC.MyActivity = newActivity;
     
-            return NodeStatus.Success;
+            return NodeStatus.SUCCESS;
         }
     }
 }

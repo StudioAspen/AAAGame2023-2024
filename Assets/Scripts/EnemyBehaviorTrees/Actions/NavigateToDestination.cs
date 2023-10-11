@@ -28,7 +28,7 @@ namespace EnemyBehaviorTrees.Actions
             if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager or NPC is null";
-                return NodeStatus.Failure;
+                return NodeStatus.FAILURE;
             }
         
             //Perform logic that should only run once
@@ -43,7 +43,7 @@ namespace EnemyBehaviorTrees.Actions
                 if (destinationGO == null)
                 {
                     StatusReason = $"Unable to find game object for {BehaviorTreeTestGameManager.Instance.NPC.MyActivity}";
-                    return NodeStatus.Failure;
+                    return NodeStatus.FAILURE;
                 }
         
                 //Get a valid location on the NavMesh that's near the target destination
@@ -57,7 +57,7 @@ namespace EnemyBehaviorTrees.Actions
                 StatusReason = $"Starting to navigate to {destinationGO.transform.position}";
                 
                 //Return running, as we want to continue to have this node evaluate
-                return NodeStatus.Running;
+                return NodeStatus.RUNNING;
             }
         
             //Calculate how far the AI is from the destination
@@ -71,12 +71,12 @@ namespace EnemyBehaviorTrees.Actions
                     $"\n - Target Destination: {targetDestination}" +
                     $"\n - Distance to target: {Math.Round(distanceToTarget, 1)}";
         
-                return NodeStatus.Success;
+                return NodeStatus.SUCCESS;
             }
         
             //Otherwise, the AI is still on the move
             StatusReason = $"Distance to target: {distanceToTarget}";
-            return NodeStatus.Running;
+            return NodeStatus.RUNNING;
         
         }
     }

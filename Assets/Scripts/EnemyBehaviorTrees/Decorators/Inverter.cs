@@ -16,7 +16,7 @@ namespace EnemyBehaviorTrees.Decorators
             // Confirm that there's a valid child node that was passed
             if (ChildNodes.Count == 0 || ChildNodes[0] == null)
             {
-                return NodeStatus.Failure;
+                return NodeStatus.FAILURE;
             }
             
             // Run child
@@ -25,10 +25,10 @@ namespace EnemyBehaviorTrees.Decorators
             // Evaluate child node
             switch (childStatus)
             {
-                case NodeStatus.Failure:
-                    return NodeStatus.Success;
-                case NodeStatus.Success:
-                    return NodeStatus.Failure;
+                case NodeStatus.FAILURE:
+                    return NodeStatus.SUCCESS;
+                case NodeStatus.SUCCESS:
+                    return NodeStatus.FAILURE;
             }
             
             // If it hit this point, NodeStatus is Running, return the same thing

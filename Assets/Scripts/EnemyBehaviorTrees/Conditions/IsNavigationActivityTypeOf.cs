@@ -25,11 +25,11 @@ namespace EnemyBehaviorTrees.Conditions
             if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager and/or NPC is null";
-                return NodeStatus.Failure;
+                return NodeStatus.FAILURE;
             }
             
             StatusReason = $"NPC Activity is {activityToCheckFor}";
-            return BehaviorTreeTestGameManager.Instance.NPC.MyActivity == activityToCheckFor ? NodeStatus.Success : NodeStatus.Failure;
+            return BehaviorTreeTestGameManager.Instance.NPC.MyActivity == activityToCheckFor ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
         }
     }
 }

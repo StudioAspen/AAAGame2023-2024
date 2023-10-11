@@ -34,7 +34,7 @@ namespace EnemyBehaviorTrees
             EvaluationCount++;
             
             // If the nodeStatus is not Running, then it is Success or Failure and can be Reset
-            if (nodeStatus != NodeStatus.Running)
+            if (nodeStatus != NodeStatus.RUNNING)
             {
                 Reset();
             }

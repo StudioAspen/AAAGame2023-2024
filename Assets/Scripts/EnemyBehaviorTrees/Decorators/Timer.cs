@@ -29,7 +29,7 @@ namespace EnemyBehaviorTrees.Decorators
             // Confirm that a valid child node was passed in the constructor
             if (ChildNodes.Count == 0 || ChildNodes[0] == null)
             {
-                return NodeStatus.Failure;
+                return NodeStatus.FAILURE;
             }
 
             // Run the child node and calculate the elapsed
@@ -49,12 +49,12 @@ namespace EnemyBehaviorTrees.Decorators
             if (elapsedTime > timeToWait)
             {
                 StatusReason = $"Timer complete - Child node status is: {originalStatus}";
-                return NodeStatus.Success;
+                return NodeStatus.SUCCESS;
             }
 
             // Otherwise, keep running
             StatusReason = $"Timer is {elapsedTime} out of {timeToWait}. Child node status is: {originalStatus}";
-            return NodeStatus.Running;
+            return NodeStatus.RUNNING;
 
         }
     }

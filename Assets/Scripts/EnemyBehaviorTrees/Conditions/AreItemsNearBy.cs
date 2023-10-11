@@ -27,7 +27,7 @@ namespace EnemyBehaviorTrees.Conditions
             if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager and/or NPC is null";
-                return NodeStatus.Failure;
+                return NodeStatus.FAILURE;
             }
             
             // Get the closest item
@@ -37,17 +37,17 @@ namespace EnemyBehaviorTrees.Conditions
             if (item == null)
             {
                 StatusReason = "No items near by";
-                return NodeStatus.Failure;
+                return NodeStatus.FAILURE;
             }
             // Failure - no items in range
             else if (Vector3.Distance(item.transform.position, BehaviorTreeTestGameManager.Instance.NPC.transform.position) > distanceToCheck)
             {
                 StatusReason = $"No items within range of {distanceToCheck} meters";
-                return NodeStatus.Failure;
+                return NodeStatus.FAILURE;
             }
             
             // Else, there is something to pick up, return Success
-            return NodeStatus.Success;
+            return NodeStatus.SUCCESS;
         }
     }
 }
