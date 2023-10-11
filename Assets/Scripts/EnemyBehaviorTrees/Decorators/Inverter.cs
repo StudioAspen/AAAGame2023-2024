@@ -11,24 +11,24 @@ namespace EnemyBehaviorTrees.Decorators
         public Inverter(string displayName, Node node) : base(displayName, node) {}
         
         // OnRun() - return inverted NodeStatus.Success for NodeStatus.Failure and vice-versa
-        protected override NODE_STATUS OnRun()
+        protected override NodeStatus OnRun()
         {
             // Confirm that there's a valid child node that was passed
             if (ChildNodes.Count == 0 || ChildNodes[0] == null)
             {
-                return NODE_STATUS.Failure;
+                return NodeStatus.Failure;
             }
             
             // Run child
-            NODE_STATUS childStatus = (ChildNodes[0] as Node).Run();
+            NodeStatus childStatus = (ChildNodes[0] as Node).Run();
 
             // Evaluate child node
             switch (childStatus)
             {
-                case NODE_STATUS.Failure:
-                    return NODE_STATUS.Success;
-                case NODE_STATUS.Success:
-                    return NODE_STATUS.Failure;
+                case NodeStatus.Failure:
+                    return NodeStatus.Success;
+                case NodeStatus.Success:
+                    return NodeStatus.Failure;
             }
             
             // If it hit this point, NodeStatus is Running, return the same thing

@@ -10,29 +10,29 @@ namespace EnemyBehaviorTrees.Composites
     {
         public Selector(string displayName, params Node[] childNodes) : base(displayName, childNodes) {}
     
-        protected override NODE_STATUS OnRun()
+        protected override NodeStatus OnRun()
         {
             // We've reached the end of the ChildNodes and no one was successful
             if (CurrentChildIndex >= ChildNodes.Count)
             {
-                return NODE_STATUS.Failure;
+                return NodeStatus.Failure;
             }
             
             // Call the current child
-            NODE_STATUS nodeStatus = (ChildNodes[CurrentChildIndex]as Node).Run();
+            NodeStatus nodeStatus = (ChildNodes[CurrentChildIndex]as Node).Run();
             
             // Check the child's status - failure means try a new child, Success means done.
             switch (nodeStatus)
             {
-                case NODE_STATUS.Failure:
+                case NodeStatus.Failure:
                     CurrentChildIndex++;
                     break;
-                case NODE_STATUS.Success:
-                    return NODE_STATUS.Success;
+                case NodeStatus.Success:
+                    return NodeStatus.Success;
             }
             
             // If this point as been hit - then the current child is still running
-            return NODE_STATUS.Running;
+            return NodeStatus.Running;
         }
         
         // Reset all nodes and index

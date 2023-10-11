@@ -11,19 +11,19 @@ namespace EnemyBehaviorTrees.Composites
         public Sequence(string displayName, params Node[] childNodes) : base(displayName, childNodes) {}
 
         // OnRun() - contains logic to run every child node sequentially until one has returned Failure
-        protected override NODE_STATUS OnRun()
+        protected override NodeStatus OnRun()
         {
             // Check the status of the current child
-            NODE_STATUS childNodeStatus = (ChildNodes[CurrentChildIndex] as Node).Run();
+            NodeStatus childNodeStatus = (ChildNodes[CurrentChildIndex] as Node).Run();
             
             // Evaluate the status. If failed, return to last node in tree with Failure
             switch (childNodeStatus)
             {
                 // Failed, return failure
-                case NODE_STATUS.Failure:
+                case NodeStatus.Failure:
                     return childNodeStatus;
                 // Succeeded, run next child
-                case NODE_STATUS.Success:
+                case NodeStatus.Success:
                     CurrentChildIndex++;
                     break;
             }
@@ -31,11 +31,11 @@ namespace EnemyBehaviorTrees.Composites
             // All children have run successfully, return success
             if (CurrentChildIndex >= ChildNodes.Count)
             {
-                return NODE_STATUS.Success;
+                return NodeStatus.Success;
             }
             
             // The child was a success but we may have more children to run, so call this method again or return that it's running.
-            return childNodeStatus == NODE_STATUS.Success ? OnRun() : NODE_STATUS.Running;
+            return childNodeStatus == NodeStatus.Success ? OnRun() : NodeStatus.Running;
         }
 
         // Reset all nodes and index

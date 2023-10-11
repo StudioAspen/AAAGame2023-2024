@@ -8,10 +8,10 @@ namespace EnemyBehaviorTrees.Actions
     
     public class SetNavigationActivityTo : Node
     {
-        private NAVIGATION_ACTIVITY newActivity;
+        private NavigationActivity newActivity;
     
         // Constructor - declare which activity to change to
-        public SetNavigationActivityTo(NAVIGATION_ACTIVITY newActivity)
+        public SetNavigationActivityTo(NavigationActivity newActivity)
         {
             this.newActivity = newActivity;
             Name = $"Set NavigationActivity to {newActivity}";
@@ -20,19 +20,19 @@ namespace EnemyBehaviorTrees.Actions
         // OnReset() - empty
         protected override void OnReset() { }
         
-        protected override NODE_STATUS OnRun()
+        protected override NodeStatus OnRun()
         {
             // Check instances
             if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager and/or NPC is null";
-                return NODE_STATUS.Failure;
+                return NodeStatus.Failure;
             }
     
             // Set Agent's Navigation Activity to new activity and return Success
             BehaviorTreeTestGameManager.Instance.NPC.MyActivity = newActivity;
     
-            return NODE_STATUS.Success;
+            return NodeStatus.Success;
         }
     }
 }

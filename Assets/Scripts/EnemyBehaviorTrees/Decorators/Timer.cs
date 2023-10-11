@@ -24,16 +24,16 @@ namespace EnemyBehaviorTrees.Decorators
         protected override void OnReset() {}
         
         // OnRun() - run after set time has passed      
-        protected override NODE_STATUS OnRun()
+        protected override NodeStatus OnRun()
         {
             // Confirm that a valid child node was passed in the constructor
             if (ChildNodes.Count == 0 || ChildNodes[0] == null)
             {
-                return NODE_STATUS.Failure;
+                return NodeStatus.Failure;
             }
 
             // Run the child node and calculate the elapsed
-            NODE_STATUS originalStatus = (ChildNodes[0] as Node).Run();
+            NodeStatus originalStatus = (ChildNodes[0] as Node).Run();
 
             // If this is the first eval, then the start time needs to be set up.
             if (EvaluationCount == 0)
@@ -49,12 +49,12 @@ namespace EnemyBehaviorTrees.Decorators
             if (elapsedTime > timeToWait)
             {
                 StatusReason = $"Timer complete - Child node status is: {originalStatus}";
-                return NODE_STATUS.Success;
+                return NodeStatus.Success;
             }
 
             // Otherwise, keep running
             StatusReason = $"Timer is {elapsedTime} out of {timeToWait}. Child node status is: {originalStatus}";
-            return NODE_STATUS.Running;
+            return NodeStatus.Running;
 
         }
     }

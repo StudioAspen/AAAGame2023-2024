@@ -10,9 +10,9 @@ namespace EnemyBehaviorTrees.Conditions
     
     public class IsNavigationActivityTypeOf : Condition
     {
-        private NAVIGATION_ACTIVITY activityToCheckFor;
+        private NavigationActivity activityToCheckFor;
 
-        public IsNavigationActivityTypeOf(NAVIGATION_ACTIVITY activity) :
+        public IsNavigationActivityTypeOf(NavigationActivity activity) :
             base($"Is Navigation Activity {activity}?")
         {
             activityToCheckFor = activity;
@@ -20,16 +20,16 @@ namespace EnemyBehaviorTrees.Conditions
 
         protected override void OnReset() { }
 
-        protected override NODE_STATUS OnRun()
+        protected override NodeStatus OnRun()
         {
             if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager and/or NPC is null";
-                return NODE_STATUS.Failure;
+                return NodeStatus.Failure;
             }
             
             StatusReason = $"NPC Activity is {activityToCheckFor}";
-            return BehaviorTreeTestGameManager.Instance.NPC.MyActivity == activityToCheckFor ? NODE_STATUS.Success : NODE_STATUS.Failure;
+            return BehaviorTreeTestGameManager.Instance.NPC.MyActivity == activityToCheckFor ? NodeStatus.Success : NodeStatus.Failure;
         }
     }
 }
