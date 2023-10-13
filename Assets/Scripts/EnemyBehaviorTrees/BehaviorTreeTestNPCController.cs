@@ -11,8 +11,8 @@ namespace EnemyBehaviorTrees.Agents
 {
     public enum NavigationActivity
     {
-        Waypoint, 
-        PickupItem
+        WAYPOINT, 
+        PICKUP_ITEM
     }
 
     public class BehaviorTreeTestNPCController : MonoBehaviour, IBehaviorTree
@@ -27,7 +27,7 @@ namespace EnemyBehaviorTrees.Agents
         private void Start()
         {
             MyNavMesh = GetComponent<NavMeshAgent>();
-            MyActivity = NavigationActivity.Waypoint;
+            MyActivity = NavigationActivity.WAYPOINT;
 
             GenerateBehaviorTree();
 
@@ -41,19 +41,19 @@ namespace EnemyBehaviorTrees.Agents
         {
             BehaviorTree = new Selector("Control NPC",
                                 new Sequence("Pickup Item",
-                                    new IsNavigationActivityTypeOf(NavigationActivity.PickupItem),
+                                    new IsNavigationActivityTypeOf(NavigationActivity.PICKUP_ITEM),
                                     new Selector("Look for or move to items",
                                         new Sequence("Look for items",
                                             new Inverter("Inverter",
                                                 new AreItemsNearBy(5f)),
-                                            new SetNavigationActivityTo(NavigationActivity.Waypoint)),
+                                            new SetNavigationActivityTo(NavigationActivity.WAYPOINT)),
                                         new Sequence("Navigate to Item",
                                             new NavigateToDestination()))),
                                 new Sequence("Move to Waypoint",
-                                    new IsNavigationActivityTypeOf(NavigationActivity.Waypoint),
+                                    new IsNavigationActivityTypeOf(NavigationActivity.WAYPOINT),
                                     new NavigateToDestination(),
                                     new Timer(2f,
-                                        new SetNavigationActivityTo(NavigationActivity.PickupItem))));
+                                        new SetNavigationActivityTo(NavigationActivity.PICKUP_ITEM))));
         }
 
         private IEnumerator RunBehaviorTree()

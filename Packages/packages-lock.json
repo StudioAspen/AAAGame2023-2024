@@ -24,7 +24,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.24",
+      "version": "3.0.26",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -145,10 +145,11 @@
       "url": "https://packages.unity.com"
     },
     "com.wug.behaviortreevisualizer": {
-      "version": "file:H:/Unity/Unity Custom Packages/UnityBehaviorTreeVisualizer/com.wug.behaviortreevisualizer",
+      "version": "https://github.com/Yecats/UnityBehaviorTreeDebugger.git?path=/com.wug.behaviortreevisualizer",
       "depth": 0,
-      "source": "local",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "7ae583e1c048fa6a71755662053b5220adca3195"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

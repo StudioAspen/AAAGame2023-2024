@@ -36,7 +36,7 @@ namespace EnemyBehaviorTrees.Actions
             {
                 //Get destination from Game Manager 
                 GameObject destinationGO = BehaviorTreeTestGameManager.Instance.NPC.MyActivity == 
-                                           NavigationActivity.PickupItem ?  BehaviorTreeTestGameManager.Instance.GetClosestItem() 
+                                           NavigationActivity.PICKUP_ITEM ?  BehaviorTreeTestGameManager.Instance.GetClosestItem() 
                     : BehaviorTreeTestGameManager.Instance.GetNextWayPoint();
         
                 //Confirm that the destination is valid - If not, fail.
