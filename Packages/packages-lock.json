@@ -145,11 +145,10 @@
       "url": "https://packages.unity.com"
     },
     "com.wug.behaviortreevisualizer": {
-      "version": "https://github.com/Yecats/UnityBehaviorTreeDebugger.git?path=/com.wug.behaviortreevisualizer",
+      "version": "file:com.wug.behaviortreevisualizer@7ae583e1c0",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "7ae583e1c048fa6a71755662053b5220adca3195"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
