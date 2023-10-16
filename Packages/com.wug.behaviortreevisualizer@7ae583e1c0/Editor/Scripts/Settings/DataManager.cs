@@ -231,7 +231,7 @@ public class DataManager
 
         if (data == null)
         {
-            DataFile = ScriptableObject.CreateInstance("SettingsData") as SettingsData;
+            DataFile = ScriptableObject.CreateInstance("WUG.BehaviorTreeVisualizer.SettingsData") as SettingsData;
             CreateSettingsFile();
         }
         else
