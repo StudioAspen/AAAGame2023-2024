@@ -23,12 +23,22 @@ namespace EnemyBehaviorTrees
     {
         // Keeps track of the number of times the node has been evaluated in a single 'run'.
         public int EvaluationCount;
+
+        private string lastStatusReason { get; set; } = "";
         
         // Runs the logic for the node
         public virtual NodeStatus Run()
         {
             // Runs the 'custom' logic
             NodeStatus nodeStatus = OnRun();
+
+            // Allows the notification of changed node statuses and reasons to the behavior tree visualizer
+            if (LastNodeStatus != nodeStatus || !lastStatusReason.Equals(StatusReason))
+            {
+                LastNodeStatus = nodeStatus;
+                lastStatusReason = StatusReason;
+                OnNodeStatusChanged(this);
+            }
             
             // Increments the tracker for how many times the node has been evaluated this 'run'
             EvaluationCount++;
