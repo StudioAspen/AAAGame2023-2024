@@ -19,6 +19,7 @@ public class dash : MonoBehaviour
     [Header("Cooldown")]
     public float dashCooldown;//Cooldown for the dash
     private float dashCdTimer;//Time before you can dash again
+    private float dashEndTimer;//Used to know when dash has ended
 
     [Header("Keybind")]
     public KeyCode dashKey = KeyCode.E;//dash keybind, E can be changed to preference
@@ -27,8 +28,8 @@ public class dash : MonoBehaviour
 
     private Vector3 delayedForceToApply;//used to apply a delayed force to dash to allow smooth player movement
 
-    public UnityEvent OnDashStart;
-    public UnityEvent OnDashEnd;
+    UnityEvent OnDashStart;
+    UnityEvent OnDashEnd;
 
     // Start is called before the first frame update
     void Start()
@@ -42,9 +43,15 @@ public class dash : MonoBehaviour
     {
         if (Input.GetKeyDown(dashKey))
         {
-            Dash();
+            OnDashStart?.Invoke();
+            dashEndTimer += Time.deltaTime;
+            if(dashEndTimer > dashDuration)
+            {
+                OnDashEnd?.Invoke();
+            }
         }
-        if(dashCdTimer > 0)//if dash is still on cd, count down the timer
+
+        if (dashCdTimer > 0)//if dash is still on cd, count down the timer
         {
             dashCdTimer -= Time.deltaTime;
         }
@@ -71,8 +78,20 @@ public class dash : MonoBehaviour
         rb.AddForce(delayedForceToApply, ForceMode.Impulse);
     }
 
-    private void ResetDash()
+    public void ResetDash()
     {
         pm.dashing = false;
+    }
+
+    public void InterruptDash(bool canDash)
+    {
+        if(canDash)
+        {
+            dashCdTimer = 0;
+        }
+        else
+        {
+            dashCdTimer = dashCooldown;
+        }
     }
 }

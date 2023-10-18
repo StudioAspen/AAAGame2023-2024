@@ -51,7 +51,7 @@ public class playerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb = freezeRotation() = true;
+        rb.freezeRotation = true;
     }
 
     // Update is called once per frame
@@ -62,7 +62,7 @@ public class playerMovement : MonoBehaviour
         playerInput();
         SpeedControl();
 
-        if (grounded && (state != dashing))//if grounded, apply drag, else, have no drag
+        if (grounded && (state != MovementState.dashing))//if grounded, apply drag, else, have no drag
             rb.drag = groundDrag;
         else
             rb.drag = 0;
@@ -91,7 +91,7 @@ public class playerMovement : MonoBehaviour
     {
         //to be filled in with Joshua's movement code
 
-        if(grouded)//if player is grounded then...
+        if(grounded)//if player is grounded then...
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);//apply force on player movement
         }
@@ -111,13 +111,13 @@ public class playerMovement : MonoBehaviour
         }
 
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;//sees if there has been any changes in desired speed
-        if (lastState == MovementState.dashing) keepMomenteum = true;//if the last movement state was dashing, keep the momenteum
+        if (lastState == MovementState.dashing) keepMomentum = true;//if the last movement state was dashing, keep the momenteum
 
         if (desiredMoveSpeedHasChanged)
         {
             if(keepMomentum)
             {
-                StopAllCoRoutines();
+                StopAllCoroutines();
                 StartCoroutine(SmoothlyLerpMoveSpeed());
             }
             else
@@ -168,7 +168,7 @@ public class playerMovement : MonoBehaviour
         rb.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
     }
 
-    private ResetJump()
+    private void ResetJump()
     {
         readyToJump = true;
     }
