@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VictoryObjectScript : MonoBehaviour
+public class VictoryObject : MonoBehaviour
 {
     // code determines when the win screen should be active
     
