@@ -1,25 +1,29 @@
 using System.Collections;
-using EnemyBehaviorTrees.Actions;
 using UnityEngine;
 using UnityEngine.AI;
 using WUG.BehaviorTreeVisualizer;
-using EnemyBehaviorTrees.Composites;
-using EnemyBehaviorTrees.Conditions;
-using EnemyBehaviorTrees.Decorators;
+using EnemyBehaviorTrees.Nodes;
+using EnemyBehaviorTrees.Managers;
 
 namespace EnemyBehaviorTrees.Agents
 {
     public enum NavigationActivity
     {
-        WAYPOINT, 
-        PICKUP_ITEM
+        LOOK_FOR_PLAYER,
+        PATROL
     }
 
-    public class BehaviorTreeTestNPCController : MonoBehaviour, IBehaviorTree
+    public class BaseEnemyNPCController : MonoBehaviour, IBehaviorTree
     {
         public NavMeshAgent MyNavMesh { get; private set; }
         public NavigationActivity MyActivity { get; set; }
         public NodeBase BehaviorTree { get; set; }
+
+        [Header("Agent Modification")] 
+        [Tooltip("How far away the agent checks from itself for the player")]
+        public float playerCheckRange = 5f;
+        [Tooltip("How long the agent waits at its patrol location until it checks for the player again")]
+        public float patrolStayTime = 2f;
 
         private Coroutine behaviorTreeRoutine;
         private YieldInstruction waitTime = new WaitForSeconds(.1f);
@@ -27,7 +31,7 @@ namespace EnemyBehaviorTrees.Agents
         private void Start()
         {
             MyNavMesh = GetComponent<NavMeshAgent>();
-            MyActivity = NavigationActivity.WAYPOINT;
+            MyActivity = NavigationActivity.LOOK_FOR_PLAYER;
 
             GenerateBehaviorTree();
 
@@ -40,20 +44,21 @@ namespace EnemyBehaviorTrees.Agents
         private void GenerateBehaviorTree()
         {
             BehaviorTree = new Selector("Control NPC",
-                                new Sequence("Pickup Item",
-                                    new IsNavigationActivityTypeOf(NavigationActivity.PICKUP_ITEM),
-                                    new Selector("Look for or move to items",
-                                        new Sequence("Look for items",
-                                            new Inverter("Inverter",
-                                                new AreItemsNearBy(5f)),
-                                            new SetNavigationActivityTo(NavigationActivity.WAYPOINT)),
-                                        new Sequence("Navigate to Item",
+                                new Sequence("Look for player",
+                                    new IsNavigationActivityTypeOf(NavigationActivity.LOOK_FOR_PLAYER),
+                                    new Selector("Look for or move to player",
+                                        new Sequence("Look for player",
+                                            new Inverter("Inverter", 
+                                                new IsPlayerNearBy(playerCheckRange)),
+                                            // Player is not nearby, patrol to next point
+                                            new SetNavigationActivityTo(NavigationActivity.PATROL)),
+                                        new Sequence("Navigate to player",
                                             new NavigateToDestination()))),
                                 new Sequence("Move to Waypoint",
-                                    new IsNavigationActivityTypeOf(NavigationActivity.WAYPOINT),
+                                    new IsNavigationActivityTypeOf(NavigationActivity.PATROL),
                                     new NavigateToDestination(),
-                                    new Timer(2f,
-                                        new SetNavigationActivityTo(NavigationActivity.PICKUP_ITEM))));
+                                    new Timer(patrolStayTime,
+                                        new SetNavigationActivityTo(NavigationActivity.LOOK_FOR_PLAYER))));
         }
 
         private IEnumerator RunBehaviorTree()

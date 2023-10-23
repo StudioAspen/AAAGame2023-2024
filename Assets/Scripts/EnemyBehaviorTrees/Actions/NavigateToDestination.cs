@@ -1,11 +1,11 @@
 using System;
 using WUG.BehaviorTreeVisualizer;
-using EnemyBehaviorTrees;
-using EnemyBehaviorTrees.Agents;
 using UnityEngine;
 using UnityEngine.AI;
+using EnemyBehaviorTrees.Agents;
+using EnemyBehaviorTrees.Managers;
 
-namespace EnemyBehaviorTrees.Actions
+namespace EnemyBehaviorTrees.Nodes
 {
     // Action node for an agent to navigate to a certain destination.
     
@@ -25,45 +25,45 @@ namespace EnemyBehaviorTrees.Actions
         protected override NodeStatus OnRun()
         {
             //Confirm all references exist
-            if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
+            if (EnemyBehaviorTreeGameManager.Instance == null || EnemyBehaviorTreeGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager or NPC is null";
                 return NodeStatus.FAILURE;
             }
         
-            //Perform logic that should only run once
+            // Perform logic that should only run once
             if (EvaluationCount == 0)
             {
-                //Get destination from Game Manager 
-                GameObject destinationGO = BehaviorTreeTestGameManager.Instance.NPC.MyActivity == 
-                                           NavigationActivity.PICKUP_ITEM ?  BehaviorTreeTestGameManager.Instance.GetClosestItem() 
-                    : BehaviorTreeTestGameManager.Instance.GetNextWayPoint();
+                // Get destination from Game Manager 
+                GameObject destinationGO = EnemyBehaviorTreeGameManager.Instance.NPC.MyActivity == 
+                                           NavigationActivity.LOOK_FOR_PLAYER ?  EnemyBehaviorTreeGameManager.Instance.GetPlayerWithinRange(EnemyBehaviorTreeGameManager.Instance.NPC.playerCheckRange) 
+                    : EnemyBehaviorTreeGameManager.Instance.GetNextWayPoint();
         
-                //Confirm that the destination is valid - If not, fail.
+                // Confirm that the destination is valid - If not, fail.
                 if (destinationGO == null)
                 {
-                    StatusReason = $"Unable to find game object for {BehaviorTreeTestGameManager.Instance.NPC.MyActivity}";
+                    StatusReason = $"Unable to find game object for {EnemyBehaviorTreeGameManager.Instance.NPC.MyActivity}";
                     return NodeStatus.FAILURE;
                 }
         
-                //Get a valid location on the NavMesh that's near the target destination
+                // Get a valid location on the NavMesh that's near the target destination
                 NavMesh.SamplePosition(destinationGO.transform.position, out NavMeshHit hit, 1f, 1);
                 
-                //Set the location for checks later
+                // Set the location for checks later
                 targetDestination = hit.position;
         
-                //Set the destination on the NavMesh. This tells the AI to start moving to the new location.
-                BehaviorTreeTestGameManager.Instance.NPC.MyNavMesh.SetDestination(targetDestination);
+                // Set the destination on the NavMesh. This tells the AI to start moving to the new location.
+                EnemyBehaviorTreeGameManager.Instance.NPC.MyNavMesh.SetDestination(targetDestination);
                 StatusReason = $"Starting to navigate to {destinationGO.transform.position}";
                 
-                //Return running, as we want to continue to have this node evaluate
+                // Return running, as we want to continue to have this node evaluate
                 return NodeStatus.RUNNING;
             }
         
-            //Calculate how far the AI is from the destination
-            float distanceToTarget = Vector3.Distance(targetDestination, BehaviorTreeTestGameManager.Instance.NPC.transform.position);
+            // Calculate how far the AI is from the destination
+            float distanceToTarget = Vector3.Distance(targetDestination, EnemyBehaviorTreeGameManager.Instance.NPC.transform.position);
         
-            //If the AI is within .25f then navigation will be considered a success
+            // If the AI is within .25f then navigation will be considered a success
             if (distanceToTarget < .25f)
             {
                 StatusReason = $"Navigation ended. " +
@@ -74,7 +74,7 @@ namespace EnemyBehaviorTrees.Actions
                 return NodeStatus.SUCCESS;
             }
         
-            //Otherwise, the AI is still on the move
+            // Otherwise, the AI is still on the move
             StatusReason = $"Distance to target: {distanceToTarget}";
             return NodeStatus.RUNNING;
         

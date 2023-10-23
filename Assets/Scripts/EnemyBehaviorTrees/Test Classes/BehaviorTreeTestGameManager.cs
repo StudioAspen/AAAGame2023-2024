@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using EnemyBehaviorTrees.Agents;
 using UnityEngine;
 using WUG.BehaviorTreeVisualizer;
+using EnemyBehaviorTrees.Agents;
 
-namespace EnemyBehaviorTrees.Agents
+namespace EnemyBehaviorTrees.Test
 {
     public class BehaviorTreeTestGameManager : MonoBehaviour
     {
         public static BehaviorTreeTestGameManager Instance;
 
-        public BehaviorTreeTestNPCController NPC { get; private set; }
+        public BaseEnemyNPCController NPC { get; private set; }
         private List<GameObject> waypoints = new List<GameObject>();
         private List<GameObject> items = new List<GameObject>();
 
@@ -35,7 +35,7 @@ namespace EnemyBehaviorTrees.Agents
 
             waypoints = waypoints.Shuffle();
 
-            NPC = FindObjectOfType<BehaviorTreeTestNPCController>();
+            NPC = FindObjectOfType<BaseEnemyNPCController>();
         }
 
         /// <summary>

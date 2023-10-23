@@ -1,7 +1,7 @@
 using WUG.BehaviorTreeVisualizer;
 using EnemyBehaviorTrees;
 
-namespace EnemyBehaviorTrees.Decorators
+namespace EnemyBehaviorTrees.Nodes
 {
     // Inverter Decorators invert whatever status they receive from their child node, like a NOT logic gate.
     

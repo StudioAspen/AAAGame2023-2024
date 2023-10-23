@@ -1,8 +1,9 @@
 using EnemyBehaviorTrees.Agents;
 using UnityEngine;
 using WUG.BehaviorTreeVisualizer;
+using EnemyBehaviorTrees.Test;
 
-namespace EnemyBehaviorTrees.Conditions
+namespace EnemyBehaviorTrees.Nodes
 {
     // Condition node to check if any items are nearby based on a set distance.
     // 

@@ -2,7 +2,7 @@ using WUG.BehaviorTreeVisualizer;
 using EnemyBehaviorTrees;
 using UnityEngine;
 
-namespace EnemyBehaviorTrees.Decorators
+namespace EnemyBehaviorTrees.Nodes
 {
     // Timer Decorators run a node after a set amount of time expires
     

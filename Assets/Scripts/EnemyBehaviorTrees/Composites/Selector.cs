@@ -1,7 +1,7 @@
 using EnemyBehaviorTrees;
 using WUG.BehaviorTreeVisualizer;
 
-namespace EnemyBehaviorTrees.Composites
+namespace EnemyBehaviorTrees.Nodes
 {
     // Selector Composite nodes attempt to run at least one of its nodes successfully. It will keep running child nodes from left to right until a Success is returned, then,
     // it doesn't run any other children and a NodeStatus.Success is returned. Otherwise, if no child node returns a Success, a Failure will be returned.

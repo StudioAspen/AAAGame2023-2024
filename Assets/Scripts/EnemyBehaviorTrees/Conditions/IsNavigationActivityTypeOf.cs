@@ -1,12 +1,11 @@
 using WUG.BehaviorTreeVisualizer;
-using EnemyBehaviorTrees;
 using EnemyBehaviorTrees.Agents;
+using EnemyBehaviorTrees.Managers;
 
-namespace EnemyBehaviorTrees.Conditions
+namespace EnemyBehaviorTrees.Nodes
 {
     // This is a condition that tests whether an NPC agent's current NavigationActivity is a certain NavigationActivity to check for.
     // NOTE: This is a test condition from https://gamedev-resources.com/get-started-with-behavior-trees/ #Condition section.
-    // Whether we will actually need this or not will be determined as we build the enemy NPCs
     
     public class IsNavigationActivityTypeOf : Condition
     {
@@ -22,14 +21,14 @@ namespace EnemyBehaviorTrees.Conditions
 
         protected override NodeStatus OnRun()
         {
-            if (BehaviorTreeTestGameManager.Instance == null || BehaviorTreeTestGameManager.Instance.NPC == null)
+            if (EnemyBehaviorTreeGameManager.Instance == null || EnemyBehaviorTreeGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager and/or NPC is null";
                 return NodeStatus.FAILURE;
             }
             
             StatusReason = $"NPC Activity is {activityToCheckFor}";
-            return BehaviorTreeTestGameManager.Instance.NPC.MyActivity == activityToCheckFor ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
+            return EnemyBehaviorTreeGameManager.Instance.NPC.MyActivity == activityToCheckFor ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
         }
     }
 }

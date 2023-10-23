@@ -1,7 +1,7 @@
 using EnemyBehaviorTrees;
 using WUG.BehaviorTreeVisualizer;
 
-namespace EnemyBehaviorTrees.Composites
+namespace EnemyBehaviorTrees.Nodes
 {
     // Sequence Composite node runs all children from left to right until either all children have run sucessfully
     // or at least one of them have returned NodeStatus.Failure
