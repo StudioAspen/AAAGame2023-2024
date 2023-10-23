@@ -8,7 +8,7 @@ public class Pathfinding : MonoBehaviour
 {
     [SerializeField]
     private GameObject player;
-    public Vector3 target;
+    public Transform target;
     private NavMeshAgent agent;
 
 
@@ -24,8 +24,8 @@ public class Pathfinding : MonoBehaviour
     {
         if (player != null)
         {
-            target = player.transform.position;
-            agent.SetDestination(target);
+            target = player.transform;
+            agent.SetDestination(target.position);
 
         }
     }
