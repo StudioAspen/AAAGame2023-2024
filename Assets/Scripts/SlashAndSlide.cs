@@ -1,83 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SlashAndSlide : MonoBehaviour
 {
-    public GameObject sword;
-    public float climbSpeed;
+    public float slideSpeed;
 
-    private enum State {idling, slashing, climbing};
-    private State state;
-
-    private float slashCurrTime = 0f;
-    private float slashMaxTime = 1f;
-
-    private Quaternion startRotation;
-    private Quaternion targetRotation;
+    UnityEvent OnSlashStart;
+    UnityEvent OnSlashEnd;
 
     private Rigidbody rb;
+    private bool sliding = false;
+    private Vector3 dashDir;
 
     private void Start()
     {
-        state = State.idling;
-
-        startRotation = Quaternion.Euler(90f, 0f, 0f);
-        targetRotation = Quaternion.Euler(-90f, 0f, 0f);
-
         rb = GetComponent<Rigidbody>();
-    }
-
-    private void Update()
-    {
-        Controls();
-        ManageState();
     }
 
     private void FixedUpdate()
     {
-        if (state == State.climbing)
+        if (sliding)
         {
-            rb.velocity = climbSpeed * Time.fixedDeltaTime * Vector3.up;
+            rb.velocity = slideSpeed * Time.fixedDeltaTime * dashDir;
         }
     }
 
-    private void Controls()
+    public void StartSlash()
     {
-        if (state == State.idling && Input.GetMouseButtonDown(0))
-        {
-            slashCurrTime = 0f;
-            state = State.slashing;
-        }
+        OnSlashStart.Invoke();
+
+        // Start slash animation
     }
 
-    private void ManageState()
+    public void SlashContact(GameObject other)
     {
-        if (state == State.slashing)
+        sliding = true;
+        if (other.TryGetComponent<Slashable>(out Slashable slashable))
         {
-            slashCurrTime = Mathf.Clamp(slashCurrTime + Time.deltaTime, 0f, slashMaxTime);
-            sword.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, slashCurrTime / slashMaxTime);
-
-            if (slashCurrTime > slashMaxTime - 0.01f)
-            {
-                state = State.idling;
-            }
+            dashDir = slashable.dashDir;
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void InteruptSlash()
     {
-        if (other.CompareTag("Slashable"))
-        {
-            state = State.climbing;
-        }
+
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Slashable"))
-        {
-            state = State.slashing;
-        }
-    }
 }

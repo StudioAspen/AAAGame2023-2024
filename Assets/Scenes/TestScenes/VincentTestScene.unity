@@ -229,8 +229,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 885797037}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &64902133
@@ -269,11 +268,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 64902128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45c36b5fac90320499df57e5bfb72442, type: 3}
+  m_Script: {fileID: 11500000, guid: 3881a59e96cc1744893121e9180e14cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sword: {fileID: 885797036}
-  climbSpeed: 500
+  slideSpeed: 10
 --- !u!1 &567843560
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,6 +386,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 885797037}
+  - component: {fileID: 885797038}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -403,14 +402,27 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885797036}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 896515485}
-  m_Father: {fileID: 64902132}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &885797038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885797036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23d4fef0cca1d704bb252cb88b6337eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 64902134}
 --- !u!1 &896515484
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,3 +900,4 @@ SceneRoots:
   - {fileID: 64902132}
   - {fileID: 1650305732}
   - {fileID: 567843564}
+  - {fileID: 885797037}
