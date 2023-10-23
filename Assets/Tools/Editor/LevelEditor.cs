@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System.Drawing.Printing;
 
 public class LevelEditor : EditorWindow
 {
@@ -20,6 +19,19 @@ public class LevelEditor : EditorWindow
 
     void OnGUI()
     {
+
+        if (Event.current.type == EventType.MouseUp)
+        {
+            Debug.Log("Step1");
+            if (selectedPrefab != null)
+            {
+                GameObject newObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
+                newObject.transform.position = Camera.main.ScreenToWorldPoint(Event.current.mousePosition);
+            }
+
+            Event.current.Use();
+        }
+
         // BEGIN PREFAB AREA
         prefabAreaWidth = GetWindow<LevelEditor>().position.width - 10;
         prefabAreaHeight = GetWindow<LevelEditor>().position.height / 2;
@@ -28,7 +40,7 @@ public class LevelEditor : EditorWindow
 
         scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
-        int selected = 0; 
+        int selected = 0;
         string[] folderOptions = new string[] // will automatically add list of folders within prefab folder eventually
         {
             "option 1", "option 2", "option 3"
@@ -57,6 +69,7 @@ public class LevelEditor : EditorWindow
                 if (GUILayout.Button(prefabImage, GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
                 {
                     selectedPrefab = prefab; // on mouse click input, instantiate the prefab in the world.
+                    Debug.Log("Selected " + selectedPrefab);
                 }
             }
         }
