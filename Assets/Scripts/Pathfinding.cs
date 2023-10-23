@@ -24,7 +24,6 @@ public class Pathfinding : MonoBehaviour
     {
         if (player != null)
         {
-            target = player.transform;
             agent.SetDestination(target.position);
 
         }
