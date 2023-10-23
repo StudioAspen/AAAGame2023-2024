@@ -7,25 +7,25 @@ using UnityEngine.AI;
 public class Pathfinding : MonoBehaviour
 {
     [SerializeField]
-    private GameObject Player;
-    private Vector3 Target;
+    private GameObject player;
+    public Vector3 target;
     private NavMeshAgent agent;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
         agent = gameObject.GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Player != null)
+        if (player != null)
         {
-            Target = Player.transform.position;
-            agent.SetDestination(Target);
+            target = player.transform.position;
+            agent.SetDestination(target);
 
         }
     }
