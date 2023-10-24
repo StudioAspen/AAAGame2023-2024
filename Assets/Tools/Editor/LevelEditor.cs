@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEditor;
+using Unity.VisualScripting;
+using UnityEditor.TerrainTools;
 
 public class LevelEditor : EditorWindow
 {
@@ -12,25 +14,60 @@ public class LevelEditor : EditorWindow
 
 
     [MenuItem("Tools/Level Editor")]
-    public static void ShowWindow()
+    public static void ShowWindow() // Show the Level Editor Window
     {
         EditorWindow.GetWindow<LevelEditor>();
     }
 
-    void OnGUI()
+    void OnEnable()
     {
+        // so that the script can access click events on the scene view
+        SceneView.duringSceneGui += OnSceneGUI; 
+    }
 
-        if (Event.current.type == EventType.MouseUp)
+    private void OnDisable()
+    {
+        // removes the sript access to the scene view
+        SceneView.duringSceneGui -= OnSceneGUI;
+    }
+
+    void OnSceneGUI(SceneView sceneView)
+    {
+        Event eventCurrent = Event.current;
+
+        if (eventCurrent.type == EventType.MouseDown && eventCurrent.button == 0)
         {
-            Debug.Log("Step1");
-            if (selectedPrefab != null)
+            //cast a ray to check where to place the object in the worldspace
+            Ray ray = HandleUtility.GUIPointToWorldRay(eventCurrent.mousePosition);
+            RaycastHit hitInfo;
+            bool hit = Physics.Raycast(ray, out hitInfo);
+
+            if (hit)
             {
-                GameObject newObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
-                newObject.transform.position = Camera.main.ScreenToWorldPoint(Event.current.mousePosition);
+                if (selectedPrefab != null) // if the ray hits another object
+                {
+                    // instantiate the prefab into the world
+                    GameObject newObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
+                    newObject.transform.position = hitInfo.point;
+                }
+            } else
+            {
+                if (selectedPrefab != null) // if the ray doesn't hit any object
+                {
+                    Debug.Log(hitInfo.point);
+                    // instantiate the prefab into the world
+                    GameObject newObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
+                    float t = -ray.origin.y / ray.direction.y; // to calculate the distance along the ray where it intersects the 0 plane
+                    newObject.transform.position = ray.origin + t * ray.direction; // this represents the intersection point of the ray and the y plane
+                }
             }
 
             Event.current.Use();
         }
+    }
+
+    void OnGUI() 
+    {
 
         // BEGIN PREFAB AREA
         prefabAreaWidth = GetWindow<LevelEditor>().position.width - 10;
