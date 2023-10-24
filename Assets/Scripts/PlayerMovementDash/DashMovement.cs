@@ -1,0 +1,114 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+public class DashMovement : MonoBehaviour
+{
+    [Header("References")]
+    private Rigidbody rb;//rigid body of player
+
+    [Header("Stats")]
+    public float dashDistance;//How far the dash will go
+    public float dashDuration;//How long the dash lasts
+    public bool canDash = true;
+    public bool isDashing = false;
+
+    [Header("Cooldown")]
+    public float dashCooldown;//Cooldown for the dash
+    private float dashCdTimer;//Time before you can dash again
+
+
+    private float dashDurationTimer;//Used to know when dash has ended
+
+    private Vector3 dashVelocity;
+
+    [Header("Temp Keybind")]
+    public KeyCode dashKey = KeyCode.E;//dash keybind, E can be changed to preference
+
+
+
+    private Vector3 delayedForceToApply;//used to apply a delayed force to dash to allow smooth player movement
+
+    UnityEvent OnDashStart = new UnityEvent();
+    UnityEvent OnDashEnd = new UnityEvent();
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDashing)
+        {
+            dashDurationTimer -= Time.fixedDeltaTime;
+
+            float alignment = Vector3.Dot(rb.velocity, dashVelocity);
+            if (alignment < 1)
+            {
+                rb.velocity += dashVelocity;
+            }
+            
+            if(dashDurationTimer <= 0)
+            {
+                EndDash();
+            }
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(dashKey)) // Temperary use of input to test dash
+        {
+            Dash(transform.forward);
+        }
+
+        if (dashCdTimer > 0)//if dash is still on cd, count down the timer
+        {
+            dashCdTimer -= Time.deltaTime;
+        }
+    }
+
+    
+
+    private void Dash(Vector3 direction)
+    {
+        if (dashCdTimer > 0)//if dash is still on cooldown, return
+            return;
+
+        dashCdTimer = dashCooldown; // putting dash on cool down
+        dashDurationTimer = dashDuration; // setting dash duration
+        isDashing = true;
+        dashVelocity = (dashDistance/dashDuration) * direction; // setting velocity for dashing
+
+        //testing with vizualizations
+        Debug.DrawLine(transform.position, transform.position + direction*dashDistance, Color.white, 5);
+
+
+        OnDashStart.Invoke();
+    }
+
+    private void EndDash()
+    {
+        rb.velocity -= dashVelocity;
+        isDashing = false;
+        OnDashEnd.Invoke();
+    }
+
+    public void ResetDash()
+    {
+        canDash = true;
+    }
+
+    public void InterruptDash(bool canDash)
+    {
+        if(canDash)
+        {
+            ResetDash();
+        }
+        EndDash();
+    }
+}
