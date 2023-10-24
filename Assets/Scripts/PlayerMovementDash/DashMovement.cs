@@ -7,12 +7,13 @@ public class DashMovement : MonoBehaviour
 {
     [Header("References")]
     private Rigidbody rb;//rigid body of player
+    private Collider collider;
 
     [Header("Stats")]
     public float dashDistance;//How far the dash will go
     public float dashDuration;//How long the dash lasts
-    public bool canDash = true;
-    public bool isDashing = false;
+    private bool canDash = true;
+    private bool isDashing = false;
 
     [Header("Cooldown")]
     public float dashCooldown;//Cooldown for the dash
@@ -20,27 +21,35 @@ public class DashMovement : MonoBehaviour
 
 
     private float dashDurationTimer;//Used to know when dash has ended
-
     private Vector3 dashVelocity;
 
     [Header("Temp Keybind")]
     public KeyCode dashKey = KeyCode.E;//dash keybind, E can be changed to preference
 
-
-
-    private Vector3 delayedForceToApply;//used to apply a delayed force to dash to allow smooth player movement
-
     UnityEvent OnDashStart = new UnityEvent();
     UnityEvent OnDashEnd = new UnityEvent();
+
+    //Temperary Grounded
+    public LayerMask ground;
+    private bool isGrounded;
+    public float groundCheckOffset;
+
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        collider = GetComponent<Collider>();
     }
 
     private void FixedUpdate()
     {
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(collider.bounds.min.y - transform.position.y) + groundCheckOffset, ground);
+        Debug.Log(isGrounded);
+        if (isGrounded)
+        {
+            canDash = true;
+        }
         if (isDashing)
         {
             dashDurationTimer -= Time.fixedDeltaTime;
@@ -50,8 +59,8 @@ public class DashMovement : MonoBehaviour
             {
                 rb.velocity += dashVelocity;
             }
-            
-            if(dashDurationTimer <= 0)
+
+            if (dashDurationTimer <= 0)
             {
                 EndDash();
             }
@@ -72,16 +81,17 @@ public class DashMovement : MonoBehaviour
         }
     }
 
-    
+
 
     private void Dash(Vector3 direction)
     {
-        if (dashCdTimer > 0)//if dash is still on cooldown, return
+        if (dashCdTimer > 0 || !canDash || isDashing)//if dash is still on cooldown or can dash, return
             return;
 
         dashCdTimer = dashCooldown; // putting dash on cool down
         dashDurationTimer = dashDuration; // setting dash duration
         isDashing = true;
+        canDash = false;
         dashVelocity = (dashDistance/dashDuration) * direction; // setting velocity for dashing
 
         //testing with vizualizations
@@ -93,7 +103,7 @@ public class DashMovement : MonoBehaviour
 
     private void EndDash()
     {
-        rb.velocity -= dashVelocity;
+        rb.velocity -= dashVelocity/2;
         isDashing = false;
         OnDashEnd.Invoke();
     }

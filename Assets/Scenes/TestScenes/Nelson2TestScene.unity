@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 637141912}
   - component: {fileID: 637141911}
   - component: {fileID: 637141910}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: test ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,10 +291,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashDistance: 2
   dashDuration: 0.25
-  canDash: 1
-  isDashing: 0
   dashCooldown: 1
   dashKey: 101
+  ground:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundCheckOffset: 0.1
 --- !u!65 &724041431
 BoxCollider:
   m_ObjectHideFlags: 0
