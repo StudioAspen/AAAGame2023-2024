@@ -13,7 +13,7 @@ namespace EnemyBehaviorTrees.Nodes
         private float distanceToCheck;
 
         // Constructor - just changes the name of the base node object to be descriptive of the distance it checks around the agent
-        public IsPlayerNearBy(float maxDistance) : base($"Are Items within {maxDistance}f?")
+        public IsPlayerNearBy(float maxDistance) : base($"Is player within {maxDistance}f?")
         {
             distanceToCheck = maxDistance;
         }
