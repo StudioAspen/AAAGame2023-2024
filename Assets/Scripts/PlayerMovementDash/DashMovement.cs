@@ -45,25 +45,31 @@ public class DashMovement : MonoBehaviour
     private void FixedUpdate()
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(collider.bounds.min.y - transform.position.y) + groundCheckOffset, ground);
-        Debug.Log(isGrounded);
+        //Debug.Log(isGrounded);
         if (isGrounded)
         {
             canDash = true;
         }
         if (isDashing)
         {
-            dashDurationTimer -= Time.fixedDeltaTime;
-
             float alignment = Vector3.Dot(rb.velocity, dashVelocity);
-            if (alignment < 1)
+            if (alignment < 1 && dashDurationTimer > 0)
             {
-                rb.velocity += dashVelocity;
+                if (dashDurationTimer < Time.fixedDeltaTime)
+                {
+                    rb.MovePosition(rb.position + (dashVelocity * dashDurationTimer));
+                }
+                else
+                {
+                    rb.MovePosition(rb.position + (dashVelocity * Time.fixedDeltaTime));
+                }
             }
 
             if (dashDurationTimer <= 0)
             {
                 EndDash();
             }
+            dashDurationTimer -= Time.fixedDeltaTime;
         }
     }
 
@@ -92,7 +98,8 @@ public class DashMovement : MonoBehaviour
         dashDurationTimer = dashDuration; // setting dash duration
         isDashing = true;
         canDash = false;
-        dashVelocity = (dashDistance/dashDuration) * direction; // setting velocity for dashing
+
+        dashVelocity = (dashDistance/dashDuration) * direction.normalized; // setting velocity for dashing
 
         //testing with vizualizations
         Debug.DrawLine(transform.position, transform.position + direction*dashDistance, Color.white, 5);
@@ -103,7 +110,7 @@ public class DashMovement : MonoBehaviour
 
     private void EndDash()
     {
-        rb.velocity -= dashVelocity/2;
+        //rb.velocity = Vector3.zero;
         isDashing = false;
         OnDashEnd.Invoke();
     }

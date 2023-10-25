@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashDistance: 2
-  dashDuration: 0.25
+  dashDuration: 0.01
   dashCooldown: 1
   dashKey: 101
   ground:
