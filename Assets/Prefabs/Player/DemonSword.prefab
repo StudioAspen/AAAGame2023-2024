@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1327583556488384424}
   - component: {fileID: 7747520786984620803}
   - component: {fileID: 1989007850164286170}
+  - component: {fileID: 1120121864080066348}
   m_Layer: 0
   m_Name: DemonSword
   m_TagString: Untagged
@@ -99,9 +100,23 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1120121864080066348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417093754190084996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodThirstThreshold: 0
+  maxBlood: 0
