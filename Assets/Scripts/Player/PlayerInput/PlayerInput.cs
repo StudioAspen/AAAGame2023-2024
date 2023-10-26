@@ -7,6 +7,9 @@ public class PlayerInput : MonoBehaviour
     /// <summary>
     /// CURRENTLY NONE OF THESE MOVEMENTS EXIST IN THIS BRANCH BUT COMMENTED TO SHOW THE INTENTION
     /// This script controls all the player inputs and calculations for them, like the relative camera position
+    /// 
+    /// For the gameplay developers replace the comments with your respective code, 
+    /// If there are any design concerns they will be addressed in a code review
     /// </summary>
 
     bool canMove = true;
