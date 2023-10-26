@@ -1,4 +1,5 @@
 using System;
+using System.Transactions;
 using WUG.BehaviorTreeVisualizer;
 using UnityEngine;
 using UnityEngine.AI;
@@ -35,9 +36,21 @@ namespace EnemyBehaviorTrees.Nodes
             if (EvaluationCount == 0)
             {
                 // Get destination from Game Manager 
-                GameObject destinationGO = EnemyBehaviorTreeGameManager.Instance.NPC.MyActivity == 
-                                           NavigationActivity.LOOK_FOR_PLAYER ?  EnemyBehaviorTreeGameManager.Instance.GetPlayerWithinRange(EnemyBehaviorTreeGameManager.Instance.NPC.playerCheckRange) 
-                    : EnemyBehaviorTreeGameManager.Instance.GetNextWayPoint();
+                GameObject destinationGO = null;
+                NavigationActivity currentActivity = EnemyBehaviorTreeGameManager.Instance.NPC.MyActivity;
+
+                switch (currentActivity)
+                {
+                    case NavigationActivity.LOOK_FOR_PLAYER:
+                        destinationGO = EnemyBehaviorTreeGameManager.Instance.GetPlayerWithinRange(EnemyBehaviorTreeGameManager.Instance.NPC.playerAggroRange);
+                        break;
+                    case NavigationActivity.CHASE:
+                        destinationGO = EnemyBehaviorTreeGameManager.Instance.GetPlayerWithinRange(EnemyBehaviorTreeGameManager.Instance.NPC.playerAggroRange);
+                        break;
+                    case NavigationActivity.PATROL:
+                        destinationGO = EnemyBehaviorTreeGameManager.Instance.GetNextWayPoint();
+                        break;
+                }
         
                 // Confirm that the destination is valid - If not, fail.
                 if (destinationGO == null)
@@ -47,6 +60,8 @@ namespace EnemyBehaviorTrees.Nodes
                 }
         
                 // Get a valid location on the NavMesh that's near the target destination
+                // IDEA SO THAT AGENT FOLLOWS PLAYER MORE ACCURATELY: CHANGE SAMPLE DISTANCE TO HOWEVER MUCH DISTANCE THE AGENT CAN TRAVEL AT THE GIVEN THINKING TIME SO THAT IT CAN COMPLETE
+                // MORE OFTEN AND THUS MAKES THE CHASING AND DEAGGRO MORE ACCURATE.
                 NavMesh.SamplePosition(destinationGO.transform.position, out NavMeshHit hit, 1f, 1);
                 
                 // Set the location for checks later
