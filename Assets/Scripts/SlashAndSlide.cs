@@ -23,27 +23,46 @@ public class SlashAndSlide : MonoBehaviour
     {
         if (sliding)
         {
-            rb.velocity = slideSpeed * Time.fixedDeltaTime * dashDir;
+            rb.velocity = slideSpeed * Time.fixedDeltaTime * dashDir.normalized;
         }
     }
 
     public void StartSlash()
     {
-        OnSlashStart.Invoke();
+        if (OnSlashStart != null)
+        {
+            OnSlashStart.Invoke();
+        }
 
         // Start slash animation
     }
 
     public void SlashContact(GameObject other)
     {
-        sliding = true;
         if (other.TryGetComponent<Slashable>(out Slashable slashable))
         {
+            sliding = true;
             dashDir = slashable.dashDir;
+
+            // Pause slash animation
         }
     }
 
-    public void InteruptSlash()
+    public void SlashContactEnd(GameObject other)
+    {
+        if (other.TryGetComponent<Slashable>(out Slashable slashable))
+        {
+            sliding = false;
+            if (OnSlashEnd != null)
+            {
+                OnSlashEnd.Invoke();
+            }
+
+            // Continue slash animation
+        }
+    }
+
+    public void InterruptSlash()
     {
 
     }
