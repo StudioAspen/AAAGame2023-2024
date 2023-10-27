@@ -41,30 +41,35 @@ public class LevelEditor : EditorWindow
             Ray ray = HandleUtility.GUIPointToWorldRay(eventCurrent.mousePosition);
             RaycastHit hitInfo;
             bool hit = Physics.Raycast(ray, out hitInfo);
+            if (selectedPrefab != null)
+            {
+                // instantiate the prefab into the world
+                GameObject newObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
+                Transform transform = newObject.transform;
 
-            if (hit)
-            {
-                if (selectedPrefab != null) // if the ray hits another object
+                //records the object so that it can be undone and sets it as dirty (so that unity saves it)
+                Undo.RegisterCreatedObjectUndo(newObject, "Place Object");
+                EditorUtility.SetDirty(newObject);
+
+                MeshRenderer renderer = newObject.GetComponent<MeshRenderer>();
+                float meshHeight = renderer.bounds.size.y;
+
+                if (hit) // if the prefab was placed on another GameObject
                 {
-                    // instantiate the prefab into the world
-                    GameObject newObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
-                    newObject.transform.position = hitInfo.point;
+                    transform.position = hitInfo.point;
+                    transform.position = new Vector3(Mathf.Round(transform.position.x), transform.position.y + meshHeight/2, Mathf.Round(transform.position.z));
                 }
-            } else
-            {
-                if (selectedPrefab != null) // if the ray doesn't hit any object
+                else // if the prefab wasn't placed on anything
                 {
-                    Debug.Log(hitInfo.point);
-                    // instantiate the prefab into the world
-                    GameObject newObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
                     float t = -ray.origin.y / ray.direction.y; // to calculate the distance along the ray where it intersects the 0 plane
-                    newObject.transform.position = ray.origin + t * ray.direction; // this represents the intersection point of the ray and the y plane
+                    transform.position = ray.origin + t * ray.direction; // this represents the intersection point of the ray and the y plane
+                    transform.position = new Vector3(Mathf.Round(transform.position.x), transform.position.y + meshHeight / 2, Mathf.Round(transform.position.z));
                 }
             }
 
-            Event.current.Use();
+        Event.current.Use();
         }
-    }
+   }
 
     void OnGUI() 
     {
