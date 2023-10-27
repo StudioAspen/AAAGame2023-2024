@@ -6,8 +6,8 @@ using static UnityEditor.PlayerSettings;
 public class Stabable : MonoBehaviour
 {
 
-    [SerializeField]Vector3 dashDir; //direction of the dash
-    [SerializeField]float dashLength; //how far the player is launched
+    public Vector3 dashDir; //direction of the dash
+    public float dashLength; //how far the player is launched
 
     // Start is called before the first frame update
     void Start()

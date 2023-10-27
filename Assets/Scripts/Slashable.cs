@@ -5,7 +5,7 @@ using UnityEngine;
 public class Slashable : MonoBehaviour
 {
 
-    [SerializeField]Vector3 slideDir;
+    public Vector3 slideDir;
 
     // Start is called before the first frame update
     void Start()
