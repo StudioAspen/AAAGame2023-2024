@@ -15,7 +15,7 @@ public class BloodThirst : MonoBehaviour
     float overfedDrainRate; // Blood drain rate when overfed
 
 
-    UnityEvent OnBloodChange; // Sends signal update to the UI
+    UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
     MovementModification movementModification;
 
     // Start is called before the first frame update
