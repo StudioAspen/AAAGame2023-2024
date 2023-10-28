@@ -36,7 +36,6 @@ public class Stab : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
 
         //Define Distance that the sword will move
         
@@ -50,22 +49,24 @@ public class Stab : MonoBehaviour
     }
 
     // Update is called once per frame
+    //NOTE: Probably better to use an animator, will figure out later
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isMoving) // Check for left mouse button click and not already moving.
+        if (Input.GetMouseButtonDown(0) && !isStabbing) // Check for left mouse button click and not already moving.
         {
             targetPosition = sword.transform.position + new Vector3(stabDistance, 0.0f, 0.0f);
-            isMoving = true;
+            isStabbing = true;
         }
 
-        if (isMoving)
+        if (isStabbing)
         {
             float step = speed * Time.deltaTime;
             sword.transform.position = Vector3.MoveTowards(sword.transform.position, targetPosition, step);
 
             if (sword.transform.position == targetPosition)
             {
-                isMoving = false;
+                isStabbing = false;
+                //Need to add logic for returning sword to original position
             }
         }
 
@@ -85,9 +86,10 @@ public class Stab : MonoBehaviour
         }
     }
 
-    void InterruptStab()
+    public void InterruptStab()
     {
-
+        isStabbing = false;
+        //NEED CODE FOR RESETING STAB
     }
 
     void StabContact()
