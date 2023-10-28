@@ -1,4 +1,3 @@
-using UnityEditor.iOS.Extensions.Common;
 using UnityEngine;
 
 // default idle state of sword
@@ -6,18 +5,20 @@ public class SwordIdleState : SwordBaseState
 {
     public override void EnterState(SwordStateManager sword)
     {
-        // give control to player to use
+        Debug.Log("Enter Idle State");
     }
 
     public override void UpdateState(SwordStateManager sword)
     {
-        // attack, stab, parry, etc
-        // sword gauge is below 10% go into thirsty state
-        sword.SwitchState(sword.thirstyState);
+        Debug.Log("Enter Idle Update");
+
+        // if gague under a threshhold go into thirsty state
+        if (sword.bloodGauge.currentBlood < sword.bloodGauge.bloodThirstThreshold)
+            sword.SwitchState(sword.thirstyState);
     }
 
     public override void OnCollisionEnter(SwordStateManager sword, Collision collision)
     {
-        // if tag == enemy do damage
+        Debug.Log("Idle State Collider");
     }
 }

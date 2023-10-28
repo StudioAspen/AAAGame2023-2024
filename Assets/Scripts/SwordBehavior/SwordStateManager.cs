@@ -8,10 +8,11 @@ public class SwordStateManager : MonoBehaviour
     public SwordIdleState idleState = new SwordIdleState();
     public SwordThirstyState thirstyState = new SwordThirstyState();
 
-    // Start is called before the first frame update
+    public BloodThirst bloodGauge;
+
     void Start()
     {
-        // starting state for the state machine
+        // starting state for the state machine, aka idle
         currentState = idleState;
         // "this" is a ref to the context (this EXACT monobehavior script)
         currentState.EnterState(this);
@@ -21,7 +22,6 @@ public class SwordStateManager : MonoBehaviour
         currentState.OnCollisionEnter(this, collision);
     }
 
-    // Update is called once per frame
     void Update()
     {
         // will call any logic in UpdateState from the current state every frame

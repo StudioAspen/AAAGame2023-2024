@@ -5,19 +5,20 @@ public class SwordThirstyState : SwordBaseState
 {
     public override void EnterState(SwordStateManager sword)
     {
-        // player loses control over sword
+        Debug.Log("Enter Thirsty State");
     }
 
     public override void UpdateState(SwordStateManager sword)
     {
-        // now flails around character, could also hit character?
-        // drains health overtime
-        // if gauge over 10% go into idle state
-        sword.SwitchState(sword.idleState);
+        Debug.Log("Enter Thirsty Update");
+
+        // if gauge over a threshhold go into idle state
+        if (sword.bloodGauge.currentBlood > sword.bloodGauge.bloodThirstThreshold)
+            sword.SwitchState(sword.idleState);
     }
 
     public override void OnCollisionEnter(SwordStateManager sword, Collision collision)
     {
-        // if tag == enemy do damage
+        Debug.Log("Thirsty State Collider");
     }
 }

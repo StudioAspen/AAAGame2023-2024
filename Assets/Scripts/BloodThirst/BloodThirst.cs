@@ -6,14 +6,14 @@ using UnityEngine.Events;
 public class BloodThirst : MonoBehaviour
 {
     
-    [SerializeField] float bloodThirstThreshold;
+    [SerializeField] public float bloodThirstThreshold;
     [SerializeField] public float maxBlood;
-    float currentBlood;
-    float maxBloodForBoost;
-    float maxAmount;
+    public float currentBlood;
+    public float drainRate;
+    public float maxAmount;
 
-    float drainRate;
-    float overfedDrainRate;
+    public float maxBloodForBoost;
+    public float overfedDrainRate;
 
 
     UnityEvent OnBloodChange; // Sends signal update to the UI
