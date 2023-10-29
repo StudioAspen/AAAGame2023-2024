@@ -15,11 +15,8 @@ public class SwordStateManager : MonoBehaviour
         // starting state for the state machine, aka idle
         currentState = idleState;
         // "this" is a ref to the context (this EXACT monobehavior script)
+        // will call logic from EnterState
         currentState.EnterState(this);
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        currentState.OnCollisionEnter(this, collision);
     }
 
     void Update()
@@ -28,8 +25,15 @@ public class SwordStateManager : MonoBehaviour
         currentState.UpdateState(this);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        // when colliding, call OnCollisionEnter from the state
+        currentState.OnCollisionEnter(this, collision);
+    }
+
     public void SwitchState(SwordBaseState state)
     {
+        // change the state then call the EnterState from the new state
         currentState = state;
         state.EnterState(this);
     }
