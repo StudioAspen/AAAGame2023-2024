@@ -14,7 +14,7 @@ public class PlayerInput : MonoBehaviour
 
     bool canMove = true;
 
-    //Dash dash;
+    DashMovement dash;
     //stabanddash stabanddash;
     //slashandslide slashandslide;
     //movement movement;
@@ -23,7 +23,7 @@ public class PlayerInput : MonoBehaviour
     void Start()
     {
 
-        //dash = GetComponent<Dash>();
+        dash = GetComponent<DashMovement>();
         //stabAndDash = GetComponent<StabAndDash>();
         //slashAndSlide = GetComponent<SlashAndSlide>();
         //movement = GetComponent<Movement>();
@@ -42,6 +42,8 @@ public class PlayerInput : MonoBehaviour
     {
         if (canMove)
         {
+            Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
             //Combat Moves
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -53,7 +55,7 @@ public class PlayerInput : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                //dash.Dash();
+                dash.Dash(direction);
             }
 
             // Regular movement
@@ -61,7 +63,6 @@ public class PlayerInput : MonoBehaviour
             {
                 //movement.Jump();
             }
-            Vector2 direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             //movement.Move(direction);
         }
     }

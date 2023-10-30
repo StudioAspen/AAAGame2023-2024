@@ -76,11 +76,6 @@ public class DashMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(dashKey)) // Temperary use of input to test dash
-        {
-            Dash(transform.forward);
-        }
-
         if (dashCdTimer > 0)//if dash is still on cd, count down the timer
         {
             dashCdTimer -= Time.deltaTime;
@@ -89,7 +84,7 @@ public class DashMovement : MonoBehaviour
 
 
 
-    private void Dash(Vector3 direction)
+    public void Dash(Vector3 direction)
     {
         if (dashCdTimer > 0 || !canDash || isDashing)//if dash is still on cooldown or can dash, return
             return;
@@ -98,6 +93,12 @@ public class DashMovement : MonoBehaviour
         dashDurationTimer = dashDuration; // setting dash duration
         isDashing = true;
         canDash = false;
+
+        if(direction.magnitude == 0)
+        {
+            direction = transform.forward;
+        }
+
 
         dashVelocity = (dashDistance/dashDuration) * direction.normalized; // setting velocity for dashing
 
