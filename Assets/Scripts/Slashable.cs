@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Slashable : MonoBehaviour
 {
-    public Vector3 dashDir;
+    
 }

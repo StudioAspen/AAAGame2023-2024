@@ -10,9 +10,4 @@ public class Sword : MonoBehaviour
     {
         player.SlashContact(collision.gameObject);
     }
-
-    private void OnTriggerExit(Collider collision)
-    {
-        player.SlashContactEnd(collision.gameObject);
-    }
 }

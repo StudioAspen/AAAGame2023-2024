@@ -2,28 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using PathCreation;
 
 public class SlashAndSlide : MonoBehaviour
 {
+    public Transform sword;
     public float slideSpeed;
 
     UnityEvent OnSlashStart;
     UnityEvent OnSlashEnd;
 
-    private Rigidbody rb;
+    private PathCreator pathCreator;
+    private EndOfPathInstruction end;
+    private float dstTravelled;
+
     private bool sliding = false;
-    private Vector3 dashDir;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        end = EndOfPathInstruction.Stop;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (sliding)
         {
-            rb.velocity = slideSpeed * Time.fixedDeltaTime * dashDir.normalized;
+            dstTravelled += slideSpeed * Time.deltaTime;
+            transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end);
+            sword.position = pathCreator.path.GetPointAtDistance(dstTravelled, end);
         }
     }
 
@@ -39,26 +45,13 @@ public class SlashAndSlide : MonoBehaviour
 
     public void SlashContact(GameObject other)
     {
-        if (other.TryGetComponent<Slashable>(out Slashable slashable))
+        if (other.TryGetComponent<Slashable>(out Slashable slashable) && 
+            other.TryGetComponent<PathCreator>(out PathCreator pc))
         {
             sliding = true;
-            dashDir = slashable.dashDir;
+            pathCreator = pc;
 
             // Pause slash animation
-        }
-    }
-
-    public void SlashContactEnd(GameObject other)
-    {
-        if (other.TryGetComponent<Slashable>(out Slashable slashable))
-        {
-            sliding = false;
-            if (OnSlashEnd != null)
-            {
-                OnSlashEnd.Invoke();
-            }
-
-            // Continue slash animation
         }
     }
 
