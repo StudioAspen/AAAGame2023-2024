@@ -5,12 +5,14 @@ using UnityEditor.TerrainTools;
 
 public class LevelEditor : EditorWindow
 {
+    GameObject level; //stores the gameobject level, which is the parent of all of the prefabs
 
     Vector2 scrollPosition;
     float prefabAreaWidth;
     float prefabAreaHeight;
 
     GameObject selectedPrefab;
+    Texture2D prefabTexture;
 
 
     [MenuItem("Tools/Level Editor")]
@@ -22,7 +24,19 @@ public class LevelEditor : EditorWindow
     void OnEnable()
     {
         // so that the script can access click events on the scene view
-        SceneView.duringSceneGui += OnSceneGUI; 
+        SceneView.duringSceneGui += OnSceneGUI;
+
+        if (GameObject.Find("Level") != null)
+        {
+            level = GameObject.Find("Level");
+        } 
+        else
+        {
+            // creates a new empty game object to hold all prefabs created through the level editor
+            level = new GameObject();
+            level.name = "Level";
+            level.AddComponent<MergeMeshesManager>(); // adds the script that merges meshes for optimization
+        }
     }
 
     private void OnDisable()
@@ -35,16 +49,18 @@ public class LevelEditor : EditorWindow
     {
         Event eventCurrent = Event.current;
 
-        if (eventCurrent.type == EventType.MouseDown && eventCurrent.button == 0)
+        if (selectedPrefab != null)
         {
-            //cast a ray to check where to place the object in the worldspace
-            Ray ray = HandleUtility.GUIPointToWorldRay(eventCurrent.mousePosition);
-            RaycastHit hitInfo;
-            bool hit = Physics.Raycast(ray, out hitInfo);
-            if (selectedPrefab != null)
+            if (eventCurrent.type == EventType.MouseDown && eventCurrent.button == 0)
             {
+                //cast a ray to check where to place the object in the worldspace
+                Ray ray = HandleUtility.GUIPointToWorldRay(eventCurrent.mousePosition);
+                RaycastHit hitInfo;
+                bool hit = Physics.Raycast(ray, out hitInfo);
+
                 // instantiate the prefab into the world
                 GameObject newObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
+                newObject.transform.SetParent(level.transform);
                 Transform transform = newObject.transform;
 
                 //records the object so that it can be undone and sets it as dirty (so that unity saves it)
@@ -65,11 +81,22 @@ public class LevelEditor : EditorWindow
                     transform.position = ray.origin + t * ray.direction; // this represents the intersection point of the ray and the y plane
                     transform.position = new Vector3(Mathf.Round(transform.position.x), transform.position.y + meshHeight / 2, Mathf.Round(transform.position.z));
                 }
+                Event.current.Use();
             }
-
-        Event.current.Use();
         }
    }
+
+    void OnDrawGizmos()
+    {
+        if(selectedPrefab != null)
+        {
+            Color fadedColor = new Color(1f, 1f, 1f, 0.5f);
+            Gizmos.color = fadedColor;
+
+            //draws the mesh
+            Gizmos.DrawMesh(selectedPrefab.GetComponent<MeshFilter>().sharedMesh, Vector3.zero, Quaternion.identity, Vector3.one);
+        }
+    }
 
     void OnGUI() 
     {
@@ -111,7 +138,7 @@ public class LevelEditor : EditorWindow
                 if (GUILayout.Button(prefabImage, GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
                 {
                     selectedPrefab = prefab; // on mouse click input, instantiate the prefab in the world.
-                    Debug.Log("Selected " + selectedPrefab);
+                    prefabTexture = prefabImage;    
                 }
             }
         }
