@@ -14,13 +14,17 @@ public class SlashAndSlide : MonoBehaviour
 
     private PathCreator pathCreator;
     private EndOfPathInstruction end;
-    private float dstTravelled;
+    private float dstTravelled = 0f;
 
+    private Rigidbody rb;
     private bool sliding = false;
+    private Vector3 playerOffset;
+    private Vector3 swordOffset;
 
     private void Start()
     {
         end = EndOfPathInstruction.Stop;
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -28,8 +32,15 @@ public class SlashAndSlide : MonoBehaviour
         if (sliding)
         {
             dstTravelled += slideSpeed * Time.deltaTime;
-            transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end);
-            sword.position = pathCreator.path.GetPointAtDistance(dstTravelled, end);
+            transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
+            sword.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
+
+            if (dstTravelled > pathCreator.path.length)
+            {
+                dstTravelled = 0f;
+                sliding = false;
+                rb.useGravity = true;
+            }
         }
     }
 
@@ -50,6 +61,9 @@ public class SlashAndSlide : MonoBehaviour
         {
             sliding = true;
             pathCreator = pc;
+            rb.useGravity = false;
+            playerOffset = transform.position - pathCreator.path.GetPointAtDistance(0, end);
+            swordOffset = sword.transform.position - pathCreator.path.GetPointAtDistance(0, end);
 
             // Pause slash animation
         }
