@@ -26,7 +26,7 @@ public class LevelEditor : EditorWindow
         // so that the script can access click events on the scene view
         SceneView.duringSceneGui += OnSceneGUI;
 
-        if (GameObject.Find("Level") != null)
+        if (GameObject.Find("Level") != null)   
         {
             level = GameObject.Find("Level");
         } 
