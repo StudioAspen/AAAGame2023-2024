@@ -6,9 +6,9 @@ using UnityEngine.Events;
 public class BloodThirst : MonoBehaviour
 {
     
-    [SerializeField] float bloodThirstThreshold; // Threshold for blood thirst
+    [SerializeField] public float bloodThirstThreshold; // Threshold for blood thirst
     [SerializeField] public float maxBlood; // Max amount of blood before overfed
-    float currentBlood; // Current blood amount
+    public float currentBlood; // Current blood amount
     float maxBloodForOverfed; // Max amount of blood for overfed
 
     float drainRate; // Blood drain rate
