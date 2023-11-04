@@ -9,16 +9,29 @@ public class Killable : MonoBehaviour
     public float maxHP;
     public float currentHP;
 
-    UnityEvent OnTakeDamage;
-    UnityEvent OnDie;
+    UnityEvent OnTakeDamage = new UnityEvent();
+    UnityEvent OnDie = new UnityEvent();
 
     public void TakeDamage(float amount)
     {
         currentHP = Mathf.Max(currentHP-amount, 0); // Limitting to 0
-        OnTakeDamage.Invoke();
+        if (OnTakeDamage == null)
+        {
+            Debug.Log("Killable component doesn't have UnityEvent OnTakeDamage"); 
+        } else
+        {
+            OnTakeDamage.Invoke();
+        }
+        Debug.Log("killable object took " + amount + " damage");
         if(currentHP <= 0)
         {
-            OnDie.Invoke();
+            if (OnDie == null)
+            {
+                Debug.Log("Killable component doesn't have UnityEvent OnDie");
+            } else
+            {
+                OnDie.Invoke();
+            }
         }
     }
 }
