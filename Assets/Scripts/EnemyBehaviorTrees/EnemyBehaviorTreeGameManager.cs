@@ -44,7 +44,7 @@ namespace EnemyBehaviorTrees.Managers
 
         
         /// <summary>
-        /// Sorts the remaining items by distance to NPC and pops the next one off the list
+        /// Check if player is within a certain range using Physics.CheckSphere
         /// </summary>
         /// <returns>If the player is within a range</returns>
         public GameObject GetPlayerWithinRange(float maxDistance)
@@ -55,7 +55,7 @@ namespace EnemyBehaviorTrees.Managers
 
 
         /// <summary>
-        /// Finds the next waypoint on the list. This is 'random' due to shuffling on Start.
+        /// Finds the next waypoint on the list. This is 'random' due to shuffling at the start and also randomly chosen on decision.
         /// </summary>
         /// <returns>Next waypoint</returns>
         public GameObject GetNextWayPoint()

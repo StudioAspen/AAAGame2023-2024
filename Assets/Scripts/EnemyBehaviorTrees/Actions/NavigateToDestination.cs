@@ -25,7 +25,7 @@ namespace EnemyBehaviorTrees.Nodes
         
         protected override NodeStatus OnRun()
         {
-            //Confirm all references exist
+            // Confirm all references exist
             if (EnemyBehaviorTreeGameManager.Instance == null || EnemyBehaviorTreeGameManager.Instance.NPC == null)
             {
                 StatusReason = "GameManager or NPC is null";
