@@ -10,6 +10,8 @@ public class SwordStateManager : MonoBehaviour
 
     public BloodThirst bloodGauge;
 
+    public float swordDamage;
+
     void Start()
     {
         // starting state for the state machine, aka idle
