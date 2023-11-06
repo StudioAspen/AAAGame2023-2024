@@ -33,9 +33,13 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 Direction;
 
+    Animator playerAnimator;
+
     void Start()
     {
        rb = GetComponent<Rigidbody>();
+
+       playerAnimator = GetComponent<Animator>();
         
     }
 
@@ -47,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
        
         MyInput();
         SpeedControl();
+
+        Animation();
 
         if (grounded)
             rb.drag = groundDrag;
@@ -112,4 +118,20 @@ public class PlayerMovement : MonoBehaviour
         readyToJump = true;
     }
 
+    void Animation()
+    {
+        if (horizontalInput > 0f || verticalInput > 0f)
+        {
+            playerAnimator.SetBool("isWalking", true);
+        }
+        else if (horizontalInput < 0f || verticalInput < 0f)
+        {
+            playerAnimator.SetBool("isWalking", true);
+        }
+        else
+        {
+            playerAnimator.SetBool("isWalking", false);
+        }
+
+    }
 }
