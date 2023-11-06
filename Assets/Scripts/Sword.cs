@@ -8,6 +8,6 @@ public class Sword : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        player.SlashContact(collision.gameObject);
+        player.SlashContact(collision.gameObject, collision.ClosestPoint(transform.position));
     }
 }

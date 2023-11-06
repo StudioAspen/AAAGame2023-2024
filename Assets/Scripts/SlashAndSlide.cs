@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using PathCreation;
+using UnityEngine.UIElements;
 
 public class SlashAndSlide : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class SlashAndSlide : MonoBehaviour
             dstTravelled += slideSpeed * Time.deltaTime;
             transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
             sword.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
+            sword.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
             if (dstTravelled > pathCreator.path.length)
             {
@@ -54,7 +56,7 @@ public class SlashAndSlide : MonoBehaviour
         // Start slash animation
     }
 
-    public void SlashContact(GameObject other)
+    public void SlashContact(GameObject other, Vector3 contactPoint)
     {
         if (other.TryGetComponent<Slashable>(out Slashable slashable) && 
             other.TryGetComponent<PathCreator>(out PathCreator pc))
@@ -62,8 +64,9 @@ public class SlashAndSlide : MonoBehaviour
             sliding = true;
             pathCreator = pc;
             rb.useGravity = false;
-            playerOffset = transform.position - pathCreator.path.GetPointAtDistance(0, end);
-            swordOffset = sword.transform.position - pathCreator.path.GetPointAtDistance(0, end);
+            dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
+            playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
+            swordOffset = sword.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
 
             // Pause slash animation
         }

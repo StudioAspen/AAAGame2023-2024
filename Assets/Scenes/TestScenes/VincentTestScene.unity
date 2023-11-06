@@ -492,9 +492,9 @@ MonoBehaviour:
       points:
       - {x: 0, y: -0.4, z: -0.1}
       - {x: 0, y: -0.3, z: -0.1}
+      - {x: 0.06787484, y: 0.42885047, z: -0.1}
       - {x: 0, y: 0.5, z: -0.1}
-      - {x: 0, y: 0.5, z: -0.1}
-      - {x: 0.1, y: 0.5, z: -0.1}
+      - {x: -0.07437629, y: 0.57796466, z: -0.1}
       - {x: -0.9, y: 0.5, z: -0.1}
       - {x: -1, y: 0.5, z: -0.1}
       isClosed: 0
@@ -511,7 +511,7 @@ MonoBehaviour:
       - 0
       globalNormalsAngle: 90
       flipNormals: 0
-    vertexPathUpToDate: 1
+    vertexPathUpToDate: 0
     vertexPathMaxAngleError: 0.3
     vertexPathMinVertexSpacing: 0.01
     showTransformTool: 1
@@ -524,7 +524,7 @@ MonoBehaviour:
     keepConstantHandleSize: 0
     showNormalsInVertexMode: 0
     showBezierPathInVertexMode: 0
-    showDisplayOptions: 0
+    showDisplayOptions: 1
     showPathOptions: 1
     showVertexPathDisplayOptions: 0
     showVertexPathOptions: 1
