@@ -56,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //made this kinda redundant because i used your calculation in movementInput so we could have it
+        //at the input level, thanks for writing this its useful!!! :D - Benicio
         Move(orientation.forward * verticalInput + orientation.right * horizontalInput);
     }
 

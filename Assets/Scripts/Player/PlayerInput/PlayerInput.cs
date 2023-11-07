@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,11 +19,12 @@ public class PlayerInput : MonoBehaviour
     //stabanddash stabanddash;
     //slashandslide slashandslide;
     //movement movement;
+    public Transform cameraOrientation;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        cameraOrientation = FindObjectOfType<Camera>().transform;
         dash = GetComponent<DashMovement>();
         //stabAndDash = GetComponent<StabAndDash>();
         //slashAndSlide = GetComponent<SlashAndSlide>();
@@ -42,7 +44,8 @@ public class PlayerInput : MonoBehaviour
     {
         if (canMove)
         {
-            Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
+            Vector3 direction = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
 
             //Combat Moves
             if (Input.GetKeyDown(KeyCode.E))
