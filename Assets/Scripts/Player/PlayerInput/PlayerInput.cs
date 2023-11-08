@@ -55,7 +55,7 @@ public class PlayerInput : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                dash.Dash(direction);
+                dash.PlayerInputDash(direction);
             }
 
             // Regular movement

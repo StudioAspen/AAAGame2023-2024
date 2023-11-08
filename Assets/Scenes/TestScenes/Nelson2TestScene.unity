@@ -577,6 +577,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6555729506036273864}
+    - targetCorrespondingSourceObject: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6555729506036273871}
   m_SourcePrefab: {fileID: 100100000, guid: 88512be50a530374189e930db8c0502d, type: 3}
 --- !u!1 &6555729506036273863 stripped
 GameObject:
@@ -598,12 +602,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashDistance: 2
   dashDuration: 0.25
-  dashCooldown: 0
-  dashKey: 101
+  dashCooldown: 0.25
+  boostedDuration: 0.1
+  boostedCooldown: 0.1
   ground:
     serializedVersion: 2
     m_Bits: 1024
   groundCheckOffset: 0.01
+--- !u!114 &6555729506036273871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6555729506036273863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b92b510a04956c40aa1a3eab43f2d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boostForAll: 0
+  OnModifyMovement:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
