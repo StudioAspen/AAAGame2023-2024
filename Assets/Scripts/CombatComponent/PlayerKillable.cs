@@ -12,19 +12,23 @@ public class PlayerKillable : Killable
 
     private void Start()
     {
+        currentHP = maxHP;
         OnTakeDamage.AddListener(ResetRegenTimer); // Resetting the timer everytime player takes damage
         timeBeforeRegenTimer = timeBeforeRegen; // Initalizing timer
     }
 
     private void Update()
     {
-        if(isRegerating)
+        if (!isDead)
         {
-            Regen();
-        }
-        else
-        {
-            RegenTimer();
+            if (isRegerating)
+            {
+                Regen();
+            }
+            else
+            {
+                RegenTimer();
+            }
         }
     }
     private void Regen()

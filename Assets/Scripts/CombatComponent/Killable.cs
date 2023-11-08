@@ -8,6 +8,7 @@ public class Killable : MonoBehaviour
 {
     public float maxHP; 
     public float currentHP;
+    public bool isDead = false;
 
     public UnityEvent OnHealthChange = new UnityEvent(); // Event that occurs when current health value changes
     public UnityEvent OnTakeDamage = new UnityEvent(); // Event that occurs when object takes damage
@@ -21,6 +22,7 @@ public class Killable : MonoBehaviour
 
         if(currentHP <= 0)
         {
+            isDead = true;
             OnDie.Invoke();
         }
     }

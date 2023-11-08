@@ -471,6 +471,11 @@ PrefabInstance:
       propertyPath: bloodThirstThreshold
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 1120121864080066348, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: playerHealthDrainRate
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1417093754190084996, guid: c66b3c9ba7489084f8c3f641e0306f46,
         type: 3}
       propertyPath: m_Name

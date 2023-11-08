@@ -15,7 +15,7 @@ public class BloodThirst : MonoBehaviour
     [SerializeField] float overfedDrainRate; // Blood drain rate when overfed
 
     [SerializeField] PlayerKillable playerKillable;
-    float playerHealthDrainRate; // How much are you draining from the player
+    [SerializeField] float playerHealthDrainRate; // How much are you draining from the player
     bool isDraining = false; // If the sword is currently draining
 
     UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
