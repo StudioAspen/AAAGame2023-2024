@@ -14,6 +14,9 @@ public class PlayerInput : MonoBehaviour
     /// </summary>
 
     bool canMove = true;
+    public enum controlType { controller, mouseAndKeyboard};
+    public controlType currentControls;
+    CinemachineFreeLook cinemachineCam;
 
     DashMovement dash;
     //stabanddash stabanddash;
@@ -26,6 +29,26 @@ public class PlayerInput : MonoBehaviour
     {
         cameraOrientation = FindObjectOfType<Camera>().transform;
         dash = GetComponent<DashMovement>();
+        cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
+
+
+        switch (currentControls)
+        {
+            case controlType.controller:
+                cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
+                cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
+
+                break;
+            case controlType.mouseAndKeyboard:
+                cinemachineCam.m_XAxis.m_InputAxisName = "Mouse X";
+                cinemachineCam.m_YAxis.m_InputAxisName = "Mouse Y";
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                break;
+            default:
+
+                break;
+        }
         //stabAndDash = GetComponent<StabAndDash>();
         //slashAndSlide = GetComponent<SlashAndSlide>();
         //movement = GetComponent<Movement>();
