@@ -9,67 +9,58 @@ public class DashMovement : MonoBehaviour
     private Rigidbody rb;//rigid body of player
     private Collider collider;
 
-    [Header("Stats")]
+    [Header("Base Stats")]
     public float dashDistance;//How far the dash will go
     public float dashDuration;//How long the dash lasts
-    private bool canDash = true;
+    public float dashCooldown;//Cooldown for the dash
+
+    [Header("Boost Values")]
+    private float dashCdTimer;//Time before you can dash again
+    private bool dashAvailable = true;
     private bool isDashing = false;
 
-    [Header("Cooldown")]
-    public float dashCooldown;//Cooldown for the dash
-    private float dashCdTimer;//Time before you can dash again
+    private float dashDurationTimer;// Used to know when dash has ended
+    private Vector3 dashVelocity; // Velocity used for dashing
 
-
-    private float dashDurationTimer;//Used to know when dash has ended
-    private Vector3 dashVelocity;
-
-    [Header("Temp Keybind")]
-    public KeyCode dashKey = KeyCode.E;//dash keybind, E can be changed to preference
 
     UnityEvent OnDashStart = new UnityEvent();
     UnityEvent OnDashEnd = new UnityEvent();
 
-    //Temperary Grounded
+    MovementModification movementModification;
+
+    [Header("Ground Check")]
+    //Temperary Grounded check
     public LayerMask ground;
-    private bool isGrounded;
     public float groundCheckOffset;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        // Getting components
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+
+        if(!TryGetComponent<MovementModification>(out movementModification))
+        {
+            Debug.Log("Cannot find movement modification for dashMovement");
+        }
+        else
+        {
+            movementModification.OnModifyMovement.AddListener(ApplyMovementModification);
+        }
     }
 
     private void FixedUpdate()
     {
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(collider.bounds.min.y - transform.position.y) + groundCheckOffset, ground);
-        //Debug.Log(isGrounded);
-        if (isGrounded)
+        if (CheckOnGround())
         {
-            canDash = true;
+            dashAvailable = true;
         }
+
         if (isDashing)
         {
-            float alignment = Vector3.Dot(rb.velocity, dashVelocity);
-            if (alignment < 1 && dashDurationTimer > 0)
-            {
-                if (dashDurationTimer < Time.fixedDeltaTime)
-                {
-                    rb.MovePosition(rb.position + (dashVelocity * dashDurationTimer));
-                }
-                else
-                {
-                    rb.MovePosition(rb.position + (dashVelocity * Time.fixedDeltaTime));
-                }
-            }
-
-            if (dashDurationTimer <= 0)
-            {
-                EndDash();
-            }
-            dashDurationTimer -= Time.fixedDeltaTime;
+            UpdateDashing();
         }
     }
 
@@ -81,32 +72,34 @@ public class DashMovement : MonoBehaviour
             dashCdTimer -= Time.deltaTime;
         }
     }
-
-
-
-    public void Dash(Vector3 direction)
+    public void PlayerInputDash(Vector3 direction)
     {
-        if (dashCdTimer > 0 || !canDash || isDashing)//if dash is still on cooldown or can dash, return
-            return;
-
-        dashCdTimer = dashCooldown; // putting dash on cool down
-        dashDurationTimer = dashDuration; // setting dash duration
-        isDashing = true;
-        canDash = false;
-
-        if(direction.magnitude == 0)
+        if (dashCdTimer <= 0 && dashAvailable)
         {
-            direction = transform.forward;
+            dashAvailable = false; // Using up the dash
+            dashCdTimer = dashCooldown; // putting dash on cool down
+            Dash(dashDistance, dashDuration, direction);
         }
+    }
+    public void Dash(float distance, float duration, Vector3 direction)
+    {
+        if (!isDashing)
+        {
+            dashDurationTimer = dashDuration; // setting dash duration
+            isDashing = true;
 
+            // Default value for no direction given
+            if (direction.magnitude == 0)
+            {
+                direction = transform.forward;
+            }
 
-        dashVelocity = (dashDistance/dashDuration) * direction.normalized; // setting velocity for dashing
+            dashVelocity = (distance / duration) * direction.normalized; // setting velocity for dashing
+            OnDashStart.Invoke();
 
-        //testing with vizualizations
-        Debug.DrawLine(transform.position, transform.position + direction*dashDistance, Color.white, 5);
-
-
-        OnDashStart.Invoke();
+            //testing with vizualizations
+            Debug.DrawLine(transform.position, transform.position + direction * dashDistance, Color.white, 5);
+        }
     }
 
     private void EndDash()
@@ -118,15 +111,46 @@ public class DashMovement : MonoBehaviour
 
     public void ResetDash()
     {
-        canDash = true;
+        dashAvailable = true;
     }
 
-    public void InterruptDash(bool canDash)
+    public void InterruptDash(bool canDashAgain)
     {
-        if(canDash)
+        if(canDashAgain)
         {
             ResetDash();
         }
         EndDash();
+    }
+    private void UpdateDashing()
+    {
+        // Allowing dashing as long as the dash direction is no in the same direction as the current velocity
+        float alignment = Vector3.Dot(rb.velocity, dashVelocity); 
+        if (alignment < 1 && dashDurationTimer > 0) 
+        {
+            // Moving the player based on the remaining time for more accurate movement based on distance/duration
+            if (dashDurationTimer < Time.fixedDeltaTime)
+            {
+                rb.MovePosition(rb.position + (dashVelocity * dashDurationTimer));
+            }
+            else
+            {
+                rb.MovePosition(rb.position + (dashVelocity * Time.fixedDeltaTime));
+            }
+        }
+
+        if (dashDurationTimer <= 0)
+        {
+            EndDash();
+        }
+        dashDurationTimer -= Time.fixedDeltaTime;
+    }
+    private void ApplyMovementModification()
+    {
+
+    }
+    private bool CheckOnGround()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(collider.bounds.min.y - transform.position.y) + groundCheckOffset, ground);
     }
 }
