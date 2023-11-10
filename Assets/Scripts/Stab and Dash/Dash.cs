@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Dash : MonoBehaviour
 {
@@ -21,7 +23,13 @@ public class Dash : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+        //Assume if E is pressed that the stab worked, and the player can now dash
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            dashThroughEntity();
+        }
+
     }
 
     //Called in when sword detects hit

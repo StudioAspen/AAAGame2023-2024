@@ -67,6 +67,7 @@ public class Stab : MonoBehaviour
             {
                 isStabbing = false;
                 //Need to add logic for returning sword to original position
+                resetSword();
             }
         }
 
@@ -79,11 +80,6 @@ public class Stab : MonoBehaviour
         float fractionOfJourney = distanceCovered / journeyLength;
 
         transform.position = Vector3.Lerp(startPosition, targetPosition, fractionOfJourney);
-
-        if (fractionOfJourney >= 1.0f)
-        {
-
-        }
     }
 
     public void InterruptStab()
@@ -95,6 +91,11 @@ public class Stab : MonoBehaviour
     void StabContact()
     {
 
+    }
+
+    void resetSword()
+    {
+        sword.transform.position = startPosition;
     }
 
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SwordScript : MonoBehaviour
 {
+    Collider target = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,9 +22,8 @@ public class SwordScript : MonoBehaviour
         Debug.Log(other.name);
         if (other.CompareTag("Dashable"))
         {
-            Debug.Log("DASH!");
-            transform.parent.GetComponent<Dash>().OnTargetHit(this);
-            transform.parent.GetComponent<Stab>().InterruptStab();
+            //transform.parent.GetComponent<Dash>().OnTargetHit(this);
+            //transform.parent.GetComponent<Stab>().InterruptStab();
         }
 
     }
