@@ -7,26 +7,14 @@ using UnityEngine.Events;
 
 public class Stab : MonoBehaviour
 {
+    //Compoenents
+    Rigidbody rb;
+    [SerializeField] private GameObject swordObject;
+    private DemonSword demonSword;
 
-    //Public Values
-    public float stabDistance = 2.0f;
-    public float stabTime = 6.0f;
-
-
-    
-
-    //Define Required Values
+    //Values
+    [SerializeField] private float dashSpeed;
     private bool isStabbing = false;
-    private Rigidbody rb;
-    public GameObject sword;
-
-    //Movement values
-    private Vector3 targetPosition;
-    private Vector3 startPosition;
-    private float startTime;
-    private float stabSpeed;
-    public float speed = 20.0f;
-    private bool isMoving = false;
 
     //Stab Events
     public UnityEvent onStabStart;
@@ -36,69 +24,50 @@ public class Stab : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        //Define Distance that the sword will move
-        
-        targetPosition = sword.transform.position + new Vector3(stabDistance, 0.0f, 0.0f);
-
-        //stabSpeed = stabDistance / stabSpeed;
-
-
-        
-
+        rb = GetComponent<Rigidbody>();
+        demonSword = swordObject.GetComponent<DemonSword>();
+        demonSword.OnContact.AddListener(StabContact);
     }
 
     // Update is called once per frame
     //NOTE: Probably better to use an animator, will figure out later
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isStabbing) // Check for left mouse button click and not already moving.
+        if (Input.GetMouseButtonDown(0)) // Check for left mouse button click and not already moving.
         {
-            targetPosition = sword.transform.position + new Vector3(stabDistance, 0.0f, 0.0f);
-            isStabbing = true;
+            StartStab();
         }
-
-        if (isStabbing)
-        {
-            float step = speed * Time.deltaTime;
-            sword.transform.position = Vector3.MoveTowards(sword.transform.position, targetPosition, step);
-
-            if (sword.transform.position == targetPosition)
-            {
-                isStabbing = false;
-                //Need to add logic for returning sword to original position
-                resetSword();
-            }
-        }
-
     }
 
     void StartStab()
     {
-        float journeyLength = Vector3.Distance(startPosition, targetPosition);
-        float distanceCovered = (Time.time - startTime) * speed;
-        float fractionOfJourney = distanceCovered / journeyLength;
-
-        transform.position = Vector3.Lerp(startPosition, targetPosition, fractionOfJourney);
+        //Animation Stuff (to be implemented later)
+        isStabbing = true;
+        demonSword.AttackPosition();
+        onStabStart.Invoke();
     }
 
     public void InterruptStab()
     {
         isStabbing = false;
-        //NEED CODE FOR RESETING STAB
     }
 
-    void StabContact()
+    void StabContact(Collider other)
     {
-
+        Stabable stabable;
+        Debug.Log("Stab contact");
+        if(other.gameObject.TryGetComponent<Stabable>(out stabable))
+        {
+            if(isStabbing)
+            {
+                //Dashing Movement
+                Debug.Log("perform dash");
+            }
+        }
     }
-
-    void resetSword()
+    private void EndStab()
     {
-        sword.transform.position = startPosition;
+        isStabbing = false;
+        onStabEnd.Invoke();
     }
-
-
-
-
 }
