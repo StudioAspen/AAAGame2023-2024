@@ -101,7 +101,6 @@ public class LevelEditor : EditorWindow
                     transform.position = previewPrefab.transform.position;
                 }
                 Event.current.Use();
-                Debug.Log("Placed");
             }
         } 
         else if (eraserActive)
@@ -145,9 +144,7 @@ public class LevelEditor : EditorWindow
             eventCurrent.Use();
             Debug.Log("Reset");
         }
-
     }
-
     // creates a game object named level that holds all the prefabs instantiated
     void CreateLevel()
     {
