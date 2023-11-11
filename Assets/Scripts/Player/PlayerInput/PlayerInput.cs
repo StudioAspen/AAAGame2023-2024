@@ -21,7 +21,7 @@ public class PlayerInput : MonoBehaviour
     DashMovement dash;
     //stabanddash stabanddash;
     //slashandslide slashandslide;
-    //movement movement;
+    PlayerMovement movement;
     public Transform cameraOrientation;
 
     // Start is called before the first frame update
@@ -30,6 +30,7 @@ public class PlayerInput : MonoBehaviour
         cameraOrientation = FindObjectOfType<Camera>().transform;
         dash = GetComponent<DashMovement>();
         cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
+        movement = GetComponent<PlayerMovement>();
 
 
         switch (currentControls)
@@ -51,7 +52,7 @@ public class PlayerInput : MonoBehaviour
         }
         //stabAndDash = GetComponent<StabAndDash>();
         //slashAndSlide = GetComponent<SlashAndSlide>();
-        //movement = GetComponent<Movement>();
+        
 
         //dash.OnStartDash.AddListener(StartingMove);
         //stabAndDash.OnStartStab.AddListener(StartingMove);
@@ -87,9 +88,12 @@ public class PlayerInput : MonoBehaviour
             // Regular movement
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                //movement.Jump();
+
+                movement.JumpFunction();
+               
             }
-            //movement.Move(direction);
+            
+                movement.Move(direction);
         }
     }
 
