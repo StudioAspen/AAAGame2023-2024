@@ -3,6 +3,7 @@ using UnityEditor;
 using System.IO;
 using System;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 
 public class LevelEditor : EditorWindow
 {
@@ -13,6 +14,7 @@ public class LevelEditor : EditorWindow
     int selected = 0; // sets default popup value
 
     Texture2D prefabTexture;
+    GameObject previewPrefab;
 
     //tool state
     GameObject selectedPrefab;
@@ -36,6 +38,7 @@ public class LevelEditor : EditorWindow
     private void OnDisable()
     {
         // removes the sript access to the scene view
+        ToolReset();
         SceneView.duringSceneGui -= OnSceneGUI;
     }
 
@@ -44,18 +47,41 @@ public class LevelEditor : EditorWindow
         Repaint();
     }
 
+    /*----------------------
+    DONE IN THE SCENE VIEW
+    ----------------------*/
+
     void OnSceneGUI(SceneView sceneView)
     {
         Event eventCurrent = Event.current;
+
+        //cast a ray to check where to place the object in the worldspace
+        Ray ray = HandleUtility.GUIPointToWorldRay(eventCurrent.mousePosition);
+        RaycastHit hitInfo;
+        bool hit = Physics.Raycast(ray, out hitInfo);
+
+        if (previewPrefab != null)
+        {
+            MeshRenderer renderer = previewPrefab.GetComponent<MeshRenderer>();
+            float meshHeight = renderer.bounds.size.y;
+
+            if (hit) // if the prefab was placed on another GameObject
+            {
+                previewPrefab.transform.position = hitInfo.point;
+                previewPrefab.transform.position = new Vector3(Mathf.Round(previewPrefab.transform.position.x), previewPrefab.transform.position.y + meshHeight / 2, Mathf.Round(previewPrefab.transform.position.z));
+            }
+            else // if the prefab wasn't placed on anything
+            {
+                float t = -ray.origin.y / ray.direction.y; // to calculate the distance along the ray where it intersects the 0 plane
+                previewPrefab.transform.position = ray.origin + t * ray.direction; // this represents the intersection point of the ray and the y plane
+                previewPrefab.transform.position = new Vector3(Mathf.Round(previewPrefab.transform.position.x), previewPrefab.transform.position.y + meshHeight / 2, Mathf.Round(previewPrefab.transform.position.z));
+            }
+        }
 
         if (selectedPrefab != null)
         {
             if (eventCurrent.type == EventType.MouseDown && eventCurrent.button == 0)
             {
-                //cast a ray to check where to place the object in the worldspace
-                Ray ray = HandleUtility.GUIPointToWorldRay(eventCurrent.mousePosition);
-                RaycastHit hitInfo;
-                bool hit = Physics.Raycast(ray, out hitInfo);
 
                 // instantiate the prefab into the world
                 GameObject newObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
@@ -66,42 +92,60 @@ public class LevelEditor : EditorWindow
                 Undo.RegisterCreatedObjectUndo(newObject, "Place Object");
                 EditorUtility.SetDirty(newObject);
 
-                MeshRenderer renderer = newObject.GetComponent<MeshRenderer>();
-                float meshHeight = renderer.bounds.size.y;
-
                 if (hit) // if the prefab was placed on another GameObject
                 {
-                    transform.position = hitInfo.point;
-                    transform.position = new Vector3(Mathf.Round(transform.position.x), transform.position.y + meshHeight / 2, Mathf.Round(transform.position.z));
+                    transform.position = previewPrefab.transform.position;
                 }
                 else // if the prefab wasn't placed on anything
                 {
-                    float t = -ray.origin.y / ray.direction.y; // to calculate the distance along the ray where it intersects the 0 plane
-                    transform.position = ray.origin + t * ray.direction; // this represents the intersection point of the ray and the y plane
-                    transform.position = new Vector3(Mathf.Round(transform.position.x), transform.position.y + meshHeight / 2, Mathf.Round(transform.position.z));
+                    transform.position = previewPrefab.transform.position;
                 }
                 Event.current.Use();
+                Debug.Log("Placed");
             }
         } 
         else if (eraserActive)
         {
             if (eventCurrent.type == EventType.MouseDown && eventCurrent.button == 0)
             {
-                //cast a ray to check where to place the object in the worldspace
-                Ray ray = HandleUtility.GUIPointToWorldRay(eventCurrent.mousePosition);
-                RaycastHit hitInfo;
-                bool hit = Physics.Raycast(ray, out hitInfo);
-
-                if (hitInfo.transform != null) { DestroyImmediate(hitInfo.transform.gameObject); } // erases the prefab clicked on
+                if (hitInfo.transform != null)
+                {
+                    DestroyImmediate(hitInfo.transform.gameObject);
+                    Event.current.Use();
+                }
             }
         }
     }
 
+    // to preview placement of prefab in the scene view
+    void PreviewPrefab()
+    {
+        // destroys the current previewPrefab if there is one
+        previewPrefab = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
+        previewPrefab.layer = 2;
+    }
+
+
+    /*-----------------------------
+    DONE IN THE LEVEL EDITOR WINDOW
+    -----------------------------*/
     void OnGUI()
     {
         ButtonToolKit(); // Displays the ToolKit Buttons
         GetPrefabFolders(); //gets the prefab folders needed and creates the popup selection
         ListPrefabs(); //
+
+        Event eventCurrent = Event.current;
+
+        // keybind ESCAPE resets the tool state
+        if (eventCurrent.keyCode == KeyCode.Escape && eventCurrent.type == EventType.KeyDown)
+        {
+            ToolReset();
+
+            eventCurrent.Use();
+            Debug.Log("Reset");
+        }
+
     }
 
     // creates a game object named level that holds all the prefabs instantiated
@@ -125,6 +169,8 @@ public class LevelEditor : EditorWindow
     {
         eraserActive = false;
         selectedPrefab = null;
+        DestroyImmediate(previewPrefab);
+        previewPrefab = null;
     }
 
     void ButtonToolKit()
@@ -188,16 +234,20 @@ public class LevelEditor : EditorWindow
         {
             if (buttonCount == buttonsPerRow)
             {
+                // gibberish that makes new rows so that it doesn't go out of the editor window
                 GUILayout.EndHorizontal();
                 GUILayout.BeginVertical();
                 GUILayout.EndVertical();
                 GUILayout.BeginHorizontal();
+
                 buttonCount = 0;
                 needNewRow = true;
             } else if (buttonCount == 1 && needNewRow)
             {
                 needNewRow = false; 
             }
+
+
             string prefabPath = AssetDatabase.GUIDToAssetPath(prefabGuid);
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
 
@@ -210,6 +260,7 @@ public class LevelEditor : EditorWindow
                     ToolReset();
                     selectedPrefab = prefab; // on mouse click input, instantiate the prefab in the world.
                     prefabTexture = prefabImage;
+                    PreviewPrefab();
                 }
             }
             buttonCount++;
