@@ -446,6 +446,36 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1120121864080066348, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: maxBlood
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120121864080066348, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: bloodDrainRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120121864080066348, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: playerKillable
+      value: 
+      objectReference: {fileID: 6555729506036273865}
+    - target: {fileID: 1120121864080066348, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: overfedDrainRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120121864080066348, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: bloodThirstThreshold
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120121864080066348, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: playerHealthDrainRate
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1417093754190084996, guid: c66b3c9ba7489084f8c3f641e0306f46,
         type: 3}
       propertyPath: m_Name
@@ -577,6 +607,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6555729506036273864}
+    - targetCorrespondingSourceObject: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6555729506036273865}
   m_SourcePrefab: {fileID: 100100000, guid: 88512be50a530374189e930db8c0502d, type: 3}
 --- !u!1 &6555729506036273863 stripped
 GameObject:
@@ -604,6 +638,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   groundCheckOffset: 0.01
+--- !u!114 &6555729506036273865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6555729506036273863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b13fe390e6f5d4c8cb221e08254b48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 100
+  currentHP: 0
+  OnHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDie:
+    m_PersistentCalls:
+      m_Calls: []
+  timeBeforeRegen: 5
+  healthRegenRate: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
