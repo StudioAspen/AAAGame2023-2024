@@ -9,7 +9,7 @@ public class BloodThirst : MonoBehaviour
     [SerializeField] public float bloodThirstThreshold; // Threshold for blood thirst
     [SerializeField] public float maxBlood; // Max amount of blood before overfed
     [SerializeField] public float currentBlood; // Current blood amount
-    float maxBloodForOverfed; // Max amount of blood for overfed
+    [SerializeField] public float maxBloodForOverfed; // Max amount of blood for overfed
 
     [SerializeField] float bloodDrainRate; // Blood drain rate
     [SerializeField] float overfedDrainRate; // Blood drain rate when overfed
@@ -18,7 +18,7 @@ public class BloodThirst : MonoBehaviour
     [SerializeField] float playerHealthDrainRate; // How much are you draining from the player
     bool isDraining = false; // If the sword is currently draining
 
-    UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
+    public UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
     MovementModification movementModification;
 
     // Start is called before the first frame update
