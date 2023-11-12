@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
         
     Rigidbody rb;
 
-    Vector3 Direction;
+    //Vector3 Direction;
 
     void Start()
     {
@@ -57,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
     {
         //made this kinda redundant because i used your calculation in movementInput so we could have it
         //at the input level, thanks for writing this its useful!!! :D - Benicio
-        Move(orientation.forward * verticalInput + orientation.right * horizontalInput);
+        //Move(orientation.forward * verticalInput + orientation.right * horizontalInput);
     }
 
     public void JumpFunction()
@@ -79,7 +79,8 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        Direction = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        //Direction = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        //Direction = new Vector3(Direction.x, 0, Direction.y);
 
         if(grounded)
         rb.AddForce(Direction.normalized * moveSpeed * 10f, ForceMode.Force);

@@ -93,7 +93,7 @@ public class PlayerInput : MonoBehaviour
                
             }
             
-                movement.Move(direction);
+            movement.Move(direction);
         }
     }
 
