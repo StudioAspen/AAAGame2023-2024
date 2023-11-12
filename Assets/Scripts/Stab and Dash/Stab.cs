@@ -55,7 +55,6 @@ public class Stab : MonoBehaviour
     void StabContact(Collider other)
     {
         Stabable stabable;
-        Debug.Log("Stab contact");
         if(other.gameObject.TryGetComponent<Stabable>(out stabable))
         {
             if(isStabbing)
