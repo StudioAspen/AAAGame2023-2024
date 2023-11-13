@@ -137,6 +137,9 @@ GameObject:
   - component: {fileID: 64902129}
   - component: {fileID: 64902133}
   - component: {fileID: 64902134}
+  - component: {fileID: 64902135}
+  - component: {fileID: 64902136}
+  - component: {fileID: 64902137}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -226,7 +229,7 @@ Transform:
   m_GameObject: {fileID: 64902128}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -4.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -273,6 +276,65 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sword: {fileID: 896515485}
   slideSpeed: 1
+  bloodGained: 20
+--- !u!114 &64902135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64902128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 114c9068df70c4d3eacc6cc6dd0f5049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  groundDrag: 1
+  jumpForce: 10
+  jumpCooldown: 1
+  airMultiplier: 1
+  jumpKey: 32
+  playerHeight: 2
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 1024
+  orientation: {fileID: 64902132}
+--- !u!114 &64902136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64902128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodThirstThreshold: 50
+  maxBlood: 100
+  currentBlood: 0
+--- !u!114 &64902137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64902128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156139ee4aa8849caa989f1ac5db63dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashDistance: 5
+  dashDuration: 1
+  dashCooldown: 1
+  dashKey: 101
+  ground:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundCheckOffset: 0
 --- !u!1 &386464336
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,9 +534,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 567843560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8703f3752c6ffc47a304777c15f0366, type: 3}
+  m_Script: {fileID: 11500000, guid: 43063bd4c9a9a444b900066c47c93e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slideDir: {x: 0, y: 0, z: 0}
 --- !u!114 &567843566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,7 +574,7 @@ MonoBehaviour:
       - 0
       globalNormalsAngle: 90
       flipNormals: 0
-    vertexPathUpToDate: 0
+    vertexPathUpToDate: 1
     vertexPathMaxAngleError: 0.3
     vertexPathMinVertexSpacing: 0.01
     showTransformTool: 1
@@ -562,7 +625,7 @@ Transform:
   m_GameObject: {fileID: 896515484}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: 2.5}
+  m_LocalPosition: {x: 0, y: 1, z: -2.4}
   m_LocalScale: {x: 0.5, y: 2.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -948,7 +1011,7 @@ GameObject:
   - component: {fileID: 1650305731}
   - component: {fileID: 1650305730}
   - component: {fileID: 1650305729}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}

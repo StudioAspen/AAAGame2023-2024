@@ -9,6 +9,7 @@ public class SlashAndSlide : MonoBehaviour
 {
     public Transform sword;
     public float slideSpeed;
+    public float bloodGained;
 
     UnityEvent OnSlashStart;
     UnityEvent OnSlashEnd;
@@ -42,6 +43,21 @@ public class SlashAndSlide : MonoBehaviour
                 dstTravelled = 0f;
                 sliding = false;
                 rb.useGravity = true;
+
+                if (TryGetComponent<BloodThirst>(out BloodThirst bt))
+                {
+                    bt.GainBlood(bloodGained);
+                }
+
+                if (TryGetComponent<PlayerMovement>(out PlayerMovement pm))
+                {
+                    pm.Jump();
+                    pm.ResetJump();
+                }
+
+                if (TryGetComponent<DashMovement>(out DashMovement dm)) {
+                    dm.ResetDash();
+                }
             }
         }
     }
