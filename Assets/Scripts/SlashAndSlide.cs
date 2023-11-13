@@ -44,11 +44,6 @@ public class SlashAndSlide : MonoBehaviour
                 sliding = false;
                 rb.useGravity = true;
 
-                if (TryGetComponent<BloodThirst>(out BloodThirst bt))
-                {
-                    bt.GainBlood(bloodGained);
-                }
-
                 if (TryGetComponent<PlayerMovement>(out PlayerMovement pm))
                 {
                     pm.Jump();
@@ -77,6 +72,11 @@ public class SlashAndSlide : MonoBehaviour
         if (other.TryGetComponent<Slashable>(out Slashable slashable) && 
             other.TryGetComponent<PathCreator>(out PathCreator pc))
         {
+            if (TryGetComponent<BloodThirst>(out BloodThirst bt))
+            {
+                bt.GainBlood(bloodGained);
+            }
+
             sliding = true;
             pathCreator = pc;
             rb.useGravity = false;
