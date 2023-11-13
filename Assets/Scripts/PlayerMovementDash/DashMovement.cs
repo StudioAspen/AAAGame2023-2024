@@ -25,8 +25,8 @@ public class DashMovement : MonoBehaviour
     private Vector3 dashVelocity; // Velocity used for dashing
 
 
-    UnityEvent OnDashStart = new UnityEvent();
-    UnityEvent OnDashEnd = new UnityEvent();
+    public UnityEvent OnDashStart = new UnityEvent();
+    public UnityEvent OnDashEnd = new UnityEvent();
 
     MovementModification movementModification;
 
@@ -42,15 +42,7 @@ public class DashMovement : MonoBehaviour
         // Getting components
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
-
-        if(TryGetComponent<MovementModification>(out movementModification))
-        {
-            movementModification.OnModifyMovement.AddListener(ApplyMovementModification);
-        }
-        else
-        {
-            Debug.Log("Cannot find movement modification for dashMovement");
-        }
+        movementModification = GetComponent<MovementModification>();
     }
 
     private void FixedUpdate()
@@ -118,7 +110,6 @@ public class DashMovement : MonoBehaviour
 
     private void EndDash()
     {
-        //rb.velocity = Vector3.zero;
         isDashing = false;
         OnDashEnd.Invoke();
     }

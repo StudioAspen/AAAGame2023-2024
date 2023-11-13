@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class PlayerInput : MonoBehaviour
     /// If there are any design concerns they will be addressed in a code review
     /// </summary>
 
-    bool canMove = true;
+    private bool canMove = true;
+    private UnityEvent currentMovementEnding;
 
     DashMovement dash;
     //stabanddash stabanddash;
@@ -28,11 +30,9 @@ public class PlayerInput : MonoBehaviour
         //slashAndSlide = GetComponent<SlashAndSlide>();
         //movement = GetComponent<Movement>();
 
-        //dash.OnStartDash.AddListener(StartingMove);
         //stabAndDash.OnStartStab.AddListener(StartingMove);
         //slashAndSlide.OnStartSlash.AddListener(StartingMove);
 
-        //dash.OnEndDash.AddListener(EndingMove);
         //stabAndDash.OnEndStab.AddListener(EndingMove);
         //slashAndSlide.OnEndSlash.AddListener(EndingMove);
     }
@@ -47,14 +47,22 @@ public class PlayerInput : MonoBehaviour
             //Combat Moves
             if (Input.GetKeyDown(KeyCode.E))
             {
+                Debug.Log("stabbing");
                 //stabAndDash.StartStab();
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
+                Debug.Log("stabbing");
                 //slashAndSlide.StartSlash();
             }
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
+                canMove = false;
+
+                //Setting function for ending dash
+                dash.OnDashEnd.AddListener(EndingMove);
+                currentMovementEnding = dash.OnDashEnd;
+                
                 dash.PlayerInputDash(direction);
             }
 
@@ -74,5 +82,6 @@ public class PlayerInput : MonoBehaviour
     public void EndingMove()
     {
         canMove = true;
+        currentMovementEnding.RemoveListener(EndingMove);
     }
 }
