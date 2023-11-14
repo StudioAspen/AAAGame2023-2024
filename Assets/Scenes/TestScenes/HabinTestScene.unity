@@ -514,10 +514,24 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4595640525888209, guid: 88512be50a530374189e930db8c0502d, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: downwardStabForce
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
@@ -527,7 +541,7 @@ PrefabInstance:
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5.45
       objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
@@ -577,6 +591,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6555729506036273864}
+    - targetCorrespondingSourceObject: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6555729506036273871}
   m_SourcePrefab: {fileID: 100100000, guid: 88512be50a530374189e930db8c0502d, type: 3}
 --- !u!1 &6555729506036273863 stripped
 GameObject:
@@ -593,17 +611,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 6555729506036273863}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 156139ee4aa8849caa989f1ac5db63dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 7577dd9cfbb8f5b42a68c26fffff31a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashDistance: 2
-  dashDuration: 0.25
-  dashCooldown: 0
-  dashKey: 101
-  ground:
+--- !u!136 &6555729506036273871
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6555729506036273863}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
-  groundCheckOffset: 0.01
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.1405907
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.005230427, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
