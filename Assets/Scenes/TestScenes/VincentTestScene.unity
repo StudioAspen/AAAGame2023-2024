@@ -138,8 +138,6 @@ GameObject:
   - component: {fileID: 64902133}
   - component: {fileID: 64902134}
   - component: {fileID: 64902135}
-  - component: {fileID: 64902136}
-  - component: {fileID: 64902137}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -276,7 +274,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sword: {fileID: 896515485}
   slideSpeed: 1
+  boostedSlideSpeed: 2
   bloodGained: 20
+  OnSlashStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSlashEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSlideStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSlideEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &64902135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,55 +297,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 64902128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 114c9068df70c4d3eacc6cc6dd0f5049, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b92b510a04956c40aa1a3eab43f2d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  groundDrag: 1
-  jumpForce: 10
-  jumpCooldown: 1
-  airMultiplier: 1
-  jumpKey: 32
-  playerHeight: 2
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 1024
-  orientation: {fileID: 64902132}
---- !u!114 &64902136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 64902128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bloodThirstThreshold: 50
-  maxBlood: 100
-  currentBlood: 0
---- !u!114 &64902137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 64902128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 156139ee4aa8849caa989f1ac5db63dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dashDistance: 5
-  dashDuration: 1
-  dashCooldown: 1
-  dashKey: 101
-  ground:
-    serializedVersion: 2
-    m_Bits: 1024
-  groundCheckOffset: 0
+  boostForAll: 1
 --- !u!1 &386464336
 GameObject:
   m_ObjectHideFlags: 0
