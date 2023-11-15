@@ -9,6 +9,8 @@ public class Stab : MonoBehaviour
 {
     //Compoenents
     Rigidbody rb;
+    DashMovement dashMovement;
+    PlayerMovement PlayerMovement;
     [SerializeField] private GameObject swordObject;
     private DemonSword demonSword;
 
@@ -25,6 +27,7 @@ public class Stab : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        dashMovement = GetComponent<DashMovement>();
         demonSword = swordObject.GetComponent<DemonSword>();
         demonSword.OnContact.AddListener(StabContact);
     }
