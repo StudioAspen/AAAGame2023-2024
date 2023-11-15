@@ -9,7 +9,7 @@ public class Pathfinding : MonoBehaviour
     [SerializeField]
     private GameObject player;
     public Transform target;
-    private NavMeshAgent agent;
+    public  NavMeshAgent agent;
 
 
     // Start is called before the first frame update
