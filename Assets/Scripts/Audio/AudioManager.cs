@@ -19,5 +19,11 @@ public class AudioManager : MonoBehaviour
         } 
     }
 
+    // placeholder function, functionality will be implemented later
+    public void PlayAudio(string key)
+    {
+        //For testing
+        Debug.Log(key);
+    }
     //future stuff go here 
 }
