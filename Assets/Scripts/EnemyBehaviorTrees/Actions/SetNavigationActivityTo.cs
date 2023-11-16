@@ -1,8 +1,8 @@
 using WUG.BehaviorTreeVisualizer;
 using EnemyBehaviorTrees;
 using EnemyBehaviorTrees.Agents;
-using EnemyBehaviorTrees.Managers;
 using UnityEngine;
+using NavigationActivity = EnemyBehaviorTrees.Agents.NPCAgentBase.NavigationActivity;
 
 namespace EnemyBehaviorTrees.Nodes
 {
@@ -11,12 +11,19 @@ namespace EnemyBehaviorTrees.Nodes
     public class SetNavigationActivityTo : Node
     {
         private NavigationActivity newActivity;
+        private NPCAgentBlackboard blackboard;
+        private NPCAgentBase npc;
     
         // Constructor - declare which activity to change to
-        public SetNavigationActivityTo(NavigationActivity newActivity)
+        public SetNavigationActivityTo(NavigationActivity newActivity, int npcIndex)
         {
             this.newActivity = newActivity;
             Name = $"Set NavigationActivity to {newActivity}";
+            
+            blackboard = GameObject.Find("NPC Blackboard").GetComponent<NPCAgentBlackboard>();
+            if (blackboard == null) { Debug.Log("Please create a blackboard Game Object called 'NPC Blackboard' with an 'NPCAgentBlackboard' component on it."); }
+            
+            npc = blackboard.NPCs[npcIndex];
         }
         
         // OnReset() - empty
@@ -24,15 +31,8 @@ namespace EnemyBehaviorTrees.Nodes
         
         protected override NodeStatus OnRun()
         {
-            // Check instances
-            if (EnemyBehaviorTreeGameManager.Instance == null || EnemyBehaviorTreeGameManager.Instance.NPC == null)
-            {
-                StatusReason = "GameManager and/or NPC is null";
-                return NodeStatus.FAILURE;
-            }
-    
             // Set Agent's Navigation Activity to new activity and return Success
-            EnemyBehaviorTreeGameManager.Instance.NPC.MyActivity = newActivity;
+            npc.MyActivity = newActivity;
     
             Debug.Log($"Enemy's current navigation activity is {newActivity}");
             return NodeStatus.SUCCESS;

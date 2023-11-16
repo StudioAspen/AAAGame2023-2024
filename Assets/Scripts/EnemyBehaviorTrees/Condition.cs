@@ -1,5 +1,6 @@
 using WUG.BehaviorTreeVisualizer;
 using EnemyBehaviorTrees;
+using EnemyBehaviorTrees.Agents;
 
 namespace EnemyBehaviorTrees
 {
@@ -9,9 +10,13 @@ namespace EnemyBehaviorTrees
     // This code just allows the Behavior Tree Visualizer to stylize all conditions a specific way
     public abstract class Condition : Node
     {
-        public Condition(string name)
+        // index of the npc we pass in
+        protected int npcIndex;
+        
+        public Condition(string name, int index)
         {
             Name = name;
+            npcIndex = index;
         }
     }
 }

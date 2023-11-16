@@ -4,20 +4,26 @@ using WUG.BehaviorTreeVisualizer;
 using UnityEngine;
 using UnityEngine.AI;
 using EnemyBehaviorTrees.Agents;
-using EnemyBehaviorTrees.Managers;
+using NavigationActivity = EnemyBehaviorTrees.Agents.NPCAgentBase.NavigationActivity;
 
 namespace EnemyBehaviorTrees.Nodes
 {
     // Action node for an agent to navigate to a certain destination.
-    
-    
     public class NavigateToDestination : Node
     {
         private Vector3 targetDestination;
+        private NPCAgentBlackboard blackboard;
+        private int index;
+        private NPCAgentBase npc;
 
-        public NavigateToDestination()
+        public NavigateToDestination(int npcIndex)
         {
             Name = "Navigate";
+            index = npcIndex;
+            npc = blackboard.NPCs[npcIndex];
+            
+            blackboard = GameObject.Find("NPC Blackboard").GetComponent<NPCAgentBlackboard>();
+            if (blackboard == null) { Debug.Log("Please create a blackboard Game Object called 'NPC Blackboard' with an 'NPCAgentBlackboard' component on it."); }
         }
 
         // OnReset() - empty
@@ -25,37 +31,30 @@ namespace EnemyBehaviorTrees.Nodes
         
         protected override NodeStatus OnRun()
         {
-            // Confirm all references exist
-            if (EnemyBehaviorTreeGameManager.Instance == null || EnemyBehaviorTreeGameManager.Instance.NPC == null)
-            {
-                StatusReason = "GameManager or NPC is null";
-                return NodeStatus.FAILURE;
-            }
-        
             // Perform logic that should only run once
             if (EvaluationCount == 0)
             {
                 // Get destination from Game Manager 
                 GameObject destinationGO = null;
-                NavigationActivity currentActivity = EnemyBehaviorTreeGameManager.Instance.NPC.MyActivity;
+                NavigationActivity currentActivity = npc.MyActivity;
 
                 switch (currentActivity)
                 {
                     case NavigationActivity.LOOK_FOR_PLAYER:
-                        destinationGO = EnemyBehaviorTreeGameManager.Instance.GetPlayerWithinRange(EnemyBehaviorTreeGameManager.Instance.NPC.playerAggroRange);
+                        destinationGO = blackboard.GetPlayerWithinRange(index);
                         break;
                     case NavigationActivity.CHASE:
-                        destinationGO = EnemyBehaviorTreeGameManager.Instance.GetPlayerWithinRange(EnemyBehaviorTreeGameManager.Instance.NPC.playerAggroRange);
+                        destinationGO = blackboard.GetPlayerWithinRange(index);
                         break;
                     case NavigationActivity.PATROL:
-                        destinationGO = EnemyBehaviorTreeGameManager.Instance.GetNextWayPoint();
+                        destinationGO = blackboard.GetNextWayPoint();
                         break;
                 }
         
                 // Confirm that the destination is valid - If not, fail.
                 if (destinationGO == null)
                 {
-                    StatusReason = $"Unable to find game object for {EnemyBehaviorTreeGameManager.Instance.NPC.MyActivity}";
+                    StatusReason = $"Unable to find game object for {npc.MyActivity}";
                     return NodeStatus.FAILURE;
                 }
         
@@ -68,7 +67,7 @@ namespace EnemyBehaviorTrees.Nodes
                 targetDestination = hit.position;
         
                 // Set the destination on the NavMesh. This tells the AI to start moving to the new location.
-                EnemyBehaviorTreeGameManager.Instance.NPC.MyNavMesh.SetDestination(targetDestination);
+                npc.MyNavMesh.SetDestination(targetDestination);
                 StatusReason = $"Starting to navigate to {destinationGO.transform.position}";
                 
                 // Return running, as we want to continue to have this node evaluate
@@ -76,7 +75,7 @@ namespace EnemyBehaviorTrees.Nodes
             }
         
             // Calculate how far the AI is from the destination
-            float distanceToTarget = Vector3.Distance(targetDestination, EnemyBehaviorTreeGameManager.Instance.NPC.transform.position);
+            float distanceToTarget = Vector3.Distance(targetDestination, npc.transform.position);
         
             // If the AI is within .25f then navigation will be considered a success
             if (distanceToTarget < .25f)

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Item
   - Waypoint
+  - NPC
   layers:
   - Default
   - TransparentFX

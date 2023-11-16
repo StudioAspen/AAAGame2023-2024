@@ -6,31 +6,22 @@ using WUG.BehaviorTreeVisualizer;
 using EnemyBehaviorTrees.Agents;
 using Random = UnityEngine.Random;
 
-namespace EnemyBehaviorTrees.Managers
+namespace EnemyBehaviorTrees.Agents
 {
-    public class EnemyBehaviorTreeGameManager : MonoBehaviour
+    public class NPCAgentBlackboard : MonoBehaviour
     {
-        public static EnemyBehaviorTreeGameManager Instance;
-
-        public BaseEnemyNPCController NPC { get; private set; }
+        // Having a npc array allows us to not have to pass in a reference to the npc in each leaf node in a behavior tree. Saves a bit of memory overhead.
+        public List<NPCAgentBase> NPCs { get; private set; }
         private List<GameObject> waypoints = new List<GameObject>();
         // private List<GameObject> items = new List<GameObject>();
         private GameObject player;
+        LayerMask playerMask;
 
-        private void Awake()
+        void Awake()
         {
-            // Singleton pattern. Ensures only one version of this lives in the scene
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else if (Instance != this)
-            {
-                Destroy(gameObject);
-            }
+            GameObject[] NPCObjects = GameObject.FindGameObjectsWithTag("NPC").ToList();
         }
-
+        
         void Start()
         {
             waypoints = GameObject.FindGameObjectsWithTag("Waypoint").ToList();
@@ -38,8 +29,20 @@ namespace EnemyBehaviorTrees.Managers
             player = GameObject.FindGameObjectWithTag("Player");
             
             waypoints = waypoints.Shuffle();
+            
+            playerMask = LayerMask.GetMask("Player");
+            
+            // assign indicies to npcs in scene
+            // for (int i = 0; i < NPCs.Length; i++)
+            // {
+            //     NPCs[i].index = i;
+            // }
+        }
 
-            NPC = FindObjectOfType<BaseEnemyNPCController>();
+        // When we spawn a new agent, we want to add it to the array of NPCs
+        public void NPCSpawned(NPCAgentBase agent)
+        {
+            NPCs.Append(agent);
         }
 
         
@@ -47,13 +50,16 @@ namespace EnemyBehaviorTrees.Managers
         /// Check if player is within a certain range using Physics.CheckSphere
         /// </summary>
         /// <returns>If the player is within a range</returns>
-        public GameObject GetPlayerWithinRange(float maxDistance)
+        public GameObject GetPlayerWithinRange(int npcIndex)
         {
-            LayerMask playerMask = LayerMask.GetMask("Player");
-            return Physics.CheckSphere(NPC.transform.position, maxDistance, playerMask, QueryTriggerInteraction.Ignore) ? player : null;
+            // npc index out of range
+            if (npcIndex > NPCs.Length) { return null; }
+            
+            NPCAgentBase npc = NPCs[npcIndex];
+            return Physics.CheckSphere(npc.transform.position, npc.playerCheckDistance, playerMask, QueryTriggerInteraction.Ignore) ? player : null;
         }
 
-
+        
         /// <summary>
         /// Finds the next waypoint on the list. This is 'random' due to shuffling at the start and also randomly chosen on decision.
         /// </summary>

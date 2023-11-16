@@ -1,3 +1,4 @@
+using EnemyBehaviorTrees.Agents;
 using WUG.BehaviorTreeVisualizer;
 
 namespace EnemyBehaviorTrees
