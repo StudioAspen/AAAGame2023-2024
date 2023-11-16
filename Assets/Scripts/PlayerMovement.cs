@@ -14,38 +14,32 @@ public class PlayerMovement : MonoBehaviour
     public float airMultiplier;
     public bool readyToJump = true;
 
-    [Header("KeyBinds")]
-    public KeyCode jumpKey = KeyCode.Space;
-
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
     bool grounded;
 
-
-    public Transform orientation;
-
-    float horizontalInput;
-    float verticalInput;
-
-        
+    private bool isMoving = false;
+    private Vector3 moveDirection;
     Rigidbody rb;
-
-    //Vector3 Direction;
 
     void Start()
     {
        rb = GetComponent<Rigidbody>();
-        
     }
 
-
+    private void FixedUpdate()
+    {
+        
+        if(isMoving)
+        {
+            //MoveUpdate();
+            //SpeedControl();
+        }
+    }
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2F, whatIsGround);
-
-       
-        SpeedControl();
 
         if (grounded)
             rb.drag = groundDrag;
@@ -53,16 +47,9 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = 0;
     }
 
-    private void FixedUpdate()
-    {
-        //made this kinda redundant because i used your calculation in movementInput so we could have it
-        //at the input level, thanks for writing this its useful!!! :D - Benicio
-        //Move(orientation.forward * verticalInput + orientation.right * horizontalInput);
-    }
 
     public void JumpFunction()
     {
-        
         if(readyToJump && grounded)
         {
             readyToJump = false;
@@ -74,26 +61,42 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    public void Move(Vector3 Direction)
+    public void Move(Vector3 inputDirection)
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-
-        //Direction = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        //Direction = new Vector3(Direction.x, 0, Direction.y);
-
-        if(grounded)
-        rb.AddForce(Direction.normalized * moveSpeed * 10f, ForceMode.Force);
-
-        else if(!grounded)
-            rb.AddForce(Direction.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-
+        if (inputDirection.magnitude > 0)
+        {
+            isMoving = true;
+            moveDirection = new Vector3(inputDirection.x, 0, inputDirection.z);
+            //Applying horizontal movement
+            if (grounded)
+            {
+                rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
+            }
+            else
+            {
+                rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode.Force);
+            }
+        }
+        else
+        {
+            isMoving = false;
+        }
     }
-
+    private void MoveUpdate()
+    {
+        //Applying horizontal movement
+        if (grounded)
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
+        }
+        else
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode.Force);
+        }
+    }
     private void SpeedControl()
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
 
         if(flatVel.magnitude > moveSpeed)
         {

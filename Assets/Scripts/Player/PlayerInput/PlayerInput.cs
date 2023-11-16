@@ -91,15 +91,10 @@ public class PlayerInput : MonoBehaviour
                 
                 dash.PlayerInputDash(direction);
             }
-
-            // Regular movement
             if (Input.GetKeyDown(KeyCode.Space))
             {
-
                 movement.JumpFunction();
-               
             }
-            
             movement.Move(direction);
         }
     }
