@@ -300,7 +300,7 @@ Transform:
   m_GameObject: {fileID: 234296333}
   serializedVersion: 2
   m_LocalRotation: {x: 0.6292855, y: 0.00000014987363, z: -0.00000012135412, w: 0.77717423}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000000059604645}
+  m_LocalPosition: {x: -1.82, y: 2.7300005, z: 5.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -439,7 +439,7 @@ Transform:
   m_GameObject: {fileID: 510372151}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.290001, z: -0.69}
+  m_LocalPosition: {x: 1.82, y: 7.5600004, z: -6.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -565,8 +565,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 765447769}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.657101, y: 0.00000007666427, z: -0.0000000668294, w: 0.75380254}
-  m_LocalPosition: {x: 0, y: 10.290001, z: -0.69}
+  m_LocalRotation: {x: 0.6571009, y: 0.00000008430638, z: -0.00000007349112, w: 0.7538026}
+  m_LocalPosition: {x: 1.82, y: 7.5600004, z: -6.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 5
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -721,7 +721,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 769700182}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.643281, y: 0.00000007245546, z: -0.00000006087692, w: 0.76563025}
+  m_LocalRotation: {x: 0.643281, y: 0.00000007574886, z: -0.00000006364403, w: 0.76563025}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -828,8 +828,8 @@ Transform:
   m_GameObject: {fileID: 1197125934}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.96404433, y: -0.77, z: -0.9313723}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 2.66, y: -0.77, z: -4.29}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1404,7 +1404,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2036356869}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.65710104, y: 0.000000045395712, z: -0.000000039572114, w: 0.7538026}
+  m_LocalRotation: {x: 0.657101, y: 0.000000042153193, z: -0.000000036745572, w: 0.7538026}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1424,6 +1424,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DemonSword
+      objectReference: {fileID: 0}
+    - target: {fileID: 1417093754190084996, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2680757558890817151, guid: c66b3c9ba7489084f8c3f641e0306f46,
         type: 3}
@@ -1497,6 +1502,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2934851691818191178, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934851691818191178, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 301bb7c543ff16c42ae277b8c9282785,
+        type: 2}
+    - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: inputDeadzone
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: currentControls
@@ -1505,17 +1526,17 @@ PrefabInstance:
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.82
       objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.28
+      value: 2.55
       objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -5.5
       objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
@@ -1568,6 +1589,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6555729506036273872}
+    - targetCorrespondingSourceObject: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6555729506036273878}
   m_SourcePrefab: {fileID: 100100000, guid: 88512be50a530374189e930db8c0502d, type: 3}
 --- !u!1 &6555729506036273863 stripped
 GameObject:
@@ -1598,10 +1623,6 @@ MonoBehaviour:
   OnDashEnd:
     m_PersistentCalls:
       m_Calls: []
-  ground:
-    serializedVersion: 2
-    m_Bits: 1024
-  groundCheckOffset: 0.01
 --- !u!4 &6555729506036273865 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
@@ -1620,16 +1641,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 114c9068df70c4d3eacc6cc6dd0f5049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  groundDrag: 5
+  groundAcceleration: 5
+  maxGroundSpeed: 10
+  groundDrag: 10
+  airAcceleration: 5
+  maxAirSpeed: 10
+  airDrag: 1
   jumpForce: 5
   jumpCooldown: 0.25
-  airMultiplier: 0.4
-  readyToJump: 1
-  playerHeight: 2
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &6555729506036273872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1646,6 +1665,22 @@ MonoBehaviour:
   OnModifyMovement:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6555729506036273878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6555729506036273863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0757b9b976f47244aa022131a400dc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ground:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundCheckOffset: 0.01
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

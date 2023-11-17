@@ -4,47 +4,45 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //Components
+    Rigidbody rb;
+    GroundCheck groundCheck;
 
     [Header("Movement")]
-    public float moveSpeed;
+    public float groundAcceleration;
+    public float maxGroundSpeed;
     public float groundDrag;
+    public float airAcceleration;
+    public float maxAirSpeed;
+    public float airDrag;
 
     public float jumpForce;
     public float jumpCooldown;
-    public float airMultiplier;
-    public bool readyToJump = true;
-
-    [Header("Ground Check")]
-    public float playerHeight;
-    public LayerMask whatIsGround;
+    bool readyToJump = true;
     bool grounded;
 
-    private bool isMoving = false;
-    private Vector3 moveDirection;
-    Rigidbody rb;
+    bool isMoving = false;
+    Vector3 targetDirection;
 
     void Start()
     {
        rb = GetComponent<Rigidbody>();
+        groundCheck = GetComponent<GroundCheck>();
     }
 
-    private void FixedUpdate()
-    {
-        
-        if(isMoving)
-        {
-            //MoveUpdate();
-            //SpeedControl();
+    private void FixedUpdate() {
+        if (isMoving) {
+            MoveUpdate();
+            RotationUpdate();
         }
     }
     private void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2F, whatIsGround);
+        grounded = groundCheck.CheckOnGround();
 
-        if (grounded)
-            rb.drag = groundDrag;
-        else
-            rb.drag = 0;
+        if(grounded) {
+            ResetJump();
+        }
     }
 
 
@@ -63,61 +61,50 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector3 inputDirection)
     {
-        if (inputDirection.magnitude > 0)
+        if (inputDirection.magnitude > 0.1f)
         {
             isMoving = true;
-            moveDirection = new Vector3(inputDirection.x, 0, inputDirection.z);
-            Vector3 moveVelocity = moveDirection.normalized * moveSpeed * Time.deltaTime;
-            //Applying horizontal movement
-            if (grounded)
-            {
-                rb.position = (rb.position + moveVelocity);
-                //rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
-            }
-            else {
-                rb.position = (rb.position + moveVelocity * airMultiplier);
-                //rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode.Force);
-            }
+            targetDirection = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
         }
         else
         {
             isMoving = false;
         }
     }
-    private void MoveUpdate()
-    {
-        //Applying horizontal movement
-        if (grounded)
-        {
-            rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
-        }
-        else
-        {
-            rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode.Force);
-        }
-    }
-    private void SpeedControl()
-    {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        if(flatVel.magnitude > moveSpeed)
-        {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-
-        }
-    }
-
-    public void Jump()
-    {
+    public void Jump() {
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
-    public void ResetJump()
-    {
+    public void ResetJump() {
         readyToJump = true;
     }
+    private void MoveUpdate()
+    {
+        float currentMaxSpeed;
+        float alignment;
+        Vector3 addedVelocity;
+        // Assigning variables based on grounded status
+        if (grounded) {
+            rb.drag = groundDrag;
+            addedVelocity = targetDirection.normalized * groundAcceleration;
+            alignment = Vector3.Dot(rb.velocity, addedVelocity);
+            currentMaxSpeed = maxGroundSpeed;
+        }
+        else {
+            rb.drag = airDrag;
+            addedVelocity = targetDirection.normalized * airAcceleration;
+            alignment = Vector3.Dot(rb.velocity, addedVelocity);
+            currentMaxSpeed = maxAirSpeed;
+        }
 
+        // Applying horizontal movement
+        if (rb.velocity.magnitude < currentMaxSpeed || alignment < 0) {
+            rb.AddForce(addedVelocity, ForceMode.VelocityChange);
+        }
+    }
+    private void RotationUpdate() {
+        transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, 0.5f);
+    }
 }

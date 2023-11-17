@@ -119,6 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca49188fbcc39245b494d09667e2dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentControls: 0
+  inputDeadzone: 0
 --- !u!54 &4595640525888209
 Rigidbody:
   m_ObjectHideFlags: 0
