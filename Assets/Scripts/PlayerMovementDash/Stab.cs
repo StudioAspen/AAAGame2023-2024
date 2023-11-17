@@ -10,7 +10,8 @@ public class Stab : MonoBehaviour
     //Compoenents
     Rigidbody rb;
     DashMovement dashMovement;
-    PlayerMovement PlayerMovement;
+    PlayerInput playerInput;
+    PlayerMovement playerMovement;
     Collider collider;
     [SerializeField] private GameObject swordObject;
     DemonSword demonSword;
@@ -18,39 +19,35 @@ public class Stab : MonoBehaviour
     //Values
     [SerializeField] private float dashSpeed;
     bool isStabbing = false;
-    bool isDashing = false;
 
     //Stab Events
-    public UnityEvent onStabStart = new UnityEvent();
     public UnityEvent onStabEnd = new UnityEvent();
     
 
     // Start is called before the first frame update
     void Start()
     {
+        // Getting components
         rb = GetComponent<Rigidbody>();
         dashMovement = GetComponent<DashMovement>();
         collider = GetComponent<Collider>();
+        playerInput = GetComponent<PlayerInput>();
+        playerMovement = GetComponent<PlayerMovement>();
+        
+        // Setting up Demon Sword
         demonSword = swordObject.GetComponent<DemonSword>();
         demonSword.OnContact.AddListener(StabContact);
     }
 
-    // Update is called once per frame
-    //NOTE: Probably better to use an animator, will figure out later
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0)) // Check for left mouse button click and not already moving.
-        {
-            StartStab();
-        }
-    }
 
-    void StartStab()
+    public void StartStab()
     {
         //Animation Stuff (to be implemented later)
         isStabbing = true;
+        
+        // Demon sword variables
+        demonSword.OnEndAction.AddListener(EndOfStabAnimation);
         demonSword.AttackPosition();
-        onStabStart.Invoke();
     }
 
     public void InterruptStab()
@@ -63,27 +60,30 @@ public class Stab : MonoBehaviour
         Stabable stabable;
         if(other.gameObject.TryGetComponent<Stabable>(out stabable))
         {
-            if(isStabbing && !isDashing)
+            if(isStabbing)
             {
-                isDashing = true;
-                collider.isTrigger = true;
+                //Setting proper listeners and variables
+                isStabbing = false;
+                playerInput.DisableInput();
                 dashMovement.OnDashEnd.AddListener(EndOfDash);
-                //Dashing Movement
+                demonSword.OnEndAction.RemoveListener(EndOfStabAnimation);
+                
+                // Setting up and starting dash
+                collider.isTrigger = true; // Setting as trigger to prevent collisions
                 float dashDuration = 1 / (dashSpeed / stabable.dashLength);
                 rb.position = stabable.dashStartTransform.position;
                 dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
             }
         }
     }
-    public void EndOfDash() {
+    private void EndOfDash() {
         dashMovement.OnDashEnd.RemoveListener(EndOfDash);
-        isDashing = false;
-        collider.isTrigger = false;
-        EndStab();
+        collider.isTrigger = false; // Re-enable collider
+        playerInput.EnableInput();
+        onStabEnd.Invoke();
     }
-    private void EndStab()
-    {
-        isStabbing = false;
+    private void EndOfStabAnimation() {
+        demonSword.OnEndAction.RemoveListener(EndOfStabAnimation);
         onStabEnd.Invoke();
     }
 }

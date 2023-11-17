@@ -5,15 +5,23 @@ using UnityEngine.Events;
 
 public class DemonSword : MonoBehaviour
 {
+    [Header("Player Positions")]
     [SerializeField] Transform followTarget;
     [SerializeField] Transform attackTransform;
     Transform currentFollow;
 
+    [Header("Other Variables")]
     [Range(0f,1f)]
     [SerializeField] float followingSpeed;
+    [SerializeField] int playerLayerNumber;
+
+    [Header("Events")]
+    public UnityEvent<Collider> OnContact = new UnityEvent<Collider>();
+    public UnityEvent OnEndAction = new UnityEvent();
+
+    // Other variables
     private bool isFollowing = true;
 
-    public UnityEvent<Collider> OnContact = new UnityEvent<Collider>();
     private void Start() {
         currentFollow = followTarget;
     }
@@ -36,9 +44,15 @@ public class DemonSword : MonoBehaviour
     }
     public void EndAttackPosition() {
         currentFollow = followTarget;
+        OnEndAction.Invoke();
     }
     private void OnTriggerStay(Collider other)
     {
-        OnContact.Invoke(other);
+        //Debug.Log(other.gameObject.layer.ToString() + " " + playerLayerNumber.ToString());
+        if (other.gameObject.layer != playerLayerNumber) {
+            Debug.Log(other.name);
+            EndAttackPosition();
+            OnContact.Invoke(other);
+        }
     }
 }

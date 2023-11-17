@@ -14,8 +14,7 @@ GameObject:
   - component: {fileID: 1989007850164286170}
   - component: {fileID: 1120121864080066348}
   - component: {fileID: 5996984886382561609}
-  - component: {fileID: 9109067769063524283}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DemonSword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,23 +148,6 @@ MonoBehaviour:
   OnContact:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &9109067769063524283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417093754190084996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49bf4161f3393de478a05a832096218f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  swordObject: {fileID: 1417093754190084996}
-  dashSpeed: 0
-  onStabStart:
-    m_PersistentCalls:
-      m_Calls: []
-  onStabEnd:
+  OnEndAction:
     m_PersistentCalls:
       m_Calls: []

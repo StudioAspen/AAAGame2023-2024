@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3770348240250336498}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttackPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1713748701685793990}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 1.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6088350622376495114}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FollowPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 2352701808018790800}
   - component: {fileID: 8596804024649230227}
   - component: {fileID: 3902229200159131934}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,9 +257,10 @@ MonoBehaviour:
   groundDrag: 10
   airAcceleration: 5
   maxAirSpeed: 10
-  airDrag: 1
-  jumpForce: 5
+  airDrag: 5
+  jumpForce: 10
   jumpCooldown: 0.25
+  gravityScale: 0
   rotationSpeed: 0.25
 --- !u!114 &3650192985131432812
 MonoBehaviour:
@@ -332,7 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordObject: {fileID: 0}
-  dashSpeed: 10
+  dashSpeed: 20
   onStabStart:
     m_PersistentCalls:
       m_Calls: []
