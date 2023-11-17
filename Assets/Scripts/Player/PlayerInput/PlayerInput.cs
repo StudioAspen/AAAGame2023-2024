@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -13,33 +14,40 @@ public class PlayerInput : MonoBehaviour
     /// If there are any design concerns they will be addressed in a code review
     /// </summary>
 
-    bool canMove = true;
-    public enum controlType { controller, mouseAndKeyboard};
-    public controlType currentControls;
+    [Header("Control Type")]
+    [SerializeField] ControlType currentControls;
+    enum ControlType { controller, mouseAndKeyboard};
     CinemachineFreeLook cinemachineCam;
+    Transform cameraOrientation;
 
+    UnityEvent currentMovementEnding;
+    bool canInput = true;
+
+    //Movement Orientation
     DashMovement dash;
-    //stabanddash stabanddash;
-    //slashandslide slashandslide;
-    //movement movement;
-    public Transform cameraOrientation;
+    Stab stab;
+    PlayerMovement movement;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        cameraOrientation = FindObjectOfType<Camera>().transform;
+    void Start() {
+        // Getting components
         dash = GetComponent<DashMovement>();
+        stab = GetComponent<Stab>();
+        movement = GetComponent<PlayerMovement>();
+        
+        // Getting camera components
+        cameraOrientation = FindObjectOfType<Camera>().transform;
         cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
 
-
+        // Setting controls for camera
         switch (currentControls)
         {
-            case controlType.controller:
+            case ControlType.controller:
                 cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
 
                 break;
-            case controlType.mouseAndKeyboard:
+            case ControlType.mouseAndKeyboard:
                 cinemachineCam.m_XAxis.m_InputAxisName = "Mouse X";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Mouse Y";
                 Cursor.visible = false;
@@ -49,56 +57,50 @@ public class PlayerInput : MonoBehaviour
 
                 break;
         }
-        //stabAndDash = GetComponent<StabAndDash>();
-        //slashAndSlide = GetComponent<SlashAndSlide>();
-        //movement = GetComponent<Movement>();
-
-        //dash.OnStartDash.AddListener(StartingMove);
-        //stabAndDash.OnStartStab.AddListener(StartingMove);
-        //slashAndSlide.OnStartSlash.AddListener(StartingMove);
-
-        //dash.OnEndDash.AddListener(EndingMove);
-        //stabAndDash.OnEndStab.AddListener(EndingMove);
-        //slashAndSlide.OnEndSlash.AddListener(EndingMove);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (canMove)
-        {
+    void Update() {
+        Vector3 direction = Vector3.zero;
+        if (canInput) {
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
-            Vector3 direction = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+            direction = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                movement.JumpFunction();
+            }
 
             //Combat Moves
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                //stabAndDash.StartStab();
+            if (Input.GetKeyDown(KeyCode.E)) {
+                //Setting function for ending dash
+                stab.StartStab();
             }
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
+            if (Input.GetKeyDown(KeyCode.Q)) {
+                Debug.Log("stabbing");
                 //slashAndSlide.StartSlash();
             }
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                dash.Dash(direction);
-            }
+            if (Input.GetKeyDown(KeyCode.LeftShift)) {
+                DisableInput();
 
-            // Regular movement
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                //movement.Jump();
+                //Setting function for ending dash
+                dash.OnDashEnd.AddListener(EndingMove);
+                currentMovementEnding = dash.OnDashEnd;
+
+                dash.PlayerInputDash(direction);
             }
-            //movement.Move(direction);
         }
+        movement.Move(direction);
     }
 
-    public void StartingMove()
-    {
-        canMove = false;
-    }
     public void EndingMove()
     {
-        canMove = true;
+        EnableInput();
+        currentMovementEnding.RemoveListener(EndingMove);
+    }
+    public void DisableInput() {
+        canInput = false;
+    }
+    public void EnableInput() {
+        canInput = true;
     }
 }

@@ -8,19 +8,25 @@ public class BloodThirst : MonoBehaviour
     
     [SerializeField] public float bloodThirstThreshold; // Threshold for blood thirst
     [SerializeField] public float maxBlood; // Max amount of blood before overfed
-    public float currentBlood; // Current blood amount
-    float maxBloodForOverfed; // Max amount of blood for overfed
+    [SerializeField] public float currentBlood; // Current blood amount
+    [SerializeField] public float maxBloodForOverfed; // Max amount of blood for overfed
 
-    float drainRate; // Blood drain rate
-    float overfedDrainRate; // Blood drain rate when overfed
+    [SerializeField] float bloodDrainRate; // Blood drain rate
+    [SerializeField] float overfedDrainRate; // Blood drain rate when overfed
 
+    [SerializeField] PlayerKillable playerKillable;
+    [SerializeField] float playerHealthDrainRate; // How much are you draining from the player
+    bool isDraining = false; // If the sword is currently draining
 
-    UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
+    public UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
     MovementModification movementModification;
 
     // Start is called before the first frame update
     void Start()
     {
+        //Initalizing values
+        currentBlood = maxBlood;
+
         if(TryGetComponent<MovementModification>(out movementModification))
         {
             Debug.Log("Movement modification not found");
@@ -30,26 +36,57 @@ public class BloodThirst : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (currentBlood < maxBlood) {
-            currentBlood -= drainRate * Time.deltaTime;
+        DrainBlood();
+
+        if(currentBlood < bloodThirstThreshold)
+        {
+            isDraining = true;
+        }
+        else
+        {
+            isDraining = false;
+        }
+
+        if(isDraining)
+        {
+            playerKillable.TakeDamage(playerHealthDrainRate * Time.deltaTime);
+        }
+
+        if (movementModification != null)
+        {
+            ApplyMovementModification();
+        }
+    }
+    private void DrainBlood()
+    {
+        // Draining blood based on overfed and limiting limit to 0
+        if (currentBlood < maxBlood)
+        {
+            currentBlood = Mathf.Max(currentBlood - (bloodDrainRate * Time.deltaTime), 0);
         }
         else
         {
             currentBlood -= overfedDrainRate * Time.deltaTime;
         }
         OnBloodChange.Invoke();
-
-        if (movementModification != null)
-        {
-            // Setting boost based on thresholds but not letting it drop below zero
-            movementModification.SetBoost(Mathf.Max(Mathf.InverseLerp(maxBlood, maxBloodForOverfed, currentBlood), 0));
-        }
+    }
+    private void ApplyMovementModification()
+    {
+        // Setting boost based on thresholds but not letting it drop below zero
+        movementModification.SetBoost(Mathf.Max(Mathf.InverseLerp(maxBlood, maxBloodForOverfed, currentBlood), 0));
     }
 
-
-    public void GainBlood(float amount)
+    public void GainBlood(float amount, bool canOverFeed)
     {
-        currentBlood += amount;
+        // Adding blood based on if you can overfeed and limiting it based on max
+        if (canOverFeed)
+        {
+            currentBlood = Mathf.Min(currentBlood+amount, maxBloodForOverfed);
+        }
+        else
+        {
+            currentBlood = Mathf.Min(currentBlood+amount, maxBlood);
+        }
         OnBloodChange.Invoke();
     }
 }
