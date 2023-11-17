@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class EnemyStateManager : MonoBehaviour
 {
+    // all the states of the enemies
     public EnemyBaseState currentState;
     public EnemyIdleState idleState = new EnemyIdleState();
     public EnemyAggroState aggroState = new EnemyAggroState();
     public EnemyAttackState attackState = new EnemyAttackState();
     public EnemyDeathState deathState = new EnemyDeathState();
+
+    // player transform
+    public Transform player;
 
     // Start is called before the first frame update
     void Start()

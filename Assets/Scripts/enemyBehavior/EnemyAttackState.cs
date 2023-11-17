@@ -6,11 +6,11 @@ public class EnemyAttackState : EnemyBaseState
 {
     public override void EnterState(EnemyStateManager enemy)
     {
-        Debug.Log("Enter Idle State");
+        Debug.Log("Enter Attack State");
     }
 
     public override void UpdateState(EnemyStateManager enemy)
     {
-        Debug.Log("Enter Idle Update");
+        Debug.Log("Enter Attack Update");
     }
 }
