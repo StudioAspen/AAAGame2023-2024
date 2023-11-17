@@ -17,7 +17,8 @@ public class Stab : MonoBehaviour
 
     //Values
     [SerializeField] private float dashSpeed;
-    private bool isStabbing = false;
+    bool isStabbing = false;
+    bool isDashing = false;
 
     //Stab Events
     public UnityEvent onStabStart = new UnityEvent();
@@ -62,18 +63,21 @@ public class Stab : MonoBehaviour
         Stabable stabable;
         if(other.gameObject.TryGetComponent<Stabable>(out stabable))
         {
-            if(isStabbing)
+            if(isStabbing && !isDashing)
             {
+                isDashing = true;
                 collider.isTrigger = true;
                 dashMovement.OnDashEnd.AddListener(EndOfDash);
                 //Dashing Movement
                 float dashDuration = 1 / (dashSpeed / stabable.dashLength);
+                rb.position = stabable.dashStartTransform.position;
                 dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
             }
         }
     }
     public void EndOfDash() {
         dashMovement.OnDashEnd.RemoveListener(EndOfDash);
+        isDashing = false;
         collider.isTrigger = false;
         EndStab();
     }

@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump Variables")]
     public float jumpForce;
     public float jumpCooldown;
+    public float gravityScale;
 
     [Header("Other Variables")]
     [Range(0.0f, 1f)]
@@ -42,6 +43,14 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving) {
             MoveUpdate();
             RotationUpdate();
+        }
+
+        //Assinging drag
+        if (grounded) {
+            rb.drag = groundDrag;
+        }
+        else {
+            rb.drag = airDrag;
         }
     }
     private void Update()
@@ -96,13 +105,11 @@ public class PlayerMovement : MonoBehaviour
 
         // Assigning variables if player is on the ground
         if (grounded) {
-            rb.drag = groundDrag;
             addedVelocity = targetDirection.normalized * groundAcceleration;
             alignment = Vector3.Dot(rb.velocity, addedVelocity);
             currentMaxSpeed = maxGroundSpeed;
         }
         else {
-            rb.drag = airDrag;
             addedVelocity = targetDirection.normalized * airAcceleration;
             alignment = Vector3.Dot(rb.velocity, addedVelocity);
             currentMaxSpeed = maxAirSpeed;
