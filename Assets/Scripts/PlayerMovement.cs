@@ -67,14 +67,16 @@ public class PlayerMovement : MonoBehaviour
         {
             isMoving = true;
             moveDirection = new Vector3(inputDirection.x, 0, inputDirection.z);
+            Vector3 moveVelocity = moveDirection.normalized * moveSpeed * Time.deltaTime;
             //Applying horizontal movement
             if (grounded)
             {
-                rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
+                rb.position = (rb.position + moveVelocity);
+                //rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
             }
-            else
-            {
-                rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode.Force);
+            else {
+                rb.position = (rb.position + moveVelocity * airMultiplier);
+                //rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode.Force);
             }
         }
         else

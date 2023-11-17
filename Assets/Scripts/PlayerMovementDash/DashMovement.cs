@@ -73,7 +73,8 @@ public class DashMovement : MonoBehaviour
             dashAvailable = false; // Using up the dash
             dashCdTimer = Mathf.Lerp(dashCooldown, boostedCooldown, movementModification.boostForAll); // putting dash on cool down considering boost
             float netDashDuration = Mathf.Lerp(dashDuration, boostedDuration, movementModification.boostForAll); // calculating boost for durations
-            Dash(dashDistance, netDashDuration, direction);
+            Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z); // Only using the horizontal component
+            Dash(dashDistance, netDashDuration, horizontalDirection);
         }
     }
     public void Dash(float distance, float duration, Vector3 direction)
@@ -121,6 +122,8 @@ public class DashMovement : MonoBehaviour
         if (alignment < 1 && dashDurationTimer > 0) 
         {
             // Moving the player based on the remaining time for more accurate movement based on distance/duration
+
+
             if (dashDurationTimer < Time.fixedDeltaTime)
             {
                 rb.MovePosition(rb.position + (dashVelocity * dashDurationTimer));
