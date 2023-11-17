@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void JumpFunction()
     {
-        if(readyToJump && grounded)
+        if(readyToJump)
         {
             readyToJump = false;
 

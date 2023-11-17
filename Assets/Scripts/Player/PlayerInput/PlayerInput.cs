@@ -60,28 +60,22 @@ public class PlayerInput : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (canInput)
-        {
+    void Update() {
+        Vector3 direction = Vector3.zero;
+        if (canInput) {
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
-            Vector3 direction = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+            direction = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
 
-
-            movement.Move(direction);
             if (Input.GetKeyDown(KeyCode.Space)) {
                 movement.JumpFunction();
             }
-
-
 
             //Combat Moves
             if (Input.GetKeyDown(KeyCode.E)) {
                 //Setting function for ending dash
                 stab.StartStab();
             }
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
+            if (Input.GetKeyDown(KeyCode.Q)) {
                 Debug.Log("stabbing");
                 //slashAndSlide.StartSlash();
             }
@@ -91,10 +85,11 @@ public class PlayerInput : MonoBehaviour
                 //Setting function for ending dash
                 dash.OnDashEnd.AddListener(EndingMove);
                 currentMovementEnding = dash.OnDashEnd;
-                
+
                 dash.PlayerInputDash(direction);
             }
         }
+        movement.Move(direction);
     }
 
     public void EndingMove()

@@ -16,10 +16,12 @@ public class Stab : MonoBehaviour
     [SerializeField] private GameObject swordObject;
     DemonSword demonSword;
 
-    //Values
-    [SerializeField] private float dashSpeed;
+    [Header("Other Variables")]
+    [SerializeField] float dashSpeed;
+    [SerializeField] float bloodGainAmount; 
     bool isStabbing = false;
 
+    [Header("Events")]
     //Stab Events
     public UnityEvent onStabEnd = new UnityEvent();
     
@@ -42,12 +44,14 @@ public class Stab : MonoBehaviour
 
     public void StartStab()
     {
-        //Animation Stuff (to be implemented later)
-        isStabbing = true;
-        
-        // Demon sword variables
-        demonSword.OnEndAction.AddListener(EndOfStabAnimation);
-        demonSword.AttackPosition();
+        if (!isStabbing) {
+            //Animation Stuff (to be implemented later)
+            isStabbing = true;
+
+            // Demon sword variables
+            demonSword.OnEndAction.AddListener(EndOfStabAnimation);
+            demonSword.AttackPosition();
+        }
     }
 
     public void InterruptStab()
@@ -62,15 +66,20 @@ public class Stab : MonoBehaviour
         {
             if(isStabbing)
             {
-                //Setting proper listeners and variables
+                // Setting proper listeners and variables
                 isStabbing = false;
                 playerInput.DisableInput();
                 dashMovement.OnDashEnd.AddListener(EndOfDash);
                 demonSword.OnEndAction.RemoveListener(EndOfStabAnimation);
+
+                // Applying Gameplay mechanics
+                playerMovement.ResetJump();
+                dashMovement.ResetDash();
+                demonSword.GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
                 
                 // Setting up and starting dash
                 collider.isTrigger = true; // Setting as trigger to prevent collisions
-                float dashDuration = 1 / (dashSpeed / stabable.dashLength);
+                float dashDuration = (stabable.dashLength / dashSpeed);
                 rb.position = stabable.dashStartTransform.position;
                 dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
             }

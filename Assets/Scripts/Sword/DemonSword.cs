@@ -50,7 +50,6 @@ public class DemonSword : MonoBehaviour
     {
         //Debug.Log(other.gameObject.layer.ToString() + " " + playerLayerNumber.ToString());
         if (other.gameObject.layer != playerLayerNumber) {
-            Debug.Log(other.name);
             EndAttackPosition();
             OnContact.Invoke(other);
         }
