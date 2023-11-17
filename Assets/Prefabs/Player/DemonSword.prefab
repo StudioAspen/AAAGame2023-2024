@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7747520786984620803}
   - component: {fileID: 1989007850164286170}
   - component: {fileID: 1120121864080066348}
+  - component: {fileID: 5996984886382561609}
+  - component: {fileID: 9109067769063524283}
   m_Layer: 0
   m_Name: DemonSword
   m_TagString: Untagged
@@ -30,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.735732, y: 4.364791, z: 12.724282}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -118,5 +120,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodThirstThreshold: 0
-  maxBlood: 0
+  bloodThirstThreshold: 20
+  maxBlood: 100
+  currentBlood: 0
+  maxBloodForOverfed: 120
+  bloodDrainRate: 5
+  overfedDrainRate: 5
+  playerKillable: {fileID: 0}
+  playerHealthDrainRate: 1
+  OnBloodChange:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5996984886382561609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417093754190084996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c86df6746f668254f9b468be06219d5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followTarget: {fileID: 0}
+  attackTransform: {fileID: 0}
+  followingSpeed: 0.25
+  OnContact:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &9109067769063524283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417093754190084996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49bf4161f3393de478a05a832096218f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swordObject: {fileID: 1417093754190084996}
+  dashSpeed: 0
+  onStabStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onStabEnd:
+    m_PersistentCalls:
+      m_Calls: []

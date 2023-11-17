@@ -5,8 +5,11 @@ using UnityEngine.Events;
 
 public class DemonSword : MonoBehaviour
 {
-    [SerializeField] private Transform followTarget;
-    [SerializeField] private Transform attackTransform;
+    [SerializeField] Transform followTarget;
+    [SerializeField] Transform attackTransform;
+
+    [Range(0f,1f)]
+    [SerializeField] float followingSpeed;
     private bool isFollowing = true;
 
     public UnityEvent<Collider> OnContact = new UnityEvent<Collider>();
@@ -16,8 +19,8 @@ public class DemonSword : MonoBehaviour
         if (isFollowing)
         {
             //Follwing target transform
-            transform.position = Vector3.Lerp(transform.position, followTarget.position, 0.5f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, followTarget.rotation, 0.5f);
+            transform.position = Vector3.Lerp(transform.position, followTarget.position, followingSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, followTarget.rotation, followingSpeed);
         }
     }
 
