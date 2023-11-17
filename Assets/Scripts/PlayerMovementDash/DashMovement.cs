@@ -28,7 +28,6 @@ public class DashMovement : MonoBehaviour
     private float dragValHolder;
 
     [Header("Events")]
-    public UnityEvent OnDashStart = new UnityEvent();
     public UnityEvent OnDashEnd = new UnityEvent();
 
 
@@ -81,13 +80,11 @@ public class DashMovement : MonoBehaviour
 
         //TESTING HEREEEEEEEEEEE
         dragValHolder = rb.drag;
-        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+        rb.velocity = dashVelocity;
 
-
-        OnDashStart.Invoke();
-
-        //testing with vizualizations
-        Debug.DrawLine(transform.position, transform.position + direction * distance, Color.white, 5);
+        // Vizualization of how far
+        Debug.DrawLine(rb.position, rb.position + direction * distance, Color.white, 5);
     }
 
     public void ResetDash()
@@ -105,8 +102,9 @@ public class DashMovement : MonoBehaviour
 
     private void EndDash() {
         //Rstoring movement variables
-        rb.velocity = Vector3.zero;
         rb.drag = dragValHolder;
+        rb.useGravity = true;
+        rb.velocity = Vector3.zero;
 
         //Ending dash
         isDashing = false;
@@ -125,6 +123,6 @@ public class DashMovement : MonoBehaviour
         if (dashDurationTimer <= 0) {
             EndDash();
         }
-        dashDurationTimer -= Time.deltaTime;
+        dashDurationTimer -= Time.fixedDeltaTime;
     }
 }

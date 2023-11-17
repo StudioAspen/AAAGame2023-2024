@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump Variables")]
     public float jumpForce;
-    public float jumpCooldown;
+    public float gravityAcceleration;
 
     [Header("Other Variables")]
     [Range(0.0f, 1f)]
@@ -43,6 +43,15 @@ public class PlayerMovement : MonoBehaviour
             MoveUpdate();
             RotationUpdate();
         }
+
+        //Assinging drag
+        if (grounded) {
+            rb.drag = groundDrag;
+        }
+        else {
+            rb.drag = airDrag;
+            rb.velocity += Vector3.down * gravityAcceleration;
+        }
     }
     private void Update()
     {
@@ -56,13 +65,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void JumpFunction()
     {
-        if(readyToJump && grounded)
+        if(readyToJump)
         {
             readyToJump = false;
-
             Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
         }
 
     }
@@ -80,9 +86,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     public void Jump() {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        //rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
     }
 
     public void ResetJump() {
@@ -93,15 +99,14 @@ public class PlayerMovement : MonoBehaviour
         float currentMaxSpeed;
         float alignment;
         Vector3 addedVelocity;
-        // Assigning variables based on grounded status
+
+        // Assigning variables if player is on the ground
         if (grounded) {
-            rb.drag = groundDrag;
             addedVelocity = targetDirection.normalized * groundAcceleration;
             alignment = Vector3.Dot(rb.velocity, addedVelocity);
             currentMaxSpeed = maxGroundSpeed;
         }
         else {
-            rb.drag = airDrag;
             addedVelocity = targetDirection.normalized * airAcceleration;
             alignment = Vector3.Dot(rb.velocity, addedVelocity);
             currentMaxSpeed = maxAirSpeed;

@@ -21,23 +21,25 @@ public class PlayerInput : MonoBehaviour
     Transform cameraOrientation;
 
     UnityEvent currentMovementEnding;
-    bool canMove = true;
+    bool canInput = true;
 
     //Movement Orientation
     DashMovement dash;
-    //stabanddash stabanddash;
-    //slashandslide slashandslide;
+    Stab stab;
     PlayerMovement movement;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        cameraOrientation = FindObjectOfType<Camera>().transform;
+    void Start() {
+        // Getting components
         dash = GetComponent<DashMovement>();
-        cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
+        stab = GetComponent<Stab>();
         movement = GetComponent<PlayerMovement>();
+        
+        // Getting camera components
+        cameraOrientation = FindObjectOfType<Camera>().transform;
+        cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
 
-
+        // Setting controls for camera
         switch (currentControls)
         {
             case ControlType.controller:
@@ -55,64 +57,50 @@ public class PlayerInput : MonoBehaviour
 
                 break;
         }
-        //stabAndDash = GetComponent<StabAndDash>();
-        //slashAndSlide = GetComponent<SlashAndSlide>();
-        
-
-        //stabAndDash.OnStartStab.AddListener(StartingMove);
-        //slashAndSlide.OnStartSlash.AddListener(StartingMove);
-
-        //stabAndDash.OnEndStab.AddListener(EndingMove);
-        //slashAndSlide.OnEndSlash.AddListener(EndingMove);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (canMove)
-        {
+    void Update() {
+        Vector3 direction = Vector3.zero;
+        if (canInput) {
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
-            Vector3 direction = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+            direction = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
 
-
-            movement.Move(direction);
             if (Input.GetKeyDown(KeyCode.Space)) {
                 movement.JumpFunction();
             }
 
-
-
             //Combat Moves
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                Debug.Log("stabbing");
-                //stabAndDash.StartStab();
+            if (Input.GetKeyDown(KeyCode.E)) {
+                //Setting function for ending dash
+                stab.StartStab();
             }
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
+            if (Input.GetKeyDown(KeyCode.Q)) {
                 Debug.Log("stabbing");
                 //slashAndSlide.StartSlash();
             }
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                canMove = false;
+            if (Input.GetKeyDown(KeyCode.LeftShift)) {
+                DisableInput();
 
                 //Setting function for ending dash
                 dash.OnDashEnd.AddListener(EndingMove);
                 currentMovementEnding = dash.OnDashEnd;
-                
+
                 dash.PlayerInputDash(direction);
             }
         }
+        movement.Move(direction);
     }
 
-    public void StartingMove()
-    {
-        canMove = false;
-    }
     public void EndingMove()
     {
-        canMove = true;
+        EnableInput();
         currentMovementEnding.RemoveListener(EndingMove);
+    }
+    public void DisableInput() {
+        canInput = false;
+    }
+    public void EnableInput() {
+        canInput = true;
     }
 }
