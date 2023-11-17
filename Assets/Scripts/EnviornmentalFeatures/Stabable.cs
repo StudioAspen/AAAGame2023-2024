@@ -9,18 +9,6 @@ public class Stabable : MonoBehaviour
     public Vector3 dashDir; //direction of the dash
     public float dashLength; //how far the player is launched
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnDrawGizmos()
     {
         //makes it so the gizmos transform with the local transform of the object

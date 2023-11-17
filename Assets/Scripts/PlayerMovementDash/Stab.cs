@@ -11,16 +11,17 @@ public class Stab : MonoBehaviour
     Rigidbody rb;
     DashMovement dashMovement;
     PlayerMovement PlayerMovement;
+    Collider collider;
     [SerializeField] private GameObject swordObject;
-    private DemonSword demonSword;
+    DemonSword demonSword;
 
     //Values
     [SerializeField] private float dashSpeed;
     private bool isStabbing = false;
 
     //Stab Events
-    public UnityEvent onStabStart;
-    public UnityEvent onStabEnd;
+    public UnityEvent onStabStart = new UnityEvent();
+    public UnityEvent onStabEnd = new UnityEvent();
     
 
     // Start is called before the first frame update
@@ -28,6 +29,7 @@ public class Stab : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         dashMovement = GetComponent<DashMovement>();
+        collider = GetComponent<Collider>();
         demonSword = swordObject.GetComponent<DemonSword>();
         demonSword.OnContact.AddListener(StabContact);
     }
@@ -62,10 +64,18 @@ public class Stab : MonoBehaviour
         {
             if(isStabbing)
             {
+                collider.isTrigger = true;
+                dashMovement.OnDashEnd.AddListener(EndOfDash);
                 //Dashing Movement
-                Debug.Log("perform dash");
+                float dashDuration = 1 / (dashSpeed / stabable.dashLength);
+                dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
             }
         }
+    }
+    public void EndOfDash() {
+        dashMovement.OnDashEnd.RemoveListener(EndOfDash);
+        collider.isTrigger = false;
+        EndStab();
     }
     private void EndStab()
     {

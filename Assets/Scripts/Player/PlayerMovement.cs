@@ -80,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     public void Jump() {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        //rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
     }
@@ -93,7 +93,8 @@ public class PlayerMovement : MonoBehaviour
         float currentMaxSpeed;
         float alignment;
         Vector3 addedVelocity;
-        // Assigning variables based on grounded status
+
+        // Assigning variables if player is on the ground
         if (grounded) {
             rb.drag = groundDrag;
             addedVelocity = targetDirection.normalized * groundAcceleration;

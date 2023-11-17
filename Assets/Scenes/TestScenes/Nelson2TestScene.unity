@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashDir: {x: 1, y: 0, z: 0}
-  dashLength: 1
+  dashLength: 1.53
 --- !u!54 &331791288
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -672,12 +672,12 @@ PrefabInstance:
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.41828454
+      value: -0.4182845
       objectReference: {fileID: 0}
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.36462483
+      value: -0.3646248
       objectReference: {fileID: 0}
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -687,7 +687,7 @@ PrefabInstance:
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5466538
+      value: -0.54665387
       objectReference: {fileID: 0}
     - target: {fileID: 6671598262104417536, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -742,7 +742,7 @@ PrefabInstance:
     - target: {fileID: 7522325351238352795, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.3646249
+      value: -0.36462492
       objectReference: {fileID: 0}
     - target: {fileID: 7522325351238352795, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -882,6 +882,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902229200159131934, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: dashSpeed
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3902229200159131934, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
