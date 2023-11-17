@@ -12,4 +12,7 @@ public class MovementModification : MonoBehaviour
         boostForAll = boost;
         OnModifyMovement.Invoke();
     }
+
+   
 }
+

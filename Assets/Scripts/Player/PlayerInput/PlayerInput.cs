@@ -14,16 +14,20 @@ public class PlayerInput : MonoBehaviour
     /// If there are any design concerns they will be addressed in a code review
     /// </summary>
 
-    private UnityEvent currentMovementEnding;
-    bool canMove = true;
-    public enum controlType { controller, mouseAndKeyboard};
-    public controlType currentControls;
+    [Header("Control Type")]
+    [SerializeField] ControlType currentControls;
+    enum ControlType { controller, mouseAndKeyboard};
     CinemachineFreeLook cinemachineCam;
+    Transform cameraOrientation;
+
+    UnityEvent currentMovementEnding;
+    bool canMove = true;
+
+    //Movement Orientation
     DashMovement dash;
     //stabanddash stabanddash;
     //slashandslide slashandslide;
-    //movement movement;
-    public Transform cameraOrientation;
+    PlayerMovement movement;
 
     // Start is called before the first frame update
     void Start()
@@ -31,16 +35,17 @@ public class PlayerInput : MonoBehaviour
         cameraOrientation = FindObjectOfType<Camera>().transform;
         dash = GetComponent<DashMovement>();
         cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
+        movement = GetComponent<PlayerMovement>();
 
 
         switch (currentControls)
         {
-            case controlType.controller:
+            case ControlType.controller:
                 cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
 
                 break;
-            case controlType.mouseAndKeyboard:
+            case ControlType.mouseAndKeyboard:
                 cinemachineCam.m_XAxis.m_InputAxisName = "Mouse X";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Mouse Y";
                 Cursor.visible = false;
@@ -52,7 +57,7 @@ public class PlayerInput : MonoBehaviour
         }
         //stabAndDash = GetComponent<StabAndDash>();
         //slashAndSlide = GetComponent<SlashAndSlide>();
-        //movement = GetComponent<Movement>();
+        
 
         //stabAndDash.OnStartStab.AddListener(StartingMove);
         //slashAndSlide.OnStartSlash.AddListener(StartingMove);
@@ -68,6 +73,14 @@ public class PlayerInput : MonoBehaviour
         {
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
             Vector3 direction = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+
+
+            movement.Move(direction);
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                movement.JumpFunction();
+            }
+
+
 
             //Combat Moves
             if (Input.GetKeyDown(KeyCode.E))
@@ -90,13 +103,6 @@ public class PlayerInput : MonoBehaviour
                 
                 dash.PlayerInputDash(direction);
             }
-
-            // Regular movement
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                //movement.Jump();
-            }
-            //movement.Move(direction);
         }
     }
 
