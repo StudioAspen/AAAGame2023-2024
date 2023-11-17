@@ -26,6 +26,7 @@ public class PlayerInput : MonoBehaviour
     //Movement Orientation
     DashMovement dash;
     Stab stab;
+    SlashAndSlide slash;
     PlayerMovement movement;
 
     // Start is called before the first frame update
@@ -33,6 +34,7 @@ public class PlayerInput : MonoBehaviour
         // Getting components
         dash = GetComponent<DashMovement>();
         stab = GetComponent<Stab>();
+        slash = GetComponent<SlashAndSlide>();
         movement = GetComponent<PlayerMovement>();
         
         // Getting camera components
@@ -72,12 +74,10 @@ public class PlayerInput : MonoBehaviour
 
             //Combat Moves
             if (Input.GetKeyDown(KeyCode.E)) {
-                //Setting function for ending dash
                 stab.StartStab();
             }
             if (Input.GetKeyDown(KeyCode.Q)) {
-                Debug.Log("stabbing");
-                //slashAndSlide.StartSlash();
+                slash.StartSlash();
             }
             if (Input.GetKeyDown(KeyCode.LeftShift)) {
                 DisableInput();

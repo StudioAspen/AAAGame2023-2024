@@ -78,10 +78,11 @@ GameObject:
   - component: {fileID: 4595640525888209}
   - component: {fileID: 4531364391987237238}
   - component: {fileID: 7281945831924435466}
+  - component: {fileID: 3902229200159131934}
+  - component: {fileID: 3088617981437380700}
   - component: {fileID: 3650192985131432812}
   - component: {fileID: 2352701808018790800}
   - component: {fileID: 8596804024649230227}
-  - component: {fileID: 3902229200159131934}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -234,9 +235,6 @@ MonoBehaviour:
   dashCooldown: 0
   boostedDuration: 0
   boostedCooldown: 0
-  OnDashStart:
-    m_PersistentCalls:
-      m_Calls: []
   OnDashEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -259,9 +257,54 @@ MonoBehaviour:
   maxAirSpeed: 10
   airDrag: 5
   jumpForce: 10
-  jumpCooldown: 0.25
-  gravityScale: 0
+  gravityAcceleration: 0
   rotationSpeed: 0.25
+--- !u!114 &3902229200159131934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49bf4161f3393de478a05a832096218f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swordObject: {fileID: 0}
+  dashSpeed: 20
+  bloodGainAmount: 0
+  onStabEnd:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3088617981437380700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3881a59e96cc1744893121e9180e14cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sword: {fileID: 0}
+  slideSpeed: 0
+  boostedSlideSpeed: 0
+  bloodGained: 0
+  OnSlashStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSlashEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSlideStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSlideEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3650192985131432812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,23 +363,3 @@ MonoBehaviour:
       m_Calls: []
   timeBeforeRegen: 5
   healthRegenRate: 1
---- !u!114 &3902229200159131934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2762887234727674899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49bf4161f3393de478a05a832096218f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  swordObject: {fileID: 0}
-  dashSpeed: 20
-  onStabStart:
-    m_PersistentCalls:
-      m_Calls: []
-  onStabEnd:
-    m_PersistentCalls:
-      m_Calls: []

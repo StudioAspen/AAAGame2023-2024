@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         if(readyToJump)
         {
             readyToJump = false;
-            Jump();
+            Jump(1);
         }
 
     }
@@ -85,10 +85,10 @@ public class PlayerMovement : MonoBehaviour
             isMoving = false;
         }
     }
-    public void Jump() {
+    public void Jump(float multiplier) {
         //rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
+        rb.AddForce(transform.up * jumpForce * multiplier, ForceMode.VelocityChange);
     }
 
     public void ResetJump() {
