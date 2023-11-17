@@ -20,8 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump Variables")]
     public float jumpForce;
-    public float jumpCooldown;
-    public float gravityScale;
+    public float gravityAcceleration;
 
     [Header("Other Variables")]
     [Range(0.0f, 1f)]
@@ -51,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else {
             rb.drag = airDrag;
+            rb.velocity += Vector3.down * gravityAcceleration;
         }
     }
     private void Update()
@@ -68,10 +68,7 @@ public class PlayerMovement : MonoBehaviour
         if(readyToJump)
         {
             readyToJump = false;
-
             Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
         }
 
     }

@@ -67,8 +67,8 @@ public class Stab : MonoBehaviour
             if(isStabbing)
             {
                 // Setting proper listeners and variables
-                isStabbing = false;
                 playerInput.DisableInput();
+                isStabbing = false;
                 dashMovement.OnDashEnd.AddListener(EndOfDash);
                 demonSword.OnEndAction.RemoveListener(EndOfStabAnimation);
 
@@ -92,6 +92,7 @@ public class Stab : MonoBehaviour
         onStabEnd.Invoke();
     }
     private void EndOfStabAnimation() {
+        isStabbing = false;
         demonSword.OnEndAction.RemoveListener(EndOfStabAnimation);
         onStabEnd.Invoke();
     }
