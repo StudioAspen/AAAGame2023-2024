@@ -8,16 +8,24 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody rb;
     GroundCheck groundCheck;
 
-    [Header("Movement")]
+    [Header("Ground Variables")]
     public float groundAcceleration;
     public float maxGroundSpeed;
     public float groundDrag;
+
+    [Header("Air Variables")]
     public float airAcceleration;
     public float maxAirSpeed;
     public float airDrag;
 
+    [Header("Jump Variables")]
     public float jumpForce;
     public float jumpCooldown;
+
+    [Header("Other Variables")]
+    [Range(0.0f, 1f)]
+    public float rotationSpeed;
+
     bool readyToJump = true;
     bool grounded;
 
@@ -105,6 +113,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     private void RotationUpdate() {
-        transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, 0.5f);
+        transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, rotationSpeed);
     }
 }
