@@ -20,6 +20,7 @@ public class PlayerInput : MonoBehaviour
     CinemachineFreeLook cinemachineCam;
     Transform cameraOrientation;
 
+
     UnityEvent currentMovementEnding;
     bool canInput = true;
 
@@ -28,6 +29,7 @@ public class PlayerInput : MonoBehaviour
     Stab stab;
     SlashAndSlide slash;
     PlayerMovement movement;
+    DownwardStab downwardStab;
 
     // Start is called before the first frame update
     void Start() {
@@ -36,6 +38,7 @@ public class PlayerInput : MonoBehaviour
         stab = GetComponent<Stab>();
         slash = GetComponent<SlashAndSlide>();
         movement = GetComponent<PlayerMovement>();
+        downwardStab = GetComponent<DownwardStab>();
         
         // Getting camera components
         cameraOrientation = FindObjectOfType<Camera>().transform;
@@ -47,7 +50,6 @@ public class PlayerInput : MonoBehaviour
             case ControlType.controller:
                 cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
-
                 break;
             case ControlType.mouseAndKeyboard:
                 cinemachineCam.m_XAxis.m_InputAxisName = "Mouse X";
@@ -56,7 +58,6 @@ public class PlayerInput : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 break;
             default:
-
                 break;
         }
     }
@@ -78,6 +79,12 @@ public class PlayerInput : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Q)) {
                 slash.StartSlash();
+            }
+            if(Input.GetKey(KeyCode.F)) {
+                downwardStab.TryDownwardStabUpdate();
+            }
+            if(Input.GetKeyUp(KeyCode.F)) {
+                downwardStab.ReleaseDownwardStab();
             }
             if (Input.GetKeyDown(KeyCode.LeftShift)) {
                 DisableInput();

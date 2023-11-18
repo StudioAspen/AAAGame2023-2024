@@ -111,9 +111,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Applying horizontal movement
         float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
-        Debug.Log(alignment);
-        Debug.DrawRay(rb.position, horizontalVelocity);
-        Debug.DrawRay(rb.position, maxVelocity);
         if (alignment < 1) {
             rb.AddForce(addedVelocity, ForceMode.VelocityChange);
         }
