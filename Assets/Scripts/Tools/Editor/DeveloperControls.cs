@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -87,7 +88,7 @@ public class DeveloperControls : EditorWindow
             // EXECUTE THE COMMANDS
             //---------------------
             // checks if it is the killable command
-            if (inputModified[0] == "killable")
+            if (inputModified[0] == "killable") // checks for setkillable command
             {
                 try // to catch missing or incorrect parameters or values
                 {
@@ -108,6 +109,26 @@ public class DeveloperControls : EditorWindow
                     AddToConsoleLog("Error: missing true or false"); // tells the user if there is an error
                 }
             }
+            else if (inputModified[0] == "restart") // checks for restart command
+            {
+                Restart();
+            }
+            else if (inputModified[0] == "spawn") // checks for spawn enemy command
+            {
+                try
+                {
+                    SpawnEnemy(inputModified[1]);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    AddToConsoleLog("Error: must enter an enemy");
+                }
+                catch (Exception)
+                {
+                    AddToConsoleLog("Error: enemy does not exist");
+                }
+            }
+
         }
     }
 
@@ -149,6 +170,26 @@ public class DeveloperControls : EditorWindow
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
+    }
+
+    void SpawnEnemy(string enemy)
+    {
+        string enemiesPath = Application.dataPath + "/Prefabs/Enemies";
+        string[] enemies = AssetDatabase.FindAssets("t:Prefab", new[] { enemiesPath });
+        int index;
+        if (enemies.Contains(enemy))
+        {
+            index = Array.IndexOf(enemies, enemy);
+        }
+        else
+        {
+            throw new Exception("Error: Enemy does not exist");
+        }
+
+        string prefabPath = AssetDatabase.GUIDToAssetPath(enemies[index]);
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+
+        PrefabUtility.InstantiatePrefab(prefab);
     }
 
     private void AddToConsoleLog(string message)
