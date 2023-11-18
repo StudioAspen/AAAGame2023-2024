@@ -12,6 +12,8 @@ public class DownwardStab : MonoBehaviour {
     [SerializeField] float downwardStabAcceleration;
     [SerializeField] float downwardStabMaxSpeed;
     [SerializeField] float pressDownTime;
+    [SerializeField] float bloodGain;
+
     //variables for downward stab
     float stabButtonTimer = 0.0f;
     bool canDownwardStab = true;
@@ -74,7 +76,10 @@ public class DownwardStab : MonoBehaviour {
 
     private void DownwardStabContact(Collider other) {
         if(isStabing) {
-
+            if(other.TryGetComponent<DownwardStabEffect>(out DownwardStabEffect effect)) {
+                effect.TriggerEffect();
+                sword.GetComponent<BloodThirst>().GainBlood(bloodGain, true);
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class EyeballGeyser : MonoBehaviour {
+public class EyeballGeyser : DownwardStabEffect {
     [Header("References")]
-    [SerializeField] GameObject bloodGeyser;
+    [SerializeField] GameObject bloodGeyserPrefab;
 
     [Header("Geyser Size")]
     [SerializeField] float height;
@@ -19,6 +19,7 @@ public class EyeballGeyser : MonoBehaviour {
     // Variables
     float geyserTimer;
     bool isBlood = false;
+    GameObject currentBloodGeyser;
 
     private void Update() {
         if (isBlood) {
@@ -34,25 +35,32 @@ public class EyeballGeyser : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.P)) {
             StartBloodGeyser();
         }
-        if (Input.GetKeyDown(KeyCode.L)) {
-            StartBloodGeyser();
+    }
+
+    override public void TriggerEffect() {
+        StartBloodGeyser();
+    }
+
+    public void StartBloodGeyser() {
+        if (!isBlood) {
+            isBlood = true;
+            geyserTimer = duration;
+
+
+            currentBloodGeyser = Instantiate(bloodGeyserPrefab, transform.position, Quaternion.identity);
+
+            //Setting position and scale
+            currentBloodGeyser.transform.position = transform.position + Vector3.up * (height / 2);
+            currentBloodGeyser.transform.localScale = new Vector3(radius, height / 2, radius);
+            currentBloodGeyser.GetComponent<BloodGeyser>().SetStats(geyserAcceleration, geyserMaxSpeed);
         }
     }
-    public void StartBloodGeyser() {
-        isBlood = true;
-        geyserTimer = duration;
-
-        bloodGeyser.SetActive(true);
-
-        //Setting position and scale
-        bloodGeyser.transform.position = transform.position + Vector3.up * (height / 2);
-        bloodGeyser.transform.localScale = new Vector3(radius, height / 2, radius);
-        bloodGeyser.GetComponent<BloodGeyser>().SetStats(geyserAcceleration, geyserMaxSpeed);
-    }
     private void EndBloodGeyser() {
-        isBlood = false;
+        if (isBlood) {
+            isBlood = false;
 
-        bloodGeyser.SetActive(false);
+            Destroy(currentBloodGeyser);
+        }
     }
     private void OnDrawGizmos() {
         Gizmos.DrawWireCube(transform.position + Vector3.up * height/2, new Vector3(radius, height, radius));
