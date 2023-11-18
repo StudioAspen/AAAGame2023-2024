@@ -189,7 +189,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2762887234727674899}
   serializedVersion: 4
-  m_Mass: 5
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -280,14 +280,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 114c9068df70c4d3eacc6cc6dd0f5049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundAcceleration: 5
-  maxGroundSpeed: 10
+  groundAcceleration: 3
+  maxGroundSpeed: 5
   groundDrag: 10
-  airAcceleration: 5
-  maxAirSpeed: 10
+  airAcceleration: 3
+  maxAirSpeed: 5
   airDrag: 5
-  jumpForce: 50
-  gravityAcceleration: 1
+  jumpForce: 20
+  gravityAcceleration: 0.5
   rotationSpeed: 0.75
 --- !u!114 &3902229200159131934
 MonoBehaviour:
@@ -348,9 +348,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7577dd9cfbb8f5b42a68c26fffff31a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  downwardStabAcceleration: 0
-  downwardStabMaxSpeed: 0
-  pressDownTime: 0.5
+  swordObject: {fileID: 6800678773869080880}
+  downwardStabAcceleration: 5
+  downwardStabMaxSpeed: 10
+  pressDownTime: 0.25
+  bloodGain: 0
 --- !u!114 &3650192985131432812
 MonoBehaviour:
   m_ObjectHideFlags: 0
