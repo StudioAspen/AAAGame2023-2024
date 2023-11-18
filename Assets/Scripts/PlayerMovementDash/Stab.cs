@@ -61,8 +61,7 @@ public class Stab : MonoBehaviour
 
     void StabContact(Collider other)
     {
-        Stabable stabable;
-        if(other.gameObject.TryGetComponent<Stabable>(out stabable))
+        if(other.gameObject.TryGetComponent<Stabable>(out Stabable stabable))
         {
             if(isStabbing)
             {
@@ -73,8 +72,6 @@ public class Stab : MonoBehaviour
                 demonSword.OnEndAction.RemoveListener(EndOfStabAnimation);
 
                 // Applying Gameplay mechanics
-                playerMovement.ResetJump();
-                dashMovement.ResetDash();
                 demonSword.GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
                 
                 // Setting up and starting dash
@@ -87,6 +84,8 @@ public class Stab : MonoBehaviour
     }
     private void EndOfDash() {
         dashMovement.OnDashEnd.RemoveListener(EndOfDash);
+        playerMovement.ResetJump();
+        dashMovement.ResetDash();
         collider.isTrigger = false; // Re-enable collider
         playerInput.EnableInput();
         onStabEnd.Invoke();
