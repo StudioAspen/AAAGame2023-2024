@@ -20,18 +20,6 @@ public class PlayerInput : MonoBehaviour
     CinemachineFreeLook cinemachineCam;
     Transform cameraOrientation;
 
-    //variables for downward stab
-    bool CanDownwardStab = false;
-    float stabButtonTimer = 0.0f;
-    public float pressDownTime = 0.5f;
-    bool shouldStartTimer = false;
-    bool canDownwardStab = true;
-    public float downwardStabForce = 700f;
-    public Rigidbody rigidbody;
-    DownwardStab downwardStabScript;
-    private float bufferCheckDistance = 0.1f;
-    private float groundedCheckDistance;
-
 
     UnityEvent currentMovementEnding;
     bool canInput = true;
@@ -41,6 +29,7 @@ public class PlayerInput : MonoBehaviour
     Stab stab;
     SlashAndSlide slash;
     PlayerMovement movement;
+    DownwardStab downwardStab;
 
     // Start is called before the first frame update
     void Start() {
@@ -49,6 +38,7 @@ public class PlayerInput : MonoBehaviour
         stab = GetComponent<Stab>();
         slash = GetComponent<SlashAndSlide>();
         movement = GetComponent<PlayerMovement>();
+        downwardStab = GetComponent<DownwardStab>();
         
         // Getting camera components
         cameraOrientation = FindObjectOfType<Camera>().transform;
@@ -60,7 +50,6 @@ public class PlayerInput : MonoBehaviour
             case ControlType.controller:
                 cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
-
                 break;
             case ControlType.mouseAndKeyboard:
                 cinemachineCam.m_XAxis.m_InputAxisName = "Mouse X";
@@ -69,66 +58,7 @@ public class PlayerInput : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 break;
             default:
-
                 break;
-        }
-        //get downwardstab script
-        downwardStabScript = GetComponent<DownwardStab>();
-        //calculate raycast distance
-        groundedCheckDistance = (GetComponent<CapsuleCollider>().height / 2) + bufferCheckDistance;                            
-
-        rigidbody = GetComponent<Rigidbody>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //check if player is grounded
-        RaycastHit hit;
-        if(Physics.Raycast(transform.position, -transform.up, out hit, groundedCheckDistance))
-        {
-            //if grounded can perform downward stab
-            CanDownwardStab = false;
-        }
-        else
-        {
-            //if not grounded cannot perform downward stab
-            CanDownwardStab = true;
-        }
-
-        //if allowed to perform downward stab has to check if in the air or not 
-        if (CanDownwardStab)
-        {
-            if (shouldStartTimer)
-            {
-                //start timer
-                stabButtonTimer += Time.deltaTime;
-            }
-            else if (!shouldStartTimer)
-            {
-                //reset timer
-                stabButtonTimer = 0f;
-
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                shouldStartTimer = true;
-                canDownwardStab = true;
-
-            }
-            else if (Input.GetKeyUp(KeyCode.Space))
-            {
-                shouldStartTimer = false;
-
-            }
-            else if (stabButtonTimer >= pressDownTime && canDownwardStab)
-            {
-                //perform the downward stab
-                downwardStabScript.DownwardStabFunction(downwardStabForce, rigidbody);
-                Debug.Log("downward stab initiated");
-                canDownwardStab = false;
-            }
         }
     }
 
@@ -149,6 +79,12 @@ public class PlayerInput : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Q)) {
                 slash.StartSlash();
+            }
+            if(Input.GetKey(KeyCode.F)) {
+                downwardStab.TryDownwardStabUpdate();
+            }
+            if(Input.GetKeyUp(KeyCode.F)) {
+                downwardStab.ReleaseDownwardStab();
             }
             if (Input.GetKeyDown(KeyCode.LeftShift)) {
                 DisableInput();
