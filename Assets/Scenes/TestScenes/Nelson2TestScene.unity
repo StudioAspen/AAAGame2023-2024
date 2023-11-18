@@ -301,19 +301,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6313d634746a1ca4d88ea49a0448ad66, type: 3}
---- !u!1 &1476201601 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6800678773869080880, guid: 88512be50a530374189e930db8c0502d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6555729506036273862}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1476201604 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4774135512536042904, guid: 88512be50a530374189e930db8c0502d,
     type: 3}
   m_PrefabInstance: {fileID: 6555729506036273862}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476201601}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
@@ -979,44 +973,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4595640525888209, guid: 88512be50a530374189e930db8c0502d, type: 3}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: jumpForce
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: maxAirSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: maxGroundSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: airAcceleration
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: groundAcceleration
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: gravityAcceleration
-      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
@@ -1067,26 +1027,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: swordObject
-      value: 
-      objectReference: {fileID: 1476201601}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: pressDownTime
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: downwardStabMaxSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: downwardStabAcceleration
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
