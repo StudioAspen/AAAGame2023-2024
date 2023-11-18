@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - DownwardStab
+  - Dashable
   layers:
   - Default
   - TransparentFX
@@ -12,7 +12,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 
