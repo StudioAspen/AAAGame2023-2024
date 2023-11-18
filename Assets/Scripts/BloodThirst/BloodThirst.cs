@@ -5,20 +5,27 @@ using UnityEngine.Events;
 
 public class BloodThirst : MonoBehaviour
 {
+    [Header("Blood Variables")]
     [SerializeField] public float bloodThirstThreshold; // Threshold for blood thirst
     [SerializeField] public float maxBlood; // Max amount of blood before overfed
-    [SerializeField] public float currentBlood; // Current blood amount
     [SerializeField] public float maxBloodForOverfed; // Max amount of blood for overfed
+    [SerializeField] public float currentBlood; // Current blood amount
 
     [SerializeField] float bloodDrainRate; // Blood drain rate
     [SerializeField] float overfedDrainRate; // Blood drain rate when overfed
 
+    [Header("Other Variables")]
     [SerializeField] PlayerKillable playerKillable;
     [SerializeField] float playerHealthDrainRate; // How much are you draining from the player
-    bool isDraining = false; // If the sword is currently draining
 
+    [Header("Events")]
     public UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
+
+    // Components
     MovementModification movementModification;
+    
+    // Other Variables
+    bool isDraining = false; // If the sword is currently draining
 
     // Start is called before the first frame update
     void Start()

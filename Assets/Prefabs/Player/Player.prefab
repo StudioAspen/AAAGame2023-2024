@@ -74,15 +74,15 @@ GameObject:
   - component: {fileID: 2936462189952305664}
   - component: {fileID: 70619026253435599}
   - component: {fileID: 2934851691818191178}
-  - component: {fileID: 6003801723596019275}
   - component: {fileID: 4595640525888209}
+  - component: {fileID: 8596804024649230227}
+  - component: {fileID: 6003801723596019275}
   - component: {fileID: 4531364391987237238}
   - component: {fileID: 7281945831924435466}
   - component: {fileID: 3902229200159131934}
   - component: {fileID: 3088617981437380700}
   - component: {fileID: 3650192985131432812}
   - component: {fileID: 2352701808018790800}
-  - component: {fileID: 8596804024649230227}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -179,19 +179,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6003801723596019275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2762887234727674899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ca49188fbcc39245b494d09667e2dea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentControls: 1
 --- !u!54 &4595640525888209
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -219,6 +206,45 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &8596804024649230227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b13fe390e6f5d4c8cb221e08254b48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 100
+  currentHP: 0
+  isDead: 0
+  OnHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDie:
+    m_PersistentCalls:
+      m_Calls: []
+  timeBeforeRegen: 5
+  healthRegenRate: 1
+--- !u!114 &6003801723596019275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ca49188fbcc39245b494d09667e2dea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentControls: 1
 --- !u!114 &4531364391987237238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,10 +258,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashDistance: 3
-  dashDuration: 0.1
-  dashCooldown: 0
-  boostedDuration: 0
-  boostedCooldown: 0
+  dashDuration: 0.25
+  dashCooldown: 0.25
+  boostedDashDistance: 4
+  boostedDashDuration: 0.1
+  boostedDashCooldown: 0.1
   OnDashEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -259,7 +286,7 @@ MonoBehaviour:
   airDrag: 5
   jumpForce: 20
   gravityAcceleration: 1
-  rotationSpeed: 0.75
+  rotationSpeed: 0.5
 --- !u!114 &3902229200159131934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,8 +318,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slideSpeed: 1
-  jumpMultiplier: 2
   boostedSlideSpeed: 2
+  jumpMultiplier: 2
   bloodGained: 10
   swordObject: {fileID: 6800678773869080880}
   OnSlashStart:
@@ -339,32 +366,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   groundCheckOffset: 0.01
---- !u!114 &8596804024649230227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2762887234727674899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8b13fe390e6f5d4c8cb221e08254b48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHP: 100
-  currentHP: 0
-  isDead: 0
-  OnHealthChange:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDie:
-    m_PersistentCalls:
-      m_Calls: []
-  timeBeforeRegen: 5
-  healthRegenRate: 1
 --- !u!1001 &5605391723127491252
 PrefabInstance:
   m_ObjectHideFlags: 0

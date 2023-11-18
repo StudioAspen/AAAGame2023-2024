@@ -6,10 +6,12 @@ using UnityEngine.Events;
 
 public class Killable : MonoBehaviour
 {
+    [Header("Health Variables")]
     public float maxHP; 
     public float currentHP;
     public bool isDead = false;
 
+    [Header("Events")]
     public UnityEvent OnHealthChange = new UnityEvent(); // Event that occurs when current health value changes
     public UnityEvent OnTakeDamage = new UnityEvent(); // Event that occurs when object takes damage
     public UnityEvent OnDie = new UnityEvent(); // Event that occurs when current hp < 0 which means dead

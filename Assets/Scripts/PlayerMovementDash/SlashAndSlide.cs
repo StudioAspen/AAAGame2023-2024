@@ -9,8 +9,8 @@ public class SlashAndSlide : MonoBehaviour
 {
     [Header("Movement Variables")]
     public float slideSpeed;
-    public float jumpMultiplier;
     public float boostedSlideSpeed;
+    public float jumpMultiplier;
 
     [Header("Other Variables")]
     public float bloodGained;
