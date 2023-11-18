@@ -7,12 +7,14 @@ using UnityEngine.UIElements;
 
 public class SlashAndSlide : MonoBehaviour
 {
-    [Header("Variables")]
-    [SerializeField] GameObject swordObject;
+    [Header("Movement Variables")]
     public float slideSpeed;
-    public float boostedSlideSpeed;
-    public float bloodGained;
     public float jumpMultiplier;
+    public float boostedSlideSpeed;
+
+    [Header("Other Variables")]
+    public float bloodGained;
+    [SerializeField] GameObject swordObject;
 
     [Header("Events")]
     public UnityEvent OnSlashStart = new UnityEvent();
@@ -92,8 +94,8 @@ public class SlashAndSlide : MonoBehaviour
         playerMovement.Jump(jumpMultiplier);
         playerMovement.ResetJump();
         dashMovement.ResetDash();
-        OnSlideEnd.Invoke();
         playerInput.EnableInput();
+        OnSlideEnd.Invoke();
         dstTravelled = 0f;
         sliding = false;
         rb.useGravity = true;

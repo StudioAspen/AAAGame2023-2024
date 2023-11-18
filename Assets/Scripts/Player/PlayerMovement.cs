@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector3 inputDirection)
     {
-        if (inputDirection.magnitude > 0.1f)
+        if (inputDirection.magnitude > 0)
         {
             isMoving = true;
             targetDirection = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
@@ -96,27 +96,29 @@ public class PlayerMovement : MonoBehaviour
     }
     private void MoveUpdate()
     {
-        float currentMaxSpeed;
-        float alignment;
         Vector3 addedVelocity;
-
+        Vector3 maxVelocity;
+        Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         // Assigning variables if player is on the ground
         if (grounded) {
             addedVelocity = targetDirection.normalized * groundAcceleration;
-            alignment = Vector3.Dot(rb.velocity, addedVelocity);
-            currentMaxSpeed = maxGroundSpeed;
+            maxVelocity = targetDirection.normalized * maxGroundSpeed;
         }
         else {
             addedVelocity = targetDirection.normalized * airAcceleration;
-            alignment = Vector3.Dot(rb.velocity, addedVelocity);
-            currentMaxSpeed = maxAirSpeed;
+            maxVelocity = targetDirection.normalized * maxAirSpeed;
         }
 
         // Applying horizontal movement
-        if (rb.velocity.magnitude < currentMaxSpeed || alignment < 0) {
+        float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
+        Debug.Log(alignment);
+        Debug.DrawRay(rb.position, horizontalVelocity);
+        Debug.DrawRay(rb.position, maxVelocity);
+        if (alignment < 1) {
             rb.AddForce(addedVelocity, ForceMode.VelocityChange);
         }
     }
+
     private void RotationUpdate() {
         transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, rotationSpeed);
     }
