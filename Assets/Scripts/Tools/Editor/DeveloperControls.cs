@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DeveloperControls : EditorWindow
 {
@@ -103,7 +103,7 @@ public class DeveloperControls : EditorWindow
                         throw new Exception();
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     AddToConsoleLog("Error: missing true or false"); // tells the user if there is an error
                 }
@@ -138,6 +138,17 @@ public class DeveloperControls : EditorWindow
         {
             AddToConsoleLog("Player is now unkillable");
         }
+    }
+
+    void Kill()
+    {
+        AddToConsoleLog("Killed the player");
+    }
+
+    void Restart()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
     }
 
     private void AddToConsoleLog(string message)
