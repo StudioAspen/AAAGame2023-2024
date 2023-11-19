@@ -9,7 +9,6 @@ public class DemonSword : MonoBehaviour
     [SerializeField] Transform followTarget;
     [SerializeField] Transform attackTransform;
     [SerializeField] Transform downwardStabTransform;
-    Transform currentFollow;
 
     [Header("Other Variables")]
     [Range(0f,1f)]
@@ -22,6 +21,7 @@ public class DemonSword : MonoBehaviour
 
     // Other variables
     private bool isFollowing = true;
+    Transform currentFollow;
 
     private void Start() {
         currentFollow = followTarget;
@@ -53,7 +53,7 @@ public class DemonSword : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //Debug.Log(other.gameObject.layer.ToString() + " " + playerLayerNumber.ToString());
-        if (other.gameObject.layer != playerLayerNumber) {
+        if (other.gameObject.layer != gameObject.layer) {
             OnContact.Invoke(other);
             EndAttackPosition();
         }

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using PathCreation;
 using UnityEngine.UIElements;
 
-public class SlashAndSlide : MonoBehaviour
+public class Slash : MonoBehaviour
 {
     [Header("Movement Variables")]
     public float slideSpeed;
@@ -17,11 +17,7 @@ public class SlashAndSlide : MonoBehaviour
     [SerializeField] GameObject swordObject;
 
     [Header("Events")]
-    public UnityEvent OnSlashStart = new UnityEvent();
     public UnityEvent OnSlashEnd = new UnityEvent();
-
-    public UnityEvent OnSlideStart = new UnityEvent();
-    public UnityEvent OnSlideEnd = new UnityEvent();
 
     // Components
     private MovementModification movementModification;
@@ -86,7 +82,6 @@ public class SlashAndSlide : MonoBehaviour
 
     private void StartSlide()
     {
-        OnSlideStart.Invoke();
         sliding = true;
     }
 
@@ -95,7 +90,6 @@ public class SlashAndSlide : MonoBehaviour
         playerMovement.ResetJump();
         dashMovement.ResetDash();
         playerInput.EnableInput();
-        OnSlideEnd.Invoke();
         dstTravelled = 0f;
         sliding = false;
         rb.useGravity = true;

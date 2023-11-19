@@ -5,10 +5,6 @@ using UnityEngine.Events;
 
 public class DashMovement : MonoBehaviour
 {
-    // References
-    Rigidbody rb;//rigid body of player
-    MovementModification movementModification;
-    GroundCheck groundCheck;
 
     [Header("Base Stats")]
     public float dashDistance; // How far the dash will go
@@ -30,6 +26,11 @@ public class DashMovement : MonoBehaviour
     [Header("Events")]
     public UnityEvent OnDashEnd = new UnityEvent();
 
+    // References
+    Rigidbody rb;//rigid body of player
+    MovementModification movementModification;
+    GroundCheck groundCheck;
+    PlayerInput playerInput;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,7 @@ public class DashMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
         groundCheck = GetComponent<GroundCheck>();
+        playerInput = GetComponent<PlayerInput>();
     }
 
     private void FixedUpdate() {
@@ -56,7 +58,7 @@ public class DashMovement : MonoBehaviour
             ResetDash();
         }
     }
-    public void PlayerInputDash(Vector3 direction)
+    public void TryPlayerInputDash(Vector3 direction)
     {
         if (dashCdTimer <= 0 && dashAvailable && !isDashing) {
             dashAvailable = false; // Using up the dash
@@ -77,6 +79,7 @@ public class DashMovement : MonoBehaviour
         if (direction.magnitude == 0) {
             direction = transform.forward;
         }
+        playerInput.DisableInput();
 
         // Setting variables
         isDashing = true;
@@ -106,6 +109,8 @@ public class DashMovement : MonoBehaviour
     }
 
     private void EndDash() {
+        playerInput.EnableInput();
+
         //Rstoring movement variables
         rb.drag = dragValHolder;
         rb.useGravity = true;
