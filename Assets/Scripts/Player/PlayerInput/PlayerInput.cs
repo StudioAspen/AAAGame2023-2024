@@ -6,21 +6,33 @@ using UnityEngine.Events;
 using UnityEditor;
 public class PlayerInput : MonoBehaviour
 {
-    /// <summary>
-    /// CURRENTLY NONE OF THESE MOVEMENTS EXIST IN THIS BRANCH BUT COMMENTED TO SHOW THE INTENTION
-    /// This script controls all the player inputs and calculations for them, like the relative camera position
-    /// 
-    /// For the gameplay developers replace the comments with your respective code, 
-    /// If there are any design concerns they will be addressed in a code review
-    /// </summary>
-
     [Header("Control Type")]
     [SerializeField] ControlType currentControls;
 
     [Header("Input Variables")]
     [SerializeField] float combinationWindow;
 
-    
+    [Header("Controller Inputs")]
+    [SerializeField] KeyCode controllerStab;
+    [SerializeField] KeyCode controllerSlash;
+    [SerializeField] KeyCode controllerDownwardStab;
+    [SerializeField] KeyCode controllerDash;
+    [SerializeField] KeyCode controllerJump;
+
+    [Header("Mouse Keyboard Inputs")]
+    [SerializeField] KeyCode keyboardStab;
+    [SerializeField] KeyCode keyboardSlash;
+    [SerializeField] KeyCode keyboardDownwardStab;
+    [SerializeField] KeyCode keyboardDash;
+    [SerializeField] KeyCode keyboardJump;
+
+
+    KeyCode inputStab;
+    KeyCode inputSlash;
+    KeyCode inputDownwardStab;
+    KeyCode inputDash;
+    KeyCode inputJump;
+
     enum ControlType { controller, mouseAndKeyboard};
     CinemachineFreeLook cinemachineCam;
     Transform cameraOrientation;
@@ -30,7 +42,6 @@ public class PlayerInput : MonoBehaviour
     bool dashStarted = false;
     float combinationWindowTimer = 0;
     bool canInput = true;
-    bool canMove = true;
 
     //Movement abilities
     PlayerMovement movement;
@@ -67,14 +78,30 @@ public class PlayerInput : MonoBehaviour
         switch (currentControls)
         {
             case ControlType.controller:
+                // Setting axis for controller
                 cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
+
+                // Setting inputs for controller
+                inputStab = controllerStab;
+                inputSlash = controllerSlash;
+                inputDownwardStab = controllerDownwardStab; 
+                inputDash = controllerDownwardStab;
+                inputJump = controllerJump;
                 break;
             case ControlType.mouseAndKeyboard:
+                // Setting axis for keyboard
                 cinemachineCam.m_XAxis.m_InputAxisName = "Mouse X";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Mouse Y";
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
+
+                // Setting inputs for keyboard
+                inputStab = keyboardStab;
+                inputSlash = keyboardSlash;
+                inputDownwardStab = keyboardDownwardStab;
+                inputDash = keyboardDash;
+                inputJump = keyboardJump;
                 break;
             default:
                 break;
@@ -101,7 +128,6 @@ public class PlayerInput : MonoBehaviour
             CheckCombinationAbilties(inputDirection);
         }
         movement.Move(inputDirection);
-        JoyStickCheck();
     }
     public void DisableInput() {
         canInput = false;
@@ -109,43 +135,20 @@ public class PlayerInput : MonoBehaviour
     public void EnableInput() {
         canInput = true;
     }
-    private void JoyStickCheck() {
-        if(Input.GetKeyDown(KeyCode.Joystick1Button0)) {
-            Debug.Log("joystick0");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button1)) {
-            Debug.Log("joystick1");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button2)) {
-            Debug.Log("joystick2");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button3)) {
-            Debug.Log("joystick3");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button4)) {
-            Debug.Log("joystick4");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button5)) {
-            Debug.Log("joystick5");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button6)) {
-            Debug.Log("joystick6");
-        }
-    }
     private void CheckAbilities() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(inputJump)) {
             movement.JumpFunction();
         }
-        if (Input.GetKey(KeyCode.F)) {
+        if (Input.GetKey(inputDownwardStab)) {
             downwardStab.TryDownwardStabUpdate();
         }
-        if (Input.GetKeyUp(KeyCode.F)) {
+        if (Input.GetKeyUp(inputDownwardStab)) {
             downwardStab.ReleaseDownwardStab();
         }
     }
     private void CheckCombinationAbilties(Vector3 direction) {
         // Stab Move with combination logic
-        if (Input.GetKeyDown(KeyCode.E)) {
+        if (Input.GetKeyDown(inputStab)) {
             Debug.Log(combinationWindowTimer);
             if (!dashStarted) {
                 stabStarted = true;
@@ -160,7 +163,7 @@ public class PlayerInput : MonoBehaviour
         }
 
         // Slash Move with combination logic
-        if (Input.GetKeyDown(KeyCode.Q)) {
+        if (Input.GetKeyDown(inputSlash)) {
             Debug.Log(combinationWindowTimer);
             if (!dashStarted) {
                 slashStarted = true;
@@ -175,7 +178,7 @@ public class PlayerInput : MonoBehaviour
         }
 
         // Dash with combination logic
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+        if (Input.GetKeyDown(inputDash)) {
             Debug.Log(combinationWindowTimer);
             if (stabStarted && combinationWindowTimer < combinationWindow) {
                 stab.InterruptStab();

@@ -324,6 +324,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentControls: 1
   combinationWindow: 0.2
+  controllerStab: 329
+  controllerSlash: 328
+  controllerDownwardStab: 327
+  controllerDash: 333
+  controllerJump: 326
+  keyboardStab: 101
+  keyboardSlash: 113
+  keyboardDownwardStab: 306
+  keyboardDash: 304
+  keyboardJump: 32
 --- !u!114 &4531364391987237238
 MonoBehaviour:
   m_ObjectHideFlags: 0
