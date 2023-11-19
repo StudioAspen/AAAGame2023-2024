@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1713748701685793990}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0, z: 1.77}
+  m_LocalPosition: {x: 0, y: -0, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -84,7 +84,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.75
-  m_Height: 2
+  m_Height: 2.5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6990662696071883527
@@ -127,7 +127,7 @@ Transform:
   m_GameObject: {fileID: 2328640234861406567}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.11, y: 0.95, z: 0}
+  m_LocalPosition: {x: -1.068, y: 0.827, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -153,9 +153,10 @@ GameObject:
   - component: {fileID: 3902229200159131934}
   - component: {fileID: 3088617981437380700}
   - component: {fileID: 8671536288844823369}
-  - component: {fileID: 3650192985131432812}
   - component: {fileID: 8012279846651036797}
+  - component: {fileID: 7021382955167843328}
   - component: {fileID: 2352701808018790800}
+  - component: {fileID: 3650192985131432812}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -179,6 +180,7 @@ Transform:
   - {fileID: 3770348240250336498}
   - {fileID: 6633661375329885284}
   - {fileID: 6088350622376495114}
+  - {fileID: 4336202542278233531}
   - {fileID: 7564267098114665675}
   - {fileID: 7431794261642768568}
   m_Father: {fileID: 0}
@@ -280,7 +282,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &8596804024649230227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,7 +322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentControls: 1
-  combinationWindow: 0.1
+  combinationWindow: 0.2
 --- !u!114 &4531364391987237238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,7 +380,7 @@ MonoBehaviour:
   swordObject: {fileID: 6800678773869080880}
   dashSpeed: 10
   bloodGainAmount: 10
-  onStabEnd:
+  OnStabEnd:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &3088617981437380700
@@ -398,16 +400,7 @@ MonoBehaviour:
   jumpMultiplier: 2
   bloodGained: 10
   swordObject: {fileID: 6800678773869080880}
-  OnSlashStart:
-    m_PersistentCalls:
-      m_Calls: []
   OnSlashEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSlideStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSlideEnd:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &8671536288844823369
@@ -427,22 +420,6 @@ MonoBehaviour:
   downwardStabMaxSpeed: 10
   pressDownTime: 0.25
   bloodGain: 0
---- !u!114 &3650192985131432812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2762887234727674899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b92b510a04956c40aa1a3eab43f2d4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boostForAll: 0
-  OnModifyMovement:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &8012279846651036797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,7 +432,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72789c3c33e498e458b1bd976b9ab04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  swordObject: {fileID: 6800678773869080880}
   dashCollider: {fileID: 6990662696071883527}
+  OnEndStabDash:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7021382955167843328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25284ac0ec7fed74a9b97402bff67ddc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashCollider: {fileID: 6990662696071883527}
+  swordObject: {fileID: 6800678773869080880}
+  OnEndSlashDash:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2352701808018790800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,6 +470,53 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   groundCheckOffset: 0.01
+--- !u!114 &3650192985131432812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b92b510a04956c40aa1a3eab43f2d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boostForAll: 0
+  OnModifyMovement:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &3410584284265416894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4336202542278233531}
+  m_Layer: 6
+  m_Name: DashAttackPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4336202542278233531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3410584284265416894}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7569982482725669098}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &8843297453516639595
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +631,11 @@ PrefabInstance:
       propertyPath: playerLayerNumber
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5996984886382561609, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: dashAttackTransform
+      value: 
+      objectReference: {fileID: 4336202542278233531}
     - target: {fileID: 5996984886382561609, guid: c66b3c9ba7489084f8c3f641e0306f46,
         type: 3}
       propertyPath: downwardStabTransform

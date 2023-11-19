@@ -80,9 +80,16 @@ public class Slash : MonoBehaviour
         }
     }
 
-    private void StartSlide()
-    {
+    public void StartSlide(Slashable slashable, PathCreator pc, Collider other) {
         sliding = true;
+        playerInput.DisableInput();
+        sword.GetComponent<BloodThirst>().GainBlood(bloodGained, true);
+        Vector3 contactPoint = other.ClosestPoint(swordObject.transform.position);
+        pathCreator = pc;
+        rb.useGravity = false;
+        dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
+        playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
+        swordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
     }
 
     private void EndSlide() {
@@ -97,23 +104,12 @@ public class Slash : MonoBehaviour
 
     public void SlashContact(Collider other)
     {
-        if (other.TryGetComponent<Slashable>(out Slashable slashable) && 
-            other.TryGetComponent<PathCreator>(out PathCreator pc))
+        if (other.TryGetComponent(out Slashable slashable) && 
+            other.TryGetComponent(out PathCreator pc))
         {
             if (!sliding && isSlashing) {
-                Vector3 contactPoint = other.ClosestPoint(swordObject.transform.position);
                 isSlashing = false;
-                playerInput.DisableInput(); 
-                sword.GetComponent<BloodThirst>().GainBlood(bloodGained, true);
-
-                StartSlide();
-                pathCreator = pc;
-                rb.useGravity = false;
-                dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
-                playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
-                swordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
-
-                // Pause slash animation
+                StartSlide(slashable, pc, other);
             }
         }
     }
@@ -121,7 +117,7 @@ public class Slash : MonoBehaviour
         isSlashing = false;
         sword.OnEndAction.RemoveListener(EndOfSlashAnimation);
     }
-    public void InterruptSlide()
+    public void InterruptSlash()
     {
         EndSlide();
     }

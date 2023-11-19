@@ -9,6 +9,7 @@ public class DemonSword : MonoBehaviour
     [SerializeField] Transform followTarget;
     [SerializeField] Transform attackTransform;
     [SerializeField] Transform downwardStabTransform;
+    [SerializeField] Transform dashAttackTransform;
 
     [Header("Other Variables")]
     [Range(0f,1f)]
@@ -45,6 +46,9 @@ public class DemonSword : MonoBehaviour
     }
     public void DownwardAttackPosition() {
         currentFollow = downwardStabTransform;
+    }
+    public void DashAttackPosition() {
+        currentFollow = dashAttackTransform;
     }
     public void EndAttackPosition() {
         currentFollow = followTarget;

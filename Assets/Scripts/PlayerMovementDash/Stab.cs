@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
-
 public class Stab : MonoBehaviour
 {
 
@@ -71,15 +69,13 @@ public class Stab : MonoBehaviour
                 isStabbing = false;
                 sword.OnEndAction.RemoveListener(EndOfStabAnimation);
 
-                // Applying Gameplay mechanics
-                sword.GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
-
                 // Setting up and starting dash
                 DashThrough(stabable);
             }
         }
     }
     public void DashThrough(Stabable stabable) {
+        sword.GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
         dashMovement.OnDashEnd.AddListener(EndOfDash);
         collider.isTrigger = true; // Setting as trigger to prevent collisions
         float dashDuration = (stabable.dashLength / dashSpeed);
