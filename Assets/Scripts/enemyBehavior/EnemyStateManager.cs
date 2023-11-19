@@ -13,10 +13,16 @@ public class EnemyStateManager : MonoBehaviour
 
     // player transform
     public Transform player;
+    // enemy killable
+    private Killable kill;
 
     // Start is called before the first frame update
     void Start()
     {
+        // get component and when enemy dies, switch the state
+        kill = GetComponent<Killable>();
+        kill.OnDie.AddListener(Death);
+
         // starting state for the state machine, aka idle
         currentState = idleState;
         // "this" is a ref to the context (this EXACT monobehavior script)
@@ -29,6 +35,12 @@ public class EnemyStateManager : MonoBehaviour
     {    
         // will call any logic in UpdateState from the current state every frame
         currentState.UpdateState(this);
+
+        // check if death state is working
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            kill.TakeDamage(132);
+        }
     }
 
     public void SwitchState(EnemyBaseState state)
@@ -40,17 +52,22 @@ public class EnemyStateManager : MonoBehaviour
 
     public bool RayCastCheck(float distance)
     {
-        if (Physics.Raycast(transform.position, player.transform.position, out RaycastHit hitInfo, distance))
+        if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out RaycastHit hitInfo, distance))
         {
             // draws the ray in scene when hit, RED
-            Debug.DrawRay(transform.position, player.transform.position * hitInfo.distance, Color.red);
+            Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hitInfo.distance, Color.red);
             return true;
         }
         else
         {
             // draws the ray in scene when NOT hit, GREEN
-            Debug.DrawRay(transform.position, player.transform.position * distance, Color.green);
+            Debug.DrawRay(transform.position, (player.transform.position - transform.position) * distance, Color.green);
             return false;
         }
+    }
+
+    public void Death()
+    {
+        SwitchState(deathState);
     }
 }

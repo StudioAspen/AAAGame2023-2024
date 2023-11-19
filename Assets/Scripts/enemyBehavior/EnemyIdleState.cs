@@ -6,6 +6,9 @@ public class EnemyIdleState : EnemyBaseState
     public override void EnterState(EnemyStateManager enemy)
     {
         Debug.Log("Enter Idle State");
+
+        // starting running to original position
+        // UNDONE
     }
 
     public override void UpdateState(EnemyStateManager enemy)
@@ -14,8 +17,8 @@ public class EnemyIdleState : EnemyBaseState
 
         // if enemy is in range for aggro
         if(enemy.RayCastCheck(20f))
-        {
             enemy.SwitchState(enemy.aggroState);
-        }
+
+        // if no player stop moving and wait for player to get into range
     }
 }
