@@ -53,7 +53,7 @@ public class DemonSword : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //Debug.Log(other.gameObject.layer.ToString() + " " + playerLayerNumber.ToString());
-        if (other.gameObject.layer != playerLayerNumber) {
+        if (other.gameObject.layer != gameObject.layer) {
             OnContact.Invoke(other);
             EndAttackPosition();
         }

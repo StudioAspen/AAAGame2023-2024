@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using PathCreation;
 using UnityEngine.UIElements;
 
-public class SlashAndSlide : MonoBehaviour
+public class Slash : MonoBehaviour
 {
     [Header("Movement Variables")]
     public float slideSpeed;

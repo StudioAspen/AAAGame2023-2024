@@ -16,6 +16,8 @@ public class PlayerInput : MonoBehaviour
 
     [Header("Control Type")]
     [SerializeField] ControlType currentControls;
+
+    
     enum ControlType { controller, mouseAndKeyboard};
     CinemachineFreeLook cinemachineCam;
     Transform cameraOrientation;
@@ -24,21 +26,23 @@ public class PlayerInput : MonoBehaviour
     UnityEvent currentMovementEnding;
     bool canInput = true;
 
-    //Movement Orientation
+    //Movement abilities
+    PlayerMovement movement;
     DashMovement dash;
     Stab stab;
-    SlashAndSlide slash;
-    PlayerMovement movement;
+    Slash slash;
     DownwardStab downwardStab;
+    StabDash stabDash;
 
     // Start is called before the first frame update
     void Start() {
         // Getting components
         dash = GetComponent<DashMovement>();
         stab = GetComponent<Stab>();
-        slash = GetComponent<SlashAndSlide>();
+        slash = GetComponent<Slash>();
         movement = GetComponent<PlayerMovement>();
         downwardStab = GetComponent<DownwardStab>();
+        stabDash = GetComponent<StabDash>();
         
         // Getting camera components
         cameraOrientation = FindObjectOfType<Camera>().transform;
@@ -87,13 +91,10 @@ public class PlayerInput : MonoBehaviour
                 downwardStab.ReleaseDownwardStab();
             }
             if (Input.GetKeyDown(KeyCode.LeftShift)) {
-                DisableInput();
-
-                //Setting function for ending dash
-                dash.OnDashEnd.AddListener(EndingMove);
-                currentMovementEnding = dash.OnDashEnd;
-
-                dash.PlayerInputDash(direction);
+                dash.TryPlayerInputDash(direction);
+            }
+            if(Input.GetKeyDown(KeyCode.C)) {
+                stabDash.TryStartStabDash(direction);
             }
         }
         movement.Move(direction);

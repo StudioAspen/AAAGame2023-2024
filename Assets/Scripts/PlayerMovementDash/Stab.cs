@@ -59,35 +59,36 @@ public class Stab : MonoBehaviour
         isStabbing = false;
     }
 
-    void StabContact(Collider other)
+    public void StabContact(Collider other)
     {
-        if(other.gameObject.TryGetComponent<Stabable>(out Stabable stabable))
+        if(other.gameObject.TryGetComponent(out Stabable stabable))
         {
             if(isStabbing)
             {
                 // Setting proper listeners and variables
-                playerInput.DisableInput();
                 isStabbing = false;
-                dashMovement.OnDashEnd.AddListener(EndOfDash);
                 demonSword.OnEndAction.RemoveListener(EndOfStabAnimation);
 
                 // Applying Gameplay mechanics
                 demonSword.GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
-                
+
                 // Setting up and starting dash
-                collider.isTrigger = true; // Setting as trigger to prevent collisions
-                float dashDuration = (stabable.dashLength / dashSpeed);
-                rb.position = stabable.dashStartTransform.position;
-                dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
+                DashThrough(stabable);
             }
         }
+    }
+    public void DashThrough(Stabable stabable) {
+        dashMovement.OnDashEnd.AddListener(EndOfDash);
+        collider.isTrigger = true; // Setting as trigger to prevent collisions
+        float dashDuration = (stabable.dashLength / dashSpeed);
+        rb.position = stabable.dashStartTransform.position;
+        dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
     }
     private void EndOfDash() {
         dashMovement.OnDashEnd.RemoveListener(EndOfDash);
         playerMovement.ResetJump();
         dashMovement.ResetDash();
         collider.isTrigger = false; // Re-enable collider
-        playerInput.EnableInput();
         onStabEnd.Invoke();
     }
     private void EndOfStabAnimation() {
