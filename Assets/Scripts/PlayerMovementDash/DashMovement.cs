@@ -91,12 +91,13 @@ public class DashMovement : MonoBehaviour
         rb.useGravity = false;
         rb.velocity = dashVelocity;
 
-        // Vizualization of how far the player SHOULD
+        // Vizualization of how far the player SHOULD go
         Debug.DrawLine(rb.position, rb.position + direction * distance, Color.white, 5);
     }
 
     public void ResetDash()
     {
+        dashCdTimer = 0;
         dashAvailable = true;
     }
 
@@ -129,7 +130,6 @@ public class DashMovement : MonoBehaviour
             rb.drag = 0;
             rb.velocity = dashVelocity;
         }
-
         if (dashDurationTimer <= 0) {
             EndDash();
         }

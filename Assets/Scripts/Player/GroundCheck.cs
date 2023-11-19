@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GroundCheck : MonoBehaviour {
-
-    //References
+    // Components
     Collider collider;
     
     //Dedicated ground check

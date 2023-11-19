@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class StabDash : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] SwordMovement swordMovement;
     [SerializeField] DashCollider dashCollider;
 
     [Header("Events")]
@@ -19,6 +20,7 @@ public class StabDash : MonoBehaviour
     bool isDashing = false;
 
     private void Start() {
+        // Getting components
         dashMovement = GetComponent<DashMovement>();
         stab = GetComponent<Stab>();
 
@@ -27,14 +29,17 @@ public class StabDash : MonoBehaviour
 
     public void TryStartStabDash(Vector3 direction) {
         if(!isDashing) {
+            Debug.Log("starting stabdash");
             isDashing = true;
 
+            swordMovement.DashAttackPosition();
             dashMovement.OnDashEnd.AddListener(EndStabDash);
             dashMovement.TryPlayerInputDash(direction);
         }
     }
     private void EndStabDash() {
         dashMovement.OnDashEnd.RemoveListener(EndStabDash);
+        swordMovement.EndAttackPosition();
         isDashing = false;
         OnEndStabDash.Invoke();
     }

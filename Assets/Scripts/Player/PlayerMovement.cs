@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     //Components
-    Rigidbody rb;
     GroundCheck groundCheck;
+    Rigidbody rb;
 
     [Header("Ground Variables")]
     public float groundAcceleration;
@@ -34,8 +34,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-       rb = GetComponent<Rigidbody>();
         groundCheck = GetComponent<GroundCheck>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate() {
