@@ -26,7 +26,7 @@ public class EnemyStateManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {    
         // will call any logic in UpdateState from the current state every frame
         currentState.UpdateState(this);
     }
@@ -36,5 +36,21 @@ public class EnemyStateManager : MonoBehaviour
         // change the state then call the EnterState from the new state
         currentState = state;
         state.EnterState(this);
+    }
+
+    public bool RayCastCheck(float distance)
+    {
+        if (Physics.Raycast(transform.position, player.transform.position, out RaycastHit hitInfo, distance))
+        {
+            // draws the ray in scene when hit, RED
+            Debug.DrawRay(transform.position, player.transform.position * hitInfo.distance, Color.red);
+            return true;
+        }
+        else
+        {
+            // draws the ray in scene when NOT hit, GREEN
+            Debug.DrawRay(transform.position, player.transform.position * distance, Color.green);
+            return false;
+        }
     }
 }
