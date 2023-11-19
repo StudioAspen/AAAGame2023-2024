@@ -7,7 +7,7 @@ using PathCreation;
 public class SlashDash : MonoBehaviour {
     [Header("References")]
     [SerializeField] DashCollider dashCollider;
-    [SerializeField] GameObject swordObject;
+    [SerializeField] SwordMovement swordMovement;
 
     [Header("Events")]
     public UnityEvent OnEndSlashDash = new UnityEvent();
@@ -15,7 +15,6 @@ public class SlashDash : MonoBehaviour {
     // Components
     DashMovement dashMovement;
     Slash slash;
-    DemonSword sword;
 
     //Variables
     bool isDashing = false;
@@ -23,7 +22,6 @@ public class SlashDash : MonoBehaviour {
     private void Start() {
         dashMovement = GetComponent<DashMovement>();
         slash = GetComponent<Slash>();
-        sword = swordObject.GetComponent<DemonSword>();
 
         dashCollider.OnContact.AddListener(SlashDashContact);
     }
@@ -32,14 +30,14 @@ public class SlashDash : MonoBehaviour {
         if (!isDashing) {
             isDashing = true;
 
-            sword.DashAttackPosition();
+            swordMovement.DashAttackPosition();
             dashMovement.OnDashEnd.AddListener(EndSlashDash);
             dashMovement.TryPlayerInputDash(direction);
         }
     }
     private void EndSlashDash() {
         dashMovement.OnDashEnd.RemoveListener(EndSlashDash);
-        sword.EndAttackPosition();
+        swordMovement.EndAttackPosition();
         isDashing = false;
         OnEndSlashDash.Invoke();
     }

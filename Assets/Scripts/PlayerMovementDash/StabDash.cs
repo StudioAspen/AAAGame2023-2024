@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class StabDash : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] GameObject swordObject;
+    [SerializeField] SwordMovement swordMovement;
     [SerializeField] DashCollider dashCollider;
 
     [Header("Events")]
@@ -14,7 +14,6 @@ public class StabDash : MonoBehaviour
 
     // Components
     DashMovement dashMovement;
-    DemonSword sword;
     Stab stab;
 
     //Variables
@@ -24,7 +23,6 @@ public class StabDash : MonoBehaviour
         // Getting components
         dashMovement = GetComponent<DashMovement>();
         stab = GetComponent<Stab>();
-        sword = swordObject.GetComponent<DemonSword>();
 
         dashCollider.OnContact.AddListener(StabDashContact);
     }
@@ -34,14 +32,14 @@ public class StabDash : MonoBehaviour
             Debug.Log("starting stabdash");
             isDashing = true;
 
-            sword.DashAttackPosition();
+            swordMovement.DashAttackPosition();
             dashMovement.OnDashEnd.AddListener(EndStabDash);
             dashMovement.TryPlayerInputDash(direction);
         }
     }
     private void EndStabDash() {
         dashMovement.OnDashEnd.RemoveListener(EndStabDash);
-        sword.EndAttackPosition();
+        swordMovement.EndAttackPosition();
         isDashing = false;
         OnEndStabDash.Invoke();
     }

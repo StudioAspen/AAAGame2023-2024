@@ -7,6 +7,10 @@ using UnityEngine.UIElements;
 
 public class Slash : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] GameObject swordObject;
+    [SerializeField] SwordMovement swordMovement;
+
     [Header("Movement Variables")]
     public float slideSpeed;
     public float boostedSlideSpeed;
@@ -14,7 +18,6 @@ public class Slash : MonoBehaviour
 
     [Header("Other Variables")]
     public float bloodGained;
-    [SerializeField] GameObject swordObject;
 
     [Header("Events")]
     public UnityEvent OnSlashEnd = new UnityEvent();
@@ -22,7 +25,6 @@ public class Slash : MonoBehaviour
     // Components
     private MovementModification movementModification;
     private Rigidbody rb;
-    private DemonSword sword;
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private DashMovement dashMovement;
@@ -38,15 +40,15 @@ public class Slash : MonoBehaviour
 
     private void Start()
     {
-        end = EndOfPathInstruction.Stop;
+        // Getting Components
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         dashMovement = GetComponent<DashMovement>();
 
-        sword = swordObject.GetComponent<DemonSword>();
-        sword.OnContact.AddListener(SlashContact);
+        end = EndOfPathInstruction.Stop;
+        swordMovement.OnContact.AddListener(SlashContact);
     }
 
     private void Update()
@@ -64,8 +66,8 @@ public class Slash : MonoBehaviour
         swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
         swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
-        if (dstTravelled > pathCreator.path.length)
-        {
+        if (dstTravelled > pathCreator.path.length) {
+            playerMovement.Jump(jumpMultiplier);
             EndSlide();
         }
     }
@@ -75,15 +77,17 @@ public class Slash : MonoBehaviour
             isSlashing = true;
 
             // Demon sword variables
-            sword.OnEndAction.AddListener(EndOfSlashAnimation);
-            sword.AttackPosition();
+            swordMovement.OnEndAction.AddListener(EndOfSlashAnimation);
+            swordMovement.AttackPosition();
         }
     }
 
     public void StartSlide(Slashable slashable, PathCreator pc, Collider other) {
-        sliding = true;
         playerInput.DisableInput();
-        sword.GetComponent<BloodThirst>().GainBlood(bloodGained, true);
+        GetComponent<BloodThirst>().GainBlood(bloodGained, true);
+
+        // Slide Initalization
+        sliding = true;
         Vector3 contactPoint = other.ClosestPoint(swordObject.transform.position);
         pathCreator = pc;
         rb.useGravity = false;
@@ -93,7 +97,6 @@ public class Slash : MonoBehaviour
     }
 
     private void EndSlide() {
-        playerMovement.Jump(jumpMultiplier);
         playerMovement.ResetJump();
         dashMovement.ResetDash();
         playerInput.EnableInput();
@@ -115,7 +118,7 @@ public class Slash : MonoBehaviour
     }
     private void EndOfSlashAnimation() {
         isSlashing = false;
-        sword.OnEndAction.RemoveListener(EndOfSlashAnimation);
+        swordMovement.OnEndAction.RemoveListener(EndOfSlashAnimation);
     }
     public void InterruptSlash()
     {

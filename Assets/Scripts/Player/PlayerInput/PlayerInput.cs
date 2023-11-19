@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using UnityEditor;
 public class PlayerInput : MonoBehaviour
 {
     /// <summary>
@@ -19,6 +19,7 @@ public class PlayerInput : MonoBehaviour
 
     [Header("Input Variables")]
     [SerializeField] float combinationWindow;
+
     
     enum ControlType { controller, mouseAndKeyboard};
     CinemachineFreeLook cinemachineCam;
@@ -29,6 +30,7 @@ public class PlayerInput : MonoBehaviour
     bool dashStarted = false;
     float combinationWindowTimer = 0;
     bool canInput = true;
+    bool canMove = true;
 
     //Movement abilities
     PlayerMovement movement;
@@ -81,85 +83,116 @@ public class PlayerInput : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        // Timer for the window clicking two buttons counts as an action
-        if(dashStarted || slashStarted || stabStarted) {
-            combinationWindowTimer += Time.deltaTime;
-        }
-
         // Initalizing input direction
-        Vector3 direction = Vector3.zero;
+        Vector3 inputDirection = Vector3.zero;
         if (canInput) {
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
-            direction = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+            inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
 
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                movement.JumpFunction();
-            }
-
-            //Combat Moves
-
-            // Stab Move with combination logic
-            if (Input.GetKeyDown(KeyCode.E)) {
-                Debug.Log(combinationWindowTimer);
-                if(!dashStarted) {
-                    stabStarted = true;
-                    combinationWindowTimer = 0;
-                    stab.StartStab();
-                }
-                else if(combinationWindowTimer < combinationWindow) {
-                    dash.InterruptDash(true);
-                    stabDash.TryStartStabDash(direction);
-                }
-
+            if(Input.GetKeyDown(KeyCode.P)) {
+                stabDash.TryStartStabDash(inputDirection);
             }
 
-            // Slash Move with combination logic
-            if (Input.GetKeyDown(KeyCode.Q)) {
-                if (!dashStarted) {
-                    slashStarted = true;
-                    combinationWindowTimer = 0;
-                    slash.StartSlash();
-                }
-                else if(combinationWindowTimer < combinationWindow) {
-                    slash.InterruptSlash();
-                    slashDash.TryStartSlashDash(direction);
-                }
-            }
-
-            // Dash with combination logic
-            if (Input.GetKeyDown(KeyCode.LeftShift)) {
-                Debug.Log(combinationWindowTimer);
-                if (stabStarted && combinationWindowTimer < combinationWindow) {
-                    stab.InterruptStab();
-                    stabDash.TryStartStabDash(direction);
-                }
-                else if(slashStarted && combinationWindowTimer < combinationWindow) {
-                    slash.InterruptSlash();
-                    slashDash.TryStartSlashDash(direction);
-                }
-                else {
-                    dashStarted = true;
-                    combinationWindowTimer = 0;
-                    dash.TryPlayerInputDash(direction);
-                }
-            }
-            if (Input.GetKey(KeyCode.F)) {
-                downwardStab.TryDownwardStabUpdate();
-            }
-            if(Input.GetKeyUp(KeyCode.F)) {
-                downwardStab.ReleaseDownwardStab();
-            }
-            if(Input.GetKeyDown(KeyCode.C)) {
-                slashDash.TryStartSlashDash(direction);
-            }
+            CheckCombinationAbilties(inputDirection);
+            CheckAbilities();
         }
-        movement.Move(direction);
+        else if (dashStarted || slashStarted || stabStarted) { // Checking inputs for combination abilities
+            combinationWindowTimer += Time.deltaTime;
+            CheckCombinationAbilties(inputDirection);
+        }
+        movement.Move(inputDirection);
+        JoyStickCheck();
     }
     public void DisableInput() {
         canInput = false;
     }
     public void EnableInput() {
         canInput = true;
+    }
+    private void JoyStickCheck() {
+        if(Input.GetKeyDown(KeyCode.Joystick1Button0)) {
+            Debug.Log("joystick0");
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1)) {
+            Debug.Log("joystick1");
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button2)) {
+            Debug.Log("joystick2");
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button3)) {
+            Debug.Log("joystick3");
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button4)) {
+            Debug.Log("joystick4");
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button5)) {
+            Debug.Log("joystick5");
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button6)) {
+            Debug.Log("joystick6");
+        }
+    }
+    private void CheckAbilities() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            movement.JumpFunction();
+        }
+        if (Input.GetKey(KeyCode.F)) {
+            downwardStab.TryDownwardStabUpdate();
+        }
+        if (Input.GetKeyUp(KeyCode.F)) {
+            downwardStab.ReleaseDownwardStab();
+        }
+    }
+    private void CheckCombinationAbilties(Vector3 direction) {
+        // Stab Move with combination logic
+        if (Input.GetKeyDown(KeyCode.E)) {
+            Debug.Log(combinationWindowTimer);
+            if (!dashStarted) {
+                stabStarted = true;
+                combinationWindowTimer = 0;
+                stab.StartStab();
+            }
+            else if (combinationWindowTimer < combinationWindow) {
+                dash.InterruptDash(true);
+                //ResetCombination();
+                stabDash.TryStartStabDash(direction);
+            }
+        }
+
+        // Slash Move with combination logic
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            Debug.Log(combinationWindowTimer);
+            if (!dashStarted) {
+                slashStarted = true;
+                combinationWindowTimer = 0;
+                slash.StartSlash();
+            }
+            else if (combinationWindowTimer < combinationWindow) {
+                dash.InterruptDash(true);
+                //ResetCombination();
+                slashDash.TryStartSlashDash(direction);
+            }
+        }
+
+        // Dash with combination logic
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            Debug.Log(combinationWindowTimer);
+            if (stabStarted && combinationWindowTimer < combinationWindow) {
+                stab.InterruptStab();
+                //ResetCombination();
+                stabDash.TryStartStabDash(direction);
+            }
+            else if (slashStarted && combinationWindowTimer < combinationWindow) {
+                slash.InterruptSlash();
+                //ResetCombination();
+                slashDash.TryStartSlashDash(direction);
+            }
+            else {
+                dashStarted = true;
+                combinationWindowTimer = 0;
+                dash.TryPlayerInputDash(direction);
+            }
+        }
     }
     private void ResetCombination() {
         stabStarted = false;

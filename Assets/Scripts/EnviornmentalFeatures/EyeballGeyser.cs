@@ -30,11 +30,6 @@ public class EyeballGeyser : DownwardStabEffect {
                 }
             }
         }
-
-        //testing
-        if(Input.GetKeyDown(KeyCode.P)) {
-            StartBloodGeyser();
-        }
     }
 
     override public void TriggerEffect() {

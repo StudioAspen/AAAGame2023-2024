@@ -6,7 +6,7 @@ using UnityEngine;
 public class DownwardStab : MonoBehaviour {
 
     [Header("References")]
-    [SerializeField] GameObject swordObject;
+    [SerializeField] SwordMovement swordMovement;
 
     [Header("Variables")]
     [SerializeField] float downwardStabAcceleration;
@@ -22,13 +22,12 @@ public class DownwardStab : MonoBehaviour {
     // Components
     Rigidbody rb;
     GroundCheck groundCheck;
-    DemonSword sword;
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
         groundCheck = GetComponent<GroundCheck>();
-        sword = swordObject.GetComponent<DemonSword>();
-        sword.OnContact.AddListener(DownwardStabContact);
+
+        swordMovement.OnContact.AddListener(DownwardStabContact);
     }
 
     private void FixedUpdate() {
@@ -49,7 +48,7 @@ public class DownwardStab : MonoBehaviour {
             // Starting downward stab as long as the duration
             if (stabButtonTimer >= pressDownTime) {
                 isStabing = true;
-                sword.DownwardAttackPosition();
+                swordMovement.DownwardAttackPosition();
             }
         }
     }
@@ -59,7 +58,7 @@ public class DownwardStab : MonoBehaviour {
 
         if (isStabing) {
             isStabing = false;
-            sword.EndAttackPosition();
+            swordMovement.EndAttackPosition();
         }
     }
     private void DownwardStabMovementUpdate() {
@@ -78,7 +77,7 @@ public class DownwardStab : MonoBehaviour {
         if(isStabing) {
             if(other.TryGetComponent<DownwardStabEffect>(out DownwardStabEffect effect)) {
                 effect.TriggerEffect();
-                sword.GetComponent<BloodThirst>().GainBlood(bloodGain, true);
+                GetComponent<BloodThirst>().GainBlood(bloodGain, true);
             }
         }
     }

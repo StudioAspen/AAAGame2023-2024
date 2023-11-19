@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DemonSword : MonoBehaviour
+public class SwordMovement : MonoBehaviour
 {
     [Header("Player Positions")]
     [SerializeField] Transform followTarget;
