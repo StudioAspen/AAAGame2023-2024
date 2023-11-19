@@ -29,7 +29,7 @@ public class DashMovement : MonoBehaviour
     // References
     Rigidbody rb;//rigid body of player
     MovementModification movementModification;
-    GroundCheck groundCheck;
+    PlayerPositionCheck playerPositionCheck;
     PlayerInput playerInput;
 
     // Start is called before the first frame update
@@ -38,7 +38,7 @@ public class DashMovement : MonoBehaviour
         // Getting components
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
-        groundCheck = GetComponent<GroundCheck>();
+        playerPositionCheck = GetComponent<PlayerPositionCheck>();
         playerInput = GetComponent<PlayerInput>();
     }
 
@@ -54,7 +54,7 @@ public class DashMovement : MonoBehaviour
         if (dashCdTimer > 0) { //if dash is still on cd, count down the timer 
             dashCdTimer -= Time.deltaTime;
         }
-        if (groundCheck.CheckOnGround()) {
+        if (playerPositionCheck.CheckOnGround()) {
             ResetDash();
         }
     }

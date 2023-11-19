@@ -21,11 +21,11 @@ public class DownwardStab : MonoBehaviour {
 
     // Components
     Rigidbody rb;
-    GroundCheck groundCheck;
+    PlayerPositionCheck playerPositionCheck;
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
-        groundCheck = GetComponent<GroundCheck>();
+        playerPositionCheck = GetComponent<PlayerPositionCheck>();
 
         swordMovement.OnContact.AddListener(DownwardStabContact);
     }
@@ -39,7 +39,7 @@ public class DownwardStab : MonoBehaviour {
     private void Update() {
 
         //if grounded can perform downward stab
-        canDownwardStab = !groundCheck.CheckOnGround();
+        canDownwardStab = !playerPositionCheck.CheckOnGround();
     }
     public void TryDownwardStabUpdate() {
         if (canDownwardStab && !isStabing) {

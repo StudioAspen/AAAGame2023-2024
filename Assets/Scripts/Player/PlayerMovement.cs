@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     //Components
-    GroundCheck groundCheck;
+    PlayerPositionCheck playerPositionCheck;
     Rigidbody rb;
 
     [Header("Ground Variables")]
@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        groundCheck = GetComponent<GroundCheck>();
+        playerPositionCheck = GetComponent<PlayerPositionCheck>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        grounded = groundCheck.CheckOnGround();
+        grounded = playerPositionCheck.CheckOnGround();
 
         if(grounded) {
             ResetJump();
@@ -111,7 +111,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Applying horizontal movement
         float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
-        if (alignment < 1) {
+        Physics.Raycast(rb.position, addedVelocity);
+        if (alignment < 1 && !playerPositionCheck.CheckColldingWithTerrain(addedVelocity)) {
             rb.AddForce(addedVelocity, ForceMode.VelocityChange);
         }
     }

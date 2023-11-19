@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundCheck : MonoBehaviour {
+public class PlayerPositionCheck : MonoBehaviour {
     // Components
     Collider collider;
     
     //Dedicated ground check
-    [Header("Ground Check")]
-    public LayerMask ground;
-    public float groundCheckOffset;
+    [Header("Checks")]
+    [SerializeField] LayerMask ground;
+    [SerializeField] float groundCheckOffset;
+    [SerializeField] float terrainCheckOffset;
     bool onGround = false;
 
     private void Start() {
@@ -17,6 +18,9 @@ public class GroundCheck : MonoBehaviour {
     }
     private void Update() {
         onGround = Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(collider.bounds.min.y - transform.position.y) + groundCheckOffset, ground);
+    }
+    public bool CheckColldingWithTerrain(Vector3 direction) {
+        return Physics.Raycast(transform.position, direction.normalized, Mathf.Abs(collider.bounds.min.z - transform.position.z) + terrainCheckOffset, ground);
     }
     public bool CheckOnGround() {
         return onGround;

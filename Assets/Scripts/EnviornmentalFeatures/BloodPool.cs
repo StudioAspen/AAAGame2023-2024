@@ -13,10 +13,8 @@ public class BloodPool : MonoBehaviour
 
     private void OnTriggerStay(Collider other) {
         if (other.TryGetComponent(out BloodThirst bloodThirst)) {
-            Debug.Log("test");
             gainTickTimer -= Time.deltaTime;
             if(gainTickTimer <= 0) {
-                Debug.Log("gain");
                 bloodThirst.GainBlood(gainBloodAmount, canOverfeed);
                 gainTickTimer = gainTickRate;
             }
