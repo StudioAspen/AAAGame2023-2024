@@ -5,12 +5,17 @@ using static UnityEditor.PlayerSettings;
 
 public class Stabable : MonoBehaviour
 {
+    [Header("References")]
     public Transform dashStartTransform;
+    public Transform dashEndTransform;
+    
+    
     public Vector3 dashDir; //direction of the dash
     public float dashLength; //how far the player is launched
 
-    private void OnDrawGizmos()
-    {
+    private void OnDrawGizmos() {
+        dashDir =  dashEndTransform.position - dashStartTransform.position;
+        dashLength = dashDir.magnitude;
         //makes it so the gizmos transform with the local transform of the object
         Gizmos.matrix = transform.localToWorldMatrix;
         Gizmos.color = Color.yellow;
