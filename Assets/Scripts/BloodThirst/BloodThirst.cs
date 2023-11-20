@@ -33,7 +33,7 @@ public class BloodThirst : MonoBehaviour
         //Initalizing values
         currentBlood = maxBlood;
 
-        if(TryGetComponent(out movementModification))
+        if(gameObject.TryGetComponent(out movementModification))
         {
             Debug.Log("Movement modification not found");
         }

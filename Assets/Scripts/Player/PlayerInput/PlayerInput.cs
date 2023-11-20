@@ -4,38 +4,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEditor;
-public class PlayerInput : MonoBehaviour
-{
+public class PlayerInput : MonoBehaviour {
+    // Components
+    enum ControlType { controller, mouseAndKeyboard };
+    CinemachineFreeLook cinemachineCam;
+    Transform cameraOrientation;
+
     [Header("Control Type")]
     [SerializeField] ControlType currentControls;
 
     [Header("Input Variables")]
     [SerializeField] float combinationWindow;
 
-    [Header("Controller Inputs")]
-    [SerializeField] KeyCode controllerStab;
-    [SerializeField] KeyCode controllerSlash;
-    [SerializeField] KeyCode controllerDownwardStab;
-    [SerializeField] KeyCode controllerDash;
-    [SerializeField] KeyCode controllerJump;
-
     [Header("Mouse Keyboard Inputs")]
     [SerializeField] KeyCode keyboardStab;
     [SerializeField] KeyCode keyboardSlash;
-    [SerializeField] KeyCode keyboardDownwardStab;
+    //[SerializeField] KeyCode keyboardDownwardStab;
     [SerializeField] KeyCode keyboardDash;
     [SerializeField] KeyCode keyboardJump;
 
+    [Header("Controller Inputs")]
+    [SerializeField] KeyCode controllerStab;
+    [SerializeField] KeyCode controllerSlash;
+    //[SerializeField] KeyCode controllerDownwardStab;
+    [SerializeField] KeyCode controllerDash;
+    [SerializeField] KeyCode controllerJump;
 
+    // Controls
     KeyCode inputStab;
     KeyCode inputSlash;
-    KeyCode inputDownwardStab;
+    //KeyCode inputDownwardStab;
     KeyCode inputDash;
     KeyCode inputJump;
-
-    enum ControlType { controller, mouseAndKeyboard};
-    CinemachineFreeLook cinemachineCam;
-    Transform cameraOrientation;
 
     bool stabStarted = false;
     bool slashStarted = false;
@@ -82,12 +82,20 @@ public class PlayerInput : MonoBehaviour
                 cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
 
+
+                controllerStab += 4;
+                controllerSlash += 4;
+                //controllerDownwardStab += 4;
+                controllerDash += 4;
+                controllerJump += 4;
+
                 // Setting inputs for controller
-                inputStab = controllerStab;
-                inputSlash = controllerSlash;
-                inputDownwardStab = controllerDownwardStab; 
-                inputDash = controllerDownwardStab;
-                inputJump = controllerJump;
+                inputStab = (controllerStab);
+                inputSlash = (controllerSlash);
+                //inputDownwardStab = (controllerDownwardStab); 
+                inputDash = (controllerDash);
+                inputJump = (controllerJump);
+                Debug.Log(inputJump);
                 break;
             case ControlType.mouseAndKeyboard:
                 // Setting axis for keyboard
@@ -99,7 +107,7 @@ public class PlayerInput : MonoBehaviour
                 // Setting inputs for keyboard
                 inputStab = keyboardStab;
                 inputSlash = keyboardSlash;
-                inputDownwardStab = keyboardDownwardStab;
+                //inputDownwardStab = keyboardDownwardStab;
                 inputDash = keyboardDash;
                 inputJump = keyboardJump;
                 break;
@@ -115,11 +123,6 @@ public class PlayerInput : MonoBehaviour
         if (canInput) {
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
             inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
-
-            if(Input.GetKeyDown(KeyCode.P)) {
-                stabDash.TryStartStabDash(inputDirection);
-            }
-
             CheckCombinationAbilties(inputDirection);
             CheckAbilities();
         }
@@ -139,17 +142,16 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(inputJump)) {
             movement.JumpFunction();
         }
-        if (Input.GetKey(inputDownwardStab)) {
+        if (Input.GetKey(inputStab)) {
             downwardStab.TryDownwardStabUpdate();
         }
-        if (Input.GetKeyUp(inputDownwardStab)) {
+        if (Input.GetKeyUp(inputStab)) {
             downwardStab.ReleaseDownwardStab();
         }
     }
     private void CheckCombinationAbilties(Vector3 direction) {
         // Stab Move with combination logic
         if (Input.GetKeyDown(inputStab)) {
-            Debug.Log(combinationWindowTimer);
             if (!dashStarted) {
                 stabStarted = true;
                 combinationWindowTimer = 0;
@@ -164,7 +166,6 @@ public class PlayerInput : MonoBehaviour
 
         // Slash Move with combination logic
         if (Input.GetKeyDown(inputSlash)) {
-            Debug.Log(combinationWindowTimer);
             if (!dashStarted) {
                 slashStarted = true;
                 combinationWindowTimer = 0;
@@ -179,7 +180,6 @@ public class PlayerInput : MonoBehaviour
 
         // Dash with combination logic
         if (Input.GetKeyDown(inputDash)) {
-            Debug.Log(combinationWindowTimer);
             if (stabStarted && combinationWindowTimer < combinationWindow) {
                 stab.InterruptStab();
                 //ResetCombination();

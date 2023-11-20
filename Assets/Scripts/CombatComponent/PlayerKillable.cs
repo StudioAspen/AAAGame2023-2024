@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerKillable : Killable
 {
+    [Header("Regeneration Values")]
     [SerializeField] float timeBeforeRegen; // Rime from the last instance of damage before you start regenerating
     [SerializeField] float healthRegenRate; // Regenerate rate per second
 

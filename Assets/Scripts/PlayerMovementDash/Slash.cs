@@ -17,6 +17,7 @@ public class Slash : MonoBehaviour
     public float jumpMultiplier;
 
     [Header("Other Variables")]
+    public float attackDuration;
     public float bloodGained;
 
     [Header("Events")]
@@ -78,7 +79,7 @@ public class Slash : MonoBehaviour
 
             // Demon sword variables
             swordMovement.OnEndAction.AddListener(EndOfSlashAnimation);
-            swordMovement.AttackPosition();
+            swordMovement.AttackPosition(attackDuration);
         }
     }
 
