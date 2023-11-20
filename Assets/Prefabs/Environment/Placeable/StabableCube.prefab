@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3318144330648956302}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EndDashPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5611420371894251611}
   - component: {fileID: 191085177565569077}
   - component: {fileID: 3831749198362223840}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StabableCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4383921528496755129}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StartDashPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}

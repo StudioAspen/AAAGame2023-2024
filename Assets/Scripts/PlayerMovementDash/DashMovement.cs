@@ -6,12 +6,12 @@ using UnityEngine.Events;
 public class DashMovement : MonoBehaviour
 {
 
-    [Header("Base Stats")]
+    [Header("Movement")]
     public float dashDistance; // How far the dash will go
     public float dashDuration; // How long the dash lasts
     public float dashCooldown; // Cooldown for the dash
 
-    [Header("Boosted Stats")]
+    [Header("Boosted Movement")]
     public float boostedDashDistance; // Distance traveled when max overfed
     public float boostedDashDuration; // Duration when max overfed
     public float boostedDashCooldown; // Cooldown when max overfed

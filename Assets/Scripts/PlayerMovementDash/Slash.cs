@@ -13,8 +13,11 @@ public class Slash : MonoBehaviour
 
     [Header("Movement Variables")]
     public float slideSpeed;
-    public float boostedSlideSpeed;
     public float jumpMultiplier;
+
+    [Header("Boosted Movement")]
+    public float boostedSlideSpeed;
+    public float boostedJumpMultiplier;
 
     [Header("Other Variables")]
     public float attackDuration;
@@ -68,7 +71,7 @@ public class Slash : MonoBehaviour
         swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
         if (dstTravelled > pathCreator.path.length) {
-            playerMovement.Jump(jumpMultiplier);
+            playerMovement.Jump(Mathf.Lerp(jumpMultiplier, boostedJumpMultiplier, movementModification.boostForAll));
             EndSlide();
         }
     }

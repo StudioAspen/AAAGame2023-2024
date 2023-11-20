@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerKillable : Killable
 {
@@ -15,6 +16,7 @@ public class PlayerKillable : Killable
     {
         currentHP = maxHP;
         OnTakeDamage.AddListener(ResetRegenTimer); // Resetting the timer everytime player takes damage
+        OnDie.AddListener(PlayerDied);
         timeBeforeRegenTimer = timeBeforeRegen; // Initalizing timer
     }
 
@@ -54,5 +56,8 @@ public class PlayerKillable : Killable
     public void ResetRegenTimer()
     {
         timeBeforeRegenTimer = timeBeforeRegen;
+    }
+    private void PlayerDied() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

@@ -48,7 +48,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7431794261642768568
 Transform:
   m_ObjectHideFlags: 0
@@ -324,18 +324,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca49188fbcc39245b494d09667e2dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentControls: 0
+  currentControls: 1
   combinationWindow: 0.2
-  controllerStab: 329
-  controllerSlash: 328
-  controllerDownwardStab: 327
-  controllerDash: 333
-  controllerJump: 326
   keyboardStab: 101
   keyboardSlash: 113
-  keyboardDownwardStab: 306
   keyboardDash: 304
   keyboardJump: 32
+  controllerStab: 329
+  controllerSlash: 328
+  controllerDash: 331
+  controllerJump: 326
 --- !u!114 &7281945831924435466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,11 +349,19 @@ MonoBehaviour:
   groundAcceleration: 5
   maxGroundSpeed: 10
   groundDrag: 10
+  boostedGroundAcceleration: 7
+  boostedMaxGroundSpeed: 15
+  boostedGroundDrag: 10
   airAcceleration: 5
   maxAirSpeed: 10
   airDrag: 5
+  boostedAirAcceleration: 7
+  boostedMaxAirSpeed: 15
+  boostedAirDrag: 5
   jumpForce: 20
   gravityAcceleration: 0.5
+  boostedJumpForce: 20
+  boostedGravityAcceleration: 0.5
   rotationSpeed: 0.75
 --- !u!114 &4531364391987237238
 MonoBehaviour:
@@ -392,7 +398,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   swordMovement: {fileID: 2230350445419021309}
   dashSpeed: 10
+  boostedDashSpeed: 0
   bloodGainAmount: 10
+  attackDuration: 0.5
   OnStabEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -413,6 +421,7 @@ MonoBehaviour:
   slideSpeed: 1
   boostedSlideSpeed: 2
   jumpMultiplier: 2
+  attackDuration: 0.5
   bloodGained: 10
   OnSlashEnd:
     m_PersistentCalls:
@@ -432,6 +441,8 @@ MonoBehaviour:
   swordMovement: {fileID: 2230350445419021309}
   downwardStabAcceleration: 5
   downwardStabMaxSpeed: 10
+  boostedDownwardStabAcceleration: 0
+  boostedDownwardStabMaxSpeed: 0
   pressDownTime: 0.25
   bloodGain: 0
 --- !u!114 &8012279846651036797
