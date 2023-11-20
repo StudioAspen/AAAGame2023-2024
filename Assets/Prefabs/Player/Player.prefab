@@ -300,6 +300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 100
   currentHP: 0
+  isKillable: 1
   isDead: 0
   OnHealthChange:
     m_PersistentCalls:
@@ -398,7 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   swordMovement: {fileID: 2230350445419021309}
   dashSpeed: 10
-  boostedDashSpeed: 0
+  boostedDashSpeed: 15
   bloodGainAmount: 10
   attackDuration: 0.5
   OnStabEnd:
@@ -419,8 +420,9 @@ MonoBehaviour:
   swordObject: {fileID: 6800678773869080880}
   swordMovement: {fileID: 2230350445419021309}
   slideSpeed: 1
-  boostedSlideSpeed: 2
   jumpMultiplier: 2
+  boostedSlideSpeed: 2
+  boostedJumpMultiplier: 2.5
   attackDuration: 0.5
   bloodGained: 10
   OnSlashEnd:
@@ -441,10 +443,10 @@ MonoBehaviour:
   swordMovement: {fileID: 2230350445419021309}
   downwardStabAcceleration: 5
   downwardStabMaxSpeed: 10
-  boostedDownwardStabAcceleration: 0
-  boostedDownwardStabMaxSpeed: 0
+  boostedDownwardStabAcceleration: 7
+  boostedDownwardStabMaxSpeed: 15
   pressDownTime: 0.25
-  bloodGain: 0
+  bloodGain: 10
 --- !u!114 &8012279846651036797
 MonoBehaviour:
   m_ObjectHideFlags: 0
