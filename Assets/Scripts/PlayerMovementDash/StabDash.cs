@@ -29,7 +29,6 @@ public class StabDash : MonoBehaviour
 
     public void TryStartStabDash(Vector3 direction) {
         if(!isDashing) {
-            Debug.Log("starting stabdash");
             isDashing = true;
 
             swordMovement.DashAttackPosition();

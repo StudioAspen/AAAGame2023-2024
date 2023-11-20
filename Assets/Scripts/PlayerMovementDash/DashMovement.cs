@@ -6,12 +6,12 @@ using UnityEngine.Events;
 public class DashMovement : MonoBehaviour
 {
 
-    [Header("Base Stats")]
+    [Header("Movement")]
     public float dashDistance; // How far the dash will go
     public float dashDuration; // How long the dash lasts
     public float dashCooldown; // Cooldown for the dash
 
-    [Header("Boosted Stats")]
+    [Header("Boosted Movement")]
     public float boostedDashDistance; // Distance traveled when max overfed
     public float boostedDashDuration; // Duration when max overfed
     public float boostedDashCooldown; // Cooldown when max overfed
@@ -29,7 +29,7 @@ public class DashMovement : MonoBehaviour
     // References
     Rigidbody rb;//rigid body of player
     MovementModification movementModification;
-    GroundCheck groundCheck;
+    PlayerPositionCheck playerPositionCheck;
     PlayerInput playerInput;
 
     // Start is called before the first frame update
@@ -38,7 +38,7 @@ public class DashMovement : MonoBehaviour
         // Getting components
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
-        groundCheck = GetComponent<GroundCheck>();
+        playerPositionCheck = GetComponent<PlayerPositionCheck>();
         playerInput = GetComponent<PlayerInput>();
     }
 
@@ -54,7 +54,7 @@ public class DashMovement : MonoBehaviour
         if (dashCdTimer > 0) { //if dash is still on cd, count down the timer 
             dashCdTimer -= Time.deltaTime;
         }
-        if (groundCheck.CheckOnGround()) {
+        if (playerPositionCheck.CheckOnGround()) {
             ResetDash();
         }
     }

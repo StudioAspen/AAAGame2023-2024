@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerKillable : Killable
 {
+    [Header("Regeneration Values")]
     [SerializeField] float timeBeforeRegen; // Rime from the last instance of damage before you start regenerating
     [SerializeField] float healthRegenRate; // Regenerate rate per second
 
@@ -14,6 +16,7 @@ public class PlayerKillable : Killable
     {
         currentHP = maxHP;
         OnTakeDamage.AddListener(ResetRegenTimer); // Resetting the timer everytime player takes damage
+        OnDie.AddListener(PlayerDied);
         timeBeforeRegenTimer = timeBeforeRegen; // Initalizing timer
     }
 
@@ -53,5 +56,8 @@ public class PlayerKillable : Killable
     public void ResetRegenTimer()
     {
         timeBeforeRegenTimer = timeBeforeRegen;
+    }
+    private void PlayerDied() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

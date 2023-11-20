@@ -144,12 +144,12 @@ GameObject:
   - component: {fileID: 7569982482725669098}
   - component: {fileID: 2936462189952305664}
   - component: {fileID: 70619026253435599}
-  - component: {fileID: 2934851691818191178}
+  - component: {fileID: 2711925284241185732}
   - component: {fileID: 4595640525888209}
   - component: {fileID: 8596804024649230227}
   - component: {fileID: 6003801723596019275}
-  - component: {fileID: 4531364391987237238}
   - component: {fileID: 7281945831924435466}
+  - component: {fileID: 4531364391987237238}
   - component: {fileID: 3902229200159131934}
   - component: {fileID: 3088617981437380700}
   - component: {fileID: 8671536288844823369}
@@ -236,8 +236,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2934851691818191178
-BoxCollider:
+--- !u!136 &2711925284241185732
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -254,8 +254,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4595640525888209
 Rigidbody:
@@ -298,6 +300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 100
   currentHP: 0
+  isKillable: 1
   isDead: 0
   OnHealthChange:
     m_PersistentCalls:
@@ -308,8 +311,8 @@ MonoBehaviour:
   OnDie:
     m_PersistentCalls:
       m_Calls: []
-  timeBeforeRegen: 5
-  healthRegenRate: 1
+  timeBeforeRegen: 3
+  healthRegenRate: 5
 --- !u!114 &6003801723596019275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +327,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentControls: 1
   combinationWindow: 0.2
+  keyboardStab: 101
+  keyboardSlash: 113
+  keyboardDash: 304
+  keyboardJump: 32
+  controllerStab: 329
+  controllerSlash: 328
+  controllerDash: 331
+  controllerJump: 326
+--- !u!114 &7281945831924435466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 114c9068df70c4d3eacc6cc6dd0f5049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundAcceleration: 5
+  maxGroundSpeed: 10
+  groundDrag: 10
+  boostedGroundAcceleration: 7
+  boostedMaxGroundSpeed: 15
+  boostedGroundDrag: 10
+  airAcceleration: 5
+  maxAirSpeed: 10
+  airDrag: 5
+  boostedAirAcceleration: 7
+  boostedMaxAirSpeed: 15
+  boostedAirDrag: 5
+  jumpForce: 20
+  gravityAcceleration: 0.5
+  boostedJumpForce: 20
+  boostedGravityAcceleration: 0.5
+  rotationSpeed: 0.75
 --- !u!114 &4531364391987237238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,27 +385,6 @@ MonoBehaviour:
   OnDashEnd:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7281945831924435466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2762887234727674899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 114c9068df70c4d3eacc6cc6dd0f5049, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundAcceleration: 3
-  maxGroundSpeed: 5
-  groundDrag: 10
-  airAcceleration: 3
-  maxAirSpeed: 5
-  airDrag: 5
-  jumpForce: 20
-  gravityAcceleration: 0.5
-  rotationSpeed: 0.75
 --- !u!114 &3902229200159131934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,7 +399,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   swordMovement: {fileID: 2230350445419021309}
   dashSpeed: 10
+  boostedDashSpeed: 15
   bloodGainAmount: 10
+  attackDuration: 0.5
   OnStabEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -399,8 +420,10 @@ MonoBehaviour:
   swordObject: {fileID: 6800678773869080880}
   swordMovement: {fileID: 2230350445419021309}
   slideSpeed: 1
-  boostedSlideSpeed: 2
   jumpMultiplier: 2
+  boostedSlideSpeed: 2
+  boostedJumpMultiplier: 2.5
+  attackDuration: 0.5
   bloodGained: 10
   OnSlashEnd:
     m_PersistentCalls:
@@ -420,8 +443,10 @@ MonoBehaviour:
   swordMovement: {fileID: 2230350445419021309}
   downwardStabAcceleration: 5
   downwardStabMaxSpeed: 10
+  boostedDownwardStabAcceleration: 7
+  boostedDownwardStabMaxSpeed: 15
   pressDownTime: 0.25
-  bloodGain: 0
+  bloodGain: 10
 --- !u!114 &8012279846651036797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,7 +496,8 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 1024
-  groundCheckOffset: 0.01
+  groundCheckOffset: 0.001
+  terrainCheckOffset: 0.001
 --- !u!114 &3650192985131432812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,7 +533,7 @@ MonoBehaviour:
   bloodDrainRate: 5
   overfedDrainRate: 5
   playerKillable: {fileID: 8596804024649230227}
-  playerHealthDrainRate: 1
+  playerHealthDrainRate: 10
   OnBloodChange:
     m_PersistentCalls:
       m_Calls: []

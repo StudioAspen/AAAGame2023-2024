@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.83, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -100,7 +100,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -120,9 +120,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bloodGeyserPrefab: {fileID: 8785428940987143426, guid: 49421328652b2254c88b436561e88dba,
     type: 3}
-  height: 2.89
-  radius: 0.99
-  duration: 0
+  height: 2.98
+  radius: 1.34
+  duration: 5
   isInfinate: 0
-  geyserAcceleration: 0
-  geyserMaxSpeed: 0
+  geyserAcceleration: 2
+  geyserMaxSpeed: 15

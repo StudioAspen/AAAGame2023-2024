@@ -9,7 +9,9 @@ public class Stab : MonoBehaviour {
 
     [Header("Other Variables")]
     [SerializeField] float dashSpeed;
-    [SerializeField] float bloodGainAmount; 
+    [SerializeField] float boostedDashSpeed;
+    [SerializeField] float bloodGainAmount;
+    [SerializeField] float attackDuration;
 
     [Header("Events")]
     public UnityEvent OnStabEnd = new UnityEvent();
@@ -19,6 +21,7 @@ public class Stab : MonoBehaviour {
     PlayerMovement playerMovement;
     Collider collider;
     Rigidbody rb;
+    MovementModification movementModification;
 
     // Variables
     bool isStabbing = false;
@@ -31,7 +34,8 @@ public class Stab : MonoBehaviour {
         playerMovement = GetComponent<PlayerMovement>();
         collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
-        
+        movementModification = GetComponent<MovementModification>();
+
         // Setting up Demon Sword
         swordMovement.OnContact.AddListener(StabContact);
     }
@@ -45,7 +49,7 @@ public class Stab : MonoBehaviour {
 
             // Demon sword variables
             swordMovement.OnEndAction.AddListener(EndOfStabAnimation);
-            swordMovement.AttackPosition();
+            swordMovement.AttackPosition(attackDuration);
         }
     }
 
@@ -74,7 +78,7 @@ public class Stab : MonoBehaviour {
         GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
         dashMovement.OnDashEnd.AddListener(EndOfDash);
         collider.isTrigger = true; // Setting as trigger to prevent collisions
-        float dashDuration = (stabable.dashLength / dashSpeed);
+        float dashDuration = (stabable.dashLength / Mathf.Lerp(dashSpeed, boostedDashSpeed, movementModification.boostForAll));
         rb.position = stabable.dashStartTransform.position;
         dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
     }

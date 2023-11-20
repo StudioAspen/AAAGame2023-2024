@@ -4,15 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEditor;
-public class PlayerInput : MonoBehaviour
-{
-    /// <summary>
-    /// CURRENTLY NONE OF THESE MOVEMENTS EXIST IN THIS BRANCH BUT COMMENTED TO SHOW THE INTENTION
-    /// This script controls all the player inputs and calculations for them, like the relative camera position
-    /// 
-    /// For the gameplay developers replace the comments with your respective code, 
-    /// If there are any design concerns they will be addressed in a code review
-    /// </summary>
+public class PlayerInput : MonoBehaviour {
+    // Components
+    enum ControlType { controller, mouseAndKeyboard };
+    CinemachineFreeLook cinemachineCam;
+    Transform cameraOrientation;
 
     [Header("Control Type")]
     [SerializeField] ControlType currentControls;
@@ -20,17 +16,32 @@ public class PlayerInput : MonoBehaviour
     [Header("Input Variables")]
     [SerializeField] float combinationWindow;
 
-    
-    enum ControlType { controller, mouseAndKeyboard};
-    CinemachineFreeLook cinemachineCam;
-    Transform cameraOrientation;
+    [Header("Mouse Keyboard Inputs")]
+    [SerializeField] KeyCode keyboardStab;
+    [SerializeField] KeyCode keyboardSlash;
+    //[SerializeField] KeyCode keyboardDownwardStab;
+    [SerializeField] KeyCode keyboardDash;
+    [SerializeField] KeyCode keyboardJump;
+
+    [Header("Controller Inputs")]
+    [SerializeField] KeyCode controllerStab;
+    [SerializeField] KeyCode controllerSlash;
+    //[SerializeField] KeyCode controllerDownwardStab;
+    [SerializeField] KeyCode controllerDash;
+    [SerializeField] KeyCode controllerJump;
+
+    // Controls
+    KeyCode inputStab;
+    KeyCode inputSlash;
+    //KeyCode inputDownwardStab;
+    KeyCode inputDash;
+    KeyCode inputJump;
 
     bool stabStarted = false;
     bool slashStarted = false;
     bool dashStarted = false;
     float combinationWindowTimer = 0;
     bool canInput = true;
-    bool canMove = true;
 
     //Movement abilities
     PlayerMovement movement;
@@ -67,14 +78,38 @@ public class PlayerInput : MonoBehaviour
         switch (currentControls)
         {
             case ControlType.controller:
+                // Setting axis for controller
                 cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
+
+
+                controllerStab += 4;
+                controllerSlash += 4;
+                //controllerDownwardStab += 4;
+                controllerDash += 4;
+                controllerJump += 4;
+
+                // Setting inputs for controller
+                inputStab = (controllerStab);
+                inputSlash = (controllerSlash);
+                //inputDownwardStab = (controllerDownwardStab); 
+                inputDash = (controllerDash);
+                inputJump = (controllerJump);
+                Debug.Log(inputJump);
                 break;
             case ControlType.mouseAndKeyboard:
+                // Setting axis for keyboard
                 cinemachineCam.m_XAxis.m_InputAxisName = "Mouse X";
                 cinemachineCam.m_YAxis.m_InputAxisName = "Mouse Y";
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
+
+                // Setting inputs for keyboard
+                inputStab = keyboardStab;
+                inputSlash = keyboardSlash;
+                //inputDownwardStab = keyboardDownwardStab;
+                inputDash = keyboardDash;
+                inputJump = keyboardJump;
                 break;
             default:
                 break;
@@ -88,11 +123,6 @@ public class PlayerInput : MonoBehaviour
         if (canInput) {
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
             inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
-
-            if(Input.GetKeyDown(KeyCode.P)) {
-                stabDash.TryStartStabDash(inputDirection);
-            }
-
             CheckCombinationAbilties(inputDirection);
             CheckAbilities();
         }
@@ -101,7 +131,6 @@ public class PlayerInput : MonoBehaviour
             CheckCombinationAbilties(inputDirection);
         }
         movement.Move(inputDirection);
-        JoyStickCheck();
     }
     public void DisableInput() {
         canInput = false;
@@ -109,44 +138,20 @@ public class PlayerInput : MonoBehaviour
     public void EnableInput() {
         canInput = true;
     }
-    private void JoyStickCheck() {
-        if(Input.GetKeyDown(KeyCode.Joystick1Button0)) {
-            Debug.Log("joystick0");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button1)) {
-            Debug.Log("joystick1");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button2)) {
-            Debug.Log("joystick2");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button3)) {
-            Debug.Log("joystick3");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button4)) {
-            Debug.Log("joystick4");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button5)) {
-            Debug.Log("joystick5");
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button6)) {
-            Debug.Log("joystick6");
-        }
-    }
     private void CheckAbilities() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(inputJump)) {
             movement.JumpFunction();
         }
-        if (Input.GetKey(KeyCode.F)) {
+        if (Input.GetKey(inputStab)) {
             downwardStab.TryDownwardStabUpdate();
         }
-        if (Input.GetKeyUp(KeyCode.F)) {
+        if (Input.GetKeyUp(inputStab)) {
             downwardStab.ReleaseDownwardStab();
         }
     }
     private void CheckCombinationAbilties(Vector3 direction) {
         // Stab Move with combination logic
-        if (Input.GetKeyDown(KeyCode.E)) {
-            Debug.Log(combinationWindowTimer);
+        if (Input.GetKeyDown(inputStab)) {
             if (!dashStarted) {
                 stabStarted = true;
                 combinationWindowTimer = 0;
@@ -160,8 +165,7 @@ public class PlayerInput : MonoBehaviour
         }
 
         // Slash Move with combination logic
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            Debug.Log(combinationWindowTimer);
+        if (Input.GetKeyDown(inputSlash)) {
             if (!dashStarted) {
                 slashStarted = true;
                 combinationWindowTimer = 0;
@@ -175,8 +179,7 @@ public class PlayerInput : MonoBehaviour
         }
 
         // Dash with combination logic
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            Debug.Log(combinationWindowTimer);
+        if (Input.GetKeyDown(inputDash)) {
             if (stabStarted && combinationWindowTimer < combinationWindow) {
                 stab.InterruptStab();
                 //ResetCombination();

@@ -36,13 +36,14 @@ public class SwordMovement : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, currentFollow.position, followingSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, currentFollow.rotation, followingSpeed);
         }
+
     }
 
     //Most likely a TEMPERARY FUNCTION used to put the sword in the right place for attacks before we have animations
-    public void AttackPosition()
+    public void AttackPosition(float duration)
     {
         currentFollow = attackTransform;
-        Invoke("EndAttackPosition", 0.5f);
+        Invoke("EndAttackPosition", duration);
     }
     public void DownwardAttackPosition() {
         currentFollow = downwardStabTransform;
@@ -52,6 +53,7 @@ public class SwordMovement : MonoBehaviour
     }
     public void EndAttackPosition() {
         currentFollow = followTarget;
+        CancelInvoke();
         OnEndAction.Invoke();
     }
     private void OnTriggerStay(Collider other)
