@@ -87,8 +87,11 @@ public class DeveloperControls : EditorWindow
             //---------------------
             // EXECUTE THE COMMANDS
             //---------------------
-            // checks if it is the killable command
-            if (inputModified[0] == "killable") // checks for setkillable command
+            if (inputModified[0] == "help") // checks for help command which shows documentation
+            {
+                AddToConsoleLog("Documentation: https://docs.google.com/document/d/1v9Pv3NSl3cyLKnmF_MCTEz9_mHWrwQd4CHd3luqehxo/edit?usp=sharing");
+            }
+            else if (inputModified[0] == "killable") // checks for setkillable command
             {
                 try // to catch missing or incorrect parameters or values
                 {
@@ -109,6 +112,10 @@ public class DeveloperControls : EditorWindow
                     AddToConsoleLog("Error: missing true or false"); // tells the user if there is an error
                 }
             }
+            else if (inputModified[0] == "kill") // checks for kill player command
+            {
+                KillPlayer();
+            }
             else if (inputModified[0] == "restart") // checks for restart command
             {
                 Restart();
@@ -117,7 +124,7 @@ public class DeveloperControls : EditorWindow
             {
                 try
                 {
-                    SpawnEnemy(inputModified[1]);
+                    SpawnEnemy(inputModified[1]); // checks for exceptions, whether it is missing input or invalid enemy names
                 }
                 catch (IndexOutOfRangeException)
                 {
@@ -132,7 +139,7 @@ public class DeveloperControls : EditorWindow
         }
     }
 
-    bool CheckCommand(string[] command)
+    bool CheckCommand(string[] command) // checks if the command inputted exists
     {
         if (commandArray.Contains<string>(command[0]))
         {
@@ -151,32 +158,42 @@ public class DeveloperControls : EditorWindow
 
     void SetKillable(bool state) // sets the player state to killable or unkillable
     {
-        if (state)
+        player = GameObject.Find("Player"); // Finds the player in the scene
+
+        if (state) 
         {
-            AddToConsoleLog("Player is now killable");
+            player.GetComponent<PlayerKillable>().killable = true; // sets killable to true
+            AddToConsoleLog("Player is now killable"); // sends message to the console
         }
         else
         {
-            AddToConsoleLog("Player is now unkillable");
+            player.GetComponent<PlayerKillable>().killable = false; // sets killable to false
+            AddToConsoleLog("Player is now unkillable"); // sends message to the console
         }
     }
 
-    void Kill()
+    void KillPlayer()
     {
+        player = GameObject.Find("Player"); // Finds the player in the scene
+        player.GetComponent<PlayerKillable>().TakeDamage(player.GetComponent<PlayerKillable>().maxHP);
         AddToConsoleLog("Killed the player");
     }
 
+    // reloads the scene
     void Restart()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
     }
 
+    // spawns an enemy by the name 
     void SpawnEnemy(string enemy)
     {
-        string enemiesPath = "Assets/Prefabs/Enemies";
+        string enemiesFolderPath = "Assets/Prefabs/Enemies"; // the enemy folder path
         
-        string[] enemies = AssetDatabase.FindAssets("t:Prefab", new[] { enemiesPath });
+        string[] enemies = AssetDatabase.FindAssets("t:Prefab", new[] { enemiesFolderPath }); // gets a kust if the prefabs guids
+
+        //gets a list of the enemy prefabs names
         string[] enemyNames = new string[enemy.Length];
         for (int i = 0;  i < enemies.Length; i++)
         {
@@ -184,6 +201,7 @@ public class DeveloperControls : EditorWindow
         }
         int index;
         
+        // checks if the enemy exists in the folder
         if (enemyNames.Contains(enemy))
         {
             index = Array.IndexOf(enemyNames, enemy);
@@ -193,12 +211,14 @@ public class DeveloperControls : EditorWindow
             throw new Exception("Error: Enemy does not exist");
         }
 
-        string prefabPath = AssetDatabase.GUIDToAssetPath(enemies[index]);
-        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+        // gets the reference of the enemy for instantiation
+        string enemyPrefabPath = AssetDatabase.GUIDToAssetPath(enemies[index]);
+        GameObject enemyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(enemyPrefabPath);
 
-        PrefabUtility.InstantiatePrefab(prefab);
+        PrefabUtility.InstantiatePrefab(enemyPrefab); // instantiates the enemy
     }
 
+    // adds the message to the console log
     private void AddToConsoleLog(string message)
     {
         consoleLog = "> " + message + "\n" + consoleLog;
