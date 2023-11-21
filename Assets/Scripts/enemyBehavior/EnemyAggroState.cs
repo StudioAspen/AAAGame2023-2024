@@ -19,7 +19,6 @@ public class EnemyAggroState : EnemyBaseState
             // "once the player character is out of view they will move at a slow jog from their current position to the player character’s last seen location"
             // run to player's last position, then chill for 5 seconds
             // UNDONE
-
             enemy.SwitchState(enemy.idleState);
         }
         // if enemy is in range for attack
@@ -27,6 +26,6 @@ public class EnemyAggroState : EnemyBaseState
             enemy.SwitchState(enemy.attackState);
 
         // moves towards player until in/out of range
-        // UNDONE
+        enemy.MoveTowardsPlayer();
     }
 }

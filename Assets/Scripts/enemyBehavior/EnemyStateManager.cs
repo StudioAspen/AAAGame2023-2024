@@ -24,8 +24,6 @@ public class EnemyStateManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // finds player in the scene
-        player = GameObject.FindGameObjectWithTag("Player");
         agent = gameObject.GetComponent<NavMeshAgent>();
 
         // get component and when enemy dies, switch the state
