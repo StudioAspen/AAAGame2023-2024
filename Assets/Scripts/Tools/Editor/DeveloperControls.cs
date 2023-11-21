@@ -174,12 +174,19 @@ public class DeveloperControls : EditorWindow
 
     void SpawnEnemy(string enemy)
     {
-        string enemiesPath = Application.dataPath + "/Prefabs/Enemies";
+        string enemiesPath = "Assets/Prefabs/Enemies";
+        
         string[] enemies = AssetDatabase.FindAssets("t:Prefab", new[] { enemiesPath });
-        int index;
-        if (enemies.Contains(enemy))
+        string[] enemyNames = new string[enemy.Length];
+        for (int i = 0;  i < enemies.Length; i++)
         {
-            index = Array.IndexOf(enemies, enemy);
+            enemyNames[i] = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(enemies[i])).name;
+        }
+        int index;
+        
+        if (enemyNames.Contains(enemy))
+        {
+            index = Array.IndexOf(enemyNames, enemy);
         }
         else
         {
