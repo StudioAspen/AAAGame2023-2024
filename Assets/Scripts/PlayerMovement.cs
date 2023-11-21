@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 Direction;
 
     Animator playerAnimator;
+    bool isJumping = false;
 
     void Start()
     {
@@ -111,26 +112,36 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+        isJumping = true;
     }
 
     public void ResetJump()
     {
         readyToJump = true;
+
+        isJumping = false;
     }
 
     void Animation()
     {
-        if (horizontalInput > 0f || verticalInput > 0f)
-        {
-            playerAnimator.SetBool("isWalking", true);
-        }
-        else if (horizontalInput < 0f || verticalInput < 0f)
+
+        if (horizontalInput != 0 || verticalInput != 0)
         {
             playerAnimator.SetBool("isWalking", true);
         }
         else
         {
             playerAnimator.SetBool("isWalking", false);
+        }
+
+        if (isJumping == true)
+        {
+            playerAnimator.SetBool("isJumping", true);
+        }
+        else if (isJumping == false)
+        {
+            playerAnimator.SetBool("isJumping", false);
         }
 
     }

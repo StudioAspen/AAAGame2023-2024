@@ -34,12 +34,16 @@ public class DashMovement : MonoBehaviour
     private bool isGrounded;
     public float groundCheckOffset;
 
+    Animator playerAnimator;
+
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+
+        playerAnimator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -94,7 +98,9 @@ public class DashMovement : MonoBehaviour
         isDashing = true;
         canDash = false;
 
-        if(direction.magnitude == 0)
+        playerAnimator.SetBool("isDashing", true);
+
+        if (direction.magnitude == 0)
         {
             direction = transform.forward;
         }
@@ -107,6 +113,8 @@ public class DashMovement : MonoBehaviour
 
 
         OnDashStart.Invoke();
+
+
     }
 
     private void EndDash()
@@ -114,6 +122,8 @@ public class DashMovement : MonoBehaviour
         //rb.velocity = Vector3.zero;
         isDashing = false;
         OnDashEnd.Invoke();
+
+        playerAnimator.SetBool("isDashing", false);
     }
 
     public void ResetDash()
