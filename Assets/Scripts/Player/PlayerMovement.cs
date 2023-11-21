@@ -5,22 +5,34 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     //Components
+    PlayerPositionCheck playerPositionCheck;
     Rigidbody rb;
-    GroundCheck groundCheck;
+    MovementModification movementModification;
 
     [Header("Ground Variables")]
     public float groundAcceleration;
     public float maxGroundSpeed;
     public float groundDrag;
+    [Header("Boosted Ground")]
+    public float boostedGroundAcceleration;
+    public float boostedMaxGroundSpeed;
+    public float boostedGroundDrag;
 
     [Header("Air Variables")]
     public float airAcceleration;
     public float maxAirSpeed;
     public float airDrag;
+    [Header("Boosted Air")]
+    public float boostedAirAcceleration;
+    public float boostedMaxAirSpeed;
+    public float boostedAirDrag;
 
     [Header("Jump Variables")]
     public float jumpForce;
     public float gravityAcceleration;
+    [Header("Boosted Jump")]
+    public float boostedJumpForce;
+    public float boostedGravityAcceleration;
 
     [Header("Other Variables")]
     [Range(0.0f, 1f)]
@@ -34,8 +46,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-       rb = GetComponent<Rigidbody>();
-        groundCheck = GetComponent<GroundCheck>();
+        playerPositionCheck = GetComponent<PlayerPositionCheck>();
+        rb = GetComponent<Rigidbody>();
+        movementModification = GetComponent<MovementModification>();
     }
 
     private void FixedUpdate() {
@@ -50,13 +63,12 @@ public class PlayerMovement : MonoBehaviour
         }
         else {
             rb.drag = airDrag;
-            rb.velocity += Vector3.down * gravityAcceleration;
+            rb.velocity += Vector3.down * Mathf.Lerp(gravityAcceleration, boostedGravityAcceleration, movementModification.boostForAll);
         }
     }
     private void Update()
     {
-        grounded = groundCheck.CheckOnGround();
-
+        grounded = playerPositionCheck.CheckOnGround();
         if(grounded) {
             ResetJump();
         }
@@ -68,9 +80,9 @@ public class PlayerMovement : MonoBehaviour
         if(readyToJump)
         {
             readyToJump = false;
+            grounded = false;
             Jump(1);
         }
-
     }
 
     public void Move(Vector3 inputDirection)
@@ -86,9 +98,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     public void Jump(float multiplier) {
-        //rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(transform.up * jumpForce * multiplier, ForceMode.VelocityChange);
+        float netJumpForce = Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll);
+        rb.AddForce(transform.up * netJumpForce * multiplier, ForceMode.VelocityChange);
     }
 
     public void ResetJump() {
@@ -101,17 +112,18 @@ public class PlayerMovement : MonoBehaviour
         Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         // Assigning variables if player is on the ground
         if (grounded) {
-            addedVelocity = targetDirection.normalized * groundAcceleration;
-            maxVelocity = targetDirection.normalized * maxGroundSpeed;
+            addedVelocity = targetDirection.normalized * Mathf.Lerp(groundAcceleration, boostedGroundAcceleration, movementModification.boostForAll);
+            maxVelocity = targetDirection.normalized * Mathf.Lerp(maxGroundSpeed, boostedMaxGroundSpeed, movementModification.boostForAll);
         }
         else {
-            addedVelocity = targetDirection.normalized * airAcceleration;
-            maxVelocity = targetDirection.normalized * maxAirSpeed;
+            addedVelocity = targetDirection.normalized * Mathf.Lerp(airAcceleration, boostedAirAcceleration, movementModification.boostForAll);
+            maxVelocity = targetDirection.normalized * Mathf.Lerp(maxAirSpeed, boostedMaxAirSpeed, movementModification.boostForAll);
         }
 
         // Applying horizontal movement
         float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
-        if (alignment < 1) {
+        Physics.Raycast(rb.position, addedVelocity);
+        if (alignment < 1 && !playerPositionCheck.CheckColldingWithTerrain(addedVelocity)) {
             rb.AddForce(addedVelocity, ForceMode.VelocityChange);
         }
     }

@@ -9,6 +9,7 @@ public class Killable : MonoBehaviour
     [Header("Health Variables")]
     public float maxHP; 
     public float currentHP;
+    public bool isKillable = true;
     public bool isDead = false;
 
     [Header("Events")]
@@ -22,7 +23,7 @@ public class Killable : MonoBehaviour
         OnTakeDamage.Invoke();
         OnHealthChange.Invoke();
 
-        if(currentHP <= 0)
+        if(currentHP <= 0 && isKillable)
         {
             isDead = true;
             OnDie.Invoke();

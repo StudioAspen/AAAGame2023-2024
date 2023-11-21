@@ -33,7 +33,7 @@ public class BloodThirst : MonoBehaviour
         //Initalizing values
         currentBlood = maxBlood;
 
-        if(TryGetComponent<MovementModification>(out movementModification))
+        if(gameObject.TryGetComponent(out movementModification))
         {
             Debug.Log("Movement modification not found");
         }
@@ -85,13 +85,13 @@ public class BloodThirst : MonoBehaviour
     public void GainBlood(float amount, bool canOverFeed)
     {
         // Adding blood based on if you can overfeed and limiting it based on max
-        if (canOverFeed)
-        {
+        if (canOverFeed) {
             currentBlood = Mathf.Min(currentBlood+amount, maxBloodForOverfed);
         }
-        else
-        {
-            currentBlood = Mathf.Min(currentBlood+amount, maxBlood);
+        else {
+            if(currentBlood < maxBlood) {
+                currentBlood = Mathf.Min(currentBlood + amount, maxBlood);
+            }
         }
         OnBloodChange.Invoke();
     }

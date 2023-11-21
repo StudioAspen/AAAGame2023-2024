@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DemonSword : MonoBehaviour
+public class SwordMovement : MonoBehaviour
 {
     [Header("Player Positions")]
     [SerializeField] Transform followTarget;
     [SerializeField] Transform attackTransform;
     [SerializeField] Transform downwardStabTransform;
-    Transform currentFollow;
+    [SerializeField] Transform dashAttackTransform;
 
     [Header("Other Variables")]
     [Range(0f,1f)]
@@ -22,6 +22,7 @@ public class DemonSword : MonoBehaviour
 
     // Other variables
     private bool isFollowing = true;
+    Transform currentFollow;
 
     private void Start() {
         currentFollow = followTarget;
@@ -35,25 +36,30 @@ public class DemonSword : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, currentFollow.position, followingSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, currentFollow.rotation, followingSpeed);
         }
+
     }
 
     //Most likely a TEMPERARY FUNCTION used to put the sword in the right place for attacks before we have animations
-    public void AttackPosition()
+    public void AttackPosition(float duration)
     {
         currentFollow = attackTransform;
-        Invoke("EndAttackPosition", 0.5f);
+        Invoke("EndAttackPosition", duration);
     }
     public void DownwardAttackPosition() {
         currentFollow = downwardStabTransform;
     }
+    public void DashAttackPosition() {
+        currentFollow = dashAttackTransform;
+    }
     public void EndAttackPosition() {
         currentFollow = followTarget;
+        CancelInvoke();
         OnEndAction.Invoke();
     }
     private void OnTriggerStay(Collider other)
     {
         //Debug.Log(other.gameObject.layer.ToString() + " " + playerLayerNumber.ToString());
-        if (other.gameObject.layer != playerLayerNumber) {
+        if (other.gameObject.layer != gameObject.layer) {
             OnContact.Invoke(other);
             EndAttackPosition();
         }

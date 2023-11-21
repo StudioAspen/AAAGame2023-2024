@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3600293997588700837
+--- !u!1 &6843868437063986203
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9099286656876420241}
-  - component: {fileID: 4723542839911032766}
-  - component: {fileID: 1473128000245537614}
-  - component: {fileID: 7936664694010125687}
-  - component: {fileID: 6849875112867513670}
+  - component: {fileID: 1960830280870154780}
+  - component: {fileID: 2451259244896866850}
+  - component: {fileID: 2404109163021651879}
+  - component: {fileID: 4701704092542303123}
+  - component: {fileID: 618434679905920363}
   m_Layer: 0
-  m_Name: GroundEyeball
+  m_Name: BloodPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9099286656876420241
+--- !u!4 &1960830280870154780
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3600293997588700837}
+  m_GameObject: {fileID: 6843868437063986203}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.83, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0.124833375, y: -0.16698109, z: 2.1691628}
+  m_LocalScale: {x: 2, y: 0.2284, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4723542839911032766
+--- !u!33 &2451259244896866850
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3600293997588700837}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1473128000245537614
+  m_GameObject: {fileID: 6843868437063986203}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &2404109163021651879
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3600293997588700837}
+  m_GameObject: {fileID: 6843868437063986203}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -85,13 +85,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &7936664694010125687
-SphereCollider:
+--- !u!65 &4701704092542303123
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3600293997588700837}
+  m_GameObject: {fileID: 6843868437063986203}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -104,25 +104,20 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6849875112867513670
+  m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &618434679905920363
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3600293997588700837}
+  m_GameObject: {fileID: 6843868437063986203}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733a809a166384342bc7cc16f2779c42, type: 3}
+  m_Script: {fileID: 11500000, guid: c1813b4c42a8b254da8b10118871e517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodGeyserPrefab: {fileID: 8785428940987143426, guid: 49421328652b2254c88b436561e88dba,
-    type: 3}
-  height: 2.98
-  radius: 1.34
-  duration: 5
-  isInfinate: 0
-  geyserAcceleration: 2
-  geyserMaxSpeed: 15
+  gainBloodAmount: 5
+  gainTickRate: 0.1
+  canOverfeed: 0

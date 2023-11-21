@@ -3,42 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
-
-public class Stab : MonoBehaviour
-{
-    //Compoenents
-    Rigidbody rb;
-    DashMovement dashMovement;
-    PlayerInput playerInput;
-    PlayerMovement playerMovement;
-    Collider collider;
-    [SerializeField] private GameObject swordObject;
-    DemonSword demonSword;
+public class Stab : MonoBehaviour {
+    [Header("References")]
+    [SerializeField] SwordMovement swordMovement;
 
     [Header("Other Variables")]
     [SerializeField] float dashSpeed;
-    [SerializeField] float bloodGainAmount; 
-    bool isStabbing = false;
+    [SerializeField] float boostedDashSpeed;
+    [SerializeField] float bloodGainAmount;
+    [SerializeField] float attackDuration;
 
     [Header("Events")]
-    //Stab Events
-    public UnityEvent onStabEnd = new UnityEvent();
-    
+    public UnityEvent OnStabEnd = new UnityEvent();
+
+    // Movement Compoenents
+    DashMovement dashMovement;
+    PlayerMovement playerMovement;
+    Collider collider;
+    Rigidbody rb;
+    MovementModification movementModification;
+
+    // Variables
+    bool isStabbing = false;
 
     // Start is called before the first frame update
     void Start()
     {
         // Getting components
-        rb = GetComponent<Rigidbody>();
         dashMovement = GetComponent<DashMovement>();
-        collider = GetComponent<Collider>();
-        playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
-        
+        collider = GetComponent<Collider>();
+        rb = GetComponent<Rigidbody>();
+        movementModification = GetComponent<MovementModification>();
+
         // Setting up Demon Sword
-        demonSword = swordObject.GetComponent<DemonSword>();
-        demonSword.OnContact.AddListener(StabContact);
+        swordMovement.OnContact.AddListener(StabContact);
     }
 
 
@@ -49,50 +48,50 @@ public class Stab : MonoBehaviour
             isStabbing = true;
 
             // Demon sword variables
-            demonSword.OnEndAction.AddListener(EndOfStabAnimation);
-            demonSword.AttackPosition();
+            swordMovement.OnEndAction.AddListener(EndOfStabAnimation);
+            swordMovement.AttackPosition(attackDuration);
         }
     }
 
     public void InterruptStab()
     {
         isStabbing = false;
+        swordMovement.EndAttackPosition();
     }
 
-    void StabContact(Collider other)
+    public void StabContact(Collider other)
     {
-        if(other.gameObject.TryGetComponent<Stabable>(out Stabable stabable))
+        if(other.gameObject.TryGetComponent(out Stabable stabable))
         {
             if(isStabbing)
             {
                 // Setting proper listeners and variables
-                playerInput.DisableInput();
                 isStabbing = false;
-                dashMovement.OnDashEnd.AddListener(EndOfDash);
-                demonSword.OnEndAction.RemoveListener(EndOfStabAnimation);
+                swordMovement.OnEndAction.RemoveListener(EndOfStabAnimation);
 
-                // Applying Gameplay mechanics
-                demonSword.GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
-                
                 // Setting up and starting dash
-                collider.isTrigger = true; // Setting as trigger to prevent collisions
-                float dashDuration = (stabable.dashLength / dashSpeed);
-                rb.position = stabable.dashStartTransform.position;
-                dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
+                DashThrough(stabable);
             }
         }
+    }
+    public void DashThrough(Stabable stabable) {
+        GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
+        dashMovement.OnDashEnd.AddListener(EndOfDash);
+        collider.isTrigger = true; // Setting as trigger to prevent collisions
+        float dashDuration = (stabable.dashLength / Mathf.Lerp(dashSpeed, boostedDashSpeed, movementModification.boostForAll));
+        rb.position = stabable.dashStartTransform.position;
+        dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
     }
     private void EndOfDash() {
         dashMovement.OnDashEnd.RemoveListener(EndOfDash);
         playerMovement.ResetJump();
         dashMovement.ResetDash();
         collider.isTrigger = false; // Re-enable collider
-        playerInput.EnableInput();
-        onStabEnd.Invoke();
+        OnStabEnd.Invoke();
     }
     private void EndOfStabAnimation() {
         isStabbing = false;
-        demonSword.OnEndAction.RemoveListener(EndOfStabAnimation);
-        onStabEnd.Invoke();
+        swordMovement.OnEndAction.RemoveListener(EndOfStabAnimation);
+        OnStabEnd.Invoke();
     }
 }

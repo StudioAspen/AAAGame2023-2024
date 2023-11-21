@@ -5,17 +5,13 @@ using UnityEngine.Events;
 
 public class DashMovement : MonoBehaviour
 {
-    // References
-    Rigidbody rb;//rigid body of player
-    MovementModification movementModification;
-    GroundCheck groundCheck;
 
-    [Header("Base Stats")]
+    [Header("Movement")]
     public float dashDistance; // How far the dash will go
     public float dashDuration; // How long the dash lasts
     public float dashCooldown; // Cooldown for the dash
 
-    [Header("Boosted Stats")]
+    [Header("Boosted Movement")]
     public float boostedDashDistance; // Distance traveled when max overfed
     public float boostedDashDuration; // Duration when max overfed
     public float boostedDashCooldown; // Cooldown when max overfed
@@ -30,6 +26,11 @@ public class DashMovement : MonoBehaviour
     [Header("Events")]
     public UnityEvent OnDashEnd = new UnityEvent();
 
+    // References
+    Rigidbody rb;//rigid body of player
+    MovementModification movementModification;
+    PlayerPositionCheck playerPositionCheck;
+    PlayerInput playerInput;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +38,8 @@ public class DashMovement : MonoBehaviour
         // Getting components
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
-        groundCheck = GetComponent<GroundCheck>();
+        playerPositionCheck = GetComponent<PlayerPositionCheck>();
+        playerInput = GetComponent<PlayerInput>();
     }
 
     private void FixedUpdate() {
@@ -52,11 +54,11 @@ public class DashMovement : MonoBehaviour
         if (dashCdTimer > 0) { //if dash is still on cd, count down the timer 
             dashCdTimer -= Time.deltaTime;
         }
-        if (groundCheck.CheckOnGround()) {
+        if (playerPositionCheck.CheckOnGround()) {
             ResetDash();
         }
     }
-    public void PlayerInputDash(Vector3 direction)
+    public void TryPlayerInputDash(Vector3 direction)
     {
         if (dashCdTimer <= 0 && dashAvailable && !isDashing) {
             dashAvailable = false; // Using up the dash
@@ -77,6 +79,7 @@ public class DashMovement : MonoBehaviour
         if (direction.magnitude == 0) {
             direction = transform.forward;
         }
+        playerInput.DisableInput();
 
         // Setting variables
         isDashing = true;
@@ -88,12 +91,13 @@ public class DashMovement : MonoBehaviour
         rb.useGravity = false;
         rb.velocity = dashVelocity;
 
-        // Vizualization of how far the player SHOULD
+        // Vizualization of how far the player SHOULD go
         Debug.DrawLine(rb.position, rb.position + direction * distance, Color.white, 5);
     }
 
     public void ResetDash()
     {
+        dashCdTimer = 0;
         dashAvailable = true;
     }
 
@@ -106,6 +110,8 @@ public class DashMovement : MonoBehaviour
     }
 
     private void EndDash() {
+        playerInput.EnableInput();
+
         //Rstoring movement variables
         rb.drag = dragValHolder;
         rb.useGravity = true;
@@ -124,7 +130,6 @@ public class DashMovement : MonoBehaviour
             rb.drag = 0;
             rb.velocity = dashVelocity;
         }
-
         if (dashDurationTimer <= 0) {
             EndDash();
         }

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &147119061475514897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3318144330648956302}
+  m_Layer: 10
+  m_Name: EndDashPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3318144330648956302
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147119061475514897}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2771663901528065553}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1381175444881999803
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,7 +45,7 @@ GameObject:
   - component: {fileID: 5611420371894251611}
   - component: {fileID: 191085177565569077}
   - component: {fileID: 3831749198362223840}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StabableCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,11 +61,12 @@ Transform:
   m_GameObject: {fileID: 1381175444881999803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.16, y: 1.04, z: 0.28}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4383921528496755129}
+  - {fileID: 3318144330648956302}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8651098137332554589
@@ -121,8 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashStartTransform: {fileID: 4383921528496755129}
-  dashDir: {x: 1, y: 0, z: 0}
-  dashLength: 1.53
+  dashEndTransform: {fileID: 3318144330648956302}
+  dashDir: {x: 3, y: 0, z: 0}
+  dashLength: 3
 --- !u!54 &3831749198362223840
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -159,7 +192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4383921528496755129}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StartDashPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +208,7 @@ Transform:
   m_GameObject: {fileID: 1774856901985232667}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: -1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

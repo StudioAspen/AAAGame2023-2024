@@ -6,11 +6,16 @@ using UnityEngine;
 public class DownwardStab : MonoBehaviour {
 
     [Header("References")]
-    [SerializeField] GameObject swordObject;
+    [SerializeField] SwordMovement swordMovement;
 
-    [Header("Variables")]
+    [Header("Movement")]
     [SerializeField] float downwardStabAcceleration;
     [SerializeField] float downwardStabMaxSpeed;
+    [Header("Boosted Movement")]
+    [SerializeField] float boostedDownwardStabAcceleration;
+    [SerializeField] float boostedDownwardStabMaxSpeed;
+
+    [Header("Other Variables")]
     [SerializeField] float pressDownTime;
     [SerializeField] float bloodGain;
 
@@ -21,14 +26,17 @@ public class DownwardStab : MonoBehaviour {
 
     // Components
     Rigidbody rb;
-    GroundCheck groundCheck;
-    DemonSword sword;
+    PlayerPositionCheck playerPositionCheck;
+    Stab stab;
+    MovementModification movementModification;
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
-        groundCheck = GetComponent<GroundCheck>();
-        sword = swordObject.GetComponent<DemonSword>();
-        sword.OnContact.AddListener(DownwardStabContact);
+        playerPositionCheck = GetComponent<PlayerPositionCheck>();
+        stab = GetComponent<Stab>();
+        movementModification = GetComponent<MovementModification>();
+
+        swordMovement.OnContact.AddListener(DownwardStabContact);
     }
 
     private void FixedUpdate() {
@@ -40,7 +48,7 @@ public class DownwardStab : MonoBehaviour {
     private void Update() {
 
         //if grounded can perform downward stab
-        canDownwardStab = !groundCheck.CheckOnGround();
+        canDownwardStab = !playerPositionCheck.CheckOnGround();
     }
     public void TryDownwardStabUpdate() {
         if (canDownwardStab && !isStabing) {
@@ -48,23 +56,23 @@ public class DownwardStab : MonoBehaviour {
 
             // Starting downward stab as long as the duration
             if (stabButtonTimer >= pressDownTime) {
+                stab.InterruptStab();
                 isStabing = true;
-                sword.DownwardAttackPosition();
+                swordMovement.DownwardAttackPosition();
             }
         }
     }
     public void ReleaseDownwardStab() {
         stabButtonTimer = 0;
 
-
         if (isStabing) {
             isStabing = false;
-            sword.EndAttackPosition();
+            swordMovement.EndAttackPosition();
         }
     }
     private void DownwardStabMovementUpdate() {
-        Vector3 addedVelocity = Vector3.down * downwardStabAcceleration;
-        Vector3 maxVelocity = Vector3.down * downwardStabMaxSpeed;
+        Vector3 addedVelocity = Vector3.down * Mathf.Lerp(downwardStabAcceleration, boostedDownwardStabMaxSpeed, movementModification.boostForAll);
+        Vector3 maxVelocity = Vector3.down * Mathf.Lerp(downwardStabMaxSpeed, boostedDownwardStabMaxSpeed, movementModification.boostForAll);
         Vector3 currentVerticalVelocity = new Vector3(0, rb.velocity.y, 0);
 
         // Applying vertical movement if the speed is higher than the max velocity
@@ -78,7 +86,7 @@ public class DownwardStab : MonoBehaviour {
         if(isStabing) {
             if(other.TryGetComponent<DownwardStabEffect>(out DownwardStabEffect effect)) {
                 effect.TriggerEffect();
-                sword.GetComponent<BloodThirst>().GainBlood(bloodGain, true);
+                GetComponent<BloodThirst>().GainBlood(bloodGain, true);
             }
         }
     }
