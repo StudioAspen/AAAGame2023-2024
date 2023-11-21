@@ -21,6 +21,9 @@ public class EnemyStateManager : MonoBehaviour
     public Transform ogSpawn; // need to drag in component of where the enemy originally spawned
     private NavMeshAgent agent;
 
+    public Timer timer = new Timer();
+    public float timeToSwitch;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,8 +42,9 @@ public class EnemyStateManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {    
+    {   
         // will call any logic in UpdateState from the current state every frame
+        timer.UpdateTimer();
         currentState.UpdateState(this);
 
         // check if death state is working
@@ -91,5 +95,16 @@ public class EnemyStateManager : MonoBehaviour
     public void Death()
     {
         SwitchState(deathState);
+    }
+
+    public void Idle()
+    {
+        SwitchState(idleState);
+    }
+
+    public void SwitchToIdle()
+    {
+        if(!timer.IsActive())
+            timer.StartTimer(timeToSwitch, Idle);
     }
 }

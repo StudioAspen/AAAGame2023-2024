@@ -159,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 450376145}
   ogSpawn: {fileID: 1062626559}
+  timeToSwitch: 5
 --- !u!65 &382043640
 BoxCollider:
   m_ObjectHideFlags: 0
