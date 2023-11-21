@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyStateManager : MonoBehaviour
 {
@@ -12,13 +13,21 @@ public class EnemyStateManager : MonoBehaviour
     public EnemyDeathState deathState = new EnemyDeathState();
 
     // player transform
-    public Transform player;
+    public Transform playerTransform; // need to drag in component
     // enemy killable
     private Killable kill;
+
+    // AI pathfinding 
+    public Transform ogSpawn; // need to drag in component of where the enemy originally spawned
+    private NavMeshAgent agent;
 
     // Start is called before the first frame update
     void Start()
     {
+        // finds player in the scene
+        player = GameObject.FindGameObjectWithTag("Player");
+        agent = gameObject.GetComponent<NavMeshAgent>();
+
         // get component and when enemy dies, switch the state
         kill = GetComponent<Killable>();
         kill.OnDie.AddListener(Death);
@@ -43,6 +52,7 @@ public class EnemyStateManager : MonoBehaviour
         }
     }
 
+    // changes the state of the enemy
     public void SwitchState(EnemyBaseState state)
     {
         // change the state then call the EnterState from the new state
@@ -50,22 +60,36 @@ public class EnemyStateManager : MonoBehaviour
         state.EnterState(this);
     }
 
+    // checks if ray is hitting at a given distance and returns a bool because of it
     public bool RayCastCheck(float distance)
     {
-        if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out RaycastHit hitInfo, distance))
+        if (Physics.Raycast(transform.position, (playerTransform.transform.position - transform.position), out RaycastHit hitInfo, distance))
         {
             // draws the ray in scene when hit, RED
-            Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hitInfo.distance, Color.red);
+            Debug.DrawRay(transform.position, (playerTransform.transform.position - transform.position) * hitInfo.distance, Color.red);
             return true;
         }
         else
         {
             // draws the ray in scene when NOT hit, GREEN
-            Debug.DrawRay(transform.position, (player.transform.position - transform.position) * distance, Color.green);
+            Debug.DrawRay(transform.position, (playerTransform.transform.position - transform.position) * distance, Color.green);
             return false;
         }
     }
 
+    // move towards the player
+    public void MoveTowardsPlayer()
+    {
+        agent.SetDestination(playerTransform.position);
+    }
+
+    // move to the original position of enemy
+    public void MoveOriginalPosition()
+    {
+        agent.SetDestination(ogSpawn.position);
+    }
+
+    // switch state to deathstate
     public void Death()
     {
         SwitchState(deathState);

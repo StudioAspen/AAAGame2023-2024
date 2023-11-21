@@ -8,7 +8,7 @@ public class EnemyIdleState : EnemyBaseState
         Debug.Log("Enter Idle State");
 
         // starting running to original position
-        // UNDONE
+        enemy.MoveOriginalPosition();
     }
 
     public override void UpdateState(EnemyStateManager enemy)
@@ -20,5 +20,6 @@ public class EnemyIdleState : EnemyBaseState
             enemy.SwitchState(enemy.aggroState);
 
         // if no player stop moving and wait for player to get into range
+        // so do nothing, do idle anim
     }
 }
