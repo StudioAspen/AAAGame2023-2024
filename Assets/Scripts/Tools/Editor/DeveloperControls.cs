@@ -29,7 +29,7 @@ public class DeveloperControls : EditorWindow
     string consoleLog = "";
 
     // Open the Editor Window
-    [MenuItem("Tools/Developer Controls")]
+    [MenuItem("Tools/Developer Console")]
     public static void ShowWindow()
     {
         EditorWindow.GetWindow<DeveloperControls>();
