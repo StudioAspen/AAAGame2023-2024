@@ -162,12 +162,12 @@ public class DeveloperControls : EditorWindow
 
         if (state) 
         {
-            player.GetComponent<PlayerKillable>().killable = true; // sets killable to true
+            player.GetComponent<PlayerKillable>().isKillable = true; // sets killable to true
             AddToConsoleLog("Player is now killable"); // sends message to the console
         }
         else
         {
-            player.GetComponent<PlayerKillable>().killable = false; // sets killable to false
+            player.GetComponent<PlayerKillable>().isKillable = false; // sets killable to false
             AddToConsoleLog("Player is now unkillable"); // sends message to the console
         }
     }
