@@ -174,9 +174,23 @@ public class DeveloperControls : EditorWindow
 
     void KillPlayer()
     {
-        player = GameObject.Find("Player"); // Finds the player in the scene
-        player.GetComponent<PlayerKillable>().TakeDamage(player.GetComponent<PlayerKillable>().maxHP);
-        AddToConsoleLog("Killed the player");
+        try
+        {
+            player = GameObject.Find("Player"); // Finds the player in the scene
+            if (player != null)
+            {
+                player.GetComponent<PlayerKillable>().TakeDamage(player.GetComponent<PlayerKillable>().maxHP);
+                AddToConsoleLog("Killed the player");
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
+        catch (Exception)
+        {
+            AddToConsoleLog("Error: player cannot be found");
+        }
     }
 
     // reloads the scene
@@ -221,7 +235,7 @@ public class DeveloperControls : EditorWindow
     // adds the message to the console log
     private void AddToConsoleLog(string message)
     {
-        consoleLog = "> " + message + "\n" + consoleLog;
+        consoleLog += "> " + message + "\n";
     }
 }
 
