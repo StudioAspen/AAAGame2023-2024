@@ -5,21 +5,27 @@ using UnityEngine.Events;
 
 public class BloodThirst : MonoBehaviour
 {
-    
+    [Header("Blood Variables")]
     [SerializeField] public float bloodThirstThreshold; // Threshold for blood thirst
     [SerializeField] public float maxBlood; // Max amount of blood before overfed
+    [SerializeField] public float maxBloodForOverfed; // Max amount of blood for overfed
     [SerializeField] public float currentBlood; // Current blood amount
-    float maxBloodForOverfed; // Max amount of blood for overfed
 
     [SerializeField] float bloodDrainRate; // Blood drain rate
     [SerializeField] float overfedDrainRate; // Blood drain rate when overfed
 
+    [Header("Other Variables")]
     [SerializeField] PlayerKillable playerKillable;
     [SerializeField] float playerHealthDrainRate; // How much are you draining from the player
-    bool isDraining = false; // If the sword is currently draining
 
-    UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
+    [Header("Events")]
+    public UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
+
+    // Components
     MovementModification movementModification;
+    
+    // Other Variables
+    bool isDraining = false; // If the sword is currently draining
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +33,7 @@ public class BloodThirst : MonoBehaviour
         //Initalizing values
         currentBlood = maxBlood;
 
-        if(TryGetComponent<MovementModification>(out movementModification))
+        if(gameObject.TryGetComponent(out movementModification))
         {
             Debug.Log("Movement modification not found");
         }
@@ -79,13 +85,13 @@ public class BloodThirst : MonoBehaviour
     public void GainBlood(float amount, bool canOverFeed)
     {
         // Adding blood based on if you can overfeed and limiting it based on max
-        if (canOverFeed)
-        {
+        if (canOverFeed) {
             currentBlood = Mathf.Min(currentBlood+amount, maxBloodForOverfed);
         }
-        else
-        {
-            currentBlood = Mathf.Min(currentBlood+amount, maxBlood);
+        else {
+            if(currentBlood < maxBlood) {
+                currentBlood = Mathf.Min(currentBlood + amount, maxBlood);
+            }
         }
         OnBloodChange.Invoke();
     }
