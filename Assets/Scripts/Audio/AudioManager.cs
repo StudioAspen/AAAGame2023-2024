@@ -4,19 +4,36 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance { get; private set; }
+    private static AudioManager instance;
+
+    public static AudioManager GetInstance()
+    {
+        // if instance doesnt exist, find it in the scene
+        if (instance == null)
+        {
+            instance = FindObjectOfType<AudioManager>();
+
+            // if instance isn't in the scene, create a new GameObject and add this script to it
+            if (instance == null)
+            {
+                GameObject obj = new GameObject("AudioManager");
+                instance = obj.AddComponent<AudioManager>();
+            }
+        }
+        return instance;
+    }
 
     void Awake()
     {
-        if (Instance != null && Instance != this) 
-        { 
-            Destroy(gameObject); 
-        } 
-        else 
-        { 
-            Instance = this;
-            DontDestroyOnLoad(gameObject); 
-        } 
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // placeholder function, functionality will be implemented later

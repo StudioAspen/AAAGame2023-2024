@@ -14,7 +14,7 @@ public class TESTmoveforward : MonoBehaviour
         //Testing audio manager accesss and functionality
         if(Input.GetKey(KeyCode.E))
         {
-            AudioManager.Instance.PlayAudio("Stab Sound");
+            AudioManager.GetInstance().PlayAudio("Stab Sound");
         }
     }
 }
