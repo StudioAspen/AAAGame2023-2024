@@ -3,12 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class DeveloperControls : EditorWindow
 {
+    string currentWindow;
+    EditorWindow gameView;
+    bool focusOnGameView = false;
+
+
     // an array that contains all the possible commands
     string[] commandArray = new string[]
     {
@@ -42,7 +48,7 @@ public class DeveloperControls : EditorWindow
 
     private void OnEnable()
     {
-        player = GameObject.Find("Player"); // finds the player's game object for modification
+        FindPlayer(); // finds the player's game object for modification
     }
 
     private void OnGUI()
@@ -56,6 +62,7 @@ public class DeveloperControls : EditorWindow
             consoleLog = "";
         }
 
+        GUI.SetNextControlName("CommandInput");
         userInput = EditorGUILayout.TextField(userInput, GUILayout.Height(20)); // gets commands from user input
         inputModified = userInput.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries); // to split up the command from the parameters
 
@@ -158,7 +165,7 @@ public class DeveloperControls : EditorWindow
 
     void SetKillable(bool state) // sets the player state to killable or unkillable
     {
-        player = GameObject.Find("Player"); // Finds the player in the scene
+        FindPlayer();
 
         if (state) 
         {
@@ -176,7 +183,8 @@ public class DeveloperControls : EditorWindow
     {
         try
         {
-            player = GameObject.Find("Player"); // Finds the player in the scene
+            FindPlayer();
+
             if (player != null)
             {
                 player.GetComponent<PlayerKillable>().TakeDamage(player.GetComponent<PlayerKillable>().maxHP);
@@ -236,6 +244,60 @@ public class DeveloperControls : EditorWindow
     private void AddToConsoleLog(string message)
     {
         consoleLog += "> " + message + "\n";
+    }
+
+    // finds the players game object
+    private void FindPlayer()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    //gets the game view
+    private void FindGameView()
+    {
+        gameView = EditorWindow.GetWindow(typeof(Editor).Assembly.GetType("UnityEditor.GameView"));
+    }
+
+    //gets the current window that hte mouse is hovering above
+    private void GetCurrentWindow()
+    {
+        if (EditorWindow.mouseOverWindow != null)
+        {
+            currentWindow = EditorWindow.mouseOverWindow.ToString();
+        }
+    }
+
+    // makes sure to shift focus to game view if it is supposed to be
+    private void OnFocus()
+    {
+        if (focusOnGameView)
+        {
+            FindGameView();
+            gameView.Focus();
+        }
+    }
+
+    // shifts window focus between game and console depending on mouse location
+    private void Update()
+    {
+        if (EditorApplication.isPlaying)
+        {
+            GetCurrentWindow();
+            if (currentWindow != null)
+            {
+                if (currentWindow == " (UnityEditor.GameView)")
+                {
+                    FindGameView();
+                    gameView.Focus();
+                    Debug.Log("Focused game view");
+                    focusOnGameView = true;
+                } else
+                {
+                    this.Focus();
+                    focusOnGameView = false;
+                }
+            }
+        }
     }
 }
 
