@@ -5,14 +5,22 @@ using UnityEngine;
 public class Checkpoints : MonoBehaviour
 {
     /*----------------------------------------------
-     Script is to be added to the Player GameObject
+     Script is to be added to the Checkpoint Manager Prefab
     ----------------------------------------------*/
+    // place the checkpoint manager prefab into the scene, and any actual checkpoint prefabs inside of this manager.
 
     Transform currentCheckpoint; // the most recent checkpoint that the players
+    GameObject player;
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<PlayerKillable>().OnDie.AddListener(RespawnPlayer);
+    }
 
     void OnTriggerEnter(Collider checkpoint)
     {
-        if (checkpoint.transform.name.Contains("Checkpoint")) // checks if the collider is a checkpoint
+        if (checkpoint.transform.CompareTag("Checkpoint"))// checks if the collider is a checkpoint
         {
             // sets the most recent checkpoint
             currentCheckpoint = checkpoint.transform;
