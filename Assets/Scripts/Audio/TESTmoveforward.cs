@@ -9,12 +9,5 @@ public class TESTmoveforward : MonoBehaviour
     void Update()
     {
         transform.Translate(0, 0, speed * Time.deltaTime);
-
-
-        //Testing audio manager accesss and functionality
-        if(Input.GetKey(KeyCode.E))
-        {
-            AudioManager.GetInstance().PlayAudio("Stab Sound");
-        }
     }
 }
