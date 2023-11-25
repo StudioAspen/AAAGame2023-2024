@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 119739507}
   - component: {fileID: 119739511}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: sfxSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
