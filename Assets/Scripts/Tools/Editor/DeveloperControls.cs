@@ -40,36 +40,38 @@ public class DeveloperControls : EditorWindow
     {
         EditorWindow.GetWindow<DeveloperControls>();
     }
-
     private void OnInspectorUpdate() // To repaint the window
     {
         Repaint();
     }
-
     private void OnEnable()
     {
         FindPlayer(); // finds the player's game object for modification
     }
-
+    
     private void OnGUI()
     {
-        windowWidth = EditorWindow.GetWindow<DeveloperControls>().position.width; // gets the window width for sizing gui elements
-        windowHeight = EditorWindow.GetWindow<DeveloperControls>().position.height; // gets the window height for sizing gui elements
+        //windowWidth = EditorWindow.GetWindow<DeveloperControls>().position.width; // gets the window width for sizing gui elements
+        //windowHeight = EditorWindow.GetWindow<DeveloperControls>().position.height; // gets the window height for sizing gui elements
 
         // Clear the Console
         if(GUILayout.Button("Clear Console"))
         {
             consoleLog = "";
         }
-
+        
+        
         GUI.SetNextControlName("CommandInput");
         userInput = EditorGUILayout.TextField(userInput, GUILayout.Height(20)); // gets commands from user input
         inputModified = userInput.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries); // to split up the command from the parameters
-
+        
+        
         //formats the console log into a vertical scroll view
+        //scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(GetWindow<DeveloperControls>().position.height - 20));
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(windowHeight - 20));
-            EditorGUILayout.TextArea(consoleLog, GUILayout.ExpandHeight(true)); // creates the console log
+        EditorGUILayout.TextArea(consoleLog, GUILayout.ExpandHeight(true)); // creates the console log
         EditorGUILayout.EndScrollView();
+        
 
         // Detects whether or not the enter key was pressed (Checks if a command was entered)
         Event eventCurrent = Event.current;
@@ -78,6 +80,7 @@ public class DeveloperControls : EditorWindow
             if (eventCurrent.keyCode == KeyCode.Return)
             {
                 ExecuteCommand();
+
             }
         }
     }
@@ -266,7 +269,7 @@ public class DeveloperControls : EditorWindow
             currentWindow = EditorWindow.mouseOverWindow.ToString();
         }
     }
-
+    /*
     // makes sure to shift focus to game view if it is supposed to be
     private void OnFocus()
     {
@@ -275,13 +278,14 @@ public class DeveloperControls : EditorWindow
             FindGameView();
             gameView.Focus();
         }
-    }
-
+    }*/
+    /*
     // shifts window focus between game and console depending on mouse location
     private void Update()
     {
         if (EditorApplication.isPlaying)
         {
+            
             GetCurrentWindow();
             if (currentWindow != null)
             {
@@ -298,7 +302,7 @@ public class DeveloperControls : EditorWindow
                 }
             }
         }
-    }
+    }*/
 }
 
  
