@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using EnemyBehaviorTrees.Internal;
 using EnemyBehaviorTrees.Nodes;
@@ -13,34 +14,37 @@ namespace EnemyBehaviorTrees.Agents
     /// </summary>
     public class ExampleAgent : NPCAgentBase, IPatroller, IHostile
     {
-        // Reference to agent that inherits from this interface
-        public NPCAgentBase agent { get; set; }
+        // Needed to appease interfaces
+        public NPCAgentBase agent { get; }
         
         [Tooltip("How long the agent waits at its patrol location until it checks for the player again")]
-        public float patrolStayTime { get; } = 2f;
+        public float patrolStayTime { get; set; } = 2f;
         
         [Tooltip("How far away the agent checks from itself for the player")]
-        public float playerAggroRange { get; } = 5f;
+        public float playerAggroRange { get; set; } = 5f;
         
         [Tooltip("How far away the agent checks from itself to see if it deaggros because the player ran far enough away")]
-        public float playerDeAggroRange { get; } = 7f;
+        public float playerDeAggroRange { get; set; } = 7f;
         
         [Tooltip("How long the agent idles for whenever it player goes into deaggro range")]
-        public float idleTimeSecs { get; } = 2f;
+        public float idleTimeSecs { get; set; } = 2f;
 
         [Tooltip("How far away the agent needs to be to start hitting the player")]
-        public float playerHitRange { get; } = 0.5f;
+        public float playerHitRange { get; set; } = 0.5f;
 
         public List<GameObject> waypoints { get; set; } = new List<GameObject>();
         public int currentWaypointIndex { get; set; } = 0;
-
+        
+        
         public override void GenerateBehaviorTree()
         {
+            InitializeWaypoints();
+            
             BehaviorTree = new Selector("Control NPC",
                                 // Navigation branch: Idle
                                 new Sequence("Idle",
                                     new IsNavigationActivityTypeOf("Idle", this),
-                                    new Timer(idleTimeSecs, 
+                                    new NodeTimer(idleTimeSecs, 
                                         new SetNavigationActivityTo("Patrol", this))),
                                 // Navigation branch: Look for player
                                 new Sequence("Look for player",
@@ -71,7 +75,7 @@ namespace EnemyBehaviorTrees.Agents
                                 new Sequence("Move to Waypoint",
                                     new IsNavigationActivityTypeOf("Patrol", this),
                                     new NavigateToRandomWaypoint(this),
-                                    new Timer(patrolStayTime,
+                                    new NodeTimer(patrolStayTime,
                                         new SetNavigationActivityTo("Look for player", this))));
         }
 
@@ -101,6 +105,21 @@ namespace EnemyBehaviorTrees.Agents
             return null;
         }
 
+        public void InitializeWaypoints()
+        {
+            Transform waypointsChild = transform.Find("Waypoints");
+
+            for (int i = 0; i < waypointsChild.childCount; i++)
+            {
+                waypoints.Add(waypointsChild.GetChild(i).gameObject);
+            }
+
+            if (waypoints.Count <= 0)
+            {
+                Debug.Log("Please have an empty child game object named Waypoints that contains the transforms of the waypoints this agent should go to.");
+            }
+        }
+
         #endregion
 
         #region IHOSTILE METHODS
@@ -108,7 +127,13 @@ namespace EnemyBehaviorTrees.Agents
         public override GameObject TryGetPlayerWithinRange(float range)
         {
             Collider[] objs = Physics.OverlapSphere(transform.position, range, LayerMask.GetMask("Player"));
-            return objs[0] != null ? objs[0].gameObject : null;
+            
+            if (objs.Length > 0 && objs[0] != null)
+            {
+                return objs[0].gameObject;
+            }
+
+            return null;
         }
 
         #endregion

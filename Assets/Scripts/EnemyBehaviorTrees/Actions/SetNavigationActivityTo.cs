@@ -18,6 +18,7 @@ namespace EnemyBehaviorTrees.Nodes
         {
             this.newActivity = newActivity;
             Name = $"Set NavigationActivity to {newActivity}";
+            this.context = context;
         }
         
         // OnReset() - empty

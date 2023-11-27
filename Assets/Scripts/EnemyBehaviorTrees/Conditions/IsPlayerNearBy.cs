@@ -17,6 +17,7 @@ namespace EnemyBehaviorTrees.Nodes
         public IsPlayerNearBy(float maxDistance, NPCAgentBase context) : base($"Is player within {maxDistance}f?")
         {
             distanceToCheck = maxDistance;
+            this.context = context;
         }
 
         // OnReset() - empty

@@ -19,24 +19,17 @@ namespace EnemyBehaviorTrees.Internal
         /// <typeparam name="value"> Value of the entry. WARNING: VALUE MUST BE OF A PRIMITIVE TYPE </typeparam>
         /// <returns> True if successfully set. </returns>
         /// </summary>
-        public bool SetEntry(string id, object value);
+        public bool SetEntry<T>(string id, T value);
         
         
         /// <summary>
         /// Gets the value of a entry by id if it exists on the Blackboard.
         ///
         /// <param name="id"> Id of the entry. </param>
-        /// <returns> The object if Id exists. Otherwise, it returns null. </returns>
+        /// <param name="value"> Output value of the entry. </param>
+        /// <returns> True if object exists. Otherwise, it returns false. </returns>
         /// </summary>
-        public object GetEntry(string id);
-
-
-        /// <summary>
-        /// This method returns whether or not a given entry is in the Blackboard.
-        /// </summary>
-        /// <param name="id"> The id of the entry to search for. </param>
-        /// <returns> <c>True</c> if the there is an entry in the Blackboard with the given id and <c>False</c> otherwise. </returns>
-        public bool ContainsEntry(string id);
+        public bool GetEntry<T>(string id, out T value);
             
         
         /// <summary>

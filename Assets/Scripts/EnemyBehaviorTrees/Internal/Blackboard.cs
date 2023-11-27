@@ -7,9 +7,9 @@ namespace EnemyBehaviorTrees.Internal
 {
     public class Blackboard : IBlackboard
     {
-        public Dictionary<string, object> entries { get; }
+        public Dictionary<string, object> entries { get; } = new Dictionary<string, object>();
         
-        public bool SetEntry(string id, object value)
+        public bool SetEntry<T>(string id, T value)
         {
             // NOTE: Dictionary.TryAdd() doesn't work here because TryAdd doesn't override already added key-value pairs.
             
@@ -34,25 +34,16 @@ namespace EnemyBehaviorTrees.Internal
             return true;
         }
 
-        public object GetEntry(string id)
+        public bool GetEntry<T>(string key, out T value)
         {
-            // NOTE: Same deal with Dictionary.TryGetValue() as SetEntry().
-            
-            // check for entry in entries
-            if (entries.ContainsKey(id))
+            if (entries.TryGetValue(key, out var objValue) && objValue is T)
             {
-                return entries[id];
+                value = (T)objValue;
+                return true;
             }
-            // entries doesn't contain id
-            else
-            {
-                return null;
-            }
-        }
-        
-        public bool ContainsEntry(string id)
-        {
-            return entries.ContainsKey(id);
+
+            value = default;
+            return false;
         }
 
         public Dictionary<string, object> GetBlackboardEntries()

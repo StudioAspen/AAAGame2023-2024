@@ -6,14 +6,14 @@ namespace EnemyBehaviorTrees.Nodes
 {
     // Timer Decorators run a node after a set amount of time expires
     
-    public class Timer : Decorator
+    public class NodeTimer : Decorator
     {
         private float startTime;
         private bool useFixedTime;
         private float timeToWait;
         
         // Constructor
-        public Timer(float timeToWait, Node childNode,  bool useFixedTime = false) : 
+        public NodeTimer(float timeToWait, Node childNode,  bool useFixedTime = false) : 
             base($"Timer for {timeToWait}", childNode) 
         {
             this.useFixedTime = useFixedTime;

@@ -3,6 +3,7 @@ using EnemyBehaviorTrees.Agents;
 using EnemyBehaviorTrees.Internal;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace EnemyBehaviorTrees.Nodes
 {
@@ -18,14 +19,24 @@ namespace EnemyBehaviorTrees.Nodes
             base($"Is Navigation Activity, {activity}?")
         {
             activityToCheckFor = activity;
+            this.context = context;
         }
 
         protected override void OnReset() { }
 
         protected override NodeStatus OnRun()
         {
-            StatusReason = $"NPC Activity is {activityToCheckFor}";
-            return this.context.blackboard.GetEntry("Navigation Activity") == activityToCheckFor ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
+            StatusReason = $"NPC Activity is {activityToCheckFor}?";
+
+            bool NavigationActivityEntry = context.blackboard.GetEntry<string>("Navigation Activity", out string value);
+
+            if (value == default)
+            {
+                Debug.LogError($"IsNavigationActivityTypeOf failed for {activityToCheckFor}");
+                return NodeStatus.FAILURE;
+            }
+            
+            return value == activityToCheckFor ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
         }
     }
 }

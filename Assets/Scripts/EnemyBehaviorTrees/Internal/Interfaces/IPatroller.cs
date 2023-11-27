@@ -6,7 +6,7 @@ namespace EnemyBehaviorTrees.Internal
     public interface IPatroller
     {
         // Reference to agent that inherits from this interface
-        public NPCAgentBase agent { get; set; }
+        public NPCAgentBase agent { get; }
         
         // How long the agent waits at its patrol location until it checks for the player again
         public float patrolStayTime { get; }
@@ -28,5 +28,10 @@ namespace EnemyBehaviorTrees.Internal
         /// </summary>
         /// <returns>The waypoint.</returns>
         public GameObject GetRandomWayPoint();
+
+        /// <summary>
+        /// Initiliazes the waypoints list. Should always be run or else waypoints will not work.
+        /// </summary>
+        public void InitializeWaypoints();
     }
 }

@@ -22,7 +22,7 @@ namespace EnemyBehaviorTrees.Internal
             // set default navigation activity
             blackboard.SetEntry("Navigation Activity", "Look for player");
             
-            Debug.Log($"Initialized NPC with Navigation activity of: {blackboard.GetEntry("Navigation Activity")}");
+            Debug.Log($"Initialized NPC with Navigation activity of: {blackboard.GetEntry<string>("Navigation Activity", out string value)}");
     
             GenerateBehaviorTree();
     
