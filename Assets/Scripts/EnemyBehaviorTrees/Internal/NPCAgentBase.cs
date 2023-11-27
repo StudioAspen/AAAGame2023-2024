@@ -1,39 +1,28 @@
 using System.Collections;
-using EnemyBehaviorTrees;
 using UnityEngine;
 using UnityEngine.AI;
 using WUG.BehaviorTreeVisualizer;
-using EnemyBehaviorTrees.Nodes;
-using UnityEngine.UI;
 
-namespace EnemyBehaviorTrees.Agents
+namespace EnemyBehaviorTrees.Internal
 {
-    public abstract class NPCAgentBase : MonoBehaviour
+    public abstract class NPCAgentBase : MonoBehaviour, IBehaviorTree
     {
-        public enum NavigationActivity
-        {
-            IDLE,
-            LOOK_FOR_PLAYER,
-            CHASE,
-            PATROL
-        }
-        
         public NavMeshAgent MyNavMesh { get; private set; }
-        public NavigationActivity MyActivity { get; set; }
+        public string MyActivity { get; set; }
         public NodeBase BehaviorTree { get; set; }
-        public float playerCheckDistance;
-        public int index; // Index of NPC in blackboard NPCs[]. Assigned automatically by Game Manager
     
         private Coroutine behaviorTreeRoutine;
         private YieldInstruction waitTime = new WaitForSeconds(.1f);
-        private NPCAgentBlackboard blackboard;
+        private Blackboard blackboard = new Blackboard();
     
         private void Start()
         {
             MyNavMesh = GetComponent<NavMeshAgent>();
-            MyActivity = NavigationActivity.LOOK_FOR_PLAYER;
-            blackboard = GameObject.Find("NPC Blackboard").GetComponent<NPCAgentBlackboard>();
-            if (blackboard == null) { Debug.Log("Please create a blackboard Game Object called 'NPC Blackboard' with an 'NPCAgentBlackboard' component on it."); }
+            
+            // set default navigation activity
+            blackboard.SetEntry("Navigation Activity", "Look for player");
+            
+            Debug.Log($"Initialized NPC with Navigation activity of: {blackboard.GetEntry("Navigation Activity")}");
     
             GenerateBehaviorTree();
     
