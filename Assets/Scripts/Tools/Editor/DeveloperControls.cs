@@ -10,11 +10,6 @@ using UnityEngine.SceneManagement;
 
 public class DeveloperControls : EditorWindow
 {
-    string currentWindow;
-    EditorWindow gameView;
-    bool focusOnGameView = false;
-
-
     // an array that contains all the possible commands
     string[] commandArray = new string[]
     {
@@ -26,7 +21,6 @@ public class DeveloperControls : EditorWindow
 
     // for formatting the gui
     Vector2 scrollPos;
-    float windowWidth;
     float windowHeight;
 
     // deals with taking in user input and the console log
@@ -51,9 +45,10 @@ public class DeveloperControls : EditorWindow
     
     private void OnGUI()
     {
-        //windowWidth = EditorWindow.GetWindow<DeveloperControls>().position.width; // gets the window width for sizing gui elements
-        //windowHeight = EditorWindow.GetWindow<DeveloperControls>().position.height; // gets the window height for sizing gui elements
-
+        if (focusedWindow == this)
+        {
+            windowHeight = EditorWindow.GetWindow<DeveloperControls>().position.height; // gets the window height for sizing gui elements
+        }
         // Clear the Console
         if(GUILayout.Button("Clear Console"))
         {
@@ -67,7 +62,6 @@ public class DeveloperControls : EditorWindow
         
         
         //formats the console log into a vertical scroll view
-        //scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(GetWindow<DeveloperControls>().position.height - 20));
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(windowHeight - 20));
         EditorGUILayout.TextArea(consoleLog, GUILayout.ExpandHeight(true)); // creates the console log
         EditorGUILayout.EndScrollView();
@@ -254,55 +248,6 @@ public class DeveloperControls : EditorWindow
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }
-
-    //gets the game view
-    private void FindGameView()
-    {
-        gameView = EditorWindow.GetWindow(typeof(Editor).Assembly.GetType("UnityEditor.GameView"));
-    }
-
-    //gets the current window that hte mouse is hovering above
-    private void GetCurrentWindow()
-    {
-        if (EditorWindow.mouseOverWindow != null)
-        {
-            currentWindow = EditorWindow.mouseOverWindow.ToString();
-        }
-    }
-    /*
-    // makes sure to shift focus to game view if it is supposed to be
-    private void OnFocus()
-    {
-        if (focusOnGameView)
-        {
-            FindGameView();
-            gameView.Focus();
-        }
-    }*/
-    /*
-    // shifts window focus between game and console depending on mouse location
-    private void Update()
-    {
-        if (EditorApplication.isPlaying)
-        {
-            
-            GetCurrentWindow();
-            if (currentWindow != null)
-            {
-                if (currentWindow == " (UnityEditor.GameView)")
-                {
-                    FindGameView();
-                    gameView.Focus();
-                    Debug.Log("Focused game view");
-                    focusOnGameView = true;
-                } else
-                {
-                    this.Focus();
-                    focusOnGameView = false;
-                }
-            }
-        }
-    }*/
 }
 
  
