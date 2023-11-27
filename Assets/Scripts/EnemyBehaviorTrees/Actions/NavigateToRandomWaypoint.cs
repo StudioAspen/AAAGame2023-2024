@@ -1,29 +1,22 @@
 using System;
-using System.Transactions;
 using WUG.BehaviorTreeVisualizer;
 using UnityEngine;
 using UnityEngine.AI;
-using EnemyBehaviorTrees.Agents;
-using NavigationActivity = EnemyBehaviorTrees.Agents.NPCAgentBase.NavigationActivity;
+using EnemyBehaviorTrees.Internal;
 
 namespace EnemyBehaviorTrees.Nodes
 {
-    // Action node for an agent to navigate to a certain destination.
-    public class NavigateToDestination : Node
+    // Action node for an agent to navigate to a random waypoint in the list.
+    public class NavigateToRandomWaypoint : Node
     {
         private Vector3 targetDestination;
-        private NPCAgentBlackboard blackboard;
-        private int index;
-        private NPCAgentBase npc;
+        // The context is the current NPC agent that is running this node.
+        protected NPCAgentBase context { get; }
 
-        public NavigateToDestination(int npcIndex)
+        public NavigateToRandomWaypoint(NPCAgentBase context)
         {
             Name = "Navigate";
-            index = npcIndex;
-            npc = blackboard.NPCs[npcIndex];
-            
-            blackboard = GameObject.Find("NPC Blackboard").GetComponent<NPCAgentBlackboard>();
-            if (blackboard == null) { Debug.Log("Please create a blackboard Game Object called 'NPC Blackboard' with an 'NPCAgentBlackboard' component on it."); }
+            this.context = context;
         }
 
         // OnReset() - empty
@@ -34,27 +27,13 @@ namespace EnemyBehaviorTrees.Nodes
             // Perform logic that should only run once
             if (EvaluationCount == 0)
             {
-                // Get destination from Game Manager 
-                GameObject destinationGO = null;
-                NavigationActivity currentActivity = npc.MyActivity;
-
-                switch (currentActivity)
-                {
-                    case NavigationActivity.LOOK_FOR_PLAYER:
-                        destinationGO = blackboard.GetPlayerWithinRange(index);
-                        break;
-                    case NavigationActivity.CHASE:
-                        destinationGO = blackboard.GetPlayerWithinRange(index);
-                        break;
-                    case NavigationActivity.PATROL:
-                        destinationGO = blackboard.GetNextWayPoint();
-                        break;
-                }
+                // Get destination from agent
+                GameObject destinationGO = context.GetRandomWayPoint();
         
                 // Confirm that the destination is valid - If not, fail.
                 if (destinationGO == null)
                 {
-                    StatusReason = $"Unable to find game object for {npc.MyActivity}";
+                    StatusReason = $"Unable to find game object for {context.name}";
                     return NodeStatus.FAILURE;
                 }
         
@@ -67,7 +46,7 @@ namespace EnemyBehaviorTrees.Nodes
                 targetDestination = hit.position;
         
                 // Set the destination on the NavMesh. This tells the AI to start moving to the new location.
-                npc.MyNavMesh.SetDestination(targetDestination);
+                context.MyNavMesh.SetDestination(targetDestination);
                 StatusReason = $"Starting to navigate to {destinationGO.transform.position}";
                 
                 // Return running, as we want to continue to have this node evaluate
@@ -75,7 +54,7 @@ namespace EnemyBehaviorTrees.Nodes
             }
         
             // Calculate how far the AI is from the destination
-            float distanceToTarget = Vector3.Distance(targetDestination, npc.transform.position);
+            float distanceToTarget = Vector3.Distance(targetDestination, context.transform.position);
         
             // If the AI is within .25f then navigation will be considered a success
             if (distanceToTarget < .25f)

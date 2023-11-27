@@ -1,6 +1,6 @@
 using UnityEngine;
 using WUG.BehaviorTreeVisualizer;
-using EnemyBehaviorTrees.Agents;
+using EnemyBehaviorTrees.Internal;
 
 namespace EnemyBehaviorTrees.Nodes
 {
@@ -9,16 +9,14 @@ namespace EnemyBehaviorTrees.Nodes
 
     public class IsPlayerNearBy : Condition
     {
+        // The context is the current NPC agent that is running this node.
+        protected NPCAgentBase context { get; }
         private float distanceToCheck;
-        private NPCAgentBlackboard blackboard;
 
         // Constructor - just changes the name of the base node object to be descriptive of the distance it checks around the agent
-        public IsPlayerNearBy(float maxDistance, int index) : base($"Is player within {maxDistance}f?", index)
+        public IsPlayerNearBy(float maxDistance, NPCAgentBase context) : base($"Is player within {maxDistance}f?")
         {
             distanceToCheck = maxDistance;
-            
-            blackboard = GameObject.Find("NPC Blackboard").GetComponent<NPCAgentBlackboard>();
-            if (blackboard == null) { Debug.Log("Please create a blackboard Game Object called 'NPC Blackboard' with an 'NPCAgentBlackboard' component on it."); }
         }
 
         // OnReset() - empty
@@ -27,7 +25,7 @@ namespace EnemyBehaviorTrees.Nodes
         protected override NodeStatus OnRun()
         {
             // Check if the player is nearby
-            GameObject player = blackboard.GetPlayerWithinRange(npcIndex);
+            GameObject player = context.TryGetPlayerWithinRange(distanceToCheck);
 
             // Check to see if player was returned
             if (player == null)

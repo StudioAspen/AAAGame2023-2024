@@ -1,7 +1,8 @@
 using WUG.BehaviorTreeVisualizer;
 using EnemyBehaviorTrees.Agents;
+using EnemyBehaviorTrees.Internal;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
-using NavigationActivity = EnemyBehaviorTrees.Agents.NPCAgentBase.NavigationActivity;
 
 namespace EnemyBehaviorTrees.Nodes
 {
@@ -9,19 +10,14 @@ namespace EnemyBehaviorTrees.Nodes
     
     public class IsNavigationActivityTypeOf : Condition
     {
-        private NavigationActivity activityToCheckFor;
-        private NPCAgentBlackboard blackboard;
-        private NPCAgentBase npc;
+        private string activityToCheckFor;
+        // The context is the current NPC agent that is running this node.
+        protected NPCAgentBase context { get; }
 
-        public IsNavigationActivityTypeOf(NavigationActivity activity, int npcIndex) :
-            base($"Is Navigation Activity, {activity}?", npcIndex)
+        public IsNavigationActivityTypeOf(string activity, NPCAgentBase context) :
+            base($"Is Navigation Activity, {activity}?")
         {
             activityToCheckFor = activity;
-            
-            blackboard = GameObject.Find("NPC Blackboard").GetComponent<NPCAgentBlackboard>();
-            if (blackboard == null) { Debug.LogError("Please create a blackboard Game Object in the hierarchy called 'NPC Blackboard' with an 'NPCAgentBlackboard' component on it."); }
-            
-            npc = blackboard.NPCs[npcIndex];
         }
 
         protected override void OnReset() { }
@@ -29,7 +25,7 @@ namespace EnemyBehaviorTrees.Nodes
         protected override NodeStatus OnRun()
         {
             StatusReason = $"NPC Activity is {activityToCheckFor}";
-            return npc.MyActivity == activityToCheckFor ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
+            return this.context.blackboard.GetEntry("Navigation Activity") == activityToCheckFor ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
         }
     }
 }

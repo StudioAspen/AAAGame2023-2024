@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using WUG.BehaviorTreeVisualizer;
@@ -8,12 +9,11 @@ namespace EnemyBehaviorTrees.Internal
     public abstract class NPCAgentBase : MonoBehaviour, IBehaviorTree
     {
         public NavMeshAgent MyNavMesh { get; private set; }
-        public string MyActivity { get; set; }
         public NodeBase BehaviorTree { get; set; }
+        public Blackboard blackboard = new Blackboard();
     
         private Coroutine behaviorTreeRoutine;
         private YieldInstruction waitTime = new WaitForSeconds(.1f);
-        private Blackboard blackboard = new Blackboard();
     
         private void Start()
         {
@@ -57,5 +57,14 @@ namespace EnemyBehaviorTrees.Internal
                 StopCoroutine(behaviorTreeRoutine);
             }
         }
+
+        // These declarations are here so that we can consistently use NPCAgentBase as context in nodes.
+        #region INTERFACE SPECIFIC ABSTRACT METHODS
+        
+        public abstract GameObject TryGetPlayerWithinRange(float range);
+        public abstract GameObject GetNextWayPoint();
+        public abstract GameObject GetRandomWayPoint();
+
+        #endregion
     }
 }
