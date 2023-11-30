@@ -9,6 +9,7 @@ public class PlayerInput : MonoBehaviour {
     enum ControlType { controller, mouseAndKeyboard };
     CinemachineFreeLook cinemachineCam;
     Transform cameraOrientation;
+    Animator playerAni;
 
     [Header("Control Type")]
     [SerializeField] ControlType currentControls;
@@ -62,6 +63,7 @@ public class PlayerInput : MonoBehaviour {
         downwardStab = GetComponent<DownwardStab>();
         stabDash = GetComponent<StabDash>();
         slashDash = GetComponent<SlashDash>();
+        playerAni = GetComponent<Animator>();
         
         // Getting camera components
         cameraOrientation = FindObjectOfType<Camera>().transform;

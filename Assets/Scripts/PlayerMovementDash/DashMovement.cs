@@ -31,6 +31,7 @@ public class DashMovement : MonoBehaviour
     MovementModification movementModification;
     PlayerPositionCheck playerPositionCheck;
     PlayerInput playerInput;
+    Animator playerAni;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,7 @@ public class DashMovement : MonoBehaviour
         movementModification = GetComponent<MovementModification>();
         playerPositionCheck = GetComponent<PlayerPositionCheck>();
         playerInput = GetComponent<PlayerInput>();
+        playerAni = GetComponent<Animator>();
     }
 
     private void FixedUpdate() {
@@ -57,6 +59,8 @@ public class DashMovement : MonoBehaviour
         if (playerPositionCheck.CheckOnGround()) {
             ResetDash();
         }
+
+        Animation();
     }
     public void TryPlayerInputDash(Vector3 direction)
     {
@@ -134,5 +138,17 @@ public class DashMovement : MonoBehaviour
             EndDash();
         }
         dashDurationTimer -= Time.fixedDeltaTime;
+    }
+
+    void Animation()
+    {
+        if (isDashing == true)
+        {
+            playerAni.SetBool("isDashing", true);
+        }
+        else if (isDashing == false)
+        {
+            playerAni.SetBool("isDashing", false);
+        }
     }
 }

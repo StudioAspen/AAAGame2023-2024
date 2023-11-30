@@ -44,11 +44,15 @@ public class PlayerMovement : MonoBehaviour
     bool isMoving = false;
     Vector3 targetDirection;
 
+    Animator playerAni;
+
+
     void Start()
     {
         playerPositionCheck = GetComponent<PlayerPositionCheck>();
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
+        playerAni = GetComponent<Animator>();
     }
 
     private void FixedUpdate() {
@@ -72,6 +76,8 @@ public class PlayerMovement : MonoBehaviour
         if(grounded) {
             ResetJump();
         }
+
+        Animation();
     }
 
 
@@ -130,5 +136,26 @@ public class PlayerMovement : MonoBehaviour
 
     private void RotationUpdate() {
         transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, rotationSpeed);
+    }
+
+    void Animation()
+    {
+        if (isMoving == true)
+        {
+            playerAni.SetBool("isWalking", true);
+        }
+        else if (isMoving == false)
+        {
+            playerAni.SetBool("isWalking", false); 
+        }
+
+        if (grounded == false)
+        {
+            playerAni.SetBool("isJumping", true);
+        }
+        else if (grounded == true)
+        {
+            playerAni.SetBool("isJumping", false);
+        }
     }
 }
