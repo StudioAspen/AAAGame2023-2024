@@ -46,11 +46,14 @@ public class DeveloperConsole : MonoBehaviour
         CheckForInput();
     }
 
+    // Focuses the console so that you are already typing into the input field
+    private void FocusConsole()
+    {
+        userInput.Select();
+        userInput.ActivateInputField();
+    }
 
-
-    /// <summary>
     /// Checks for input from the player
-    /// </summary>
     private void CheckForInput()
     {
         if (Input.GetKeyDown(KeyCode.BackQuote))
@@ -69,8 +72,9 @@ public class DeveloperConsole : MonoBehaviour
         devConsoleUI.SetActive(newStatus);
         if (newStatus)
         {
-            userInput.GetComponent<TMP_InputField>().Select();
-            userInput.GetComponent<TMP_InputField>().ActivateInputField();  
+            FocusConsole();
+
+            ClearConsole();
         }
     }
 
@@ -79,12 +83,10 @@ public class DeveloperConsole : MonoBehaviour
     {
         input = s;
         inputModified = userInput.text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries); // to split up the command from the parameters
-        userInput.GetComponent<TMP_InputField>().text = "";
+        userInput.text = "";
 
         ExecuteCommand();
-
-        userInput.GetComponent<TMP_InputField>().Select();
-        userInput.GetComponent<TMP_InputField>().ActivateInputField();
+        FocusConsole();
     }
 
     // adds the message to the console log
@@ -108,15 +110,19 @@ public class DeveloperConsole : MonoBehaviour
 
     bool CheckCommand(string[] command) // checks if the command inputted exists
     {
-        if (commandArray.Contains<string>(command[0]))
+        if (command.Length != 0)
         {
-            return true;
+            if (commandArray.Contains<string>(command[0]))
+            {
+                return true;
+            }
+            else
+            {
+                AddToConsoleLog("Error: Command \"" + input + "\" doesn't exist!");
+                return false;
+            }
         }
-        else
-        {
-            AddToConsoleLog("Error: Command \"" + userInput + "\" doesn't exist!");
-            return false;
-        }
+        return false;
     }
 
     // checks if a command exists and executes it if it does
