@@ -1,16 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class DeveloperConsole : MonoBehaviour
 {
-    GameObject player;
+    GameObject player; // Reference for player game object
 
     // an array that contains all the possible commands
     string[] commandArray = new string[]
@@ -30,6 +29,10 @@ public class DeveloperConsole : MonoBehaviour
 
     bool isConsoleOpen = false;
 
+    string enemiesFolderPath;
+    string[] enemies;
+    string[] enemyNames;
+
 
     private void Start()
     {
@@ -38,7 +41,23 @@ public class DeveloperConsole : MonoBehaviour
         consoleLogUI = devConsoleUI.transform.Find("Console").Find("Content").Find("Log").GetComponent<TextMeshProUGUI>();
         userInput = devConsoleUI.transform.Find("UserInput").GetComponent<TMP_InputField>();
 
+        // Get Player GameObject in the scene
         player = GameObject.FindGameObjectWithTag("Player");
+
+
+        ///////////////////////////////////////////////////////////////
+        /// Gets all the references necessary to spawn enemy prefabs///
+        ///////////////////////////////////////////////////////////////
+        enemiesFolderPath = "Assets/Prefabs/Enemies"; // the enemy folder path
+
+        enemies = AssetDatabase.FindAssets("t:Prefab", new[] { enemiesFolderPath }); // gets an array if the prefabs guids
+
+        //gets a list of the enemy prefabs names
+        enemyNames = new string[enemies.Length];
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemyNames[i] = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(enemies[i])).name;
+        }
     }
 
     private void Update()
@@ -56,7 +75,7 @@ public class DeveloperConsole : MonoBehaviour
     /// Checks for input from the player
     private void CheckForInput()
     {
-        if (Input.GetKeyDown(KeyCode.BackQuote))
+        if (Input.GetKeyDown(KeyCode.BackQuote)) // checks if tilde was pressed
         {
             isConsoleOpen = !isConsoleOpen;
             DevConsoleStatus(isConsoleOpen);
@@ -68,12 +87,10 @@ public class DeveloperConsole : MonoBehaviour
     /// </summary>
     private void DevConsoleStatus(bool newStatus)
     {
-        Debug.Log("Console Opened = " + newStatus);
-        devConsoleUI.SetActive(newStatus);
-        if (newStatus)
+        devConsoleUI.SetActive(newStatus); // opens or closes the dev console
+        if (newStatus) // if it opens the console, focus the console and clear it
         {
             FocusConsole();
-
             ClearConsole();
         }
     }
@@ -82,9 +99,10 @@ public class DeveloperConsole : MonoBehaviour
     public void ReadStringInput(string s)
     {
         input = s;
-        inputModified = userInput.text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries); // to split up the command from the parameters
+        inputModified = input.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries); // to split up the command from the parameters
         userInput.text = "";
 
+        // executes the command and focuses the input field
         ExecuteCommand();
         FocusConsole();
     }
@@ -97,25 +115,25 @@ public class DeveloperConsole : MonoBehaviour
         UpdateConsoleLog();
     }
 
+    // clears the console
     public void ClearConsole()
     {
         consoleLogText = "";
         UpdateConsoleLog();
     }
 
+    // updates the console log to match the new text
     private void UpdateConsoleLog()
     {
         consoleLogUI.SetText(consoleLogText);
     }
 
+    // checks if the command inputted exists
     bool CheckCommand(string[] command) // checks if the command inputted exists
     {
-        if (command.Length != 0)
+        if (command.Length != 0) // makes sure an empty command wasn't sent
         {
-            if (commandArray.Contains<string>(command[0]))
-            {
-                return true;
-            }
+            if (commandArray.Contains<string>(command[0])) return true;
             else
             {
                 AddToConsoleLog("Error: Command \"" + input + "\" doesn't exist!");
@@ -234,22 +252,12 @@ public class DeveloperConsole : MonoBehaviour
     // spawns an enemy by the name 
     void SpawnEnemy(string enemy)
     {
-        string enemiesFolderPath = "Assets/Prefabs/Enemies"; // the enemy folder path
-
-        string[] enemies = AssetDatabase.FindAssets("t:Prefab", new[] { enemiesFolderPath }); // gets a kust if the prefabs guids
-
-        //gets a list of the enemy prefabs names
-        string[] enemyNames = new string[enemy.Length];
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            enemyNames[i] = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(enemies[i])).name;
-        }
-        int index;
+        int enemyIndex;
 
         // checks if the enemy exists in the folder
         if (enemyNames.Contains(enemy))
         {
-            index = Array.IndexOf(enemyNames, enemy);
+            enemyIndex = Array.IndexOf(enemyNames, enemy);
         }
         else
         {
@@ -257,7 +265,7 @@ public class DeveloperConsole : MonoBehaviour
         }
 
         // gets the reference of the enemy for instantiation
-        string enemyPrefabPath = AssetDatabase.GUIDToAssetPath(enemies[index]);
+        string enemyPrefabPath = AssetDatabase.GUIDToAssetPath(enemies[enemyIndex]);
         GameObject enemyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(enemyPrefabPath);
 
         Instantiate(enemyPrefab); // instantiates the enemy

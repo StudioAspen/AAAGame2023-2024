@@ -3,11 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
+[InitializeOnLoad]
 public class InitializeTools
 {
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void OnSceneAfterLoad()
+    static InitializeTools()
+    {
+        SceneManager.sceneLoaded += OnLoadScene;
+    }
+
+    static void OnLoadScene(Scene scene, LoadSceneMode mode)
     {
         if (GameObject.Find("DeveloperConsole") == null)
         {
@@ -25,6 +32,10 @@ public class InitializeTools
             GameObject devConsolePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(UI[Array.IndexOf(UINames, "DeveloperConsole")]));
             
             PrefabUtility.InstantiatePrefab(devConsolePrefab);
+        }
+        if (GameObject.Find("EventSystem") == null)
+        {
+            new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
         }
     }
 
