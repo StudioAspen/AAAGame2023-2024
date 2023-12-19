@@ -4,12 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Item
+  - Waypoint
+  - NPC
   - Dashable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Player
