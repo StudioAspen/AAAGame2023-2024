@@ -6,7 +6,7 @@ using UnityEngine;
 public class DownwardStab : MonoBehaviour {
 
     [Header("References")]
-    [SerializeField] SwordMovement swordMovement;
+    [SerializeField] SwordAnimation swordAnimation;
 
     [Header("Movement")]
     [SerializeField] float downwardStabAcceleration;
@@ -36,7 +36,7 @@ public class DownwardStab : MonoBehaviour {
         stab = GetComponent<Stab>();
         movementModification = GetComponent<MovementModification>();
 
-        swordMovement.OnContact.AddListener(DownwardStabContact);
+        swordAnimation.OnContact.AddListener(DownwardStabContact);
     }
 
     private void FixedUpdate() {
@@ -58,7 +58,7 @@ public class DownwardStab : MonoBehaviour {
             if (stabButtonTimer >= pressDownTime) {
                 stab.InterruptStab();
                 isStabing = true;
-                swordMovement.DownwardAttackPosition();
+                swordAnimation.StartDownwardStabAnimation();
             }
         }
     }
@@ -67,7 +67,7 @@ public class DownwardStab : MonoBehaviour {
 
         if (isStabing) {
             isStabing = false;
-            swordMovement.EndAttackPosition();
+            swordAnimation.EndAnimation();
         }
     }
     private void DownwardStabMovementUpdate() {
@@ -82,7 +82,7 @@ public class DownwardStab : MonoBehaviour {
         }
     }
 
-    private void DownwardStabContact(Collider other) {
+    private void DownwardStabContact(GameObject other) {
         if(isStabing) {
             if(other.TryGetComponent<DownwardStabEffect>(out DownwardStabEffect effect)) {
                 effect.TriggerEffect();

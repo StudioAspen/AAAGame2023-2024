@@ -7,7 +7,7 @@ using PathCreation;
 public class SlashDash : MonoBehaviour {
     [Header("References")]
     [SerializeField] DashCollider dashCollider;
-    [SerializeField] SwordMovement swordMovement;
+    [SerializeField] SwordAnimation swordAnimation;
 
     [Header("Events")]
     public UnityEvent OnEndSlashDash = new UnityEvent();
@@ -30,23 +30,23 @@ public class SlashDash : MonoBehaviour {
         if (!isDashing) {
             isDashing = true;
 
-            swordMovement.DashAttackPosition();
+            swordAnimation.StartSlashDashAnimation();
             dashMovement.OnDashEnd.AddListener(EndSlashDash);
-            dashMovement.TryPlayerInputDash(direction);
+            dashMovement.PlayerInputDash(direction);
         }
     }
     private void EndSlashDash() {
         dashMovement.OnDashEnd.RemoveListener(EndSlashDash);
-        swordMovement.EndAttackPosition();
+        swordAnimation.EndAnimation();
         isDashing = false;
         OnEndSlashDash.Invoke();
     }
-    private void SlashDashContact(Collider other) {
+    private void SlashDashContact(GameObject other) {
         if (isDashing) {
-            if (other.TryGetComponent(out Slashable slashable) &&
+            if (other.TryGetComponent(out SlashableTerrain slashable) &&
                 other.TryGetComponent(out PathCreator pc)) {
                 isDashing = false;
-                slash.StartSlide(slashable, pc, other);
+                slash.StartSlide(pc, other);
             }
         }
     }

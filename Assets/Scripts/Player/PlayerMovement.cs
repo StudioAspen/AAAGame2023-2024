@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //Components
-    PlayerPositionCheck playerPositionCheck;
-    Rigidbody rb;
-    MovementModification movementModification;
-
     [Header("Ground Variables")]
     public float groundAcceleration;
     public float maxGroundSpeed;
@@ -37,6 +32,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("Other Variables")]
     [Range(0.0f, 1f)]
     public float rotationSpeed;
+
+    //Components
+    Rigidbody rb;
+    PlayerPositionCheck playerPositionCheck;
+    MovementModification movementModification;
 
     bool readyToJump = true;
     bool grounded;
@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    public void JumpFunction()
+    public void PlayerInputJump()
     {
         if(readyToJump)
         {
@@ -110,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 addedVelocity;
         Vector3 maxVelocity;
         Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-        // Assigning variables if player is on the ground
+        // Assigning respective variables if player is on the ground or not
         if (grounded) {
             addedVelocity = targetDirection.normalized * Mathf.Lerp(groundAcceleration, boostedGroundAcceleration, movementModification.boostForAll);
             maxVelocity = targetDirection.normalized * Mathf.Lerp(maxGroundSpeed, boostedMaxGroundSpeed, movementModification.boostForAll);
@@ -120,9 +120,9 @@ public class PlayerMovement : MonoBehaviour
             maxVelocity = targetDirection.normalized * Mathf.Lerp(maxAirSpeed, boostedMaxAirSpeed, movementModification.boostForAll);
         }
 
-        // Applying horizontal movement
+        // Only adding velocity if velocity is below max and not running into wall
         float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
-        Physics.Raycast(rb.position, addedVelocity);
+        //Physics.Raycast(rb.position, addedVelocity);
         if (alignment < 1 && !playerPositionCheck.CheckColldingWithTerrain(addedVelocity)) {
             rb.AddForce(addedVelocity, ForceMode.VelocityChange);
         }

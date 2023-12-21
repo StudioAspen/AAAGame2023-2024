@@ -140,7 +140,7 @@ public class PlayerInput : MonoBehaviour {
     }
     private void CheckAbilities() {
         if (Input.GetKeyDown(inputJump)) {
-            movement.JumpFunction();
+            movement.PlayerInputJump();
         }
         if (Input.GetKey(inputStab)) {
             downwardStab.TryDownwardStabUpdate();
@@ -193,7 +193,7 @@ public class PlayerInput : MonoBehaviour {
             else {
                 dashStarted = true;
                 combinationWindowTimer = 0;
-                dash.TryPlayerInputDash(direction);
+                dash.PlayerInputDash(direction);
             }
         }
     }

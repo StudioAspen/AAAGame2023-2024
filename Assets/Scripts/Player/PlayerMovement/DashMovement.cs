@@ -16,8 +16,9 @@ public class DashMovement : MonoBehaviour
     public float boostedDashDuration; // Duration when max overfed
     public float boostedDashCooldown; // Cooldown when max overfed
 
+
+    [HideInInspector] public bool isDashing = false;
     bool dashAvailable = true;
-    bool isDashing = false;
     float dashCdTimer;//Time before you can dash again
     float dashDurationTimer;// Used to know when dash has ended
     Vector3 dashVelocity; // Velocity used for dashing
@@ -58,7 +59,7 @@ public class DashMovement : MonoBehaviour
             ResetDash();
         }
     }
-    public void TryPlayerInputDash(Vector3 direction)
+    public void PlayerInputDash(Vector3 direction)
     {
         if (dashCdTimer <= 0 && dashAvailable && !isDashing) {
             dashAvailable = false; // Using up the dash

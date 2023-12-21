@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SwordMovement : MonoBehaviour
+public class SwordMovementTemp : SwordAnimation
 {
     [Header("Player Positions")]
     [SerializeField] Transform followTarget;
@@ -15,11 +15,7 @@ public class SwordMovement : MonoBehaviour
     [Range(0f,1f)]
     [SerializeField] float followingSpeed;
     [SerializeField] int playerLayerNumber;
-
-    [Header("Events")]
-    public UnityEvent<Collider> OnContact = new UnityEvent<Collider>();
-    public UnityEvent OnEndAction = new UnityEvent();
-
+    [SerializeField] float attackDuration;
     // Other variables
     private bool isFollowing = true;
     Transform currentFollow;
@@ -45,22 +41,35 @@ public class SwordMovement : MonoBehaviour
         currentFollow = attackTransform;
         Invoke("EndAttackPosition", duration);
     }
-    public void DownwardAttackPosition() {
+    public override void StartStabAnimation() {
+        AttackPosition(attackDuration);
+    }
+    public override void StartSlashAnimation() {
+        AttackPosition(attackDuration);
+    }
+    public override void StartDownwardStabAnimation() {
         currentFollow = downwardStabTransform;
     }
-    public void DashAttackPosition() {
+    public override void StartSlashDashAnimation() {
         currentFollow = dashAttackTransform;
     }
+    public override void StartStabDashAnimation() {
+        currentFollow = dashAttackTransform;
+    }
+    public override void EndAnimation() {
+        EndAttackPosition();
+    }
+
     public void EndAttackPosition() {
         currentFollow = followTarget;
         CancelInvoke();
-        OnEndAction.Invoke();
+        OnEndAnimation.Invoke();
     }
     private void OnTriggerStay(Collider other)
     {
         //Debug.Log(other.gameObject.layer.ToString() + " " + playerLayerNumber.ToString());
         if (other.gameObject.layer != gameObject.layer) {
-            OnContact.Invoke(other);
+            OnContact.Invoke(other.gameObject);
             EndAttackPosition();
         }
     }

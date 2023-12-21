@@ -9,7 +9,7 @@ public class Slash : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject swordObject;
-    [SerializeField] SwordMovement swordMovement;
+    [SerializeField] SwordAnimation swordAnimation;
 
     [Header("Movement Variables")]
     public float slideSpeed;
@@ -52,7 +52,7 @@ public class Slash : MonoBehaviour
         dashMovement = GetComponent<DashMovement>();
 
         end = EndOfPathInstruction.Stop;
-        swordMovement.OnContact.AddListener(SlashContact);
+        swordAnimation.OnContact.AddListener(SlashContact);
     }
 
     private void Update()
@@ -81,18 +81,18 @@ public class Slash : MonoBehaviour
             isSlashing = true;
 
             // Demon sword variables
-            swordMovement.OnEndAction.AddListener(EndOfSlashAnimation);
-            swordMovement.AttackPosition(attackDuration);
+            swordAnimation.OnEndAnimation.AddListener(EndOfSlashAnimation);
+            swordAnimation.StartSlashAnimation();
         }
     }
 
-    public void StartSlide(Slashable slashable, PathCreator pc, Collider other) {
+    public void StartSlide(PathCreator pc, GameObject other) {
         playerInput.DisableInput();
         GetComponent<BloodThirst>().GainBlood(bloodGained, true);
 
         // Slide Initalization
         sliding = true;
-        Vector3 contactPoint = other.ClosestPoint(swordObject.transform.position);
+        Vector3 contactPoint = other.GetComponent<Collider>().ClosestPoint(swordObject.transform.position);
         pathCreator = pc;
         rb.useGravity = false;
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
@@ -109,20 +109,20 @@ public class Slash : MonoBehaviour
         rb.useGravity = true;
     }
 
-    public void SlashContact(Collider other)
+    public void SlashContact(GameObject other)
     {
-        if (other.TryGetComponent(out Slashable slashable) && 
+        if (other.TryGetComponent(out SlashableTerrain slashable) && 
             other.TryGetComponent(out PathCreator pc))
         {
             if (!sliding && isSlashing) {
                 isSlashing = false;
-                StartSlide(slashable, pc, other);
+                StartSlide(pc, other);
             }
         }
     }
     private void EndOfSlashAnimation() {
         isSlashing = false;
-        swordMovement.OnEndAction.RemoveListener(EndOfSlashAnimation);
+        swordAnimation.OnEndAnimation.RemoveListener(EndOfSlashAnimation);
     }
     public void InterruptSlash()
     {
