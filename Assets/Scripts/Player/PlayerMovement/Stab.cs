@@ -54,22 +54,23 @@ public class Stab : MonoBehaviour {
 
     public void InterruptStab() {
         if(isStabbing) {
+            isStabbing = false;
             swordAnimation.EndAnimation();
+            OnStabEnd.Invoke();
         }
     }
 
     public void StabContact(GameObject other)
     {
         if(isStabbing) {
-            if(StabContactEffect(other)) {
-                isStabbing = false;
-            }
+            StabContactEffect(other, InterruptStab);
         }
     }
 
-    public bool StabContactEffect(GameObject other) {
+    public bool StabContactEffect(GameObject other, UnityAction interuptAction = null) {
         bool found = false;
         if (other.TryGetComponent(out StabableTerrain stabableTerrain)) {
+            interuptAction.Invoke();
             // Setting up and starting dash
             DashThrough(stabableTerrain);
             found = true;
@@ -77,6 +78,7 @@ public class Stab : MonoBehaviour {
 
         // Triggering generic effects
         if (other.TryGetComponent(out StabbedEffect stabbedEffect)) {
+            interuptAction.Invoke();
             stabbedEffect.TriggerEffect();
             found = true;
         }
@@ -102,8 +104,6 @@ public class Stab : MonoBehaviour {
 
         playerMovement.ResetJump();
         dashMovement.ResetDash();
-        
-        OnStabEnd.Invoke();
     }
     private void EndOfStabAnimation() {
         isStabbing = false;

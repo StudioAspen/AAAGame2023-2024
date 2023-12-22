@@ -25,7 +25,7 @@ public class SlashDash : MonoBehaviour {
         slash = GetComponent<Slash>();
 
         dashCollider.OnContact.AddListener(SlashDashContact);
-        dashAction.OnDashEnd.AddListener(EndSlashDash);
+        dashAction.OnDashEnd.AddListener(EndOfDash);
     }
 
     public void StartSlashDash(Vector3 direction) {
@@ -36,8 +36,17 @@ public class SlashDash : MonoBehaviour {
             dashMovement.PlayerInputDash(direction);
         }
     }
-    private void EndSlashDash() {
-        if(isSlashDashing) {
+
+    private void InterruptSlashDash() {
+        if (isSlashDashing) {
+            swordAnimation.EndAnimation();
+            isSlashDashing = false;
+            OnEndSlashDash.Invoke();
+        }
+    }
+    
+    private void EndOfDash() {
+        if (isSlashDashing) {
             swordAnimation.EndAnimation();
             isSlashDashing = false;
             OnEndSlashDash.Invoke();
@@ -45,9 +54,7 @@ public class SlashDash : MonoBehaviour {
     }
     private void SlashDashContact(GameObject other) {
         if (isSlashDashing) {
-            if(slash.SlashContactEffect(other)) {
-                isSlashDashing = false;
-            }
+            slash.SlashContactEffect(other, InterruptSlashDash);
         }
     }
 }

@@ -26,7 +26,7 @@ public class StabDash : MonoBehaviour
         stab = GetComponent<Stab>();
 
         dashCollider.OnContact.AddListener(StabDashContact);
-        dashAction.OnDashEnd.AddListener(EndStabDash);
+        dashAction.OnDashEnd.AddListener(EndOfDash);
     }
 
     public void StartStabDash(Vector3 direction) {
@@ -38,8 +38,15 @@ public class StabDash : MonoBehaviour
             dashMovement.PlayerInputDash(direction);
         }
     }
+    private void InterruptStabDash() {
+        if(isStabDashing) {
+            swordAnimation.EndAnimation();
+            isStabDashing = false;
+            OnEndStabDash.Invoke();
+        }
+    }
 
-    private void EndStabDash() {
+    private void EndOfDash() {
         if (isStabDashing) {
             swordAnimation.EndAnimation();
             isStabDashing = false;
@@ -49,10 +56,7 @@ public class StabDash : MonoBehaviour
 
     private void StabDashContact(GameObject other) {
         if(isStabDashing) {
-            if(stab.StabContactEffect(other)) {
-                isStabDashing = false;
-                dashAction.InterruptDash();
-            }
+            stab.StabContactEffect(other, InterruptStabDash);
         }
     }
 }

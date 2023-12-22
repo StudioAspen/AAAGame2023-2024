@@ -40,7 +40,7 @@ public class WallSlideAction : MonoBehaviour {
         slideSpeed = _slideSpeed;
         swordObject = _swordObject;
         Vector3 contactPoint = other.GetComponent<Collider>().ClosestPoint(swordObject.transform.position);
-        PathCreator pathCreator = pc;
+        pathCreator = pc;
         rb.useGravity = false;
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
         playerOffset = rb.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
@@ -53,7 +53,7 @@ public class WallSlideAction : MonoBehaviour {
 
     private void UpdateSliding() {
         dstTravelled += slideSpeed * Time.deltaTime;
-        transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
+        rb.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
         swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
         swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 

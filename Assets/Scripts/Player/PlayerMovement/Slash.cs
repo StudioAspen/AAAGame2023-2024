@@ -57,19 +57,25 @@ public class Slash : MonoBehaviour
         }
     }
 
-    public void SlashContact(GameObject other) {
-        if(isSlashing) {
-            if(SlashContactEffect(other)) {
-                isSlashing = false;
-            }
+    public void InterruptSlash() {
+        if (isSlashing) {
+            isSlashing = false;
+            swordAnimation.EndAnimation();
+            OnSlashEnd.Invoke();
         }
     }
-    public bool SlashContactEffect(GameObject other) {
+    public void SlashContact(GameObject other) {
+        if(isSlashing) {
+            SlashContactEffect(other, InterruptSlash);
+        }
+    }
+    public bool SlashContactEffect(GameObject other, UnityAction interruptAction = null) {
         bool found = false;
 
         // Wall sliding when striking terrain with appropriate components
         if (other.TryGetComponent(out SlashableTerrain slashableTerrain) &&
             other.TryGetComponent(out PathCreator pc)) {
+            interruptAction.Invoke();
             wallSlideAction.OnSlideEnd.AddListener(EndOfWallSlide);
 
             float slideSpeedCalc = Mathf.Lerp(slideSpeed, boostedSlideSpeed, movementModification.boostForAll);
@@ -80,6 +86,8 @@ public class Slash : MonoBehaviour
 
         // Triggering generic effects
         if (other.TryGetComponent(out SlashedEffect slashedEffect)) {
+            interruptAction.Invoke();
+
             slashedEffect.TriggerEffect();
 
             found = true;
@@ -91,11 +99,6 @@ public class Slash : MonoBehaviour
 
         return found;
     }
-    public void InterruptSlash() {
-        if(isSlashing) {
-            swordAnimation.EndAnimation();
-        }
-    }
 
     private void EndOfWallSlide() {
         wallSlideAction.OnSlideEnd.RemoveListener(EndOfWallSlide);
@@ -104,13 +107,10 @@ public class Slash : MonoBehaviour
 
         playerMovement.ResetJump();
         dashMovement.ResetDash();
-
-        OnSlashEnd.Invoke();
     }
     
     private void EndOfSlashAnimation() {
         isSlashing = false;
-        swordAnimation.OnEndAnimation.RemoveListener(EndOfSlashAnimation);
 
         OnSlashEnd.Invoke();
     }
