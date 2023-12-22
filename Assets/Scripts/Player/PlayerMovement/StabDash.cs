@@ -8,6 +8,7 @@ public class StabDash : MonoBehaviour
     [Header("References")]
     [SerializeField] SwordAnimation swordAnimation;
     [SerializeField] DashCollider dashCollider;
+    [SerializeField] DashAction dashAction;
 
     [Header("Events")]
     public UnityEvent OnEndStabDash = new UnityEvent();
@@ -17,7 +18,7 @@ public class StabDash : MonoBehaviour
     Stab stab;
 
     //Variables
-    bool isDashing = false;
+    bool isStabDashing = false;
 
     private void Start() {
         // Getting components
@@ -25,28 +26,32 @@ public class StabDash : MonoBehaviour
         stab = GetComponent<Stab>();
 
         dashCollider.OnContact.AddListener(StabDashContact);
+        dashAction.OnDashEnd.AddListener(EndStabDash);
     }
 
-    public void TryStartStabDash(Vector3 direction) {
-        if(!isDashing) {
-            isDashing = true;
+    public void StartStabDash(Vector3 direction) {
+        if(!isStabDashing && dashMovement.CanDash()) {
+            isStabDashing = true;
 
             swordAnimation.StartStabDashAnimation();
-            dashMovement.OnDashEnd.AddListener(EndStabDash);
+
             dashMovement.PlayerInputDash(direction);
         }
     }
+
     private void EndStabDash() {
-        dashMovement.OnDashEnd.RemoveListener(EndStabDash);
-        swordAnimation.EndAnimation();
-        isDashing = false;
-        OnEndStabDash.Invoke();
+        if (isStabDashing) {
+            swordAnimation.EndAnimation();
+            isStabDashing = false;
+            OnEndStabDash.Invoke();
+        }
     }
+
     private void StabDashContact(GameObject other) {
-        if(isDashing) {
-            if (other.TryGetComponent(out StabableTerrain stabable)) {
-                isDashing = false;
-                stab.DashThrough(stabable);
+        if(isStabDashing) {
+            if(stab.StabContactEffect(other)) {
+                isStabDashing = false;
+                dashAction.InterruptDash();
             }
         }
     }

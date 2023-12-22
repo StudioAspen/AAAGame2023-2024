@@ -30,6 +30,10 @@ public class PlayerInput : MonoBehaviour {
     [SerializeField] KeyCode controllerDash;
     [SerializeField] KeyCode controllerJump;
 
+
+    [Header("References")]
+    
+
     // Controls
     KeyCode inputStab;
     KeyCode inputSlash;
@@ -160,7 +164,7 @@ public class PlayerInput : MonoBehaviour {
             else if (combinationWindowTimer < combinationWindow) {
                 dash.InterruptDash(true);
                 //ResetCombination();
-                stabDash.TryStartStabDash(direction);
+                stabDash.StartStabDash(direction);
             }
         }
 
@@ -174,7 +178,7 @@ public class PlayerInput : MonoBehaviour {
             else if (combinationWindowTimer < combinationWindow) {
                 dash.InterruptDash(true);
                 //ResetCombination();
-                slashDash.TryStartSlashDash(direction);
+                slashDash.StartSlashDash(direction);
             }
         }
 
@@ -183,12 +187,12 @@ public class PlayerInput : MonoBehaviour {
             if (stabStarted && combinationWindowTimer < combinationWindow) {
                 stab.InterruptStab();
                 //ResetCombination();
-                stabDash.TryStartStabDash(direction);
+                stabDash.StartStabDash(direction);
             }
             else if (slashStarted && combinationWindowTimer < combinationWindow) {
                 slash.InterruptSlash();
                 //ResetCombination();
-                slashDash.TryStartSlashDash(direction);
+                slashDash.StartSlashDash(direction);
             }
             else {
                 dashStarted = true;

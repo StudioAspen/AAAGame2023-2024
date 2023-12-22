@@ -611,12 +611,12 @@ PrefabInstance:
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000004165896
+      value: -0.000000041658982
       objectReference: {fileID: 0}
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000003500178
+      value: 0.000000035001793
       objectReference: {fileID: 0}
     - target: {fileID: 1311952080287650324, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -681,12 +681,12 @@ PrefabInstance:
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000003891063
+      value: -0.00000003891063
       objectReference: {fileID: 0}
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000033918973
+      value: 0.000000033918973
       objectReference: {fileID: 0}
     - target: {fileID: 6864274708768680152, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -726,12 +726,12 @@ PrefabInstance:
     - target: {fileID: 7522325351238352795, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000007782129
+      value: -0.00000007782129
       objectReference: {fileID: 0}
     - target: {fileID: 7522325351238352795, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000006783797
+      value: 0.00000006783797
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -918,21 +918,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 3088617981437380700, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: bloodGained
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3088617981437380700, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedJumpMultiplier
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3902229200159131934, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashSpeed
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -982,21 +967,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: bloodGain
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDownwardStabMaxSpeed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDownwardStabAcceleration
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1229,6 +1199,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1833016621}
     m_Modifications:
+    - target: {fileID: 461671417752118776, guid: fc23a49174e3d7d4780f62ee5b807e5c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 461671417752118776, guid: fc23a49174e3d7d4780f62ee5b807e5c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 461671417752118776, guid: fc23a49174e3d7d4780f62ee5b807e5c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3513578184416627259, guid: fc23a49174e3d7d4780f62ee5b807e5c,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1258,6 +1243,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BloodGagueUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013518249225491297, guid: fc23a49174e3d7d4780f62ee5b807e5c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9015058472335211120, guid: fc23a49174e3d7d4780f62ee5b807e5c,
         type: 3}

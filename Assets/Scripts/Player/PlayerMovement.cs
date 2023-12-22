@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public float groundAcceleration;
     public float maxGroundSpeed;
     public float groundDrag;
+
     [Header("Boosted Ground")]
     public float boostedGroundAcceleration;
     public float boostedMaxGroundSpeed;
@@ -33,10 +34,14 @@ public class PlayerMovement : MonoBehaviour
     [Range(0.0f, 1f)]
     public float rotationSpeed;
 
+    [Header("References")]
+    [SerializeField] PlayerPositionCheck playerPositionCheck;
+    [SerializeField] MovementModification movementModification;
+    [SerializeField] DashAction dashAction;
+    [SerializeField] WallSlideAction wallSlideAction;
+
     //Components
     Rigidbody rb;
-    PlayerPositionCheck playerPositionCheck;
-    MovementModification movementModification;
 
     bool readyToJump = true;
     bool grounded;
@@ -44,11 +49,8 @@ public class PlayerMovement : MonoBehaviour
     bool isMoving = false;
     Vector3 targetDirection;
 
-    void Start()
-    {
-        playerPositionCheck = GetComponent<PlayerPositionCheck>();
+    void Start() {
         rb = GetComponent<Rigidbody>();
-        movementModification = GetComponent<MovementModification>();
     }
 
     private void FixedUpdate() {
@@ -57,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
             RotationUpdate();
         }
 
-        //Assinging drag
+        // Assigning drag
         if (grounded) {
             rb.drag = groundDrag;
         }
@@ -66,8 +68,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity += Vector3.down * Mathf.Lerp(gravityAcceleration, boostedGravityAcceleration, movementModification.boostForAll);
         }
     }
-    private void Update()
-    {
+    private void Update() {
         grounded = playerPositionCheck.CheckOnGround();
         if(grounded) {
             ResetJump();
@@ -75,9 +76,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    public void PlayerInputJump()
-    {
-        if(readyToJump)
+    public void PlayerInputJump() {
+        if(readyToJump && !wallSlideAction.isSliding && !dashAction.isDashing)
         {
             readyToJump = false;
             grounded = false;
@@ -85,9 +85,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Move(Vector3 inputDirection)
-    {
-        if (inputDirection.magnitude > 0)
+    public void Move(Vector3 inputDirection) {
+        if (inputDirection.magnitude > 0 && !wallSlideAction.isSliding && !dashAction.isDashing)
         {
             isMoving = true;
             targetDirection = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
@@ -105,8 +104,8 @@ public class PlayerMovement : MonoBehaviour
     public void ResetJump() {
         readyToJump = true;
     }
-    private void MoveUpdate()
-    {
+
+    private void MoveUpdate() {
         Vector3 addedVelocity;
         Vector3 maxVelocity;
         Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);

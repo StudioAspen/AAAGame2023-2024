@@ -5,48 +5,48 @@ using UnityEngine.Events;
 using PathCreation;
 
 public class SlashDash : MonoBehaviour {
+    [Header("Events")]
+    public UnityEvent OnEndSlashDash = new UnityEvent();
+
     [Header("References")]
     [SerializeField] DashCollider dashCollider;
     [SerializeField] SwordAnimation swordAnimation;
-
-    [Header("Events")]
-    public UnityEvent OnEndSlashDash = new UnityEvent();
+    [SerializeField] DashAction dashAction;
 
     // Components
     DashMovement dashMovement;
     Slash slash;
 
     //Variables
-    bool isDashing = false;
+    bool isSlashDashing = false;
 
     private void Start() {
         dashMovement = GetComponent<DashMovement>();
         slash = GetComponent<Slash>();
 
         dashCollider.OnContact.AddListener(SlashDashContact);
+        dashAction.OnDashEnd.AddListener(EndSlashDash);
     }
 
-    public void TryStartSlashDash(Vector3 direction) {
-        if (!isDashing) {
-            isDashing = true;
+    public void StartSlashDash(Vector3 direction) {
+        if (!isSlashDashing && dashMovement.CanDash()) {
+            isSlashDashing = true;
 
             swordAnimation.StartSlashDashAnimation();
-            dashMovement.OnDashEnd.AddListener(EndSlashDash);
             dashMovement.PlayerInputDash(direction);
         }
     }
     private void EndSlashDash() {
-        dashMovement.OnDashEnd.RemoveListener(EndSlashDash);
-        swordAnimation.EndAnimation();
-        isDashing = false;
-        OnEndSlashDash.Invoke();
+        if(isSlashDashing) {
+            swordAnimation.EndAnimation();
+            isSlashDashing = false;
+            OnEndSlashDash.Invoke();
+        }
     }
     private void SlashDashContact(GameObject other) {
-        if (isDashing) {
-            if (other.TryGetComponent(out SlashableTerrain slashable) &&
-                other.TryGetComponent(out PathCreator pc)) {
-                isDashing = false;
-                slash.StartSlide(pc, other);
+        if (isSlashDashing) {
+            if(slash.SlashContactEffect(other)) {
+                isSlashDashing = false;
             }
         }
     }

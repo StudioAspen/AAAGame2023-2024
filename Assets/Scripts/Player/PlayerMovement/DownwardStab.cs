@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class DownwardStab : MonoBehaviour {
 
-    [Header("References")]
-    [SerializeField] SwordAnimation swordAnimation;
-
     [Header("Movement")]
     [SerializeField] float downwardStabAcceleration;
     [SerializeField] float downwardStabMaxSpeed;
@@ -24,11 +21,15 @@ public class DownwardStab : MonoBehaviour {
     bool canDownwardStab = true;
     bool isStabing = false;
 
+    [Header("References")]
+    [SerializeField] SwordAnimation swordAnimation;
+    [SerializeField] PlayerPositionCheck playerPositionCheck;
+    [SerializeField] MovementModification movementModification;
+
+
     // Components
     Rigidbody rb;
-    PlayerPositionCheck playerPositionCheck;
     Stab stab;
-    MovementModification movementModification;
 
     private void Start() {
         rb = GetComponent<Rigidbody>();

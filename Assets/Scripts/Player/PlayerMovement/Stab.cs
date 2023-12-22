@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 public class Stab : MonoBehaviour {
-    [Header("References")]
-    [SerializeField] SwordAnimation swordMovement;
-
     [Header("Other Variables")]
     [SerializeField] float dashSpeed;
     [SerializeField] float boostedDashSpeed;
@@ -16,85 +13,100 @@ public class Stab : MonoBehaviour {
     [Header("Events")]
     public UnityEvent OnStabEnd = new UnityEvent();
 
-    // Movement Compoenents
+    [Header("References")]
+    [SerializeField] SwordAnimation swordAnimation;
+    [SerializeField] DashAction dashAction;
+    [SerializeField] MovementModification movementModification;
+    [SerializeField] BloodThirst bloodThirst; 
+
+    // Movement Components and References
     DashMovement dashMovement;
     PlayerMovement playerMovement;
+    Slash slash;
     Collider _collider;
     Rigidbody rb;
-    MovementModification movementModification;
 
     // Variables
-    bool isStabbing = false;
+    public bool isStabbing = false;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         // Getting components
         dashMovement = GetComponent<DashMovement>();
         playerMovement = GetComponent<PlayerMovement>();
+        slash = GetComponent<Slash>();
         _collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
-        movementModification = GetComponent<MovementModification>();
 
         // Setting up Demon Sword
-        swordMovement.OnContact.AddListener(StabContact);
+        swordAnimation.OnContact.AddListener(StabContact);
+        swordAnimation.OnEndAnimation.AddListener(EndOfStabAnimation);
     }
 
 
-    public void StartStab()
-    {
-        if (!isStabbing) {
-            //Animation Stuff (to be implemented later)
+    public void StartStab() {
+        if (!isStabbing && !slash.isSlashing) {
             isStabbing = true;
 
-            // Demon sword variables
-            swordMovement.OnEndAnimation.AddListener(EndOfStabAnimation);
-            swordMovement.StartStabAnimation();
+            swordAnimation.StartStabAnimation();
         }
     }
 
-    public void InterruptStab()
-    {
-        isStabbing = false;
-        swordMovement.EndAnimation();
+    public void InterruptStab() {
+        if(isStabbing) {
+            swordAnimation.EndAnimation();
+        }
     }
 
     public void StabContact(GameObject other)
     {
-        if(other.TryGetComponent(out StabableTerrain stabableTerrain))
-        {
-            if(isStabbing)
-            {
-                // Setting proper listeners and variables
+        if(isStabbing) {
+            if(StabContactEffect(other)) {
                 isStabbing = false;
-                swordMovement.OnEndAnimation.RemoveListener(EndOfStabAnimation);
-
-                // Setting up and starting dash
-                DashThrough(stabableTerrain);
             }
         }
-        if(other.TryGetComponent(out StabbedEffect stabbedEffect)) {
-            stabbedEffect.TriggerEffect();
-        }
     }
+
+    public bool StabContactEffect(GameObject other) {
+        bool found = false;
+        if (other.TryGetComponent(out StabableTerrain stabableTerrain)) {
+            // Setting up and starting dash
+            DashThrough(stabableTerrain);
+            found = true;
+        }
+
+        // Triggering generic effects
+        if (other.TryGetComponent(out StabbedEffect stabbedEffect)) {
+            stabbedEffect.TriggerEffect();
+            found = true;
+        }
+
+        if(found) {
+            bloodThirst.GainBlood(bloodGainAmount, true);
+        }
+        return found;
+    }
+
     public void DashThrough(StabableTerrain stabableTerrain) {
-        GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
-        dashMovement.OnDashEnd.AddListener(EndOfDash);
         _collider.isTrigger = true; // Setting as trigger to prevent collisions
+
+        // Dashing
+        dashAction.OnDashEnd.AddListener(EndOfDash);
         float dashDuration = (stabableTerrain.dashLength / Mathf.Lerp(dashSpeed, boostedDashSpeed, movementModification.boostForAll));
         rb.position = stabableTerrain.dashStartTransform.position;
-        dashMovement.Dash(stabableTerrain.dashLength, dashDuration, stabableTerrain.dashDir);
+        dashAction.Dash(stabableTerrain.dashLength, dashDuration, stabableTerrain.dashDir);
     }
     private void EndOfDash() {
-        dashMovement.OnDashEnd.RemoveListener(EndOfDash);
+        dashAction.OnDashEnd.RemoveListener(EndOfDash);
+        _collider.isTrigger = false; // Re-enable collider allowing collisions
+
         playerMovement.ResetJump();
         dashMovement.ResetDash();
-        _collider.isTrigger = false; // Re-enable collider
+        
         OnStabEnd.Invoke();
     }
     private void EndOfStabAnimation() {
         isStabbing = false;
-        swordMovement.OnEndAnimation.RemoveListener(EndOfStabAnimation);
         OnStabEnd.Invoke();
     }
 }
