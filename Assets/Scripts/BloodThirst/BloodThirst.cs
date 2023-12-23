@@ -15,14 +15,14 @@ public class BloodThirst : MonoBehaviour
     [SerializeField] float overfedDrainRate; // Blood drain rate when overfed
 
     [Header("Other Variables")]
-    [SerializeField] PlayerKillable playerKillable;
     [SerializeField] float playerHealthDrainRate; // How much are you draining from the player
 
     [Header("Events")]
     public UnityEvent OnBloodChange = new UnityEvent(); // Sends signal update to the UI
 
-    // Components
-    MovementModification movementModification;
+    [Header("References")]
+    [SerializeField] PlayerKillable playerKillable;
+    [SerializeField] MovementModification movementModification;
     
     // Other Variables
     bool isDraining = false; // If the sword is currently draining
@@ -32,11 +32,6 @@ public class BloodThirst : MonoBehaviour
     {
         //Initalizing values
         currentBlood = maxBlood;
-
-        if(gameObject.TryGetComponent(out movementModification))
-        {
-            Debug.Log("Movement modification not found");
-        }
     }
 
     // Update is called once per frame

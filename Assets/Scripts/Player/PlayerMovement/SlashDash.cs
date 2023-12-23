@@ -5,20 +5,15 @@ using UnityEngine.Events;
 using PathCreation;
 
 public class SlashDash : MonoBehaviour {
-    [Header("Events")]
-    public UnityEvent OnEndSlashDash = new UnityEvent();
-
     [Header("References")]
     [SerializeField] DashCollider dashCollider;
     [SerializeField] SwordAnimation swordAnimation;
     [SerializeField] DashAction dashAction;
+    [SerializeField] PlayerMovementStateManager playerMovementStateManager;
 
     // Components
     DashMovement dashMovement;
     Slash slash;
-
-    //Variables
-    bool isSlashDashing = false;
 
     private void Start() {
         dashMovement = GetComponent<DashMovement>();
@@ -29,8 +24,8 @@ public class SlashDash : MonoBehaviour {
     }
 
     public void StartSlashDash(Vector3 direction) {
-        if (!isSlashDashing && dashMovement.CanDash()) {
-            isSlashDashing = true;
+        if (playerMovementStateManager.currentState == PlayerMovementState.IDLE && dashMovement.CanDash()) {
+            playerMovementStateManager.ChangeState(PlayerMovementState.SLASH_DASHING);
 
             swordAnimation.StartSlashDashAnimation();
             dashMovement.PlayerInputDash(direction);
@@ -38,22 +33,20 @@ public class SlashDash : MonoBehaviour {
     }
 
     private void InterruptSlashDash() {
-        if (isSlashDashing) {
+        if (playerMovementStateManager.currentState == PlayerMovementState.SLASH_DASHING) {
             swordAnimation.EndAnimation();
-            isSlashDashing = false;
-            OnEndSlashDash.Invoke();
+            playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
         }
     }
     
     private void EndOfDash() {
-        if (isSlashDashing) {
+        if (playerMovementStateManager.currentState == PlayerMovementState.SLASH_DASHING) {
             swordAnimation.EndAnimation();
-            isSlashDashing = false;
-            OnEndSlashDash.Invoke();
+            playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
         }
     }
     private void SlashDashContact(GameObject other) {
-        if (isSlashDashing) {
+        if (playerMovementStateManager.currentState == PlayerMovementState.SLASH_DASHING) {
             slash.SlashContactEffect(other, InterruptSlashDash);
         }
     }

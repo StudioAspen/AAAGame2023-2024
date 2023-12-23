@@ -10,8 +10,7 @@ public class DashAction : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent OnDashEnd = new UnityEvent();
-
-    [Header("State")]
+    
     public bool isDashing = false;
 
     float dashDurationTimer;// Used to know when dash has ended

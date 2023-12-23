@@ -15,17 +15,18 @@ public class DashMovement : MonoBehaviour
     public float boostedDashDuration; // Duration when max overfed
     public float boostedDashCooldown; // Cooldown when max overfed
 
-    [Header("Events")]
-    public UnityEvent OnDashEnd = new UnityEvent();
-
     [Header("References")]
     [SerializeField] MovementModification movementModification;
     [SerializeField] PlayerPositionCheck playerPositionCheck;
     [SerializeField] DashAction dashAction;
+    [SerializeField] PlayerMovementStateManager playerMovementStateManager;
 
 
     bool dashAvailable = true;
     float dashCdTimer;//Time before you can dash again
+
+    private void Start() {
+    }
 
     // Update is called once per frame
     void Update()
@@ -49,8 +50,11 @@ public class DashMovement : MonoBehaviour
             // Calculating boosts (all boosts are calculated as a linear interpolation between normal and boost amount given a percentage)
             dashCdTimer = Mathf.Lerp(dashCooldown, boostedDashCooldown, movementModification.boostForAll); 
             float netDashDistance = Mathf.Lerp(dashDistance, boostedDashDistance, movementModification.boostForAll);  
-            float netDashDuration = Mathf.Lerp(dashDuration, boostedDashDuration, movementModification.boostForAll); 
+            float netDashDuration = Mathf.Lerp(dashDuration, boostedDashDuration, movementModification.boostForAll);
 
+
+            playerMovementStateManager.ChangeState(PlayerMovementState.DASHING);
+            dashAction.OnDashEnd.AddListener(EndOfDash);
             // Starting Dash
             dashAction.Dash(netDashDistance, netDashDuration, horizontalDirection);
         }
@@ -68,5 +72,10 @@ public class DashMovement : MonoBehaviour
             ResetDash();
         }
         dashAction.InterruptDash();
+    }
+
+    private void EndOfDash() {
+        dashAction.OnDashEnd.RemoveListener(EndOfDash);
+        playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
     }
 }

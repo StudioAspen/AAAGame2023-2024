@@ -223,7 +223,6 @@ GameObject:
   - component: {fileID: 8012279846651036797}
   - component: {fileID: 7021382955167843328}
   - component: {fileID: 3739281105588693709}
-  - component: {fileID: 2352701808018790800}
   - component: {fileID: 3650192985131432812}
   m_Layer: 6
   m_Name: Player
@@ -249,6 +248,7 @@ Transform:
   - {fileID: 7431794261642768568}
   - {fileID: 295394010340544266}
   - {fileID: 6967942654974850624}
+  - {fileID: 5983226315780171166}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2936462189952305664
@@ -429,7 +429,7 @@ MonoBehaviour:
   boostedJumpForce: 20
   boostedGravityAcceleration: 0.5
   rotationSpeed: 0.75
-  playerPositionCheck: {fileID: 2352701808018790800}
+  playerPositionCheck: {fileID: 9183839336302885205}
   movementModification: {fileID: 3650192985131432812}
   dashAction: {fileID: 7756394574311324707}
   wallSlideAction: {fileID: 4717346126692201257}
@@ -455,7 +455,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   movementModification: {fileID: 3650192985131432812}
-  playerPositionCheck: {fileID: 2352701808018790800}
+  playerPositionCheck: {fileID: 9183839336302885205}
   dashAction: {fileID: 7756394574311324707}
 --- !u!114 &3902229200159131934
 MonoBehaviour:
@@ -478,10 +478,9 @@ MonoBehaviour:
       m_Calls: []
   swordAnimation: {fileID: 2230350445419021309}
   dashAction: {fileID: 7756394574311324707}
-  wallSlideAction: {fileID: 0}
   movementModification: {fileID: 3650192985131432812}
   bloodThirst: {fileID: 3739281105588693709}
-  isStabbing: 0
+  playerMovementStateManager: {fileID: 3147846399694500396}
 --- !u!114 &3088617981437380700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,10 +504,9 @@ MonoBehaviour:
   swordObject: {fileID: 6800678773869080880}
   swordAnimation: {fileID: 2230350445419021309}
   wallSlideAction: {fileID: 4717346126692201257}
-  dashAction: {fileID: 0}
   movementModification: {fileID: 3650192985131432812}
   bloodThirst: {fileID: 3739281105588693709}
-  isSlashing: 0
+  playerMovementStateManager: {fileID: 3147846399694500396}
 --- !u!114 &8671536288844823369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,8 +526,9 @@ MonoBehaviour:
   pressDownTime: 0.25
   bloodGain: 10
   swordAnimation: {fileID: 2230350445419021309}
-  playerPositionCheck: {fileID: 2352701808018790800}
+  playerPositionCheck: {fileID: 0}
   movementModification: {fileID: 3650192985131432812}
+  playerMovementStateManager: {fileID: 3147846399694500396}
 --- !u!114 &8012279846651036797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,6 +544,7 @@ MonoBehaviour:
   swordAnimation: {fileID: 2230350445419021309}
   dashCollider: {fileID: 6990662696071883527}
   dashAction: {fileID: 7756394574311324707}
+  playerMovementStateManager: {fileID: 3147846399694500396}
   OnEndStabDash:
     m_PersistentCalls:
       m_Calls: []
@@ -566,6 +566,7 @@ MonoBehaviour:
   dashCollider: {fileID: 6990662696071883527}
   swordAnimation: {fileID: 2230350445419021309}
   dashAction: {fileID: 7756394574311324707}
+  playerMovementStateManager: {fileID: 3147846399694500396}
 --- !u!114 &3739281105588693709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,28 +585,12 @@ MonoBehaviour:
   currentBlood: 0
   bloodDrainRate: 5
   overfedDrainRate: 5
-  playerKillable: {fileID: 8596804024649230227}
   playerHealthDrainRate: 10
   OnBloodChange:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2352701808018790800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2762887234727674899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0757b9b976f47244aa022131a400dc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ground:
-    serializedVersion: 2
-    m_Bits: 1024
-  groundCheckOffset: 0.001
-  terrainCheckOffset: 0.001
+  playerKillable: {fileID: 8596804024649230227}
+  movementModification: {fileID: 3650192985131432812}
 --- !u!114 &3650192985131432812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,6 +704,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 295394010340544266}
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
+--- !u!1 &9018040889011583356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5983226315780171166}
+  - component: {fileID: 9183839336302885205}
+  - component: {fileID: 3147846399694500396}
+  m_Layer: 6
+  m_Name: PlayerState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5983226315780171166
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9018040889011583356}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7569982482725669098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9183839336302885205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9018040889011583356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0757b9b976f47244aa022131a400dc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ground:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckOffset: 0
+  terrainCheckOffset: 0
+--- !u!114 &3147846399694500396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9018040889011583356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6acf3274fd526fb48b7818acd9b08fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
 --- !u!1001 &5605391723127491252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -795,7 +843,7 @@ PrefabInstance:
     - target: {fileID: 5996984886382561609, guid: c66b3c9ba7489084f8c3f641e0306f46,
         type: 3}
       propertyPath: attackDuration
-      value: 1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 5996984886382561609, guid: c66b3c9ba7489084f8c3f641e0306f46,
         type: 3}

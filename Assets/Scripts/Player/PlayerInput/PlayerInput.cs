@@ -15,6 +15,7 @@ public class PlayerInput : MonoBehaviour {
 
     [Header("Input Variables")]
     [SerializeField] float combinationWindow;
+    float combinationWindowTimer = 0;
 
     [Header("Mouse Keyboard Inputs")]
     [SerializeField] KeyCode keyboardStab;
@@ -30,11 +31,7 @@ public class PlayerInput : MonoBehaviour {
     [SerializeField] KeyCode controllerDash;
     [SerializeField] KeyCode controllerJump;
 
-
-    [Header("References")]
-    [SerializeField] DashAction dashAction;
-    [SerializeField] WallSlideAction wallSlideAction;
-
+    
     // Controls
     KeyCode inputStab;
     KeyCode inputSlash;
@@ -42,7 +39,22 @@ public class PlayerInput : MonoBehaviour {
     KeyCode inputDash;
     KeyCode inputJump;
 
-    float combinationWindowTimer = 0;
+    // Used for input calculations
+    enum InputAction {
+        NO_INPUT,
+        JUMP,
+        STAB_PRESS,
+        STAB_HOLD,
+        STAB_RELEASE,
+        SLASH,
+        DASH,
+        STAB_DASH,
+        SLASH_DASH
+    }
+
+    InputAction lastInput = InputAction.NO_INPUT;
+    List<InputAction> inputsThisFrame = new List<InputAction>();
+
     bool canInput = true;
 
     //Movement abilities
@@ -115,19 +127,37 @@ public class PlayerInput : MonoBehaviour {
     void Update() {
         // Initalizing input direction
         Vector3 inputDirection = Vector3.zero;
+        inputsThisFrame.Clear();
+        
         if (canInput) {
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
             inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
-            CheckCombinationAbilties(inputDirection);
-            CheckAbilities();
+            inputsThisFrame = CheckInputs(lastInput); // Checking and calculting the inputs
         }
-        movement.Move(inputDirection);
+        if(inputsThisFrame.Count > 0) {
+            if(inputsThisFrame[0] != InputAction.STAB_HOLD) {
+                lastInput = inputsThisFrame[0];
+            }
+        }
+        ApplyInputs(inputsThisFrame, inputDirection);
+
+        if(Input.GetKeyDown(KeyCode.F)) {
+            stabDash.StartStabDash(inputDirection);
+        }
+        if (Input.GetKeyDown(KeyCode.G)) {
+            slashDash.StartSlashDash(inputDirection);
+        }
 
         // Checking inputs for combination abilities
-        if (dashAction.isDashing || slash.isSlashing || stab.isStabbing) {
-            combinationWindowTimer += Time.deltaTime;
+        if (lastInput != InputAction.NO_INPUT) {
+            if(combinationWindowTimer > combinationWindow) {
+                combinationWindowTimer = 0;
+                lastInput = InputAction.NO_INPUT;
+            }
+            else {
+                combinationWindowTimer += Time.deltaTime;
+            }
         }
-
     }
     public void DisableInput() {
         canInput = false;
@@ -135,56 +165,86 @@ public class PlayerInput : MonoBehaviour {
     public void EnableInput() {
         canInput = true;
     }
-    private void CheckAbilities() {
+    private List<InputAction> CheckInputs(InputAction _lastInput) {
+        List<InputAction> inputs = new List<InputAction>();
+        
         if (Input.GetKeyDown(inputJump)) {
-            movement.PlayerInputJump();
+            inputs.Add(InputAction.JUMP);
         }
-        if (Input.GetKey(inputStab)) {
-            downwardStab.TryDownwardStabUpdate();
+        if(Input.GetKey(inputStab)) {
+            inputs.Add(InputAction.STAB_HOLD);
         }
-        if (Input.GetKeyUp(inputStab)) {
-            downwardStab.ReleaseDownwardStab();
-        }
-    }
-    private void CheckCombinationAbilties(Vector3 direction) {
-        // Stab Move with combination logic
         if (Input.GetKeyDown(inputStab)) {
-            if (!dashAction.isDashing) {
-                combinationWindowTimer = 0;
-                stab.StartStab();
-            }
-            else if (combinationWindowTimer < combinationWindow) {
-                dash.InterruptDash(true);
-                stabDash.StartStabDash(direction);
-            }
-        }
-
-        // Slash Move with combination logic
-        if (Input.GetKeyDown(inputSlash)) {
-            if (!dashAction.isDashing) {
-                combinationWindowTimer = 0;
-                slash.StartSlash();
-            }
-            else if (combinationWindowTimer < combinationWindow) {
-                dash.InterruptDash(true);
-                slashDash.StartSlashDash(direction);
-            }
-        }
-
-        // Dash with combination logic
-        if (Input.GetKeyDown(inputDash)) {
-            if (stab.isStabbing && combinationWindowTimer < combinationWindow) {
-                stab.InterruptStab();
-                stabDash.StartStabDash(direction);
-            }
-            else if (slash.isSlashing && combinationWindowTimer < combinationWindow) {
-                slash.InterruptSlash();
-                slashDash.StartSlashDash(direction);
+            if (_lastInput == InputAction.DASH) {
+                inputs.Add(InputAction.STAB_DASH);
             }
             else {
-                combinationWindowTimer = 0;
-                dash.PlayerInputDash(direction);
+                inputs.Add(InputAction.STAB_PRESS);
             }
         }
+        if (Input.GetKeyUp(inputStab)) {
+            inputs.Add(InputAction.STAB_RELEASE);
+        }
+        // Slash Move with combination logic
+        if (Input.GetKeyDown(inputSlash)) {
+            if (_lastInput == InputAction.DASH) {
+                inputs.Add(InputAction.SLASH_DASH);
+            }
+            else {
+                inputs.Add(InputAction.SLASH);
+            }
+        }
+        // Dash with combination logic
+        if (Input.GetKeyDown(inputDash)) {
+            if(inputs.Count > 0) {
+                if (inputs[inputs.Count-1] == InputAction.STAB_PRESS) {
+                    inputs[inputs.Count-1] = InputAction.STAB_DASH;
+                }
+                else if (inputs[inputs.Count - 1] == InputAction.SLASH) {
+                    inputs[inputs.Count - 1] = InputAction.SLASH_DASH;
+                }
+                else {
+                    inputs.Add(InputAction.DASH);
+                }
+            }
+            else {
+                inputs.Add(InputAction.DASH);
+            }
+        }
+
+        return inputs;
+    }
+
+    private void ApplyInputs(List<InputAction> inputs, Vector3 direction) {
+        foreach (InputAction input in inputs) {
+            Debug.Log(input);
+            switch (input) {
+                case InputAction.JUMP:
+                    movement.PlayerInputJump();
+                    break;
+                case InputAction.STAB_PRESS:
+                    stab.StartStab();
+                    break;
+                case InputAction.STAB_HOLD:
+                    downwardStab.DownwardStabUpdate();
+                    break;
+                case InputAction.STAB_RELEASE:
+                    downwardStab.ReleaseDownwardStab();
+                    break;
+                case InputAction.SLASH:
+                    slash.StartSlash();
+                    break;
+                case InputAction.DASH:
+                    dash.PlayerInputDash(direction);
+                    break;
+                case InputAction.STAB_DASH:
+                    stabDash.StartStabDash(direction);
+                    break;
+                case InputAction.SLASH_DASH:
+                    slashDash.StartSlashDash(direction);
+                    break;
+            }
+        }
+        movement.Move(direction); // This is an exception because the inputs are important to the implemetation so they are handled in the PlayerMovement Script
     }
 }

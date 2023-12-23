@@ -18,22 +18,17 @@ public class Slash : MonoBehaviour
     [Header("Other Variables")]
     public float bloodGained;
 
-    [Header("Events")]
-    public UnityEvent OnSlashEnd = new UnityEvent();
-
     [Header("References")]
     [SerializeField] GameObject swordObject;
     [SerializeField] SwordAnimation swordAnimation;
     [SerializeField] WallSlideAction wallSlideAction;
     [SerializeField] MovementModification movementModification;
     [SerializeField] BloodThirst bloodThirst;
+    [SerializeField] PlayerMovementStateManager playerMovementStateManager;
 
     // Components
     PlayerMovement playerMovement;
     DashMovement dashMovement;
-    Stab stab;
-
-    public bool isSlashing = false;
 
     private void Start()
     {
@@ -41,16 +36,15 @@ public class Slash : MonoBehaviour
         movementModification = GetComponent<MovementModification>();
         playerMovement = GetComponent<PlayerMovement>();
         dashMovement = GetComponent<DashMovement>();
-        stab = GetComponent<Stab>();
 
         swordAnimation.OnContact.AddListener(SlashContact);
         swordAnimation.OnEndAnimation.AddListener(EndOfSlashAnimation);
     }
 
     public void StartSlash() {
-        if (!isSlashing && !stab.isStabbing) {
+        if (playerMovementStateManager.currentState == PlayerMovementState.IDLE) {
             //Animation Stuff (to be implemented later)
-            isSlashing = true;
+            playerMovementStateManager.ChangeState(PlayerMovementState.SLASHING);
 
             // Demon sword variables
             swordAnimation.StartSlashAnimation();
@@ -58,14 +52,13 @@ public class Slash : MonoBehaviour
     }
 
     public void InterruptSlash() {
-        if (isSlashing) {
-            isSlashing = false;
+        if (playerMovementStateManager.currentState == PlayerMovementState.SLASHING) {
+            playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
             swordAnimation.EndAnimation();
-            OnSlashEnd.Invoke();
         }
     }
     public void SlashContact(GameObject other) {
-        if(isSlashing) {
+        if(playerMovementStateManager.currentState == PlayerMovementState.SLASHING) {
             SlashContactEffect(other, InterruptSlash);
         }
     }
@@ -76,6 +69,7 @@ public class Slash : MonoBehaviour
         if (other.TryGetComponent(out SlashableTerrain slashableTerrain) &&
             other.TryGetComponent(out PathCreator pc)) {
             interruptAction.Invoke();
+            playerMovementStateManager.ChangeState(PlayerMovementState.WALL_SLIDING);
             wallSlideAction.OnSlideEnd.AddListener(EndOfWallSlide);
 
             float slideSpeedCalc = Mathf.Lerp(slideSpeed, boostedSlideSpeed, movementModification.boostForAll);
@@ -102,6 +96,7 @@ public class Slash : MonoBehaviour
 
     private void EndOfWallSlide() {
         wallSlideAction.OnSlideEnd.RemoveListener(EndOfWallSlide);
+        playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
 
         playerMovement.Jump(Mathf.Lerp(jumpMultiplier, boostedJumpMultiplier, movementModification.boostForAll));
 
@@ -110,9 +105,9 @@ public class Slash : MonoBehaviour
     }
     
     private void EndOfSlashAnimation() {
-        isSlashing = false;
-
-        OnSlashEnd.Invoke();
+        if(playerMovementStateManager.currentState == PlayerMovementState.SLASHING) {
+            playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
+        }
     }
 
 }

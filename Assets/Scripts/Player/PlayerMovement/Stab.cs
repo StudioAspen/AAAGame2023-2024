@@ -10,31 +10,24 @@ public class Stab : MonoBehaviour {
     [SerializeField] float bloodGainAmount;
     [SerializeField] float attackDuration;
 
-    [Header("Events")]
-    public UnityEvent OnStabEnd = new UnityEvent();
-
     [Header("References")]
     [SerializeField] SwordAnimation swordAnimation;
     [SerializeField] DashAction dashAction;
     [SerializeField] MovementModification movementModification;
-    [SerializeField] BloodThirst bloodThirst; 
+    [SerializeField] BloodThirst bloodThirst;
+    [SerializeField] PlayerMovementStateManager playerMovementStateManager;
 
     // Movement Components and References
     DashMovement dashMovement;
     PlayerMovement playerMovement;
-    Slash slash;
     Collider _collider;
     Rigidbody rb;
-
-    // Variables
-    public bool isStabbing = false;
 
     // Start is called before the first frame update
     void Start() {
         // Getting components
         dashMovement = GetComponent<DashMovement>();
         playerMovement = GetComponent<PlayerMovement>();
-        slash = GetComponent<Slash>();
         _collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
 
@@ -45,24 +38,22 @@ public class Stab : MonoBehaviour {
 
 
     public void StartStab() {
-        if (!isStabbing && !slash.isSlashing) {
-            isStabbing = true;
+        if (playerMovementStateManager.currentState == PlayerMovementState.IDLE) {
+            playerMovementStateManager.ChangeState(PlayerMovementState.STABBING);
 
             swordAnimation.StartStabAnimation();
         }
     }
 
     public void InterruptStab() {
-        if(isStabbing) {
-            isStabbing = false;
+        if(playerMovementStateManager.currentState == PlayerMovementState.STABBING) {
+            playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
             swordAnimation.EndAnimation();
-            OnStabEnd.Invoke();
         }
     }
 
-    public void StabContact(GameObject other)
-    {
-        if(isStabbing) {
+    public void StabContact(GameObject other) {
+        if(playerMovementStateManager.currentState == PlayerMovementState.STABBING) {
             StabContactEffect(other, InterruptStab);
         }
     }
@@ -91,6 +82,7 @@ public class Stab : MonoBehaviour {
 
     public void DashThrough(StabableTerrain stabableTerrain) {
         _collider.isTrigger = true; // Setting as trigger to prevent collisions
+        playerMovementStateManager.ChangeState(PlayerMovementState.DASHING);
 
         // Dashing
         dashAction.OnDashEnd.AddListener(EndOfDash);
@@ -101,12 +93,14 @@ public class Stab : MonoBehaviour {
     private void EndOfDash() {
         dashAction.OnDashEnd.RemoveListener(EndOfDash);
         _collider.isTrigger = false; // Re-enable collider allowing collisions
+        playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
 
         playerMovement.ResetJump();
         dashMovement.ResetDash();
     }
     private void EndOfStabAnimation() {
-        isStabbing = false;
-        OnStabEnd.Invoke();
+        if(playerMovementStateManager.currentState == PlayerMovementState.STABBING) {
+            playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
+        }
     }
 }

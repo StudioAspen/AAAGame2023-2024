@@ -9,16 +9,11 @@ public class StabDash : MonoBehaviour
     [SerializeField] SwordAnimation swordAnimation;
     [SerializeField] DashCollider dashCollider;
     [SerializeField] DashAction dashAction;
-
-    [Header("Events")]
-    public UnityEvent OnEndStabDash = new UnityEvent();
+    [SerializeField] PlayerMovementStateManager playerMovementStateManager;
 
     // Components
     DashMovement dashMovement;
     Stab stab;
-
-    //Variables
-    bool isStabDashing = false;
 
     private void Start() {
         // Getting components
@@ -30,8 +25,8 @@ public class StabDash : MonoBehaviour
     }
 
     public void StartStabDash(Vector3 direction) {
-        if(!isStabDashing && dashMovement.CanDash()) {
-            isStabDashing = true;
+        if(playerMovementStateManager.currentState == PlayerMovementState.IDLE && dashMovement.CanDash()) {
+            playerMovementStateManager.ChangeState(PlayerMovementState.STAB_DASHING);
 
             swordAnimation.StartStabDashAnimation();
 
@@ -39,23 +34,21 @@ public class StabDash : MonoBehaviour
         }
     }
     private void InterruptStabDash() {
-        if(isStabDashing) {
+        if(playerMovementStateManager.currentState == PlayerMovementState.STAB_DASHING) {
             swordAnimation.EndAnimation();
-            isStabDashing = false;
-            OnEndStabDash.Invoke();
+            playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
         }
     }
 
     private void EndOfDash() {
-        if (isStabDashing) {
+        if (playerMovementStateManager.currentState == PlayerMovementState.STAB_DASHING) {
             swordAnimation.EndAnimation();
-            isStabDashing = false;
-            OnEndStabDash.Invoke();
+            playerMovementStateManager.ChangeState(PlayerMovementState.IDLE);
         }
     }
 
     private void StabDashContact(GameObject other) {
-        if(isStabDashing) {
+        if(playerMovementStateManager.currentState == PlayerMovementState.STAB_DASHING) {
             stab.StabContactEffect(other, InterruptStabDash);
         }
     }
