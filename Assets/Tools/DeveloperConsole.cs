@@ -1,21 +1,35 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.EventSystems.EventTrigger;
 
+///-/////////////////////////////////////////////////////////////////////////////
+///
+/// Defines the developer console
+/// 
 public class DeveloperConsole : MonoBehaviour
 {
     GameObject player; // Reference for player game object
 
-    // an array that contains all the possible commands
-    string[] commandArray = new string[]
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
+    /// Enum of dev commands
+    /// 
+    public enum DevCommand
     {
-        "help", "killable", "kill", "restart", "spawn"
-    };
+        error,
+        help,
+        killable,
+        kill,
+        restart,
+        spawn,
+        load,
+        scene_list
+    }
     
     // Variables containing the Console's UI
     GameObject devConsoleUI;
@@ -29,42 +43,58 @@ public class DeveloperConsole : MonoBehaviour
 
     bool isConsoleOpen = false;
 
-    string enemiesFolderPath;
-    string[] enemies;
+    const string ENEMIES_FOLDER_PATH = "Assets/Prefabs/Enemies"; // the enemy folder path
     string[] enemyNames;
 
+    // TYPE LIST OF SCENES BELOW
+    string[] loadableScenes = new string[]
+    {
+        "sample_car",
+        "sample_apple",
+        "sample_banana"
+    };
 
+    #region Unity Constructors
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
     private void Start()
     {
         //Get UI's game objects
         devConsoleUI = transform.Find("ScrollView").gameObject;
+        devConsoleUI.transform.parent.GetComponent<Canvas>().sortingOrder = 1;
         consoleLogUI = devConsoleUI.transform.Find("Console").Find("Content").Find("Log").GetComponent<TextMeshProUGUI>();
         userInput = devConsoleUI.transform.Find("UserInput").GetComponent<TMP_InputField>();
 
         // Get Player GameObject in the scene
         player = GameObject.FindGameObjectWithTag("Player");
 
+        Array.Sort(loadableScenes);
 
-        ///////////////////////////////////////////////////////////////
-        /// Gets all the references necessary to spawn enemy prefabs///
-        ///////////////////////////////////////////////////////////////
-        enemiesFolderPath = "Assets/Prefabs/Enemies"; // the enemy folder path
-
-        enemies = AssetDatabase.FindAssets("t:Prefab", new[] { enemiesFolderPath }); // gets an array if the prefabs guids
-
-        //gets a list of the enemy prefabs names
-        enemyNames = new string[enemies.Length];
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            enemyNames[i] = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(enemies[i])).name;
-        }
+        GetEnemyPrefabs();
     }
 
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
     private void Update()
     {
         CheckForInput();
     }
+    #endregion //Unity Constructors
 
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
+    private void GetEnemyPrefabs()
+    {
+        DirectoryInfo enemyFolder = new DirectoryInfo(ENEMIES_FOLDER_PATH);
+        FileInfo[] enemyFiles = enemyFolder.GetFiles();
+
+        for (int i = 0; i < enemyFiles.Length; i++)
+        {
+            enemyNames[i] = enemyFiles[i].Name;
+        }
+    }
+
+    #region Console State
     // Focuses the console so that you are already typing into the input field
     private void FocusConsole()
     {
@@ -92,10 +122,23 @@ public class DeveloperConsole : MonoBehaviour
         {
             FocusConsole();
             ClearConsole();
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Time.timeScale = 1;
         }
     }
+    #endregion // Console State
 
-    // Reads input from input field
+    #region Read Input and Update Console
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
     public void ReadStringInput(string s)
     {
         input = s;
@@ -107,7 +150,8 @@ public class DeveloperConsole : MonoBehaviour
         FocusConsole();
     }
 
-    // adds the message to the console log
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
     private void AddToConsoleLog(string message)
     {
         consoleLogText += "> " + message + "\n";
@@ -115,77 +159,81 @@ public class DeveloperConsole : MonoBehaviour
         UpdateConsoleLog();
     }
 
-    // clears the console
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
     public void ClearConsole()
     {
         consoleLogText = "";
         UpdateConsoleLog();
     }
 
-    // updates the console log to match the new text
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
+    /// Updates the console log to match new text
+    /// 
     private void UpdateConsoleLog()
     {
         consoleLogUI.SetText(consoleLogText);
     }
+    #endregion // Read Input and Update Console
 
-    // checks if the command inputted exists
-    bool CheckCommand(string[] command) // checks if the command inputted exists
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
+    /// Checks if command inputted exists
+    /// 
+    bool CheckCommand(string[] command, out DevCommand commandType) // checks if the command inputted exists
     {
         if (command.Length != 0) // makes sure an empty command wasn't sent
         {
-            if (commandArray.Contains<string>(command[0])) return true;
+            if (Enum.TryParse<DevCommand>(command[0], out commandType)) return true;
             else
             {
                 AddToConsoleLog("Error: Command \"" + input + "\" doesn't exist!");
                 return false;
             }
         }
+        commandType = DevCommand.error;
         return false;
     }
 
-    // checks if a command exists and executes it if it does
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
     private void ExecuteCommand()
     {
-        if (CheckCommand(inputModified)) // checks if the command exists
+        DevCommand commandType;
+        if (CheckCommand(inputModified, out commandType)) // checks if the command exists
         {
             //---------------------
             // EXECUTE THE COMMANDS
             //---------------------
-            if (inputModified[0] == "help") // checks for help command which shows documentation
+            if (commandType == DevCommand.help) // checks for help command which shows documentation
             {
                 AddToConsoleLog("Documentation: https://docs.google.com/document/d/1v9Pv3NSl3cyLKnmF_MCTEz9_mHWrwQd4CHd3luqehxo/edit?usp=sharing");
             }
-            else if (inputModified[0] == "killable") // checks for setkillable command
+            else if (commandType == DevCommand.killable) // checks for setkillable command
             {
-                try // to catch missing or incorrect parameters or values
+                if (inputModified[1] == "true")
                 {
-                    if (inputModified[1] == "true")
-                    {
-                        SetKillable(true); // sets killable to true
-                    }
-                    else if (inputModified[1] == "false")
-                    {
-                        SetKillable(false); // sets killable to false
-                    }
-                    else
-                    {
-                        throw new Exception();
-                    }
+                    SetKillable(true); // sets killable to true
                 }
-                catch (Exception)
+                else if (inputModified[1] == "false")
+                {
+                    SetKillable(false); // sets killable to false
+                }
+                else
                 {
                     AddToConsoleLog("Error: missing true or false"); // tells the user if there is an error
                 }
             }
-            else if (inputModified[0] == "kill") // checks for kill player command
+            else if (commandType == DevCommand.kill) // checks for kill player command
             {
                 KillPlayer();
             }
-            else if (inputModified[0] == "restart") // checks for restart command
+            else if (commandType == DevCommand.restart) // checks for restart command
             {
                 Restart();
             }
-            else if (inputModified[0] == "spawn") // checks for spawn enemy command
+            else if (commandType == DevCommand.spawn) // checks for spawn enemy command
             {
                 try
                 {
@@ -200,15 +248,39 @@ public class DeveloperConsole : MonoBehaviour
                     AddToConsoleLog("Error: enemy does not exist");
                 }
             }
-
+            else if (commandType == DevCommand.load)
+            {
+                try
+                {
+                    Load(inputModified[1]);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    AddToConsoleLog("Error: must enter a scene");
+                }
+                catch (Exception)
+                {
+                    AddToConsoleLog("Error: Scene does not exist");
+                }
+            }
+            else if (commandType == DevCommand.scene_list)
+            {
+                DisplaySceneList();
+            }
         }
     }
 
+    #region command methods
     //-------------------------------------
     // INDIVIDUAL METHODS FOR ALL COMMANDS
     //-------------------------------------
 
-    void SetKillable(bool state) // sets the player state to killable or unkillable
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///.
+    /// sets the player state to killable or unkillable
+    /// 
+
+    void SetKillable(bool state) 
     {
         if (state)
         {
@@ -222,12 +294,17 @@ public class DeveloperConsole : MonoBehaviour
         }
     }
 
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///.
+    /// Kills the player
+    /// 
     void KillPlayer()
     {
         try
         {
             if (player != null)
             {
+                Time.timeScale = 1;
                 player.GetComponent<PlayerKillable>().TakeDamage(player.GetComponent<PlayerKillable>().maxHP);
                 AddToConsoleLog("Killed the player");
             }
@@ -242,14 +319,20 @@ public class DeveloperConsole : MonoBehaviour
         }
     }
 
-    // reloads the scene
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///.
+    /// Reloads the scene
+    /// 
     void Restart()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
     }
 
-    // spawns an enemy by the name 
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///.
+    /// Spawns an enemy by prefab name
+    /// 
     void SpawnEnemy(string enemy)
     {
         int enemyIndex;
@@ -264,10 +347,42 @@ public class DeveloperConsole : MonoBehaviour
             throw new Exception("Error: Enemy does not exist");
         }
 
-        // gets the reference of the enemy for instantiation
-        string enemyPrefabPath = AssetDatabase.GUIDToAssetPath(enemies[enemyIndex]);
-        GameObject enemyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(enemyPrefabPath);
-
-        Instantiate(enemyPrefab); // instantiates the enemy
+        GameObject enemyPrefab = Instantiate(Resources.Load(ENEMIES_FOLDER_PATH + enemyNames[enemyIndex])) as GameObject;
     }
+
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///.
+    /// Loads a scene by name
+    /// 
+    private void Load(string sceneName)
+    {
+        if (SceneManager.GetSceneByName(sceneName).IsValid())
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene(sceneName);
+        }
+        else
+        {
+            throw new Exception();
+        }
+    }
+
+    ///-/////////////////////////////////////////////////////////////////////////////
+    ///
+    /// Display Scene List
+    /// 
+    private void DisplaySceneList()
+    {
+        String sceneList = "";
+
+        for (int i = 0; i < loadableScenes.Length; i++)
+        {
+            sceneList += loadableScenes[i] + ", ";
+        }
+
+        sceneList.Remove(sceneList.Length - 2, 2);
+
+        AddToConsoleLog(sceneList);
+    }
+    #endregion // command methods
 }
