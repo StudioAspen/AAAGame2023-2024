@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static System.Net.WebRequestMethods;
 
 ///-/////////////////////////////////////////////////////////////////////////////
 ///
@@ -208,7 +209,7 @@ public class DeveloperConsole : MonoBehaviour
             //---------------------
             if (commandType == DevCommand.help) // checks for help command which shows documentation
             {
-                AddToConsoleLog("Documentation: https://docs.google.com/document/d/1v9Pv3NSl3cyLKnmF_MCTEz9_mHWrwQd4CHd3luqehxo/edit?usp=sharing");
+                AddToConsoleLog("Documentation: bit.ly/GetMikyledDocs");
             }
             else if (commandType == DevCommand.killable) // checks for setkillable command
             {
