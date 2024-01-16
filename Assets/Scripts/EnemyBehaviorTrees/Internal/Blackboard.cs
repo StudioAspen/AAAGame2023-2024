@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using UnityEngine.XR;
 
 namespace EnemyBehaviorTrees.Internal
 {
@@ -13,19 +11,19 @@ namespace EnemyBehaviorTrees.Internal
         {
             // NOTE: Dictionary.TryAdd() doesn't work here because TryAdd doesn't override already added key-value pairs.
             
-            // check for entry in entries
+            // Eheck for entry in entries
             if (entries.ContainsKey(id))
             {
-                // check object types
+                // Check object types
                 if (entries[id].GetType() != value.GetType())
                 {
                     return false;
                 }
                 
-                // otherwise, add entry
+                // Otherwise, add entry
                 entries[id] = value;
             }
-            // entry not already in entries
+            // Entry not already in entries
             else
             {
                 entries.Add(id, value);
@@ -34,16 +32,17 @@ namespace EnemyBehaviorTrees.Internal
             return true;
         }
 
-        public bool GetEntry<T>(string key, out T value)
+        public T GetEntry<T>(string key, out bool getEntrySuccess)
         {
+            // Try to get the value at key and check if the output's value is the same type as the function's output value.
             if (entries.TryGetValue(key, out var objValue) && objValue is T)
             {
-                value = (T)objValue;
-                return true;
+                getEntrySuccess = true;
+                return (T)objValue;     // Not type safe
             }
 
-            value = default;
-            return false;
+            getEntrySuccess = false;
+            return default;
         }
 
         public Dictionary<string, object> GetBlackboardEntries()
