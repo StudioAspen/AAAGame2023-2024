@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnemyBehaviorTrees.Internal;
 using EnemyBehaviorTrees.Nodes;
-using Unity.VisualScripting;
 using Sequence = EnemyBehaviorTrees.Nodes.Sequence;
 
 namespace EnemyBehaviorTrees.Agents
@@ -50,21 +49,23 @@ namespace EnemyBehaviorTrees.Agents
             BehaviorTree = new Selector("Control NPC",
                                 // Navigation branch: Idle
                                 new Sequence("Idle",
-                                    new IsNavigationActivityTypeOf("Idle", this),
+                                    // NOTE: FOLLOW ENUM CASING CONVENTION FOR ANY STRING VALUE THAT'S GOING TO BE USED A LOT FOR CLARITY'S SAKE.
+                                    // This prevents any unseeable bugs when multiple people work with them.
+                                    new IsNavigationActivityTypeOf(NavigationActivity.IDLE, this),
                                     new NodeTimer(idleTimeSecs, 
-                                        new SetNavigationActivityTo("Patrol", this))),
+                                        new SetNavigationActivityTo(NavigationActivity.PATROL, this))),
                                 // Navigation branch: Look for player
                                 new Sequence("Look for player",
-                                    new IsNavigationActivityTypeOf("Look for player", this),
+                                    new IsNavigationActivityTypeOf(NavigationActivity.LOOK_FOR_PLAYER, this),
                                     new Selector("Is player in aggro range?",
                                         // AGENT AGGRO
                                         new Sequence("Look for player", 
                                             new IsPlayerNearBy(playerAggroRange, this),
-                                            new SetNavigationActivityTo("Chase", this)),
-                                        new SetNavigationActivityTo("Patrol", this))),
+                                            new SetNavigationActivityTo(NavigationActivity.CHASE, this)),
+                                        new SetNavigationActivityTo(NavigationActivity.PATROL, this))),
                                 // Navigation branch: Chase
                                 new Sequence("Chase Player",
-                                    new IsNavigationActivityTypeOf("Chase", this),
+                                    new IsNavigationActivityTypeOf(NavigationActivity.CHASE, this),
                                     new Selector("Is player still in aggro range?",
                                         new Sequence("Check if player still in aggro range",
                                             new IsPlayerNearBy(playerAggroRange, this),
@@ -76,14 +77,14 @@ namespace EnemyBehaviorTrees.Agents
                                         new Selector("Is player within deaggro range?",
                                             new Sequence("Check if player in deaggro range",
                                                 new IsPlayerNearBy(playerDeAggroRange, this),
-                                                new SetNavigationActivityTo("Idle", this)),
-                                            new SetNavigationActivityTo("Look for player", this)))),
+                                                new SetNavigationActivityTo(NavigationActivity.IDLE, this)),
+                                            new SetNavigationActivityTo(NavigationActivity.LOOK_FOR_PLAYER, this)))),
                                 // Navigation branch: Patrol
                                 new Sequence("Move to Waypoint",
-                                    new IsNavigationActivityTypeOf("Patrol", this),
+                                    new IsNavigationActivityTypeOf(NavigationActivity.PATROL, this),
                                     new NavigateToRandomWaypoint(this),
                                     new NodeTimer(patrolStayTime,
-                                        new SetNavigationActivityTo("Look for player", this))));
+                                        new SetNavigationActivityTo(NavigationActivity.LOOK_FOR_PLAYER, this))));
         }
 
         #region IPATROLLER METHODS

@@ -1,6 +1,5 @@
 using WUG.BehaviorTreeVisualizer;
 using EnemyBehaviorTrees.Internal;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 namespace EnemyBehaviorTrees.Nodes
@@ -9,15 +8,15 @@ namespace EnemyBehaviorTrees.Nodes
     
     public class SetNavigationActivityTo : Node
     {
-        private string newActivity;
+        private NPCAgentBase.NavigationActivity newActivity;
         // The context is the current NPC agent that is running this node.
         protected NPCAgentBase context { get; }
     
         // Constructor - declare which activity to change to
-        public SetNavigationActivityTo(string newActivity, NPCAgentBase context)
+        public SetNavigationActivityTo(NPCAgentBase.NavigationActivity newActivity, NPCAgentBase context)
         {
             this.newActivity = newActivity;
-            Name = $"Set NavigationActivity to {newActivity}";
+            Name = $"Set NavigationActivity to {newActivity.ToString()}";
             this.context = context;
         }
         
@@ -29,7 +28,7 @@ namespace EnemyBehaviorTrees.Nodes
             // Set Agent's Navigation Activity to new activity and return Success
             context.blackboard.SetEntry("Navigation Activity", newActivity);
     
-            Debug.Log($"Enemy's current navigation activity is {newActivity}");
+            Debug.Log($"{context.name}'s current navigation activity is {newActivity.ToString()}");
             return NodeStatus.SUCCESS;
         }
     }

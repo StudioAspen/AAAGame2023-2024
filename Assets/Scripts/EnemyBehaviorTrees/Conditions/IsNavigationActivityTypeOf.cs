@@ -1,9 +1,8 @@
 using WUG.BehaviorTreeVisualizer;
 using EnemyBehaviorTrees.Agents;
 using EnemyBehaviorTrees.Internal;
-using UnityEditor.Rendering.LookDev;
+
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace EnemyBehaviorTrees.Nodes
 {
@@ -11,12 +10,12 @@ namespace EnemyBehaviorTrees.Nodes
     
     public class IsNavigationActivityTypeOf : Condition
     {
-        private string activityToCheckFor;
+        private NPCAgentBase.NavigationActivity activityToCheckFor;
         // The context is the current NPC agent that is running this node.
         protected NPCAgentBase context { get; }
 
-        public IsNavigationActivityTypeOf(string activity, NPCAgentBase context) :
-            base($"Is Navigation Activity, {activity}?")
+        public IsNavigationActivityTypeOf(NPCAgentBase.NavigationActivity activity, NPCAgentBase context) :
+            base($"Is Navigation Activity, {activity.ToString()}?")
         {
             activityToCheckFor = activity;
             this.context = context;
@@ -28,15 +27,15 @@ namespace EnemyBehaviorTrees.Nodes
         {
             StatusReason = $"NPC Activity is {activityToCheckFor}?";
 
-            bool NavigationActivityEntry = context.blackboard.GetEntry<string>("Navigation Activity", out string value);
+            NPCAgentBase.NavigationActivity NavigationActivityEntry = context.blackboard.GetEntry<NPCAgentBase.NavigationActivity>("Navigation Activity", out bool result);
 
-            if (value == default)
+            if (result == false)
             {
-                Debug.LogError($"IsNavigationActivityTypeOf failed for {activityToCheckFor}");
+                Debug.LogError($"IsNavigationActivityTypeOf failed for {activityToCheckFor.ToString()}");
                 return NodeStatus.FAILURE;
             }
             
-            return value == activityToCheckFor ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
+            return NavigationActivityEntry == activityToCheckFor ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
         }
     }
 }
