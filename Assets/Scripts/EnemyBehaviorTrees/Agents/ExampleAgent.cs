@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using EnemyBehaviorTrees.Internal;
 using EnemyBehaviorTrees.Nodes;
+using Unity.VisualScripting;
+using Sequence = EnemyBehaviorTrees.Nodes.Sequence;
 
 namespace EnemyBehaviorTrees.Agents
 {
     /// <summary>
     /// This ExampleAgent class inherits from the NPCAgentBase class, giving it its own blackboard.
+    ///
+    /// <p>Every single NPC agent must do at least two things, inherit from abstract class NPCAgentBase, and implement the method GenerateBehaviorTree()
+    /// in order to function properly.</p>
     /// <p>This class specifically has its own behavior tree and its nodes, as well as the functionality to patrol, aggro, deaggro, and hit the player.</p>
     /// <p>It also has a list of waypoints to patrol to.</p>
     /// </summary>
     public class ExampleAgent : NPCAgentBase, IPatroller, IHostile
     {
         // Needed to appease interfaces
-        public NPCAgentBase agent { get; }
+        public NPCAgentBase agent { get; set; }
         
         [Tooltip("How long the agent waits at its patrol location until it checks for the player again")]
         public float patrolStayTime { get; set; } = 2f;
@@ -35,10 +39,13 @@ namespace EnemyBehaviorTrees.Agents
         public List<GameObject> waypoints { get; set; } = new List<GameObject>();
         public int currentWaypointIndex { get; set; } = 0;
         
-        
+        /// <summary>
+        /// Every NPC Agent needs its own GenerateBehaviorTree function, which inside must contain a behavior tree object consisting of a tree of nodes.
+        /// </summary>
         public override void GenerateBehaviorTree()
         {
             InitializeWaypoints();
+            agent = this;
             
             BehaviorTree = new Selector("Control NPC",
                                 // Navigation branch: Idle
@@ -81,7 +88,7 @@ namespace EnemyBehaviorTrees.Agents
 
         #region IPATROLLER METHODS
         
-        public override GameObject GetNextWayPoint()
+        public GameObject GetNextWayPoint()
         {
             if (waypoints != null && waypoints.Count > 0)
             {
@@ -95,7 +102,7 @@ namespace EnemyBehaviorTrees.Agents
             return null;
         }
 
-        public override GameObject GetRandomWayPoint()
+        public GameObject GetRandomWayPoint()
         {
             if (waypoints != null && waypoints.Count > 0)
             {
@@ -124,7 +131,7 @@ namespace EnemyBehaviorTrees.Agents
 
         #region IHOSTILE METHODS
 
-        public override GameObject TryGetPlayerWithinRange(float range)
+        public GameObject TryGetPlayerWithinRange(float range)
         {
             Collider[] objs = Physics.OverlapSphere(transform.position, range, LayerMask.GetMask("Player"));
             

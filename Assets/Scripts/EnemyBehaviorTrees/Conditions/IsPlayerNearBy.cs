@@ -10,11 +10,11 @@ namespace EnemyBehaviorTrees.Nodes
     public class IsPlayerNearBy : Condition
     {
         // The context is the current NPC agent that is running this node.
-        protected NPCAgentBase context { get; }
+        protected IHostile context { get; }
         private float distanceToCheck;
 
         // Constructor - just changes the name of the base node object to be descriptive of the distance it checks around the agent
-        public IsPlayerNearBy(float maxDistance, NPCAgentBase context) : base($"Is player within {maxDistance}f?")
+        public IsPlayerNearBy(float maxDistance, IHostile context) : base($"Is player within {maxDistance}f?")
         {
             distanceToCheck = maxDistance;
             this.context = context;

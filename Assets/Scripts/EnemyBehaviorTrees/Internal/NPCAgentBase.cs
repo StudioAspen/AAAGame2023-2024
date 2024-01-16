@@ -17,7 +17,7 @@ namespace EnemyBehaviorTrees.Internal
     
         private void Start()
         {
-            MyNavMesh = GetComponent<NavMeshAgent>();
+            MyNavMesh = this.GetComponent<NavMeshAgent>();
             
             // set default navigation activity
             blackboard.SetEntry("Navigation Activity", "Look for player");
@@ -57,14 +57,5 @@ namespace EnemyBehaviorTrees.Internal
                 StopCoroutine(behaviorTreeRoutine);
             }
         }
-
-        // These declarations are here so that we can consistently use NPCAgentBase as context in nodes.
-        #region INTERFACE SPECIFIC ABSTRACT METHODS
-        
-        public abstract GameObject TryGetPlayerWithinRange(float range);
-        public abstract GameObject GetNextWayPoint();
-        public abstract GameObject GetRandomWayPoint();
-
-        #endregion
     }
 }

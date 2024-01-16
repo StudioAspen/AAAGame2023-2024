@@ -11,12 +11,14 @@ namespace EnemyBehaviorTrees.Nodes
     {
         private Vector3 targetDestination;
         // The context is the current NPC agent that is running this node.
-        protected NPCAgentBase context { get; }
+        protected IPatroller context { get; }
+        private NPCAgentBase agent;
 
-        public NavigateToNextWaypoint(NPCAgentBase context)
+        public NavigateToNextWaypoint(IPatroller context)
         {
             Name = "Navigate";
             this.context = context;
+            agent = context.agent;
         }
 
         // OnReset() - empty
@@ -33,7 +35,7 @@ namespace EnemyBehaviorTrees.Nodes
                 // Confirm that the destination is valid - If not, fail.
                 if (destinationGO == null)
                 {
-                    StatusReason = $"Unable to find game object for {context.name}";
+                    StatusReason = $"Unable to find game object for {agent.name}";
                     return NodeStatus.FAILURE;
                 }
         
@@ -46,7 +48,7 @@ namespace EnemyBehaviorTrees.Nodes
                 targetDestination = hit.position;
         
                 // Set the destination on the NavMesh. This tells the AI to start moving to the new location.
-                context.MyNavMesh.SetDestination(targetDestination);
+                agent.MyNavMesh.SetDestination(targetDestination);
                 StatusReason = $"Starting to navigate to {destinationGO.transform.position}";
                 
                 // Return running, as we want to continue to have this node evaluate
@@ -54,7 +56,7 @@ namespace EnemyBehaviorTrees.Nodes
             }
         
             // Calculate how far the AI is from the destination
-            float distanceToTarget = Vector3.Distance(targetDestination, context.transform.position);
+            float distanceToTarget = Vector3.Distance(targetDestination, agent.transform.position);
         
             // If the AI is within .25f then navigation will be considered a success
             if (distanceToTarget < .25f)

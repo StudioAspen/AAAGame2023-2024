@@ -9,7 +9,7 @@ namespace EnemyBehaviorTrees.Internal
         public NPCAgentBase agent { get; }
         
         // How long the agent waits at its patrol location until it checks for the player again
-        public float patrolStayTime { get; }
+        public float patrolStayTime { get; set; }
         
         // The current waypoint, if any
         public int currentWaypointIndex { get; set; }
