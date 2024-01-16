@@ -8,6 +8,16 @@ namespace EnemyBehaviorTrees.Internal
 {
     public abstract class NPCAgentBase : MonoBehaviour, IBehaviorTree
     {
+        // Add any new Navigation Activities you have a need for here, we can't really generalize these in the interfaces like I wanted to, because interfaces
+        // can't contain enums. :(
+        public enum NavigationActivity
+        {
+            IDLE,
+            CHASE,
+            PATROL,
+            LOOK_FOR_PLAYER,
+        }
+        
         public NavMeshAgent MyNavMesh { get; private set; }
         public NodeBase BehaviorTree { get; set; }
         public Blackboard blackboard = new Blackboard();
@@ -19,10 +29,10 @@ namespace EnemyBehaviorTrees.Internal
         {
             MyNavMesh = this.GetComponent<NavMeshAgent>();
             
-            // set default navigation activity
-            blackboard.SetEntry("Navigation Activity", "Look for player");
+            // Set default navigation activity
+            blackboard.SetEntry<NavigationActivity>("Navigation Activity", NavigationActivity.LOOK_FOR_PLAYER);
             
-            Debug.Log($"Initialized NPC with Navigation activity of: {blackboard.GetEntry<string>("Navigation Activity", out string value)}");
+            Debug.Log($"Initialized {this.name} with Navigation activity of: {blackboard.GetEntry<NavigationActivity>("Navigation Activity", out bool result).ToString()}");
     
             GenerateBehaviorTree();
     
