@@ -18,7 +18,7 @@ namespace EnemyBehaviorTrees.Nodes
         {
             Name = "Navigate";
             this.context = context;
-            agent = this.context.agent;
+            agent = context.agent;
         }
 
         // OnReset() - empty
@@ -42,14 +42,18 @@ namespace EnemyBehaviorTrees.Nodes
                 // Get a valid location on the NavMesh that's near the target destination
                 // IDEA SO THAT AGENT FOLLOWS PLAYER MORE ACCURATELY: CHANGE SAMPLE DISTANCE TO HOWEVER MUCH DISTANCE THE AGENT CAN TRAVEL AT THE GIVEN THINKING TIME SO THAT IT CAN COMPLETE
                 // MORE OFTEN AND THUS MAKES THE CHASING AND DEAGGRO MORE ACCURATE.
-                NavMesh.SamplePosition(destinationGO.transform.position, out NavMeshHit hit, 1f, 1);
+                // NavMesh.SamplePosition(destinationGO.transform.position, out NavMeshHit hit, 1f, 1);
+                targetDestination = destinationGO.transform.position;
+                NavMeshPath path = new NavMeshPath();
+                
+                bool result = agent.MyNavMesh.CalculatePath(targetDestination, path);
                 
                 // Set the location for checks later
-                targetDestination = hit.position;
+                // targetDestination = hit.position;
         
                 // Set the destination on the NavMesh. This tells the AI to start moving to the new location.
-                agent.MyNavMesh.SetDestination(targetDestination);
-                StatusReason = $"Starting to navigate to {destinationGO.transform.position}";
+                agent.MyNavMesh.SetPath(path);
+                StatusReason = $"Starting to navigate to {targetDestination}";
                 
                 // Return running, as we want to continue to have this node evaluate
                 return NodeStatus.RUNNING;
@@ -72,7 +76,6 @@ namespace EnemyBehaviorTrees.Nodes
             // Otherwise, the AI is still on the move
             StatusReason = $"Distance to target: {distanceToTarget}";
             return NodeStatus.RUNNING;
-        
         }
     }
 }

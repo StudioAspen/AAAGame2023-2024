@@ -73,7 +73,7 @@ namespace EnemyBehaviorTrees.Agents
                                                 new Sequence("Check if player is in attack range",
                                                     new IsPlayerNearBy(playerHitRange, this),
                                                     new AttackPlayer()),
-                                                new NavigateToRandomWaypoint(this))),
+                                                new ChasePlayer(1f, this))),
                                         new Selector("Is player within deaggro range?",
                                             new Sequence("Check if player in deaggro range",
                                                 new IsPlayerNearBy(playerDeAggroRange, this),
@@ -115,7 +115,7 @@ namespace EnemyBehaviorTrees.Agents
 
         public void InitializeWaypoints()
         {
-            Transform waypointsChild = transform.Find("Waypoints");
+            Transform waypointsChild = GameObject.Find($"{this.name} Waypoints").transform;
 
             for (int i = 0; i < waypointsChild.childCount; i++)
             {
@@ -124,7 +124,7 @@ namespace EnemyBehaviorTrees.Agents
 
             if (waypoints.Count <= 0)
             {
-                Debug.Log("Please have an empty child game object named Waypoints that contains the transforms of the waypoints this agent should go to.");
+                Debug.Log($"Please have an empty child game object named '{this.name} Waypoints' that contains the transforms of the waypoints this agent should go to.");
             }
         }
 
