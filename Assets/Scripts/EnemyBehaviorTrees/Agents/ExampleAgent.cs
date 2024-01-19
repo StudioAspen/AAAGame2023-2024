@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnemyBehaviorTrees.Internal;
 using EnemyBehaviorTrees.Nodes;
+using Random = UnityEngine.Random;
 using Sequence = EnemyBehaviorTrees.Nodes.Sequence;
 
 namespace EnemyBehaviorTrees.Agents
@@ -73,7 +75,7 @@ namespace EnemyBehaviorTrees.Agents
                                                 new Sequence("Check if player is in attack range",
                                                     new IsPlayerNearBy(playerHitRange, this),
                                                     new AttackPlayer()),
-                                                new ChasePlayer(1f, this))),
+                                                new ChasePlayer(0.2f, this))),
                                         new Selector("Is player within deaggro range?",
                                             new Sequence("Check if player in deaggro range",
                                                 new IsPlayerNearBy(playerDeAggroRange, this),
@@ -82,7 +84,7 @@ namespace EnemyBehaviorTrees.Agents
                                 // Navigation branch: Patrol
                                 new Sequence("Move to Waypoint",
                                     new IsNavigationActivityTypeOf(NavigationActivity.PATROL, this),
-                                    new NavigateToRandomWaypoint(this),
+                                    new NavigateToNextWaypoint(this),
                                     new NodeTimer(patrolStayTime,
                                         new SetNavigationActivityTo(NavigationActivity.LOOK_FOR_PLAYER, this))));
         }
@@ -95,9 +97,11 @@ namespace EnemyBehaviorTrees.Agents
             {
                 int newIndex = currentWaypointIndex++;
 
-                if (newIndex == waypoints.Count) { newIndex = 0; }
+                if (newIndex == waypoints.Count - 1) { currentWaypointIndex = 0; }
                 
-                return waypoints[currentWaypointIndex++];
+                Debug.Log($"Current waypoint index: {currentWaypointIndex}");
+                
+                return waypoints[currentWaypointIndex];
             }
             
             return null;

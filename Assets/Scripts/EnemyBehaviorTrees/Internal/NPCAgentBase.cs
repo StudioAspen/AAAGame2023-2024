@@ -23,7 +23,9 @@ namespace EnemyBehaviorTrees.Internal
         public Blackboard blackboard = new Blackboard();
     
         private Coroutine behaviorTreeRoutine;
-        private YieldInstruction waitTime = new WaitForSeconds(.1f);
+        public float waitTime = 0.1f;
+        // NOTE: If you change the wait time below, you must also change the waitTime variable above.
+        private YieldInstruction yield = new WaitForSeconds(0.1f);
     
         private void Start()
         {
@@ -33,6 +35,8 @@ namespace EnemyBehaviorTrees.Internal
             blackboard.SetEntry<NavigationActivity>("Navigation Activity", NavigationActivity.LOOK_FOR_PLAYER);
             
             Debug.Log($"Initialized {this.name} with Navigation activity of: {blackboard.GetEntry<NavigationActivity>("Navigation Activity", out bool result).ToString()}");
+            
+            OnStart();
     
             GenerateBehaviorTree();
     
@@ -43,6 +47,13 @@ namespace EnemyBehaviorTrees.Internal
         }
     
         public virtual void GenerateBehaviorTree() {}
+        
+        /// <summary>
+        /// A virtual function for anything you want to do on the agent's Start() callback.
+        ///
+        /// <remarks>Do not call your own Start(). Instead, put any code you want to run in here instead.</remarks>
+        /// </summary>
+        public virtual void OnStart() {}
     
         protected IEnumerator RunBehaviorTree()
         {

@@ -50,6 +50,8 @@ namespace EnemyBehaviorTrees.Nodes
                                    $"\n - Calculating path to the player.";
                     agent.MyNavMesh.CalculatePath(player.transform.position, path);
 
+                    Debug.Log("Recalculated path to player.");
+                    
                     agent.MyNavMesh.SetPath(path);
                     
                     StatusReason = $"Set path to the player. Moving there now.";
@@ -61,10 +63,14 @@ namespace EnemyBehaviorTrees.Nodes
                 return NodeStatus.FAILURE;
             }
             
-            // TODO: Find out why the node isn't repeating when RUNNING is returned.
+            // Update timer based on the time that has passed since the last physics update cycle and the time it takes to run the node.
+            // NOTE: This scalar factor of 1.55f is to account for the fact that the node runs faster than the physics update cycle. Without it,
+            // the timer would move slower than intended.
+            timer += (Time.fixedDeltaTime * agent.waitTime) * 1.55f;
             
             StatusReason = $"Currently chasing player." + 
                            $"\n - Current time to recalculate path: {recalculateTimeSecs - timer}.";
+            
             return NodeStatus.RUNNING;
         }
     }

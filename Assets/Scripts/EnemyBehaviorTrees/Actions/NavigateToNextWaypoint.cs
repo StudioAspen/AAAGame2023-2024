@@ -42,16 +42,26 @@ namespace EnemyBehaviorTrees.Nodes
                 // Get a valid location on the NavMesh that's near the target destination
                 // IDEA SO THAT AGENT FOLLOWS PLAYER MORE ACCURATELY: CHANGE SAMPLE DISTANCE TO HOWEVER MUCH DISTANCE THE AGENT CAN TRAVEL AT THE GIVEN THINKING TIME SO THAT IT CAN COMPLETE
                 // MORE OFTEN AND THUS MAKES THE CHASING AND DEAGGRO MORE ACCURATE.
-                NavMesh.SamplePosition(destinationGO.transform.position, out NavMeshHit hit, 1f, 1);
+                //
+                // NOTE: This has been implemented in the ChasePlayer node.
+                NavMeshPath path = new NavMeshPath();
+                targetDestination = destinationGO.transform.position;
                 
-                // Set the location for checks later
-                targetDestination = hit.position;
-        
-                // Set the destination on the NavMesh. This tells the AI to start moving to the new location.
-                agent.MyNavMesh.SetDestination(targetDestination);
-                StatusReason = $"Starting to navigate to {destinationGO.transform.position}";
+                bool result = agent.MyNavMesh.CalculatePath(destinationGO.transform.position, path);
                 
-                // Return running, as we want to continue to have this node evaluate
+                // Check for path.
+                if (!result)
+                {
+                    Debug.Log($"{agent.name} could not find a navigable path to {targetDestination}");
+                    StatusReason = $"Could not find a navigable path to {targetDestination}";
+                    return NodeStatus.FAILURE;
+                }
+                
+                // Set the path on the NavMeshAgent. This tells the AI to start moving to the new location.
+                agent.MyNavMesh.SetPath(path);
+                StatusReason = $"Starting to navigate to {targetDestination}";
+                
+                // Return running, as we want to continue to have this node evaluate.
                 return NodeStatus.RUNNING;
             }
         
