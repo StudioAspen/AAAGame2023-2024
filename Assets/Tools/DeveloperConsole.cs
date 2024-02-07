@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static System.Net.WebRequestMethods;
 
 ///-/////////////////////////////////////////////////////////////////////////////
 ///
@@ -48,11 +46,11 @@ public class DeveloperConsole : MonoBehaviour
     string[] enemyNames;
 
     // TYPE LIST OF SCENES BELOW
+    [Tooltip("Enter in scene names below")]
+    [SerializeField]
     string[] loadableScenes = new string[]
     {
-        "sample_car",
-        "sample_apple",
-        "sample_banana"
+        "exampleScene"
     };
 
     #region Unity Constructors
@@ -207,66 +205,69 @@ public class DeveloperConsole : MonoBehaviour
             //---------------------
             // EXECUTE THE COMMANDS
             //---------------------
-            if (commandType == DevCommand.help) // checks for help command which shows documentation
+            switch (commandType)
             {
-                AddToConsoleLog("Documentation: bit.ly/GetMikyledDocs");
-            }
-            else if (commandType == DevCommand.killable) // checks for setkillable command
-            {
-                if (inputModified[1] == "true")
-                {
-                    SetKillable(true); // sets killable to true
-                }
-                else if (inputModified[1] == "false")
-                {
-                    SetKillable(false); // sets killable to false
-                }
-                else
-                {
-                    AddToConsoleLog("Error: missing true or false"); // tells the user if there is an error
-                }
-            }
-            else if (commandType == DevCommand.kill) // checks for kill player command
-            {
-                KillPlayer();
-            }
-            else if (commandType == DevCommand.restart) // checks for restart command
-            {
-                Restart();
-            }
-            else if (commandType == DevCommand.spawn) // checks for spawn enemy command
-            {
-                try
-                {
-                    SpawnEnemy(inputModified[1]); // checks for exceptions, whether it is missing input or invalid enemy names
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    AddToConsoleLog("Error: must enter an enemy");
-                }
-                catch (Exception)
-                {
-                    AddToConsoleLog("Error: enemy does not exist");
-                }
-            }
-            else if (commandType == DevCommand.load)
-            {
-                try
-                {
-                    Load(inputModified[1]);
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    AddToConsoleLog("Error: must enter a scene");
-                }
-                catch (Exception)
-                {
-                    AddToConsoleLog("Error: Scene does not exist");
-                }
-            }
-            else if (commandType == DevCommand.scene_list)
-            {
-                DisplaySceneList();
+                // HELP COMMAND -> LISTS COMMANDS
+                case DevCommand.help:
+                    AddToConsoleLog("Documentation: bit.ly/GetMikyledDocs");
+                    break;
+                // SET PLAYER KILLABLE COMMAND
+                case DevCommand.killable:
+                    if (inputModified[1] == "true")
+                    {
+                        SetKillable(true); // sets killable to true
+                    }
+                    else if (inputModified[1] == "false")
+                    {
+                        SetKillable(false); // sets killable to false
+                    }
+                    else
+                    {
+                        AddToConsoleLog("Error: missing true or false"); // tells the user if there is an error
+                    }
+                    break;
+                // KILL PLAYER COMMAND
+                case DevCommand.kill:
+                    KillPlayer();
+                    break;
+                // RESTART SCENE COMMAND
+                case DevCommand.restart:
+                    Restart();
+                    break;
+                // SPAWN ENEMY COMMAND
+                case DevCommand.spawn:
+                    try
+                    {
+                        SpawnEnemy(inputModified[1]); // checks for exceptions, whether it is missing input or invalid enemy names
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        AddToConsoleLog("Error: must enter an enemy");
+                    }
+                    catch (Exception)
+                    {
+                        AddToConsoleLog("Error: enemy does not exist");
+                    }
+                    break;
+                // LOAD SCENE COMMAND
+                case DevCommand.load:
+                    try
+                    {
+                        Load(inputModified[1]);
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        AddToConsoleLog("Error: must enter a scene");
+                    }
+                    catch (Exception)
+                    {
+                        AddToConsoleLog("Error: Scene does not exist");
+                    }
+                    break;
+                // DISPLAY LIST OF SCENES COMMAND
+                case DevCommand.scene_list:
+                    DisplaySceneList();
+                    break;
             }
         }
     }
@@ -374,6 +375,10 @@ public class DeveloperConsole : MonoBehaviour
     /// 
     private void DisplaySceneList()
     {
+        if (loadableScenes.Length == 0)
+        {
+            AddToConsoleLog("Error: No loadable scenes listed");
+        }
         String sceneList = "";
 
         for (int i = 0; i < loadableScenes.Length; i++)
