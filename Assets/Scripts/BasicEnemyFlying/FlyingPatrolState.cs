@@ -7,10 +7,11 @@ public class FlyingPatrolState : FlyingBaseState
     public override void EnterState(FlyingEnemyManager Enemy)
     {
         Debug.Log("Patrol State");
+       
     }
 
     public override void UpdateState(FlyingEnemyManager Enemy)
     {
-        
+        if(!Enemy.RayCastCheck(Enemy.aggroDistance)) { Enemy.switchState(Enemy.chaseState); }
     }
 }
