@@ -22,6 +22,7 @@ public class PlayerInput : MonoBehaviour {
     //[SerializeField] KeyCode keyboardDownwardStab;
     [SerializeField] KeyCode keyboardDash;
     [SerializeField] KeyCode keyboardJump;
+    [SerializeField] KeyCode keyboardShoot;
 
     [Header("Controller Inputs")]
     [SerializeField] KeyCode controllerStab;
@@ -29,6 +30,7 @@ public class PlayerInput : MonoBehaviour {
     //[SerializeField] KeyCode controllerDownwardStab;
     [SerializeField] KeyCode controllerDash;
     [SerializeField] KeyCode controllerJump;
+    [SerializeField] KeyCode controllerShoot;
 
     // Controls
     KeyCode inputStab;
@@ -36,6 +38,7 @@ public class PlayerInput : MonoBehaviour {
     //KeyCode inputDownwardStab;
     KeyCode inputDash;
     KeyCode inputJump;
+    KeyCode inputShoot;
 
     bool stabStarted = false;
     bool slashStarted = false;
@@ -51,6 +54,7 @@ public class PlayerInput : MonoBehaviour {
     DownwardStab downwardStab;
     StabDash stabDash;
     SlashDash slashDash;
+    EnergyBlast energyBlast;
 
     // Start is called before the first frame update
     void Start() {
@@ -62,6 +66,7 @@ public class PlayerInput : MonoBehaviour {
         downwardStab = GetComponent<DownwardStab>();
         stabDash = GetComponent<StabDash>();
         slashDash = GetComponent<SlashDash>();
+        energyBlast = GetComponent<EnergyBlast>();
         
         // Getting camera components
         cameraOrientation = FindObjectOfType<Camera>().transform;
@@ -95,6 +100,7 @@ public class PlayerInput : MonoBehaviour {
                 //inputDownwardStab = (controllerDownwardStab); 
                 inputDash = (controllerDash);
                 inputJump = (controllerJump);
+                inputShoot = (controllerShoot);
                 Debug.Log(inputJump);
                 break;
             case ControlType.mouseAndKeyboard:
@@ -110,6 +116,13 @@ public class PlayerInput : MonoBehaviour {
                 //inputDownwardStab = keyboardDownwardStab;
                 inputDash = keyboardDash;
                 inputJump = keyboardJump;
+
+                inputShoot = keyboardShoot;
+                if (inputShoot == KeyCode.Print) // FOR SOME REASON CHOOSING MOUSE0 BINDS TO PRINTSCREEN
+                {
+                    inputShoot += 7;
+                }
+
                 break;
             default:
                 break;
@@ -131,6 +144,11 @@ public class PlayerInput : MonoBehaviour {
             CheckCombinationAbilties(inputDirection);
         }
         movement.Move(inputDirection);
+
+        if (Input.GetKeyDown(inputShoot))
+        {
+            energyBlast.Shoot();
+        }
     }
     public void DisableInput() {
         canInput = false;
