@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="ButtonToolbelt" style="flex-direction: row; flex-wrap: wrap;">
+        <ui:Button text="Clear Mode" display-tooltip-when-elided="true" name="ClearModeButton" />
+        <ui:Button text="Walls" display-tooltip-when-elided="true" name="CreateWallsButton" style="height: 49px; width: 56px;" />
+        <ui:Button text="Eraser" display-tooltip-when-elided="true" name="EraserButton" style="height: 49px; width: 56px;" />
+    </ui:VisualElement>
+    <ui:Label tabindex="-1" text="Current Mode:" display-tooltip-when-elided="true" name="CurrentMode" style="align-self: flex-start; justify-content: center;" />
+    <ui:VisualElement name="GridSnap" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; max-height: 33px;">
+        <ui:Label tabindex="-1" text="Grid Snap Enabled" display-tooltip-when-elided="true" name="GridsnapLabel" focusable="false" style="justify-content: space-between; align-self: flex-end; height: 26px; width: 130px; align-items: stretch;" />
+        <ui:Toggle name="GridSnapToggle" value="true" style="height: 25px; width: 40px; align-self: center;" />
+    </ui:VisualElement>
+    <ui:FloatField label="GridSize" value="1" name="GridSizeField" style="-unity-text-align: middle-left; align-items: center; flex-direction: row;" />
+    <ui:Foldout text="Create Walls Settings" name="CreateWalls">
+        <ui:FloatField label="Wall Thickness" value="0.5" name="WallThickness" />
+        <ui:FloatField label="Wall Height" value="5" name="WallHeight" />
+    </ui:Foldout>
+    <ui:Foldout text="Place Prefab" name="PrefabView" style="flex-direction: column;" />
+</ui:UXML>
