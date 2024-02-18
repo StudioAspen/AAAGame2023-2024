@@ -21,12 +21,25 @@ public class EnemyStateManager : MonoBehaviour
     public Transform ogSpawn; // need to drag in component of where the enemy originally spawned
     private NavMeshAgent agent;
 
+    // timer class that nelson made
     public Timer timer = new Timer();
+    // time for how long the enemy idles for
     public float timeToSwitch;
+    // cd for enemy attack projectile
+    public float enemyAttackCD;
+
+    // bullet prefab
+    public GameObject bulletPrefab;
+    public GameObject bulletFirePoint;
+    public float bulletSpeed;
+    public float bulletDmg;
 
     // Start is called before the first frame update
     void Start()
     {
+        // adds a bullet to event
+        timer.AddEventToEnd(MakeBullet);
+
         agent = gameObject.GetComponent<NavMeshAgent>();
 
         // get component and when enemy dies, switch the state
@@ -91,20 +104,44 @@ public class EnemyStateManager : MonoBehaviour
         agent.SetDestination(ogSpawn.position);
     }
 
+    // stops the enemy/vav mesh agent
+    public void StopPosition()
+    {
+        agent.SetDestination(transform.position);
+    }
+
     // switch state to deathstate
     public void Death()
     {
         SwitchState(deathState);
     }
 
+    // switches state to idle
     public void Idle()
     {
         SwitchState(idleState);
     }
 
+    // after a certain amount of time switch to idle, mimics the deaggro time where they are 
+    // standing still
     public void SwitchToIdle()
     {
         if(!timer.IsActive())
             timer.StartTimer(timeToSwitch, Idle);
+    }
+
+    // shoots a bullet at player position
+    public void MakeBullet()
+    {
+        Vector3 toPlayer = playerTransform.position - transform.position;
+        GameObject currentBullet = Instantiate(bulletPrefab, bulletFirePoint.transform.position, Quaternion.identity);
+        currentBullet.GetComponent<Bullet>().moveForce = toPlayer * bulletSpeed;
+    }
+
+    // shoots a bullet at player position
+    public void ShootBullet()
+    {
+        if (!timer.IsActive())
+            timer.StartTimer(enemyAttackCD);
     }
 }
