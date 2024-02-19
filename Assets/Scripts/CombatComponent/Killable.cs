@@ -39,6 +39,6 @@ public class Killable : MonoBehaviour
 
     public void Revive() {
         isDead = false;
-        currentHP = maxHP;
+        GainHealth(maxHP);
     }
 }
