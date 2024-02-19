@@ -90,14 +90,13 @@ public class PlayerInput : MonoBehaviour {
 
                 controllerStab += 4;
                 controllerSlash += 4;
-                //controllerDownwardStab += 4;
                 controllerDash += 4;
                 controllerJump += 4;
+                controllerShoot += 4;
 
                 // Setting inputs for controller
                 inputStab = (controllerStab);
                 inputSlash = (controllerSlash);
-                //inputDownwardStab = (controllerDownwardStab); 
                 inputDash = (controllerDash);
                 inputJump = (controllerJump);
                 inputShoot = (controllerShoot);
