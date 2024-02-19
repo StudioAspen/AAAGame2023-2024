@@ -6,12 +6,12 @@ public class EnemyAttackState : EnemyBaseState
 {
     public override void EnterState(EnemyStateManager enemy)
     {
-        Debug.Log("Enter Attack State");
+        //Debug.Log("Enter Attack State");
     }
 
     public override void UpdateState(EnemyStateManager enemy)
     {
-        Debug.Log("Enter Attack Update");
+        //Debug.Log("Enter Attack Update");
 
         // if enemy is out of range for attack
         if (!(enemy.RayCastCheck(6f)))

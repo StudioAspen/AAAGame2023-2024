@@ -45,6 +45,8 @@ GameObject:
   - component: {fileID: 901190419047779887}
   - component: {fileID: 1402132625037281584}
   - component: {fileID: 1951858722545280346}
+  - component: {fileID: 7728476627684303212}
+  - component: {fileID: 8229049199669749314}
   - component: {fileID: 6089342359487218860}
   m_Layer: 0
   m_Name: Enemy
@@ -186,6 +188,34 @@ MonoBehaviour:
   OnDie:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7728476627684303212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3966855605319378575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d902445af16b04845a00bd9e1b9564bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodAmount: 4
+  bloodPrefab: {fileID: 7959290666730999954, guid: 6d3004141710547468d2b677ddc35683,
+    type: 3}
+  bulletFirePoint: {fileID: 2875391713093058102}
+--- !u!114 &8229049199669749314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3966855605319378575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29003d56e6d54dc4d8cab35d679708e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &6089342359487218860
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class EnemyStateManager : MonoBehaviour
     public EnemyDeathState deathState = new EnemyDeathState();
 
     // player transform
-    public Transform playerTransform; // need to drag in component
+    public Transform playerTransform; // no longer need to drag in component
     // enemy killable
     private Killable kill;
 
@@ -37,6 +37,8 @@ public class EnemyStateManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerTransform = FindObjectOfType<PlayerInput>().transform;
+
         // adds a bullet to event
         timer.AddEventToEnd(MakeBullet);
 

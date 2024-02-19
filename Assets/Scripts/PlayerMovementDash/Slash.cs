@@ -111,7 +111,7 @@ public class Slash : MonoBehaviour
 
     public void SlashContact(Collider other)
     {
-        if (other.TryGetComponent(out Slashable slashable)) {
+        if (other.TryGetComponent(out Slashable slashable) && isSlashing) {
             slashable.TriggerEffect();
         }
 
