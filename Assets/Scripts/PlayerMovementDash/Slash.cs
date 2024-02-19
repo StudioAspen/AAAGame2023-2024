@@ -86,7 +86,7 @@ public class Slash : MonoBehaviour
         }
     }
 
-    public void StartSlide(Slashable slashable, PathCreator pc, Collider other) {
+    public void StartSlide(PathCreator pc, Collider other) {
         playerInput.DisableInput();
         GetComponent<BloodThirst>().GainBlood(bloodGained, true);
 
@@ -111,12 +111,14 @@ public class Slash : MonoBehaviour
 
     public void SlashContact(Collider other)
     {
-        if (other.TryGetComponent(out Slashable slashable) && 
-            other.TryGetComponent(out PathCreator pc))
-        {
+        if (other.TryGetComponent(out Slashable slashable)) {
+            slashable.TriggerEffect();
+        }
+
+        if(other.TryGetComponent(out PathCreator pc)) {
             if (!sliding && isSlashing) {
                 isSlashing = false;
-                StartSlide(slashable, pc, other);
+                StartSlide(pc, other);
             }
         }
     }
