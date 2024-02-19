@@ -8,6 +8,7 @@ public class EnergyBlast : MonoBehaviour
 {
     [System.NonSerialized]
     public UnityEvent OnChargesChanged = new UnityEvent();
+    public UnityEvent OnChargeTimer = new UnityEvent();
 
     public GameObject energyBlast;
     public RectTransform reticle;
@@ -21,7 +22,7 @@ public class EnergyBlast : MonoBehaviour
     [System.NonSerialized]
     public int currNumOfCharges;
 
-    private float currRechargeTimer = 0f;
+    public float currRechargeTimer = 0f;
     private float currTimeBetweenShots;
 
     private void Start()
@@ -47,7 +48,6 @@ public class EnergyBlast : MonoBehaviour
         {
             ShootInternal();
             currTimeBetweenShots = 0f;
-            currRechargeTimer = 0f;
             currNumOfCharges--;
             OnChargesChanged.Invoke();
         }
@@ -89,6 +89,7 @@ public class EnergyBlast : MonoBehaviour
                 currRechargeTimer = 0f;
                 OnChargesChanged.Invoke();
             }
+            OnChargeTimer.Invoke();
         }
     }
 
