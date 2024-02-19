@@ -14,11 +14,13 @@ public class Stabable : MonoBehaviour
     public Vector3 dashDir; //direction of the dash
     public float dashLength; //how far the player is launched
 
+    private void Start() {
+        CalcDash();
+    }
+
     private void OnDrawGizmos() {
-        dashDir = dashEndTransform.position - dashStartTransform.position;
-        dashLength = dashDir.magnitude;
-        localDir =  dashEndTransform.localPosition - dashStartTransform.localPosition;
-        localLength = localDir.magnitude;
+        CalcDash();
+
         //makes it so the gizmos transform with the local transform of the object
         Gizmos.matrix = transform.localToWorldMatrix;
         Gizmos.color = Color.yellow;
@@ -35,5 +37,12 @@ public class Stabable : MonoBehaviour
         Gizmos.DrawRay(dashStartTransform.localPosition + displayDirection, rightHandle * handleLength);
         Gizmos.DrawRay(dashStartTransform.localPosition + displayDirection, leftHandle * handleLength);
 
+    }
+
+    public void CalcDash() {
+        dashDir = dashEndTransform.position - dashStartTransform.position;
+        dashLength = dashDir.magnitude;
+        localDir = dashEndTransform.localPosition - dashStartTransform.localPosition;
+        localLength = localDir.magnitude;
     }
 }
