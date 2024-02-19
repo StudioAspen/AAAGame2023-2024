@@ -12,11 +12,14 @@ public class PlayerKillable : Killable
     float timeBeforeRegenTimer;
     bool isRegerating = false;
 
+    public Vector3 respawnPosition;
+
     private void Start()
     {
         currentHP = maxHP;
         OnTakeDamage.AddListener(ResetRegenTimer); // Resetting the timer everytime player takes damage
         OnDie.AddListener(PlayerDied);
+        respawnPosition = transform.position;
         timeBeforeRegenTimer = timeBeforeRegen; // Initalizing timer
     }
 
@@ -58,6 +61,7 @@ public class PlayerKillable : Killable
         timeBeforeRegenTimer = timeBeforeRegen;
     }
     private void PlayerDied() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        transform.position = respawnPosition;
+        Revive();
     }
 }
