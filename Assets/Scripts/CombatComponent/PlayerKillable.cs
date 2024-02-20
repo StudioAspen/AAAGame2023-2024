@@ -9,6 +9,7 @@ public class PlayerKillable : Killable
     [SerializeField] float timeBeforeRegen; // Rime from the last instance of damage before you start regenerating
     [SerializeField] float healthRegenRate; // Regenerate rate per second
 
+    BloodThirst bloodThirst;
     float timeBeforeRegenTimer;
     bool isRegerating = false;
 
@@ -21,6 +22,8 @@ public class PlayerKillable : Killable
         OnDie.AddListener(PlayerDied);
         respawnPosition = transform.position;
         timeBeforeRegenTimer = timeBeforeRegen; // Initalizing timer
+
+        bloodThirst = GetComponent<BloodThirst>();
     }
 
     private void Update()
@@ -62,6 +65,7 @@ public class PlayerKillable : Killable
     }
     private void PlayerDied() {
         transform.position = respawnPosition;
+        bloodThirst.GainBlood(bloodThirst.maxBlood, false);
         Revive();
     }
 }
