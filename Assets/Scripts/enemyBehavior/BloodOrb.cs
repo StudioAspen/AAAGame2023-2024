@@ -10,7 +10,6 @@ public class BloodOrb : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.TryGetComponent(out BloodThirst bloodThirst))
         {
             bloodThirst.GainBlood(gainBloodAmount, true);

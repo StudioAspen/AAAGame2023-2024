@@ -5,15 +5,18 @@ using UnityEngine.AI;
 
 public class EnemyStateManager : MonoBehaviour
 {
+    public Renderer renderer;
+
     // all the states of the enemies
     public EnemyBaseState currentState;
     public EnemyIdleState idleState = new EnemyIdleState();
     public EnemyAggroState aggroState = new EnemyAggroState();
     public EnemyAttackState attackState = new EnemyAttackState();
+    public EnemyStunState stunState = new EnemyStunState();
     public EnemyDeathState deathState = new EnemyDeathState();
 
     // player transform
-    public Transform playerTransform; // no longer need to drag in component
+    private Transform playerTransform;
     // enemy killable
     private Killable kill;
 
@@ -25,6 +28,9 @@ public class EnemyStateManager : MonoBehaviour
     public Timer timer = new Timer();
     // time for how long the enemy idles for
     public float timeToSwitch;
+    // time for how long the enemy stuns for
+    public float timeToStun;
+
     // cd for enemy attack projectile
     public float enemyAttackCD;
 
@@ -37,6 +43,7 @@ public class EnemyStateManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        renderer = GetComponent<Renderer>();
         playerTransform = FindObjectOfType<PlayerInput>().transform;
 
         agent = gameObject.GetComponent<NavMeshAgent>();
@@ -118,7 +125,17 @@ public class EnemyStateManager : MonoBehaviour
     // switches state to idle
     public void Idle()
     {
+        if (gameObject.GetComponent<SausageEnergyBlast>().isStunned)
+            gameObject.GetComponent<SausageEnergyBlast>().isStunned = false;
         SwitchState(idleState);
+    }
+
+    // switches state to stin
+    public void Stun()
+    {
+        //dont forget to return color bacck
+        renderer.material.color = Color.red;
+        SwitchState(stunState);
     }
 
     // after a certain amount of time switch to idle, mimics the deaggro time where they are 
@@ -142,5 +159,12 @@ public class EnemyStateManager : MonoBehaviour
     {
         if (!timer.IsActive())
             timer.StartTimer(enemyAttackCD, MakeBullet);
+    }
+
+    // STUNNED for amount of time before going back to idle
+    public void IsStunned()
+    {
+        if (!timer.IsActive())
+            timer.StartTimer(timeToStun, Idle);
     }
 }

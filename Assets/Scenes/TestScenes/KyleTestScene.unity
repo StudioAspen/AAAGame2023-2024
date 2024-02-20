@@ -549,7 +549,7 @@ GameObject:
   - component: {fileID: 541609868}
   - component: {fileID: 541609867}
   - component: {fileID: 541609871}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,17 +834,17 @@ PrefabInstance:
     - target: {fileID: 8547251516777677223, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 30.009872
+      value: -0.000869751
       objectReference: {fileID: 0}
     - target: {fileID: 8547251516777677223, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.1900024
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8547251516777677223, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.6600003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8547251516777677223, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -859,12 +859,12 @@ PrefabInstance:
     - target: {fileID: 8547251516777677223, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000023348976
+      value: -0.00000015569609
       objectReference: {fileID: 0}
     - target: {fileID: 8547251516777677223, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000018905896
+      value: 0.0000001260686
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1221,7 +1221,7 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1001 &3276663031283262661
+--- !u!1001 &2089469999
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1229,16 +1229,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
-        type: 3}
-      propertyPath: ogSpawn
-      value: 
-      objectReference: {fileID: 1062626559}
-    - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
-        type: 3}
-      propertyPath: playerTransform
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 3966855605319378575, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
       propertyPath: m_Name
@@ -1294,17 +1284,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7728476627684303212, guid: 798eb078d59d8e84a8608a2abda2c685,
-        type: 3}
-      propertyPath: bloodAmount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7728476627684303212, guid: 798eb078d59d8e84a8608a2abda2c685,
-        type: 3}
-      propertyPath: bloodPrefab
-      value: 
-      objectReference: {fileID: 7959290666730999954, guid: 6d3004141710547468d2b677ddc35683,
-        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1317,8 +1296,8 @@ SceneRoots:
   - {fileID: 439480273}
   - {fileID: 541609870}
   - {fileID: 1027493720}
-  - {fileID: 3276663031283262661}
   - {fileID: 1062626559}
   - {fileID: 470411217}
   - {fileID: 2004558573}
   - {fileID: 725466786}
+  - {fileID: 2089469999}

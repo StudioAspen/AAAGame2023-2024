@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 1402132625037281584}
   - component: {fileID: 1951858722545280346}
   - component: {fileID: 7728476627684303212}
+  - component: {fileID: 4716024343329377481}
   - component: {fileID: 8229049199669749314}
   - component: {fileID: 6089342359487218860}
   m_Layer: 0
@@ -157,6 +158,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   ogSpawn: {fileID: 0}
   timeToSwitch: 5
+  timeToStun: 3
   enemyAttackCD: 3
   bulletPrefab: {fileID: 3113997752838417528, guid: d5d9f454918076d4689292dc56796b97,
     type: 3}
@@ -204,6 +206,25 @@ MonoBehaviour:
   bloodPrefab: {fileID: 7959290666730999954, guid: 6d3004141710547468d2b677ddc35683,
     type: 3}
   bulletFirePoint: {fileID: 2875391713093058102}
+--- !u!114 &4716024343329377481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3966855605319378575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf3c7651b71273c40b2e5db8d010214f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStunned: 0
+  stunTime: 3
+  bloodAmount: 10
+  bloodPrefab: {fileID: 7959290666730999954, guid: 6d3004141710547468d2b677ddc35683,
+    type: 3}
+  bulletFirePoint: {fileID: 2875391713093058102}
+  enemy: {fileID: 0}
 --- !u!114 &8229049199669749314
 MonoBehaviour:
   m_ObjectHideFlags: 0
