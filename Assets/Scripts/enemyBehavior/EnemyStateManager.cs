@@ -39,9 +39,6 @@ public class EnemyStateManager : MonoBehaviour
     {
         playerTransform = FindObjectOfType<PlayerInput>().transform;
 
-        // adds a bullet to event
-        timer.AddEventToEnd(MakeBullet);
-
         agent = gameObject.GetComponent<NavMeshAgent>();
 
         // get component and when enemy dies, switch the state
@@ -144,6 +141,6 @@ public class EnemyStateManager : MonoBehaviour
     public void ShootBullet()
     {
         if (!timer.IsActive())
-            timer.StartTimer(enemyAttackCD);
+            timer.StartTimer(enemyAttackCD, MakeBullet);
     }
 }
