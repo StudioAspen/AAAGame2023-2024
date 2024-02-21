@@ -61,6 +61,7 @@ MonoBehaviour:
   - {fileID: 3899588977026355603}
   - {fileID: 165319038581278300}
   - {fileID: 7436970863497735174}
+  laserBeam: {fileID: 2654008871985041172}
 --- !u!54 &6084194507537834142
 Rigidbody:
   m_ObjectHideFlags: 0

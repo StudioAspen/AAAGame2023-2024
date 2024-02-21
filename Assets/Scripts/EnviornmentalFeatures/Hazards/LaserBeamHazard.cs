@@ -20,9 +20,10 @@ public class LaserBeamHazard : MonoBehaviour
     [Tooltip("Damage to blood")]
     [SerializeField] private float damage = 5f;
     [SerializeField] private float speed = 5f;
+    [Space]
 
     [SerializeField] private List<Transform> pathPoints = new List<Transform>();
-    private Transform laserBeam;
+    [SerializeField] Transform laserBeam;
 
     private Transform targetPathPoint;
     private int pathPointIndex = 0;
@@ -32,11 +33,6 @@ public class LaserBeamHazard : MonoBehaviour
     ///
     void Start()
     {
-        laserBeam = transform.Find("LaserBeam");
-        if (laserBeam == null)
-        {
-            Debug.LogError("Laser beam must be named 'LaserBeam' and must be a child of the prefab");
-        }
         targetPathPoint = pathPoints[pathPointIndex];
     }
 
