@@ -43,10 +43,12 @@ public class SlashDash : MonoBehaviour {
     }
     private void SlashDashContact(Collider other) {
         if (isDashing) {
-            if (other.TryGetComponent(out Slashable slashable) &&
-                other.TryGetComponent(out PathCreator pc)) {
+            if (other.TryGetComponent(out Slashable slashable)) {
+                slashable.TriggerEffect();
+            }
+            if(other.TryGetComponent(out PathCreator pc)) {
                 isDashing = false;
-                slash.StartSlide(slashable, pc, other);
+                slash.StartSlide(pc, other);
             }
         }
     }
