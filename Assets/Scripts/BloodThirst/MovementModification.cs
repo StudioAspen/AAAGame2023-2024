@@ -13,6 +13,6 @@ public class MovementModification : MonoBehaviour
         OnModifyMovement.Invoke();
     }
 
-   
+
 }
 
