@@ -88,6 +88,7 @@ public class PlayerInput : MonoBehaviour {
                 cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
 
 
+                // Controller keycode enums are offset when they are set in the editor this is to correct them (controller inputs here)
                 controllerStab += 4;
                 controllerSlash += 4;
                 controllerDash += 4;
@@ -109,6 +110,8 @@ public class PlayerInput : MonoBehaviour {
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
 
+                keyboardShoot += 7; // Keycode enums are offset when set in the editor (mouse inputs here)
+
                 // Setting inputs for keyboard
                 inputStab = keyboardStab;
                 inputSlash = keyboardSlash;
@@ -116,11 +119,8 @@ public class PlayerInput : MonoBehaviour {
                 inputDash = keyboardDash;
                 inputJump = keyboardJump;
 
+
                 inputShoot = keyboardShoot;
-                if (inputShoot == KeyCode.Print) // FOR SOME REASON CHOOSING MOUSE0 BINDS TO PRINTSCREEN
-                {
-                    inputShoot += 7;
-                }
 
                 break;
             default:
