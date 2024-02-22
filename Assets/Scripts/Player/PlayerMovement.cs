@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     PlayerPositionCheck playerPositionCheck;
     Rigidbody rb;
     MovementModification movementModification;
+    PlayerStateManager stateManager;
 
     [Header("Ground Variables")]
     public float groundAcceleration;
@@ -49,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         playerPositionCheck = GetComponent<PlayerPositionCheck>();
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
+        stateManager = GetComponentInChildren<PlayerStateManager>();
     }
 
     private void FixedUpdate() {
@@ -74,10 +76,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
-    public void JumpFunction()
+    #region // INPUT FUNCTIONS
+    public void JumpInput()
     {
-        if(readyToJump)
+        if(readyToJump && StateCheck())
         {
             readyToJump = false;
             grounded = false;
@@ -85,23 +87,27 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Move(Vector3 inputDirection)
+    public void MoveInput(Vector3 inputDirection)
     {
-        if (inputDirection.magnitude > 0)
+        if (StateCheck())
         {
             isMoving = true;
             targetDirection = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
         }
-        else
-        {
+        else {
             isMoving = false;
         }
     }
+
+    public void NoMoveInput() {
+        isMoving = false;
+    }
+    #endregion 
+
     public void Jump(float multiplier) {
         float netJumpForce = Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll);
         rb.AddForce(transform.up * netJumpForce * multiplier, ForceMode.VelocityChange);
     }
-
     public void ResetJump() {
         readyToJump = true;
     }
@@ -130,5 +136,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void RotationUpdate() {
         transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, rotationSpeed);
+    }
+
+    private bool StateCheck() {
+        return stateManager.currentState == PlayerState.IDLE ||
+            stateManager.currentState == PlayerState.STAB ||
+            stateManager.currentState == PlayerState.SLASH;
     }
 }

@@ -32,7 +32,7 @@ public class SlashDash : MonoBehaviour {
 
             swordMovement.DashAttackPosition();
             dashMovement.OnDashEnd.AddListener(EndSlashDash);
-            dashMovement.TryPlayerInputDash(direction);
+            dashMovement.DashInput(direction);
         }
     }
     private void EndSlashDash() {

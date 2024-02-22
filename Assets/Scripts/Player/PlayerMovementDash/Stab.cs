@@ -17,11 +17,13 @@ public class Stab : MonoBehaviour {
     public UnityEvent OnStabEnd = new UnityEvent();
 
     // Movement Compoenents
+    DashAction dashAction;
     DashMovement dashMovement;
     PlayerMovement playerMovement;
     Collider collider;
     Rigidbody rb;
     MovementModification movementModification;
+    PlayerStateManager stateManager;
 
     // Variables
     bool isStabbing = false;
@@ -30,18 +32,20 @@ public class Stab : MonoBehaviour {
     void Start()
     {
         // Getting components
+        dashAction = GetComponentInChildren<DashAction>();
         dashMovement = GetComponent<DashMovement>();
         playerMovement = GetComponent<PlayerMovement>();
         collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
+        stateManager = GetComponentInChildren<PlayerStateManager>();
 
         // Setting up Demon Sword
         swordMovement.OnContact.AddListener(StabContact);
     }
 
 
-    public void StartStab()
+    public void StabInput()
     {
         if (!isStabbing) {
             //Animation Stuff (to be implemented later)
@@ -81,14 +85,14 @@ public class Stab : MonoBehaviour {
     }
     public void DashThrough(StabableEnviornment stabableEnviornment) {
         GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
-        dashMovement.OnDashEnd.AddListener(EndOfDash);
+        dashAction.OnDashEnd.AddListener(EndOfDash);
         collider.isTrigger = true; // Setting as trigger to prevent collisions
         float dashDuration = (stabableEnviornment.dashLength / Mathf.Lerp(dashSpeed, boostedDashSpeed, movementModification.boostForAll));
         rb.position = stabableEnviornment.dashStartTransform.position;
-        dashMovement.Dash(stabableEnviornment.dashLength, dashDuration, stabableEnviornment.dashDir);
+        dashAction.Dash(stabableEnviornment.dashLength, dashDuration, stabableEnviornment.dashDir);
     }
     private void EndOfDash() {
-        dashMovement.OnDashEnd.RemoveListener(EndOfDash);
+        dashAction.OnDashEnd.RemoveListener(EndOfDash);
         playerMovement.ResetJump();
         dashMovement.ResetDash();
         collider.isTrigger = false; // Re-enable collider

@@ -19,33 +19,22 @@ public class DashMovement : MonoBehaviour
     bool dashAvailable = true;
     bool isDashing = false;
     float dashCdTimer;//Time before you can dash again
-    float dashDurationTimer;// Used to know when dash has ended
-    Vector3 dashVelocity; // Velocity used for dashing
-    float dragValHolder; // Temperary holder of drag when dashing
 
     [Header("Events")]
     public UnityEvent OnDashEnd = new UnityEvent();
 
     // References
-    Rigidbody rb;//rigid body of player
     MovementModification movementModification;
     PlayerPositionCheck playerPositionCheck;
-    PlayerInput playerInput;
+    DashAction dashAction;
 
     // Start is called before the first frame update
     void Start()
     {
         // Getting components
-        rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
         playerPositionCheck = GetComponent<PlayerPositionCheck>();
-        playerInput = GetComponent<PlayerInput>();
-    }
-
-    private void FixedUpdate() {
-        if (isDashing) {
-            UpdateDashing();
-        }
+        dashAction = GetComponentInChildren<DashAction>();
     }
 
     // Update is called once per frame
@@ -58,7 +47,7 @@ public class DashMovement : MonoBehaviour
             ResetDash();
         }
     }
-    public void TryPlayerInputDash(Vector3 direction)
+    public void DashInput(Vector3 direction)
     {
         if (dashCdTimer <= 0 && dashAvailable && !isDashing) {
             dashAvailable = false; // Using up the dash
@@ -70,29 +59,8 @@ public class DashMovement : MonoBehaviour
             float netDashDuration = Mathf.Lerp(dashDuration, boostedDashDuration, movementModification.boostForAll); 
 
             // Starting Dash
-            Dash(netDashDistance, netDashDuration, horizontalDirection);
+            dashAction.Dash(netDashDistance, netDashDuration, horizontalDirection);
         }
-    }
-    public void Dash(float distance, float duration, Vector3 direction)
-    {
-        // Default value for no direction given
-        if (direction.magnitude == 0) {
-            direction = transform.forward;
-        }
-        playerInput.DisableInput();
-
-        // Setting variables
-        isDashing = true;
-        dashDurationTimer = duration; // starting dash duration timer
-        dashVelocity = (distance / duration) * direction.normalized; // setting velocity for dashing
-
-        // Set up for physics variables
-        dragValHolder = rb.drag;
-        rb.useGravity = false;
-        rb.velocity = dashVelocity;
-
-        // Vizualization of how far the player SHOULD go
-        Debug.DrawLine(rb.position, rb.position + direction * distance, Color.white, 5);
     }
 
     public void ResetDash()
@@ -101,38 +69,18 @@ public class DashMovement : MonoBehaviour
         dashAvailable = true;
     }
 
-    public void InterruptDash(bool canDashAgain)
-    {
-        if(canDashAgain) {
+    public void InterruptDashInput(bool canDashAgain) {
+        if (canDashAgain) {
             ResetDash();
         }
         EndDash();
     }
 
     private void EndDash() {
-        playerInput.EnableInput();
-
-        //Rstoring movement variables
-        rb.drag = dragValHolder;
-        rb.useGravity = true;
-        rb.velocity = Vector3.zero;
 
         //Ending dash
         isDashing = false;
         OnDashEnd.Invoke();
     }
 
-    private void UpdateDashing()
-    {
-        // Allowing dashing as long as the dash direction is no in the same direction as the current velocity
-        if (dashDurationTimer > 0) 
-        {
-            rb.drag = 0;
-            rb.velocity = dashVelocity;
-        }
-        if (dashDurationTimer <= 0) {
-            EndDash();
-        }
-        dashDurationTimer -= Time.fixedDeltaTime;
-    }
 }

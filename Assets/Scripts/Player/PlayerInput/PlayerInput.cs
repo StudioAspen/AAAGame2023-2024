@@ -136,13 +136,12 @@ public class PlayerInput : MonoBehaviour {
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
             inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
             CheckCombinationAbilties(inputDirection);
-            CheckAbilities();
+            CheckAbilities(inputDirection);
         }
         else if (dashStarted || slashStarted || stabStarted) { // Checking inputs for combination abilities
             combinationWindowTimer += Time.deltaTime;
             CheckCombinationAbilties(inputDirection);
         }
-        movement.Move(inputDirection);
 
         if (Input.GetKeyDown(inputShoot))
         {
@@ -155,15 +154,21 @@ public class PlayerInput : MonoBehaviour {
     public void EnableInput() {
         canInput = true;
     }
-    private void CheckAbilities() {
+    private void CheckAbilities(Vector3 direction) {
         if (Input.GetKeyDown(inputJump)) {
-            movement.JumpFunction();
+            movement.JumpInput();
         }
         if (Input.GetKey(inputStab)) {
             downwardStab.TryDownwardStabUpdate();
         }
         if (Input.GetKeyUp(inputStab)) {
             downwardStab.ReleaseDownwardStab();
+        }
+        if (direction.magnitude > 0.01f) {
+            movement.MoveInput(direction);
+        }
+        else {
+            movement.NoMoveInput();
         }
     }
     private void CheckCombinationAbilties(Vector3 direction) {
@@ -172,10 +177,10 @@ public class PlayerInput : MonoBehaviour {
             if (!dashStarted) {
                 stabStarted = true;
                 combinationWindowTimer = 0;
-                stab.StartStab();
+                stab.StabInput();
             }
             else if (combinationWindowTimer < combinationWindow) {
-                dash.InterruptDash(true);
+                dash.InterruptDashInput(true);
                 //ResetCombination();
                 stabDash.TryStartStabDash(direction);
             }
@@ -189,7 +194,7 @@ public class PlayerInput : MonoBehaviour {
                 slash.StartSlash();
             }
             else if (combinationWindowTimer < combinationWindow) {
-                dash.InterruptDash(true);
+                dash.InterruptDashInput(true);
                 //ResetCombination();
                 slashDash.TryStartSlashDash(direction);
             }
@@ -210,7 +215,7 @@ public class PlayerInput : MonoBehaviour {
             else {
                 dashStarted = true;
                 combinationWindowTimer = 0;
-                dash.TryPlayerInputDash(direction);
+                dash.DashInput(direction);
             }
         }
     }

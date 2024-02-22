@@ -33,7 +33,7 @@ public class StabDash : MonoBehaviour
 
             swordMovement.DashAttackPosition();
             dashMovement.OnDashEnd.AddListener(EndStabDash);
-            dashMovement.TryPlayerInputDash(direction);
+            dashMovement.DashInput(direction);
         }
     }
     private void EndStabDash() {
