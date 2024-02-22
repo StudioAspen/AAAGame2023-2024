@@ -15,6 +15,7 @@ public class Timer
     public void UpdateTimer() {
         currentTime -= Time.deltaTime;
         if(currentTime <= 0 && isActive) {
+            isActive = false;
             OnTimerFinish.Invoke();
         }
     }
@@ -26,9 +27,15 @@ public class Timer
     }
     public void EndTimer() {
         OnTimerFinish.Invoke();
+        OnTimerFinish.RemoveAllListeners();
         isActive = false;
     }
     public void CancelTimer() {
+        OnTimerFinish.RemoveAllListeners();
         isActive = false;
+    }
+    public bool IsActive()
+    {
+        return isActive;
     }
 }
