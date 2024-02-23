@@ -36,4 +36,9 @@ public class Killable : MonoBehaviour
         currentHP = Mathf.Min(currentHP + amount, maxHP);
         OnHealthChange.Invoke();
     }
+
+    public void Revive() {
+        isDead = false;
+        GainHealth(maxHP);
+    }
 }

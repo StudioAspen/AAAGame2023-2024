@@ -9,7 +9,6 @@ public class PlayerInput : MonoBehaviour {
     enum ControlType { controller, mouseAndKeyboard };
     CinemachineFreeLook cinemachineCam;
     Transform cameraOrientation;
-    Animator playerAni;
 
     [Header("Control Type")]
     [SerializeField] ControlType currentControls;
@@ -23,6 +22,7 @@ public class PlayerInput : MonoBehaviour {
     //[SerializeField] KeyCode keyboardDownwardStab;
     [SerializeField] KeyCode keyboardDash;
     [SerializeField] KeyCode keyboardJump;
+    [SerializeField] KeyCode keyboardShoot;
 
     [Header("Controller Inputs")]
     [SerializeField] KeyCode controllerStab;
@@ -30,6 +30,7 @@ public class PlayerInput : MonoBehaviour {
     //[SerializeField] KeyCode controllerDownwardStab;
     [SerializeField] KeyCode controllerDash;
     [SerializeField] KeyCode controllerJump;
+    [SerializeField] KeyCode controllerShoot;
 
     // Controls
     KeyCode inputStab;
@@ -37,6 +38,7 @@ public class PlayerInput : MonoBehaviour {
     //KeyCode inputDownwardStab;
     KeyCode inputDash;
     KeyCode inputJump;
+    KeyCode inputShoot;
 
     bool stabStarted = false;
     bool slashStarted = false;
@@ -52,6 +54,7 @@ public class PlayerInput : MonoBehaviour {
     DownwardStab downwardStab;
     StabDash stabDash;
     SlashDash slashDash;
+    EnergyBlast energyBlast;
 
     // Start is called before the first frame update
     void Start() {
@@ -63,7 +66,7 @@ public class PlayerInput : MonoBehaviour {
         downwardStab = GetComponent<DownwardStab>();
         stabDash = GetComponent<StabDash>();
         slashDash = GetComponent<SlashDash>();
-        playerAni = GetComponent<Animator>();
+        energyBlast = GetComponent<EnergyBlast>();
         
         // Getting camera components
         cameraOrientation = FindObjectOfType<Camera>().transform;
@@ -85,18 +88,19 @@ public class PlayerInput : MonoBehaviour {
                 cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
 
 
+                // Controller keycode enums are offset when they are set in the editor this is to correct them (controller inputs here)
                 controllerStab += 4;
                 controllerSlash += 4;
-                //controllerDownwardStab += 4;
                 controllerDash += 4;
                 controllerJump += 4;
+                controllerShoot += 4;
 
                 // Setting inputs for controller
                 inputStab = (controllerStab);
                 inputSlash = (controllerSlash);
-                //inputDownwardStab = (controllerDownwardStab); 
                 inputDash = (controllerDash);
                 inputJump = (controllerJump);
+                inputShoot = (controllerShoot);
                 Debug.Log(inputJump);
                 break;
             case ControlType.mouseAndKeyboard:
@@ -106,12 +110,18 @@ public class PlayerInput : MonoBehaviour {
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
 
+                keyboardShoot += 7; // Keycode enums are offset when set in the editor (mouse inputs here)
+
                 // Setting inputs for keyboard
                 inputStab = keyboardStab;
                 inputSlash = keyboardSlash;
                 //inputDownwardStab = keyboardDownwardStab;
                 inputDash = keyboardDash;
                 inputJump = keyboardJump;
+
+
+                inputShoot = keyboardShoot;
+
                 break;
             default:
                 break;
@@ -133,6 +143,11 @@ public class PlayerInput : MonoBehaviour {
             CheckCombinationAbilties(inputDirection);
         }
         movement.Move(inputDirection);
+
+        if (Input.GetKeyDown(inputShoot))
+        {
+            energyBlast.Shoot();
+        }
     }
     public void DisableInput() {
         canInput = false;

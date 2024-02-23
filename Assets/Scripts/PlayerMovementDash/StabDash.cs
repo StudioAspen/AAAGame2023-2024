@@ -45,8 +45,11 @@ public class StabDash : MonoBehaviour
     private void StabDashContact(Collider other) {
         if(isDashing) {
             if (other.TryGetComponent(out Stabable stabable)) {
+                stabable.TriggerEffect();
+            }
+            if(other.TryGetComponent(out StabableEnviornment enviornment)) {
                 isDashing = false;
-                stab.DashThrough(stabable);
+                stab.DashThrough(enviornment);
             }
         }
     }
