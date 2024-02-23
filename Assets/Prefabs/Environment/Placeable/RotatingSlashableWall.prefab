@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3801418925306547229}
   - component: {fileID: 6311595292450106430}
   - component: {fileID: 6447527003562788296}
+  - component: {fileID: 7372439641910358060}
   m_Layer: 10
   m_Name: RotatingSlashableWall
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5739188464879137291}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.0663433, y: 2.8614058, z: -6.302494}
   m_LocalScale: {x: 5, y: 8.322811, z: 1}
   m_ConstrainProportionsScale: 0
@@ -139,7 +140,7 @@ MonoBehaviour:
       - 0
       globalNormalsAngle: 90
       flipNormals: 0
-    vertexPathUpToDate: 1
+    vertexPathUpToDate: 0
     vertexPathMaxAngleError: 0.3
     vertexPathMinVertexSpacing: 0.01
     showTransformTool: 1
@@ -172,3 +173,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3dcd1e4c254d5347baa3a4f110c4b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7372439641910358060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739188464879137291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c6c4fd8ea68524e972c247c72f92ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSmoothness: 5
