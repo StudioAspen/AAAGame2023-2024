@@ -15,7 +15,6 @@ public class DashAction {
     float dragValHolder;
     bool isDashing = false;
 
-
     DashAction(Transform _transform, Rigidbody _rb) {
         transform = _transform;
         rb = _rb;

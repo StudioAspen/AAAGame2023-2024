@@ -19,8 +19,15 @@ public enum PlayerState {
 
 public class PlayerStateManager : MonoBehaviour
 {
-    public PlayerState currentState;
+    // States
+    PlayerStateBase currentState;
+    PlayerIdleState idleState;
+
+    // Actions
+    DashAction dashAction;
+    EnergyBlast energyBlast;
+
     private void Start() {
-        currentState = PlayerState.IDLE;
+        currentState = idleState;
     }
 }
