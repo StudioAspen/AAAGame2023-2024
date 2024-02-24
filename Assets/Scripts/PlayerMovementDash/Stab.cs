@@ -65,22 +65,27 @@ public class Stab : MonoBehaviour {
         {
             if(isStabbing)
             {
+                stabable.TriggerEffect();
+            }
+        }
+        if (other.gameObject.TryGetComponent(out StabableEnviornment enviornment)) {
+            if (isStabbing) {
                 // Setting proper listeners and variables
                 isStabbing = false;
                 swordMovement.OnEndAction.RemoveListener(EndOfStabAnimation);
 
                 // Setting up and starting dash
-                DashThrough(stabable);
+                DashThrough(enviornment);
             }
         }
     }
-    public void DashThrough(Stabable stabable) {
+    public void DashThrough(StabableEnviornment stabableEnviornment) {
         GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
         dashMovement.OnDashEnd.AddListener(EndOfDash);
         collider.isTrigger = true; // Setting as trigger to prevent collisions
-        float dashDuration = (stabable.dashLength / Mathf.Lerp(dashSpeed, boostedDashSpeed, movementModification.boostForAll));
-        rb.position = stabable.dashStartTransform.position;
-        dashMovement.Dash(stabable.dashLength, dashDuration, stabable.dashDir);
+        float dashDuration = (stabableEnviornment.dashLength / Mathf.Lerp(dashSpeed, boostedDashSpeed, movementModification.boostForAll));
+        rb.position = stabableEnviornment.dashStartTransform.position;
+        dashMovement.Dash(stabableEnviornment.dashLength, dashDuration, stabableEnviornment.dashDir);
     }
     private void EndOfDash() {
         dashMovement.OnDashEnd.RemoveListener(EndOfDash);
