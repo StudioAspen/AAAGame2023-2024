@@ -52,7 +52,6 @@ public class BasicMovementAction : PlayerAction
         playerPositionCheck = GetComponent<PlayerPositionCheck>();
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
-        stateManager = GetComponentInChildren<PlayerStateManager>();
     }
 
     private void FixedUpdate() {
@@ -73,22 +72,12 @@ public class BasicMovementAction : PlayerAction
     private void Update()
     {
         grounded = playerPositionCheck.CheckOnGround();
-        if(grounded) {
+        if(!readyToJump && grounded) {
             ResetJump();
         }
     }
 
-    #region // INPUT FUNCTIONS
-    public void JumpInput()
-    {
-        if(readyToJump)
-        {
-            readyToJump = false;
-            grounded = false;
-            Jump(1);
-        }
-    }
-
+    #region // Move Methods
     public void MoveInput(Vector3 inputDirection)
     {
         isMoving = true;
@@ -97,15 +86,6 @@ public class BasicMovementAction : PlayerAction
 
     public void NoMoveInput() {
         isMoving = false;
-    }
-    #endregion 
-
-    public void Jump(float multiplier) {
-        float netJumpForce = Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll);
-        rb.AddForce(transform.up * netJumpForce * multiplier, ForceMode.VelocityChange);
-    }
-    public void ResetJump() {
-        readyToJump = true;
     }
     private void MoveUpdate()
     {
@@ -130,11 +110,33 @@ public class BasicMovementAction : PlayerAction
             rb.AddForce(addedVelocity, ForceMode.VelocityChange);
         }
     }
+    #endregion
+
+
+    #region // Jump Methods
+    public void JumpInput() {
+        readyToJump = false;
+        grounded = false;
+        Jump(1);
+    }
+
+    public void Jump(float multiplier) {
+        float netJumpForce = Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll);
+        rb.AddForce(transform.up * netJumpForce * multiplier, ForceMode.VelocityChange);
+    }
+    public void ResetJump() {
+        readyToJump = true;
+    }
+    public bool CanPerformJump() {
+        return readyToJump && grounded;
+    }
+    #endregion
 
     private void RotationUpdate() {
         transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, rotationSpeed);
     }
+
     public override void EndAction() {
-        throw new System.NotImplementedException();
+        return;
     }
 }

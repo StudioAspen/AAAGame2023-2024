@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputActionCheck : MonoBehaviour
+public class PlayerActionManager : MonoBehaviour
 {
     //Movement abilities
     BasicMovementAction basicMovementAction;
@@ -42,18 +42,21 @@ public class InputActionCheck : MonoBehaviour
         }
     }
     public void JumpInput() {
-        if(currentAction == basicMovementAction) {
+        if(currentAction == basicMovementAction && basicMovementAction.CanPerformJump()) {
             basicMovementAction.JumpInput();
         }
     }
     public void DashInput(Vector3 input) {
-        if (currentAction == basicMovementAction) {
+        if (currentAction == basicMovementAction && dashAction.CanPerformDash()) {
             ChangeAction(dashAction);
             dashAction.DashInput(input);
         }
     }
     public void StabInputPressed() {
-
+        if(currentAction == basicMovementAction && stabAction.CanPerformStab()) {
+            ChangeAction(stabAction);
+            stabAction.StabInput();
+        }
     }
     public void StabInputHold() {
 
@@ -62,7 +65,10 @@ public class InputActionCheck : MonoBehaviour
 
     }
     public void SlashInput() {
-
+        if(currentAction == basicMovementAction && slashAction.CanPerformSlash()) {
+            ChangeAction(slashAction);
+            slashAction.SlashInput();
+        }
     }
     public void EnergyBlastInput() {
 

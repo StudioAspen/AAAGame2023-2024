@@ -45,18 +45,16 @@ public class DashAction : PlayerAction
     }
     public void DashInput(Vector3 direction)
     {
-        if (dashCdTimer <= 0 && dashAvailable && !dashMovement.isDashing) {
-            dashAvailable = false; // Using up the dash
-            Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z); // Only using the horizontal component
+        dashAvailable = false; // Using up the dash
+        Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z); // Only using the horizontal component
             
-            // Calculating boosts (all boosts are calculated as a linear interpolation between normal and boost amount given a percentage)
-            dashCdTimer = Mathf.Lerp(dashCooldown, boostedDashCooldown, movementModification.boostForAll); 
-            float netDashDistance = Mathf.Lerp(dashDistance, boostedDashDistance, movementModification.boostForAll);  
-            float netDashDuration = Mathf.Lerp(dashDuration, boostedDashDuration, movementModification.boostForAll);
+        // Calculating boosts (all boosts are calculated as a linear interpolation between normal and boost amount given a percentage)
+        dashCdTimer = Mathf.Lerp(dashCooldown, boostedDashCooldown, movementModification.boostForAll); 
+        float netDashDistance = Mathf.Lerp(dashDistance, boostedDashDistance, movementModification.boostForAll);  
+        float netDashDuration = Mathf.Lerp(dashDuration, boostedDashDuration, movementModification.boostForAll);
 
-            // Starting Dash
-            dashMovement.Dash(netDashDistance, netDashDuration, horizontalDirection);
-        }
+        // Starting Dash
+        dashMovement.Dash(netDashDistance, netDashDuration, horizontalDirection);
     }
 
     public void ResetDash()
@@ -64,7 +62,9 @@ public class DashAction : PlayerAction
         dashCdTimer = 0;
         dashAvailable = true;
     }
-
+    public bool CanPerformDash() {
+        return dashCdTimer <= 0 && dashAvailable && !dashMovement.isDashing;
+    }
     public override void EndAction() {
         //Ending dash
         dashMovement.EndDash();

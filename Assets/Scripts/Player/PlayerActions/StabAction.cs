@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-public class StabAction : MonoBehaviour {
+public class StabAction : PlayerAction {
     [Header("References")]
     [SerializeField] SwordMovement swordMovement;
 
@@ -13,17 +13,11 @@ public class StabAction : MonoBehaviour {
     [SerializeField] float bloodGainAmount;
     [SerializeField] float attackDuration;
 
-    [Header("Events")]
-    public UnityEvent OnStabEnd = new UnityEvent();
-
     // Movement Compoenents
     DashAction dashAction;
-    DashMovement dashMovement;
-    PlayerMovement playerMovement;
-    Collider collider;
-    Rigidbody rb;
+    DashThroughAction dashThroughAction;
+    BasicMovementAction movementAction;
     MovementModification movementModification;
-    PlayerStateManager stateManager;
 
     // Variables
     bool isStabbing = false;
@@ -32,13 +26,12 @@ public class StabAction : MonoBehaviour {
     void Start()
     {
         // Getting components
-        dashAction = GetComponentInChildren<DashAction>();
-        dashMovement = GetComponent<DashMovement>();
-        playerMovement = GetComponent<PlayerMovement>();
-        collider = GetComponent<Collider>();
-        rb = GetComponent<Rigidbody>();
+        dashAction = GetComponent<DashAction>();
+        dashThroughAction = GetComponent<DashThroughAction>();
+        movementAction = GetComponent<BasicMovementAction>();
         movementModification = GetComponent<MovementModification>();
-        stateManager = GetComponentInChildren<PlayerStateManager>();
+
+        dashThroughAction.OnEndAction.AddListener(EndOfDash);
 
         // Setting up Demon Sword
         swordMovement.OnContact.AddListener(StabContact);
@@ -47,20 +40,12 @@ public class StabAction : MonoBehaviour {
 
     public void StabInput()
     {
-        if (!isStabbing) {
-            //Animation Stuff (to be implemented later)
-            isStabbing = true;
+        //Animation Stuff (to be implemented later)
+        isStabbing = true;
 
-            // Demon sword variables
-            swordMovement.OnEndAction.AddListener(EndOfStabAnimation);
-            swordMovement.AttackPosition(attackDuration);
-        }
-    }
-
-    public void InterruptStab()
-    {
-        isStabbing = false;
-        swordMovement.EndAttackPosition();
+        // Demon sword variables
+        swordMovement.OnEndAction.AddListener(EndOfStabAnimation);
+        swordMovement.AttackPosition(attackDuration);
     }
 
     public void StabContact(Collider other)
@@ -79,28 +64,30 @@ public class StabAction : MonoBehaviour {
                 swordMovement.OnEndAction.RemoveListener(EndOfStabAnimation);
 
                 // Setting up and starting dash
-                DashThrough(enviornment);
+                EndAction();
+                GetComponent<PlayerActionManager>().ChangeAction(dashAction);
+                dashThroughAction.DashThrough(enviornment);
             }
         }
     }
-    public void DashThrough(StabableEnviornment stabableEnviornment) {
-        GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
-        dashAction.OnDashEnd.AddListener(EndOfDash);
-        collider.isTrigger = true; // Setting as trigger to prevent collisions
-        float dashDuration = (stabableEnviornment.dashLength / Mathf.Lerp(dashSpeed, boostedDashSpeed, movementModification.boostForAll));
-        rb.position = stabableEnviornment.dashStartTransform.position;
-        dashAction.Dash(stabableEnviornment.dashLength, dashDuration, stabableEnviornment.dashDir);
-    }
+
     private void EndOfDash() {
-        dashAction.OnDashEnd.RemoveListener(EndOfDash);
-        playerMovement.ResetJump();
-        dashMovement.ResetDash();
-        collider.isTrigger = false; // Re-enable collider
-        OnStabEnd.Invoke();
+        movementAction.ResetJump();
+        dashAction.ResetDash();
     }
+    
     private void EndOfStabAnimation() {
-        isStabbing = false;
         swordMovement.OnEndAction.RemoveListener(EndOfStabAnimation);
-        OnStabEnd.Invoke();
+        EndAction();
+    }
+
+    public bool CanPerformStab() {
+        return !isStabbing;
+    }
+
+    public override void EndAction() {
+        isStabbing = false;
+        swordMovement.EndAttackPosition();
+        OnEndAction.Invoke();
     }
 }

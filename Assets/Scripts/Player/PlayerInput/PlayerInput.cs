@@ -39,14 +39,14 @@ public class PlayerInput : MonoBehaviour {
 
     bool canInput = true;
 
-    InputActionCheck inputActionCheck;
+    PlayerActionManager playerActionManager;
     // Start is called before the first frame update
     void Start() {
         
         // Getting camera components
         cameraOrientation = FindObjectOfType<Camera>().transform;
         cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
-        inputActionCheck = GetComponent<InputActionCheck>();
+        playerActionManager = GetComponent<PlayerActionManager>();
 
         SetCurrentController();
     }
@@ -69,28 +69,28 @@ public class PlayerInput : MonoBehaviour {
     }
     private void CheckAbilities(Vector3 direction) {
         if (Input.GetKeyDown(inputJump)) {
-            inputActionCheck.JumpInput();
+            playerActionManager.JumpInput();
         }
         if (Input.GetKeyDown(inputDash)) {
-            inputActionCheck.DashInput(direction);
+            playerActionManager.DashInput(direction);
         }
         if (Input.GetKey(inputStab)) {
-            inputActionCheck.StabInputHold();
+            playerActionManager.StabInputHold();
         }
         if (Input.GetKeyUp(inputStab)) {
-            inputActionCheck.StabInputRelease();
+            playerActionManager.StabInputRelease();
         }
         // Stab Move with combination logic
         if (Input.GetKeyDown(inputStab)) {
-            inputActionCheck.StabInputPressed();
+            playerActionManager.StabInputPressed();
         }
         if (Input.GetKeyDown(inputSlash)) {
-            inputActionCheck.SlashInput();
+            playerActionManager.SlashInput();
         }
         if (Input.GetKeyDown(inputShoot)) {
-            inputActionCheck.EnergyBlastInput();
+            playerActionManager.EnergyBlastInput();
         }
-        inputActionCheck.DirectionalInput(direction);
+        playerActionManager.DirectionalInput(direction);
     }
 
     private void SetCurrentController() {

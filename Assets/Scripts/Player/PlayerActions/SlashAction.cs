@@ -30,7 +30,7 @@ public class SlashAction : MonoBehaviour
     private MovementModification movementModification;
     private Rigidbody rb;
     private PlayerInput playerInput;
-    private PlayerMovement playerMovement;
+    private BasicMovementAction basicMovementAction;
     private DashMovement dashMovement;
 
 
@@ -43,22 +43,20 @@ public class SlashAction : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
         playerInput = GetComponent<PlayerInput>();
-        playerMovement = GetComponent<PlayerMovement>();
+        basicMovementAction = GetComponent<BasicMovementAction>();
         dashMovement = GetComponent<DashMovement>();
 
         swordMovement.OnContact.AddListener(SlashContact);
     }
 
 
-    public void StartSlash() {
-        if (!isSlashing) {
-            //Animation Stuff (to be implemented later)
-            isSlashing = true;
+    public void SlashInput() {
+        //Animation Stuff (to be implemented later)
+        isSlashing = true;
 
-            // Demon sword variables
-            swordMovement.OnEndAction.AddListener(EndOfSlashAnimation);
-            swordMovement.AttackPosition(attackDuration);
-        }
+        // Demon sword variables
+        swordMovement.OnEndAction.AddListener(EndOfSlashAnimation);
+        swordMovement.AttackPosition(attackDuration);
     }
 
     public void StartSlide(PathCreator pc, Collider other) {
@@ -84,4 +82,7 @@ public class SlashAction : MonoBehaviour
         swordMovement.OnEndAction.RemoveListener(EndOfSlashAnimation);
     }
 
+    public bool CanPerformSlash() {
+        return !isSlashing;
+    }
 }

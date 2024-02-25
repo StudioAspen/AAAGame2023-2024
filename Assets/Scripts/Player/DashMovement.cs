@@ -48,7 +48,7 @@ public class DashMovement {
                 rb.drag = 0;
                 rb.velocity = dashVelocity;
             }
-            if (dashDurationTimer <= 0) {
+            else {
                 EndDash();
             }
             dashDurationTimer -= Time.fixedDeltaTime;
