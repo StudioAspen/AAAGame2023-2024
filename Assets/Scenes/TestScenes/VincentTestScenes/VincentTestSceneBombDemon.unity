@@ -631,6 +631,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bomb Demon
       objectReference: {fileID: 0}
+    - target: {fileID: 5129875907993645849, guid: 3ad2f30930958f642ac676370cd0876a,
+        type: 3}
+      propertyPath: explosionRadius
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129875907993645849, guid: 3ad2f30930958f642ac676370cd0876a,
+        type: 3}
+      propertyPath: playerBloodLoss
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
