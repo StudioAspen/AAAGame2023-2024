@@ -6,7 +6,6 @@ public class BloodOrb : MonoBehaviour
 {
     [Header("Variables")]
     [SerializeField] float gainBloodAmount;
-    [SerializeField] float despawnTime;
 
     private void OnTriggerEnter(Collider other)
     {

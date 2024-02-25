@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 1951858722545280346}
   - component: {fileID: 6089342359487218860}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Ranged Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
