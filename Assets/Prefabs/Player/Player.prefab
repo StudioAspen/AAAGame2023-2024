@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7912653211943801073}
   - component: {fileID: 3009765542485322922}
   - component: {fileID: 1554232633083437368}
+  - component: {fileID: 1009479359832023577}
+  - component: {fileID: 8953753239630407971}
   m_Layer: 6
   m_Name: OtherPlayerComponents
   m_TagString: Untagged
@@ -77,6 +79,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25d69ed6531c84940b8ccb08cb8489b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1009479359832023577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665959102625697816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d035e51956aff041835f4c4f8060b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8953753239630407971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665959102625697816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f22dcb6a35e6f4a9891a3b90994ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1432506812781281859
@@ -463,16 +489,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 114c9068df70c4d3eacc6cc6dd0f5049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: 
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
   groundAcceleration: 5
   maxGroundSpeed: 10
-  groundDrag: 10
+  groundFriction: 1
   boostedGroundAcceleration: 7
   boostedMaxGroundSpeed: 15
-  boostedGroundDrag: 10
+  boostedGroundFriction: 1
   airAcceleration: 5
   maxAirSpeed: 10
   airDrag: 5
@@ -496,7 +521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 156139ee4aa8849caa989f1ac5db63dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: 
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
@@ -518,13 +542,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49bf4161f3393de478a05a832096218f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: 
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
   swordMovement: {fileID: 2230350445419021309}
-  dashSpeed: 10
-  boostedDashSpeed: 15
   bloodGainAmount: 10
   attackDuration: 0.5
 --- !u!114 &3088617981437380700
@@ -539,21 +560,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3881a59e96cc1744893121e9180e14cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: 
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  swordObject: {fileID: 6800678773869080880}
   swordMovement: {fileID: 2230350445419021309}
-  slideSpeed: 1
-  jumpMultiplier: 2
-  boostedSlideSpeed: 2
-  boostedJumpMultiplier: 2.5
-  attackDuration: 0.5
   bloodGained: 10
-  OnSlashEnd:
-    m_PersistentCalls:
-      m_Calls: []
+  attackDuration: 0.5
 --- !u!114 &8671536288844823369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,7 +578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7577dd9cfbb8f5b42a68c26fffff31a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: 
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
@@ -589,15 +600,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72789c3c33e498e458b1bd976b9ab04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: 
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  swordMovement: {fileID: 2230350445419021309}
   dashCollider: {fileID: 6990662696071883527}
-  OnEndStabDash:
-    m_PersistentCalls:
-      m_Calls: []
+  dashDuration: 0
+  dashDistance: 0
+  boostedDashDuration: 0
+  boostedDashDistance: 0
+  bloodGained: 0
 --- !u!114 &7021382955167843328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -610,15 +621,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25284ac0ec7fed74a9b97402bff67ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: 
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
   dashCollider: {fileID: 6990662696071883527}
-  swordMovement: {fileID: 2230350445419021309}
-  OnEndSlashDash:
-    m_PersistentCalls:
-      m_Calls: []
+  dashDuration: 0
+  dashDistance: 0
+  boostedDashDuration: 0
+  boostedDashDistance: 0
+  bloodGained: 0
 --- !u!114 &3134688513665312600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,7 +642,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca9902204370b894b833f180711a3758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: 
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
@@ -649,10 +659,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88809175c78a0b49a9781e8188ba09d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: 
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
+  slideSpeed: 0
+  boostedSlideSpeed: 0
 --- !u!114 &6773326116938459665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -869,18 +880,12 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 5605391723127491252}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6800678773869080880}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c86df6746f668254f9b468be06219d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6800678773869080880 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1417093754190084996, guid: c66b3c9ba7489084f8c3f641e0306f46,
-    type: 3}
-  m_PrefabInstance: {fileID: 5605391723127491252}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7564267098114665675 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2680757558890817151, guid: c66b3c9ba7489084f8c3f641e0306f46,

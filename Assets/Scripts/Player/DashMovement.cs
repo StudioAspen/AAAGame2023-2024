@@ -17,7 +17,7 @@ public class DashMovement {
 
     public DashMovement(Transform _transform, Rigidbody _rb) {
         transform = _transform;
-        rb = _rb;
+        rb = _rb;;
     }
 
     public void Dash(float distance, float duration, Vector3 direction) {
@@ -58,7 +58,7 @@ public class DashMovement {
         //Rstoring movement variables
         rb.drag = dragValHolder;
         rb.useGravity = true;
-        rb.velocity = Vector3.zero;
+        rb.velocity = dashVelocity;
 
         isDashing = false;
 

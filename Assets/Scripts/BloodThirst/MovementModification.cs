@@ -51,5 +51,26 @@ public class MovementModification : MonoBehaviour
         SpeedEffect deathSpeed = new SpeedEffect(duration, percentIncrease);
         speedEffects.Add(deathSpeed);
     }
+    public float CalcBoostedSpeed(float amount, bool increaseAmount) {
+        float output = amount;
+        foreach(SpeedEffect effect in speedEffects) {
+            if (increaseAmount) {
+                output += effect.currentPercentSpeed * amount;
+            }
+            else {
+                output -= effect.currentPercentSpeed * amount;
+                output = Mathf.Max(0, output);
+            }
+        }
+
+        return output;
+    }
+    public float GetBoost(float baseAmount, float boostedAmount, bool useBuff) {
+        float output = Mathf.Lerp(baseAmount, boostedAmount, boostForAll);
+        if (useBuff) {
+            return CalcBoostedSpeed(output, boostedAmount > baseAmount);
+        }
+        return output;
+    }
 }
 

@@ -27,8 +27,8 @@ public class DashAction : PlayerAction
     void Start()
     {
         // Getting components
-        movementModification = GetComponent<MovementModification>();
-        playerPositionCheck = GetComponent<PlayerPositionCheck>();
+        movementModification = GetComponentInChildren<MovementModification>();
+        playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
     }
 
@@ -38,6 +38,7 @@ public class DashAction : PlayerAction
         if (dashCdTimer > 0) { //if dash is still on cd, count down the timer 
             dashCdTimer -= Time.deltaTime;
         }
+
         if (playerPositionCheck.CheckOnGround()) {
             ResetDash();
         }
@@ -49,9 +50,9 @@ public class DashAction : PlayerAction
         Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z); // Only using the horizontal component
             
         // Calculating boosts (all boosts are calculated as a linear interpolation between normal and boost amount given a percentage)
-        dashCdTimer = Mathf.Lerp(dashCooldown, boostedDashCooldown, movementModification.boostForAll); 
-        float netDashDistance = Mathf.Lerp(dashDistance, boostedDashDistance, movementModification.boostForAll);  
-        float netDashDuration = Mathf.Lerp(dashDuration, boostedDashDuration, movementModification.boostForAll);
+        dashCdTimer = movementModification.GetBoost(dashCooldown, boostedDashCooldown, true); 
+        float netDashDistance = movementModification.GetBoost(dashDistance, boostedDashDistance, true);  
+        float netDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
 
         // Starting Dash
         dashMovement.Dash(netDashDistance, netDashDuration, horizontalDirection);

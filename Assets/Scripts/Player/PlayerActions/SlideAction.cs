@@ -5,19 +5,25 @@ using PathCreation;
 using UnityEngine.Events;
 
 public class SlideAction : PlayerAction{
+    [SerializeField] float slideSpeed;
+    [SerializeField] float boostedSlideSpeed;
+    float currentSlideSpeed;
+    
     private Rigidbody rb;
     private PathCreator pathCreator;
+    MovementModification movementModification;
+
+    private GameObject swordObject;
     private EndOfPathInstruction end;
     private bool sliding = false;
-    private GameObject swordObject;
 
     private Vector3 playerOffset;
     //private Vector3 swordOffset;
     private float dstTravelled = 0f;
-    private float slideSpeed;
     
     private void Start() {
         rb = GetComponent<Rigidbody>();
+        movementModification = GetComponentInChildren<MovementModification>();
         end = EndOfPathInstruction.Stop;
     }
 
@@ -27,12 +33,12 @@ public class SlideAction : PlayerAction{
         }
     }
 
-    public void StartSlide(PathCreator pc, Collider other, float _slideSpeed) {
+    public void StartSlide(PathCreator pc, Collider other) {
         // Slide Initalization
         sliding = true;
         pathCreator = pc;
-        slideSpeed = _slideSpeed;
 
+        currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
         Vector3 contactPoint = other.ClosestPoint(swordObject.transform.position);
         rb.useGravity = false;
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
@@ -41,7 +47,7 @@ public class SlideAction : PlayerAction{
     }
     
     private void UpdateSliding() {
-        dstTravelled += slideSpeed * Time.deltaTime;
+        dstTravelled += currentSlideSpeed * Time.deltaTime;
         transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
         //swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
         //swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);

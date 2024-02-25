@@ -22,6 +22,7 @@ public class SwordMovement : MonoBehaviour
 
     // Other variables
     private bool isFollowing = true;
+    public bool isAttacking = false;
     Transform currentFollow;
 
     private void Start() {
@@ -43,16 +44,20 @@ public class SwordMovement : MonoBehaviour
     public void AttackPosition(float duration)
     {
         currentFollow = attackTransform;
+        isAttacking = true;
         Invoke("EndAttackPosition", duration);
     }
     public void DownwardAttackPosition() {
         currentFollow = downwardStabTransform;
+        isAttacking = true;
     }
     public void DashAttackPosition() {
         currentFollow = dashAttackTransform;
+        isAttacking = true;
     }
     public void EndAttackPosition() {
         currentFollow = followTarget;
+        isAttacking = false;
         CancelInvoke();
         OnEndAction.Invoke();
     }

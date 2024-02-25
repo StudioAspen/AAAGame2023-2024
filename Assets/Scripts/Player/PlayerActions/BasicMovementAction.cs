@@ -48,11 +48,16 @@ public class BasicMovementAction : PlayerAction
     bool isMoving = false;
     Vector3 targetDirection;
 
-    void Start()
-    {
-        playerPositionCheck = GetComponent<PlayerPositionCheck>();
+    void Start() {
+        // Getting references
+        movementModification = GetComponentInChildren<MovementModification>();
+        playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         rb = GetComponent<Rigidbody>();
-        movementModification = GetComponent<MovementModification>();
+        collider = GetComponent<Collider>();
+
+        // Setting physics variables
+        collider.material.dynamicFriction = groundFriction;
+        rb.drag = airDrag;
     }
 
     private void FixedUpdate() {
@@ -62,12 +67,8 @@ public class BasicMovementAction : PlayerAction
         }
 
         //Assinging drag
-        if (grounded) {
-            collider.material.dynamicFriction = groundFriction;
-        }
-        else {
-            rb.drag = airDrag;
-            rb.velocity += Vector3.down * Mathf.Lerp(gravityAcceleration, boostedGravityAcceleration, movementModification.boostForAll);
+        if (!grounded) {
+            rb.velocity += Vector3.down * movementModification.GetBoost(gravityAcceleration, boostedGravityAcceleration, false) * Time.fixedDeltaTime;
         }
     }
     private void Update()
@@ -96,12 +97,12 @@ public class BasicMovementAction : PlayerAction
 
         // Assigning variables if player is on the ground
         if (grounded) {
-            addedVelocity = targetDirection.normalized * Mathf.Lerp(groundAcceleration, boostedGroundAcceleration, movementModification.boostForAll);
-            maxVelocity = targetDirection.normalized * Mathf.Lerp(maxGroundSpeed, boostedMaxGroundSpeed, movementModification.boostForAll);
+            addedVelocity = targetDirection.normalized * movementModification.GetBoost(groundAcceleration, boostedGroundAcceleration, true);
+            maxVelocity = targetDirection.normalized * movementModification.GetBoost(maxGroundSpeed, boostedMaxGroundSpeed, true);
         }
         else {
-            addedVelocity = targetDirection.normalized * Mathf.Lerp(airAcceleration, boostedAirAcceleration, movementModification.boostForAll);
-            maxVelocity = targetDirection.normalized * Mathf.Lerp(maxAirSpeed, boostedMaxAirSpeed, movementModification.boostForAll);
+            addedVelocity = targetDirection.normalized * movementModification.GetBoost(airAcceleration, boostedAirAcceleration, true);
+            maxVelocity = targetDirection.normalized * movementModification.GetBoost(maxAirSpeed, boostedMaxAirSpeed, true);
         }
 
         // Applying horizontal movement and limiting speed based on max velocity
@@ -118,12 +119,11 @@ public class BasicMovementAction : PlayerAction
     public void JumpInput() {
         readyToJump = false;
         grounded = false;
-        Jump(1);
+        Jump(Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll));
     }
 
-    public void Jump(float multiplier) {
-        float netJumpForce = Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll);
-        rb.AddForce(transform.up * netJumpForce * multiplier, ForceMode.VelocityChange);
+    public void Jump(float _jumpForce) {
+        rb.AddForce(transform.up * _jumpForce, ForceMode.VelocityChange);
     }
     public void ResetJump() {
         readyToJump = true;
@@ -139,5 +139,13 @@ public class BasicMovementAction : PlayerAction
 
     public override void EndAction() {
         return;
+    }
+
+    public float GetMaxRunningSpeed() {
+        if (grounded) {
+            return movementModification.GetBoost(maxGroundSpeed, boostedMaxGroundSpeed, true);
+        }
+        return movementModification.GetBoost(maxAirSpeed, boostedMaxAirSpeed, true);
+
     }
 }

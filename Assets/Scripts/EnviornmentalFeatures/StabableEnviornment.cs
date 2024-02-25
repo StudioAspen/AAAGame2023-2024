@@ -7,10 +7,12 @@ public class StabableEnviornment : MonoBehaviour {
     public Transform dashStartTransform;
     public Transform dashEndTransform;
 
+    public bool canGiveBlood;
+
     Vector3 localDir;
     float localLength;
-    public Vector3 dashDir; //direction of the dash
-    public float dashLength; //how far the player is launched
+    [HideInInspector] public Vector3 dashDir; //direction of the dash
+    [HideInInspector] public float dashLength; //how far the player is launched
 
     private void Start() {
         CalcDash();

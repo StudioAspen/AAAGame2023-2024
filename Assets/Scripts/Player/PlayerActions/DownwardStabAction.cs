@@ -11,6 +11,7 @@ public class DownwardStabAction : PlayerAction {
     [Header("Movement")]
     [SerializeField] float downwardStabAcceleration;
     [SerializeField] float downwardStabMaxSpeed;
+
     [Header("Boosted Movement")]
     [SerializeField] float boostedDownwardStabAcceleration;
     [SerializeField] float boostedDownwardStabMaxSpeed;
@@ -46,10 +47,10 @@ public class DownwardStabAction : PlayerAction {
     }
 
     private void Update() {
-
         //if grounded can perform downward stab
         canDownwardStab = !playerPositionCheck.CheckOnGround();
     }
+
     public void DownwardStabInputUpdate() {
         if (canDownwardStab && !isStabing) {
             stabButtonTimer += Time.deltaTime;
@@ -58,23 +59,24 @@ public class DownwardStabAction : PlayerAction {
             if (stabButtonTimer >= pressDownTime) {
                 stabAction.EndAction();
                 isStabing = true;
+
                 PlayerActionManager manager = GetComponent<PlayerActionManager>();
                 manager.ChangeAction(this);
                 swordMovement.DownwardAttackPosition();
             }
         }
     }
+
     public void DownwardStabInputRelease() {
         stabButtonTimer = 0;
 
         if (isStabing) {
-            isStabing = false;
-            swordMovement.EndAttackPosition();
+            EndAction();
         }
     }
     private void DownwardStabMovementUpdate() {
-        Vector3 addedVelocity = Vector3.down * Mathf.Lerp(downwardStabAcceleration, boostedDownwardStabMaxSpeed, movementModification.boostForAll);
-        Vector3 maxVelocity = Vector3.down * Mathf.Lerp(downwardStabMaxSpeed, boostedDownwardStabMaxSpeed, movementModification.boostForAll);
+        Vector3 addedVelocity = Vector3.down * movementModification.GetBoost(downwardStabAcceleration, boostedDownwardStabMaxSpeed, true);
+        Vector3 maxVelocity = Vector3.down * movementModification.GetBoost(downwardStabMaxSpeed, boostedDownwardStabMaxSpeed, true);
         Vector3 currentVerticalVelocity = new Vector3(0, rb.velocity.y, 0);
 
         // Applying vertical movement if the speed is higher than the max velocity
@@ -89,11 +91,14 @@ public class DownwardStabAction : PlayerAction {
             if(other.TryGetComponent(out DownwardStabEffect effect)) {
                 effect.TriggerEffect();
                 GetComponent<BloodThirst>().GainBlood(bloodGain, true);
+                EndAction();
             }
         }
     }
 
     public override void EndAction() {
+        isStabing = false;
+        swordMovement.EndAttackPosition();
         OnEndAction.Invoke();
     }
 }

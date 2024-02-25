@@ -7,53 +7,57 @@ using PathCreation;
 public class SlashDashAction : PlayerAction {
     [Header("References")]
     [SerializeField] DashCollider dashCollider;
-    [SerializeField] SwordMovement swordMovement;
 
-    [Header("Events")]
-    public UnityEvent OnEndSlashDash = new UnityEvent();
+    [Header("Dash Variables")]
+    [SerializeField] float dashDuration;
+    [SerializeField] float dashDistance;
+
+    [Header("Boosted Variables")]
+    [SerializeField] float boostedDashDuration;
+    [SerializeField] float boostedDashDistance;
+
+    [Header("Other Variables")]
+    [SerializeField] float bloodGained;
+
+    // Temp color change
+    Renderer renderer;
+    Color holder;
 
     // Components
     DashMovement dashMovement;
-    //Slash slash;
+    SlashContact slashContact;
+    MovementModification movementModification;
 
     //Variables
     bool isDashing = false;
 
     private void Start() {
         dashMovement = GetComponent<DashMovement>();
-        //slash = GetComponent<Slash>();
+        slashContact = GetComponentInChildren<SlashContact>();
+        movementModification = GetComponentInChildren<MovementModification>();
 
-        dashCollider.OnContact.AddListener(SlashDashContact);
+        slashContact.ActivateContactEvent(dashCollider.OnContact, EndAction, bloodGained);
     }
 
     public void SlashDashInput(Vector3 direction) {
         if (!isDashing) {
             isDashing = true;
 
-            swordMovement.DashAttackPosition();
-            dashMovement.OnDashEnd.AddListener(EndSlashDash);
-            //dashMovement.DashInput(direction);
+            renderer.material.color = Color.red;
+
+            // Calculating boosted variables
+            float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
+            float currentDashDistance = movementModification.GetBoost(dashDistance, boostedDashDistance, true);
+
+            dashMovement.Dash(currentDashDistance, currentDashDuration, direction);
         }
     }
-    private void EndSlashDash() {
-        dashMovement.OnDashEnd.RemoveListener(EndSlashDash);
-        swordMovement.EndAttackPosition();
-        isDashing = false;
-        OnEndSlashDash.Invoke();
-    }
-    private void SlashDashContact(Collider other) {
-        if (isDashing) {
-            if (other.TryGetComponent(out Slashable slashable)) {
-                slashable.TriggerEffect();
-            }
-            if(other.TryGetComponent(out PathCreator pc)) {
-                isDashing = false;
-                //slash.StartSlide(pc, other);
-            }
-        }
-    }
+    
 
     public override void EndAction() {
+        isDashing = false;
+        renderer.material.color = holder;
+        slashContact.EndContactEvent();
         OnEndAction.Invoke();
     }
 }
