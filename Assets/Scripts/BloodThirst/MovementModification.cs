@@ -29,7 +29,6 @@ public class MovementModification : MonoBehaviour
     {
         for(int i = 0; i < speedEffects.Count; i++)
         {
-            Debug.Log(speedEffects[i].durationTimer);
             speedEffects[i].durationTimer -= Time.deltaTime;
             if (speedEffects[i].durationTimer <= 0f)
             {
