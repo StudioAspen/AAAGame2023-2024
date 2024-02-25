@@ -111,11 +111,26 @@ public class Slash : MonoBehaviour
 
     public void SlashContact(Collider other)
     {
+        Vector3 slashDirection = transform.forward;
+
         if (other.TryGetComponent(out Slashable slashable) && isSlashing) {
             slashable.TriggerEffect();
         }
 
-        if(other.TryGetComponent(out PathCreator pc)) {
+        //this is for one-sided Slashable Walls
+        if(other.TryGetComponent(out WallDirection wallDir) && other.TryGetComponent(out PathCreator pathCreator)) {
+            Vector3 wallForward = wallDir.GetForwardVector();
+
+            //Dot gives a value comparing the two directions, 1 = same direction, -1 = opposite direction
+            float directionCheck = Vector3.Dot(slashDirection.normalized, wallForward.normalized);
+
+            if (directionCheck < 0 && !sliding && isSlashing) {
+                isSlashing = false;
+                StartSlide(pathCreator, other);
+            }
+        }
+        //this is for double-sided Slashable Walls
+        else if(other.TryGetComponent(out PathCreator pc)) {
             if (!sliding && isSlashing) {
                 isSlashing = false;
                 StartSlide(pc, other);
