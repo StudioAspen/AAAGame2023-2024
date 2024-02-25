@@ -6,6 +6,9 @@ public class EnemyIdleState : EnemyBaseState
     public override void EnterState(EnemyStateManager enemy)
     {
         //Debug.Log("Enter Idle State");
+        // no longer stunned when going back to idle
+        enemy.renderer.material.color = Color.gray;
+        enemy.GetComponent<SausageEnergyBlast>().isStunned = false;
     }
 
     public override void UpdateState(EnemyStateManager enemy)

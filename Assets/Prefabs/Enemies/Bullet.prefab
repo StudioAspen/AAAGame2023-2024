@@ -148,3 +148,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveForce: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 6300216890138376358}
+  bulletDmg: 0

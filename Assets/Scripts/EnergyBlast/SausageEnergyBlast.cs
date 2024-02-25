@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class SausageEnergyBlast : EnergyBlastedEffect
 {
-    public bool isStunned;
-    public int stunTime;
-    public int bloodAmount;
-    public GameObject bloodPrefab;
-    public GameObject bulletFirePoint;
-
+    [HideInInspector] public bool isStunned;
     private EnemyStateManager enemy;
+
     private void Start()
     {
         enemy = gameObject.GetComponent<EnemyStateManager>();
@@ -20,7 +16,6 @@ public class SausageEnergyBlast : EnergyBlastedEffect
     {
         // Energy blasts stun this enemy for a few seconds.
         // If the enemy is killed while stunned then the enemy drops an increased amount of blood.
-        Debug.Log("blasted");
         if(!isStunned)
         {
             isStunned = true;

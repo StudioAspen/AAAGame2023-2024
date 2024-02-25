@@ -5,6 +5,7 @@ using UnityEngine;
 public class SausageSlashable : Slashable
 {
     public int bloodAmount;
+    public int stunnedBloodAmount;
     public GameObject bloodPrefab;
     public GameObject bulletFirePoint;
 
@@ -16,9 +17,22 @@ public class SausageSlashable : Slashable
          * grants a temporary speed boost to the player for a specified number of seconds. 
          */
         Debug.Log("slashed");
-        for(int i = 0; i < bloodAmount; i++)
+        if(gameObject.GetComponent<SausageEnergyBlast>().isStunned)
         {
-            Instantiate(bloodPrefab, bulletFirePoint.transform.position, Quaternion.identity);
+            for (int i = 0; i < stunnedBloodAmount; i++) 
+            {
+                Instantiate(bloodPrefab, bulletFirePoint.transform.position, Quaternion.identity);
+                gameObject.GetComponent<EnemyStateManager>().Death();
+            }
         }
+        else
+        {
+            for (int i = 0; i < bloodAmount; i++)
+            {
+                Instantiate(bloodPrefab, bulletFirePoint.transform.position, Quaternion.identity);
+                gameObject.GetComponent<EnemyStateManager>().Death();
+            }
+        }
+        
     }
 }
