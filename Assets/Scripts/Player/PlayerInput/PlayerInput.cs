@@ -46,16 +46,17 @@ public class PlayerInput : MonoBehaviour {
         // Getting camera components
         cameraOrientation = FindObjectOfType<Camera>().transform;
         cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
-        playerActionManager = GetComponent<PlayerActionManager>();
+        playerActionManager = GetComponentInChildren<PlayerActionManager>();
 
         SetCurrentController();
     }
 
     // Update is called once per frame
     void Update() {
-        // Initalizing input direction
-        Vector3 inputDirection = Vector3.zero;
         if (canInput) {
+            // Initalizing input direction
+            Vector3 inputDirection = Vector3.zero;
+
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
             inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
             CheckAbilities(inputDirection);
