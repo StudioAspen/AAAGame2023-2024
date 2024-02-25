@@ -80,7 +80,6 @@ public class PlayerInput : MonoBehaviour {
         if (Input.GetKeyUp(inputStab)) {
             playerActionManager.StabInputRelease();
         }
-        // Stab Move with combination logic
         if (Input.GetKeyDown(inputStab)) {
             playerActionManager.StabInputPressed();
         }

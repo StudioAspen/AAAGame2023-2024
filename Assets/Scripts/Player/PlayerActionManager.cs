@@ -59,10 +59,15 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void StabInputHold() {
-
+        if(currentAction == stabAction) {
+            downwardStabAction.DownwardStabInputUpdate();
+        }
     }
     public void StabInputRelease() {
-
+        if (currentAction == basicMovementAction ||
+            currentAction == downwardStabAction) {
+            downwardStabAction.DownwardStabInputRelease();
+        }
     }
     public void SlashInput() {
         if(currentAction == basicMovementAction && slashAction.CanPerformSlash()) {
@@ -71,7 +76,9 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void EnergyBlastInput() {
-
+        if(currentAction == basicMovementAction) {
+            energyBlast.Shoot();
+        }
     }
 
     public void EndAction() {

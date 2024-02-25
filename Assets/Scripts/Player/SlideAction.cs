@@ -4,9 +4,8 @@ using UnityEngine;
 using PathCreation;
 using UnityEngine.Events;
 
-public class SlideMovement {
+public class SlideAction : PlayerAction{
     private Rigidbody rb;
-    private Transform transform;
     private PathCreator pathCreator;
     private EndOfPathInstruction end;
     private bool sliding = false;
@@ -14,18 +13,19 @@ public class SlideMovement {
 
     private Vector3 playerOffset;
     //private Vector3 swordOffset;
-
     private float dstTravelled = 0f;
     private float slideSpeed;
-
-    UnityEvent OnEndSlide = new UnityEvent();
-
-    SlideMovement(Rigidbody _rb, Transform _transform) {
+    
+    private void Start() {
+        rb = GetComponent<Rigidbody>();
         end = EndOfPathInstruction.Stop;
-        rb = _rb;
-        transform = _transform;
     }
 
+    private void Update() {
+        if (sliding) {
+            UpdateSliding();
+        }
+    }
 
     public void StartSlide(PathCreator pc, Collider other, float _slideSpeed) {
         // Slide Initalization
@@ -47,15 +47,14 @@ public class SlideMovement {
         //swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
         if (dstTravelled > pathCreator.path.length) {
-            EndSlide();
+            EndAction();
         }
     }
 
-    private void EndSlide() {
+    public override void EndAction() {
         dstTravelled = 0f;
         sliding = false;
         rb.useGravity = true;
-        OnEndSlide.Invoke();
+        OnEndAction.Invoke();
     }
-
 }

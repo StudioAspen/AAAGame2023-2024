@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DownwardStabAction : MonoBehaviour {
+public class DownwardStabAction : PlayerAction {
 
     [Header("References")]
     [SerializeField] SwordMovement swordMovement;
@@ -27,13 +27,13 @@ public class DownwardStabAction : MonoBehaviour {
     // Components
     Rigidbody rb;
     PlayerPositionCheck playerPositionCheck;
-    Stab stab;
+    StabAction stabAction;
     MovementModification movementModification;
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
         playerPositionCheck = GetComponent<PlayerPositionCheck>();
-        stab = GetComponent<Stab>();
+        stabAction = GetComponent<StabAction>();
         movementModification = GetComponent<MovementModification>();
 
         swordMovement.OnContact.AddListener(DownwardStabContact);
@@ -50,19 +50,21 @@ public class DownwardStabAction : MonoBehaviour {
         //if grounded can perform downward stab
         canDownwardStab = !playerPositionCheck.CheckOnGround();
     }
-    public void TryDownwardStabUpdate() {
+    public void DownwardStabInputUpdate() {
         if (canDownwardStab && !isStabing) {
             stabButtonTimer += Time.deltaTime;
 
             // Starting downward stab as long as the duration
             if (stabButtonTimer >= pressDownTime) {
-                stab.InterruptStab();
+                stabAction.EndAction();
                 isStabing = true;
+                PlayerActionManager manager = GetComponent<PlayerActionManager>();
+                manager.ChangeAction(this);
                 swordMovement.DownwardAttackPosition();
             }
         }
     }
-    public void ReleaseDownwardStab() {
+    public void DownwardStabInputRelease() {
         stabButtonTimer = 0;
 
         if (isStabing) {
@@ -84,10 +86,14 @@ public class DownwardStabAction : MonoBehaviour {
 
     private void DownwardStabContact(Collider other) {
         if(isStabing) {
-            if(other.TryGetComponent<DownwardStabEffect>(out DownwardStabEffect effect)) {
+            if(other.TryGetComponent(out DownwardStabEffect effect)) {
                 effect.TriggerEffect();
                 GetComponent<BloodThirst>().GainBlood(bloodGain, true);
             }
         }
+    }
+
+    public override void EndAction() {
+        OnEndAction.Invoke();
     }
 }

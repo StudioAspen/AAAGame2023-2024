@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using PathCreation;
 using UnityEngine.UIElements;
 
-public class SlashAction : MonoBehaviour
+public class SlashAction : PlayerAction
 {
     [Header("References")]
     [SerializeField] GameObject swordObject;
@@ -29,12 +29,10 @@ public class SlashAction : MonoBehaviour
     // Components
     private MovementModification movementModification;
     private Rigidbody rb;
-    private PlayerInput playerInput;
     private BasicMovementAction basicMovementAction;
     private DashMovement dashMovement;
+    private SlideAction slideAction;
 
-
-    private bool sliding = false;
     private bool isSlashing = false;
 
     private void Start()
@@ -42,9 +40,9 @@ public class SlashAction : MonoBehaviour
         // Getting Components
         rb = GetComponent<Rigidbody>();
         movementModification = GetComponent<MovementModification>();
-        playerInput = GetComponent<PlayerInput>();
         basicMovementAction = GetComponent<BasicMovementAction>();
         dashMovement = GetComponent<DashMovement>();
+        slideAction = GetComponent<SlideAction>();
 
         swordMovement.OnContact.AddListener(SlashContact);
     }
@@ -59,11 +57,6 @@ public class SlashAction : MonoBehaviour
         swordMovement.AttackPosition(attackDuration);
     }
 
-    public void StartSlide(PathCreator pc, Collider other) {
-        GetComponent<BloodThirst>().GainBlood(bloodGained, true);
-
-    }
-
     public void SlashContact(Collider other)
     {
         if (other.TryGetComponent(out Slashable slashable) && isSlashing) {
@@ -71,12 +64,16 @@ public class SlashAction : MonoBehaviour
         }
 
         if(other.TryGetComponent(out PathCreator pc)) {
-            if (!sliding && isSlashing) {
+            if (isSlashing) {
                 isSlashing = false;
-                StartSlide(pc, other);
+
+                EndAction();
+                GetComponent<PlayerActionManager>().ChangeAction(slideAction);
+                slideAction.StartSlide(pc, other, slideSpeed);
             }
         }
     }
+
     private void EndOfSlashAnimation() {
         isSlashing = false;
         swordMovement.OnEndAction.RemoveListener(EndOfSlashAnimation);
@@ -84,5 +81,9 @@ public class SlashAction : MonoBehaviour
 
     public bool CanPerformSlash() {
         return !isSlashing;
+    }
+    public override void EndAction() {
+        isSlashing = false;
+        OnEndAction.Invoke();
     }
 }
