@@ -8,16 +8,17 @@ public class BasicMovementAction : PlayerAction
     PlayerPositionCheck playerPositionCheck;
     Rigidbody rb;
     MovementModification movementModification;
+    Collider collider;
 
     [Header("Ground Variables")]
     [SerializeField] float groundAcceleration;
     [SerializeField] float maxGroundSpeed;
-    [SerializeField] float groundDrag;
+    [SerializeField] float groundFriction;
 
     [Header("Boosted Ground")]
     [SerializeField] float boostedGroundAcceleration;
     [SerializeField] float boostedMaxGroundSpeed;
-    [SerializeField] float boostedGroundDrag;
+    [SerializeField] float boostedGroundFriction;
 
     [Header("Air Variables")]
     [SerializeField] float airAcceleration;
@@ -62,7 +63,7 @@ public class BasicMovementAction : PlayerAction
 
         //Assinging drag
         if (grounded) {
-            rb.drag = groundDrag;
+            collider.material.dynamicFriction = groundFriction;
         }
         else {
             rb.drag = airDrag;

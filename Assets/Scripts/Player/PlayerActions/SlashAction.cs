@@ -57,19 +57,26 @@ public class SlashAction : PlayerAction
         swordMovement.AttackPosition(attackDuration);
     }
 
-    public void SlashContact(Collider other)
-    {
+    public void SlashContact(Collider other) {
+        Vector3 slashDirection = transform.forward;
+
         if (other.TryGetComponent(out Slashable slashable) && isSlashing) {
             slashable.TriggerEffect();
         }
 
-        if(other.TryGetComponent(out PathCreator pc)) {
-            if (isSlashing) {
-                isSlashing = false;
+        if (other.TryGetComponent(out PathCreator pathCreator) && isSlashing) {
+            if(other.TryGetComponent(out WallDirection wallDir)) {
+                Vector3 wallForward = wallDir.GetForwardVector();
 
-                EndAction();
-                GetComponent<PlayerActionManager>().ChangeAction(slideAction);
-                slideAction.StartSlide(pc, other, slideSpeed);
+                //Dot gives a value comparing the two directions, 1 = same direction, -1 = opposite direction
+                float directionCheck = Vector3.Dot(slashDirection.normalized, wallForward.normalized);
+
+                if (directionCheck < 0 && isSlashing) {
+                    StartSlideAction(pathCreator, other);
+                }
+            }
+            else {
+                StartSlideAction(pathCreator, other);
             }
         }
     }
@@ -77,6 +84,13 @@ public class SlashAction : PlayerAction
     private void EndOfSlashAnimation() {
         isSlashing = false;
         swordMovement.OnEndAction.RemoveListener(EndOfSlashAnimation);
+    }
+    private void StartSlideAction(PathCreator pc, Collider other) {
+        isSlashing = false;
+
+        EndAction();
+        GetComponent<PlayerActionManager>().ChangeAction(slideAction);
+        slideAction.StartSlide(pc, other, slideSpeed);
     }
 
     public bool CanPerformSlash() {
