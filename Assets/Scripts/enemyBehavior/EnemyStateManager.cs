@@ -158,6 +158,7 @@ public class EnemyStateManager : MonoBehaviour
     {
         Vector3 toPlayer = playerTransform.position - transform.position;
         GameObject currentBullet = Instantiate(bulletPrefab, bulletFirePoint.transform.position, Quaternion.identity);
+        // update bullet script with parameters here in manager
         currentBullet.GetComponent<Bullet>().moveForce = toPlayer * bulletSpeed;
         currentBullet.GetComponent<Bullet>().damage = bulletDamage;
     }
