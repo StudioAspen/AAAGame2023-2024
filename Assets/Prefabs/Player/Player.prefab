@@ -9,8 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5275782304108923720}
+  - component: {fileID: 7912653211943801073}
+  - component: {fileID: 3009765542485322922}
   m_Layer: 6
-  m_Name: PlayerStateTEst
+  m_Name: OtherPlayerComponents
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,6 +33,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7569982482725669098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7912653211943801073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665959102625697816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b92b510a04956c40aa1a3eab43f2d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boostForAll: 0
+  OnModifyMovement:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3009765542485322922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665959102625697816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0757b9b976f47244aa022131a400dc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ground:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundCheckOffset: 0.001
+  terrainCheckOffset: 0.001
 --- !u!1 &1432506812781281859
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,10 +257,10 @@ GameObject:
   - component: {fileID: 8671536288844823369}
   - component: {fileID: 8012279846651036797}
   - component: {fileID: 7021382955167843328}
-  - component: {fileID: 2352701808018790800}
-  - component: {fileID: 3650192985131432812}
-  - component: {fileID: 3739281105588693709}
+  - component: {fileID: 3134688513665312600}
+  - component: {fileID: 903524653456634431}
   - component: {fileID: 6773326116938459665}
+  - component: {fileID: 3739281105588693709}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -415,6 +450,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 114c9068df70c4d3eacc6cc6dd0f5049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionName: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
   groundAcceleration: 5
   maxGroundSpeed: 10
   groundDrag: 10
@@ -444,15 +483,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 156139ee4aa8849caa989f1ac5db63dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionName: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
   dashDistance: 3
   dashDuration: 0.1
   dashCooldown: 0.25
   boostedDashDistance: 4
   boostedDashDuration: 0.1
   boostedDashCooldown: 0.1
-  OnDashEnd:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &3902229200159131934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,14 +505,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49bf4161f3393de478a05a832096218f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionName: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
   swordMovement: {fileID: 2230350445419021309}
   dashSpeed: 10
   boostedDashSpeed: 15
   bloodGainAmount: 10
   attackDuration: 0.5
-  OnStabEnd:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &3088617981437380700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,6 +526,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3881a59e96cc1744893121e9180e14cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionName: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
   swordObject: {fileID: 6800678773869080880}
   swordMovement: {fileID: 2230350445419021309}
   slideSpeed: 1
@@ -508,6 +553,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7577dd9cfbb8f5b42a68c26fffff31a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionName: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
   swordMovement: {fileID: 2230350445419021309}
   downwardStabAcceleration: 5
   downwardStabMaxSpeed: 10
@@ -527,6 +576,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72789c3c33e498e458b1bd976b9ab04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionName: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
   swordMovement: {fileID: 2230350445419021309}
   dashCollider: {fileID: 6990662696071883527}
   OnEndStabDash:
@@ -544,12 +597,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25284ac0ec7fed74a9b97402bff67ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionName: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
   dashCollider: {fileID: 6990662696071883527}
   swordMovement: {fileID: 2230350445419021309}
   OnEndSlashDash:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2352701808018790800
+--- !u!114 &3134688513665312600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -558,31 +615,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2762887234727674899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0757b9b976f47244aa022131a400dc1, type: 3}
+  m_Script: {fileID: 11500000, guid: ca9902204370b894b833f180711a3758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ground:
-    serializedVersion: 2
-    m_Bits: 1024
-  groundCheckOffset: 0.001
-  terrainCheckOffset: 0.001
---- !u!114 &3650192985131432812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2762887234727674899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b92b510a04956c40aa1a3eab43f2d4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boostForAll: 0
-  OnModifyMovement:
+  actionName: 
+  OnEndAction:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3739281105588693709
+  dashSpeed: 0
+  boostedDashSpeed: 0
+--- !u!114 &903524653456634431
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -591,18 +633,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2762887234727674899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
+  m_Script: {fileID: 11500000, guid: e88809175c78a0b49a9781e8188ba09d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodThirstThreshold: 20
-  maxBlood: 100
-  maxBloodForOverfed: 120
-  currentBlood: 0
-  bloodDrainRate: 5
-  overfedDrainRate: 5
-  playerKillable: {fileID: 8596804024649230227}
-  playerHealthDrainRate: 10
-  OnBloodChange:
+  actionName: 
+  OnEndAction:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &6773326116938459665
@@ -631,6 +666,29 @@ MonoBehaviour:
   rechargeTimer: 2
   timeBetweenShots: 1
   currRechargeTimer: 0
+--- !u!114 &3739281105588693709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodThirstThreshold: 20
+  maxBlood: 100
+  maxBloodForOverfed: 120
+  currentBlood: 0
+  bloodDrainRate: 5
+  overfedDrainRate: 5
+  playerKillable: {fileID: 8596804024649230227}
+  playerHealthDrainRate: 10
+  OnBloodChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3410584284265416894
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class StabDashAction : MonoBehaviour
+public class StabDashAction : PlayerAction
 {
     [Header("References")]
     [SerializeField] SwordMovement swordMovement;
@@ -14,7 +14,6 @@ public class StabDashAction : MonoBehaviour
 
     // Components
     DashMovement dashMovement;
-    Stab stab;
 
     //Variables
     bool isDashing = false;
@@ -22,18 +21,17 @@ public class StabDashAction : MonoBehaviour
     private void Start() {
         // Getting components
         dashMovement = GetComponent<DashMovement>();
-        stab = GetComponent<Stab>();
 
         dashCollider.OnContact.AddListener(StabDashContact);
     }
 
-    public void TryStartStabDash(Vector3 direction) {
+    public void StabDashInput(Vector3 direction) {
         if(!isDashing) {
             isDashing = true;
 
             swordMovement.DashAttackPosition();
             dashMovement.OnDashEnd.AddListener(EndStabDash);
-            dashMovement.DashInput(direction);
+            //dashMovement.DashInput(direction);
         }
     }
     private void EndStabDash() {
@@ -49,8 +47,12 @@ public class StabDashAction : MonoBehaviour
             }
             if(other.TryGetComponent(out StabableEnviornment enviornment)) {
                 isDashing = false;
-                stab.DashThrough(enviornment);
+                //stab.DashThrough(enviornment);
             }
         }
+    }
+
+    public override void EndAction() {
+        OnEndAction.Invoke();
     }
 }

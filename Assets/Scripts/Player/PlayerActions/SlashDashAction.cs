@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using PathCreation;
 
-public class SlashDashAction : MonoBehaviour {
+public class SlashDashAction : PlayerAction {
     [Header("References")]
     [SerializeField] DashCollider dashCollider;
     [SerializeField] SwordMovement swordMovement;
@@ -14,25 +14,25 @@ public class SlashDashAction : MonoBehaviour {
 
     // Components
     DashMovement dashMovement;
-    Slash slash;
+    //Slash slash;
 
     //Variables
     bool isDashing = false;
 
     private void Start() {
         dashMovement = GetComponent<DashMovement>();
-        slash = GetComponent<Slash>();
+        //slash = GetComponent<Slash>();
 
         dashCollider.OnContact.AddListener(SlashDashContact);
     }
 
-    public void TryStartSlashDash(Vector3 direction) {
+    public void SlashDashInput(Vector3 direction) {
         if (!isDashing) {
             isDashing = true;
 
             swordMovement.DashAttackPosition();
             dashMovement.OnDashEnd.AddListener(EndSlashDash);
-            dashMovement.DashInput(direction);
+            //dashMovement.DashInput(direction);
         }
     }
     private void EndSlashDash() {
@@ -48,8 +48,12 @@ public class SlashDashAction : MonoBehaviour {
             }
             if(other.TryGetComponent(out PathCreator pc)) {
                 isDashing = false;
-                slash.StartSlide(pc, other);
+                //slash.StartSlide(pc, other);
             }
         }
+    }
+
+    public override void EndAction() {
+        OnEndAction.Invoke();
     }
 }

@@ -10,12 +10,14 @@ public class DashThroughAction : PlayerAction
     Rigidbody rb;
     Collider collider;
     DashMovement dashMovement;
+    MovementModification movementModification;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+        movementModification = GetComponent<MovementModification>();
         dashMovement = new DashMovement(transform, rb);
         dashMovement.OnDashEnd.AddListener(EndAction);
     }

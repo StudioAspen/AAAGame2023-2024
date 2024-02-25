@@ -75,18 +75,34 @@ public class PlayerActionManager : MonoBehaviour
             slashAction.SlashInput();
         }
     }
+    public void StabDashInput(Vector3 input) {
+        if (currentAction == basicMovementAction ||
+            currentAction == stabDashAction ||
+            currentAction == dashAction) {
+            ChangeAction(stabDashAction);
+            stabDashAction.StabDashInput(input);
+        }
+    }
+    public void SlashDashInput(Vector3 input) {
+        if(currentAction == basicMovementAction || 
+            currentAction == slashAction || 
+            currentAction == dashAction) {
+            ChangeAction(slashDashAction);
+            slashDashAction.SlashDashInput(input);
+        }
+    }
     public void EnergyBlastInput() {
         if(currentAction == basicMovementAction) {
             energyBlast.Shoot();
         }
     }
-
-    public void EndAction() {
-        currentAction.OnEndAction.RemoveListener(EndAction);
+    
+    public void EndOfAction() {
+        currentAction.OnEndAction.RemoveListener(EndOfAction);
         currentAction = basicMovementAction;
     }
     public void ChangeAction(PlayerAction action) {
         currentAction = action;
-        currentAction.OnEndAction.AddListener(EndAction);
+        currentAction.OnEndAction.AddListener(EndOfAction);
     }
 }
