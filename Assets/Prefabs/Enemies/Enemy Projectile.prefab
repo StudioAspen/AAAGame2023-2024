@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6300216890138376358}
   - component: {fileID: -5194304357077370883}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: Enemy Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,3 +148,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveForce: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 6300216890138376358}
+  damage: 0
+  maxDistanceTravel: 100

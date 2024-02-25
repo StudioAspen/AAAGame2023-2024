@@ -168,5 +168,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a68df59e630cf54e8eb9cd1b6c22671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gainBloodAmount: 5
-  despawnTime: 5
+  gainBloodAmount: 1
