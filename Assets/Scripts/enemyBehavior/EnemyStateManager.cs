@@ -2,18 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyStateManager : MonoBehaviour
 {
-    // all the states of the enemies
-    public EnemyBaseState currentState;
-    public EnemyIdleState idleState = new EnemyIdleState();
-    public EnemyAggroState aggroState = new EnemyAggroState();
-    public EnemyAttackState attackState = new EnemyAttackState();
-    public EnemyStunState stunState = new EnemyStunState();
-    public EnemyDeathState deathState = new EnemyDeathState();
-
     [Header("Enemy State Duration Variables")]
+    public float aggroDistance;
+    public float deagroDistance;
+    public float attackDistance;
     public float idleAtPlayerLastPositionDuration;
     public float stunDuration;
     public Transform spawnpoint;
@@ -36,10 +32,24 @@ public class EnemyStateManager : MonoBehaviour
     public Timer timer = new Timer();
     private Transform playerTransform;
 
-    void Start()
-    {
-        // setting references
-        renderer = GetComponent<Renderer>();
+    // all the states of the enemies
+    public EnemyBaseState currentState;
+    public EnemyIdleState idleState;
+    public EnemyAggroState aggroState;
+    public EnemyAttackState attackState;
+    public EnemyStunState stunState;
+    public EnemyDeathState deathState;
+
+
+    void Start() {
+        idleState = new EnemyIdleState(aggroDistance);
+        aggroState = new EnemyAggroState(deagroDistance, attackDistance);
+        attackState = new EnemyAttackState(attackDistance);
+        stunState = new EnemyStunState();
+        deathState = new EnemyDeathState();
+
+    // setting references
+    renderer = GetComponent<Renderer>();
         playerTransform = FindObjectOfType<PlayerInput>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
 
@@ -168,5 +178,16 @@ public class EnemyStateManager : MonoBehaviour
     {
         if (!timer.IsActive())
             timer.StartTimer(enemyAttackCooldown, MakeBullet);
+    }
+
+    private void OnDrawGizmos() {
+        Color holder = Gizmos.color;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, aggroDistance);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, deagroDistance);
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(transform.position, attackDistance);
+        Gizmos.color = holder;
     }
 }

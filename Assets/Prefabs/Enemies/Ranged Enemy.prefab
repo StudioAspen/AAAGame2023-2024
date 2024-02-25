@@ -155,14 +155,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0b50a69cb22b784b8cced784931aa9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aggroDistance: 12
+  deagroDistance: 15
+  attackDistance: 7
   idleAtPlayerLastPositionDuration: 5
   stunDuration: 2
   spawnpoint: {fileID: 0}
   bulletPrefab: {fileID: 3113997752838417528, guid: d5d9f454918076d4689292dc56796b97,
     type: 3}
   bulletFirePoint: {fileID: 2875391713093058102}
-  bulletSpeed: 40
-  bulletDamage: 50
+  bulletSpeed: 2
+  bulletDamage: 10
   enemyAttackCooldown: 1
   deathSpeedIncrease: 1
   deathSpeedDuration: 10
