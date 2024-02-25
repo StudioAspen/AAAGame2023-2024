@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class SausageSlashable : Slashable
 {
-    public int bloodAmount;
-    public int stunnedBloodAmount;
+    public int singleBloodAmount;
+    public int bloodAmountSpawned;
+    public int stunnedBloodAmountSpawned;
     public GameObject bloodPrefab;
     public GameObject bulletFirePoint;
 
@@ -19,16 +20,18 @@ public class SausageSlashable : Slashable
         Debug.Log("slashed");
         if(gameObject.GetComponent<SausageEnergyBlast>().isStunned)
         {
-            for (int i = 0; i < stunnedBloodAmount; i++) 
+            for (int i = 0; i < stunnedBloodAmountSpawned; i++) 
             {
+                bloodPrefab.GetComponent<BloodOrb>().gainBloodAmount = singleBloodAmount;
                 Instantiate(bloodPrefab, bulletFirePoint.transform.position, Quaternion.identity);
                 gameObject.GetComponent<EnemyStateManager>().Death();
             }
         }
         else
         {
-            for (int i = 0; i < bloodAmount; i++)
+            for (int i = 0; i < bloodAmountSpawned; i++)
             {
+                bloodPrefab.GetComponent<BloodOrb>().gainBloodAmount = singleBloodAmount;
                 Instantiate(bloodPrefab, bulletFirePoint.transform.position, Quaternion.identity);
                 gameObject.GetComponent<EnemyStateManager>().Death();
             }

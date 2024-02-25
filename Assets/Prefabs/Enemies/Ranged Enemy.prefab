@@ -156,7 +156,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleAtPlayerLastPositionDuration: 5
-  isStunned: 0
   stunDuration: 2
   spawnpoint: {fileID: 0}
   bulletPrefab: {fileID: 3113997752838417528, guid: d5d9f454918076d4689292dc56796b97,
@@ -180,8 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d902445af16b04845a00bd9e1b9564bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodAmount: 4
-  stunnedBloodAmount: 16
+  singleBloodAmount: 50
+  bloodAmountSpawned: 5
+  stunnedBloodAmountSpawned: 10
   bloodPrefab: {fileID: 7959290666730999954, guid: 6d3004141710547468d2b677ddc35683,
     type: 3}
   bulletFirePoint: {fileID: 2875391713093058102}
@@ -210,11 +210,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStunned: 0
-  stunTime: 3
-  bloodAmount: 10
-  bloodPrefab: {fileID: 7959290666730999954, guid: 6d3004141710547468d2b677ddc35683,
-    type: 3}
-  bulletFirePoint: {fileID: 2875391713093058102}
 --- !u!114 &1951858722545280346
 MonoBehaviour:
   m_ObjectHideFlags: 0
