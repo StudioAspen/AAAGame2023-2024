@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using PathCreation;
 
-public class SlashDash : MonoBehaviour {
+public class SlashDashAction : MonoBehaviour {
     [Header("References")]
     [SerializeField] DashCollider dashCollider;
     [SerializeField] SwordMovement swordMovement;

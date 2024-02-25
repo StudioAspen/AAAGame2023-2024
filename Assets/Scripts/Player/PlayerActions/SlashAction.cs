@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using PathCreation;
 using UnityEngine.UIElements;
 
-public class Slash : MonoBehaviour
+public class SlashAction : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject swordObject;

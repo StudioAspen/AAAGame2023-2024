@@ -2,42 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class BasicMovementAction : PlayerAction
 {
     //Components
     PlayerPositionCheck playerPositionCheck;
     Rigidbody rb;
     MovementModification movementModification;
-    PlayerStateManager stateManager;
 
     [Header("Ground Variables")]
-    public float groundAcceleration;
-    public float maxGroundSpeed;
-    public float groundDrag;
+    [SerializeField] float groundAcceleration;
+    [SerializeField] float maxGroundSpeed;
+    [SerializeField] float groundDrag;
+
     [Header("Boosted Ground")]
-    public float boostedGroundAcceleration;
-    public float boostedMaxGroundSpeed;
-    public float boostedGroundDrag;
+    [SerializeField] float boostedGroundAcceleration;
+    [SerializeField] float boostedMaxGroundSpeed;
+    [SerializeField] float boostedGroundDrag;
 
     [Header("Air Variables")]
-    public float airAcceleration;
-    public float maxAirSpeed;
-    public float airDrag;
+    [SerializeField] float airAcceleration;
+    [SerializeField] float maxAirSpeed;
+    [SerializeField] float airDrag;
+
     [Header("Boosted Air")]
-    public float boostedAirAcceleration;
-    public float boostedMaxAirSpeed;
-    public float boostedAirDrag;
+    [SerializeField] float boostedAirAcceleration;
+    [SerializeField] float boostedMaxAirSpeed;
+    [SerializeField] float boostedAirDrag;
 
     [Header("Jump Variables")]
-    public float jumpForce;
-    public float gravityAcceleration;
+    [SerializeField] float jumpForce;
+    [SerializeField] float gravityAcceleration;
+
     [Header("Boosted Jump")]
-    public float boostedJumpForce;
-    public float boostedGravityAcceleration;
+    [SerializeField] float boostedJumpForce;
+    [SerializeField] float boostedGravityAcceleration;
 
     [Header("Other Variables")]
     [Range(0.0f, 1f)]
-    public float rotationSpeed;
+    [SerializeField] float rotationSpeed;
 
     bool readyToJump = true;
     bool grounded;
@@ -79,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
     #region // INPUT FUNCTIONS
     public void JumpInput()
     {
-        if(readyToJump && StateCheck())
+        if(readyToJump)
         {
             readyToJump = false;
             grounded = false;
@@ -89,14 +91,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void MoveInput(Vector3 inputDirection)
     {
-        if (StateCheck())
-        {
-            isMoving = true;
-            targetDirection = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
-        }
-        else {
-            isMoving = false;
-        }
+        isMoving = true;
+        targetDirection = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
     }
 
     public void NoMoveInput() {
@@ -116,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 addedVelocity;
         Vector3 maxVelocity;
         Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+
         // Assigning variables if player is on the ground
         if (grounded) {
             addedVelocity = targetDirection.normalized * Mathf.Lerp(groundAcceleration, boostedGroundAcceleration, movementModification.boostForAll);
@@ -126,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
             maxVelocity = targetDirection.normalized * Mathf.Lerp(maxAirSpeed, boostedMaxAirSpeed, movementModification.boostForAll);
         }
 
-        // Applying horizontal movement
+        // Applying horizontal movement and limiting speed based on max velocity
         float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
         Physics.Raycast(rb.position, addedVelocity);
         if (alignment < 1 && !playerPositionCheck.CheckColldingWithTerrain(addedVelocity)) {
@@ -137,10 +134,7 @@ public class PlayerMovement : MonoBehaviour
     private void RotationUpdate() {
         transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, rotationSpeed);
     }
-
-    private bool StateCheck() {
-        return stateManager.currentState == PlayerState.IDLE ||
-            stateManager.currentState == PlayerState.STAB ||
-            stateManager.currentState == PlayerState.SLASH;
+    public override void EndAction() {
+        throw new System.NotImplementedException();
     }
 }

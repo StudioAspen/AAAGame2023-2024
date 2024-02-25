@@ -20,7 +20,8 @@ public enum PlayerState {
 public class PlayerStateManager : MonoBehaviour
 {
     // States
-    PlayerStateBase currentState;
+    //PlayerStateBase currentState;
+    public PlayerState currentState;
     PlayerIdleState idleState;
 
     // Actions
@@ -28,6 +29,6 @@ public class PlayerStateManager : MonoBehaviour
     EnergyBlast energyBlast;
 
     private void Start() {
-        currentState = idleState;
+        currentState = PlayerState.IDLE;
     }
 }

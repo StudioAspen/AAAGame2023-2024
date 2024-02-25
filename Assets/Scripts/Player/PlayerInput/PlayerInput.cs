@@ -19,7 +19,6 @@ public class PlayerInput : MonoBehaviour {
     [Header("Mouse Keyboard Inputs")]
     [SerializeField] KeyCode keyboardStab;
     [SerializeField] KeyCode keyboardSlash;
-    //[SerializeField] KeyCode keyboardDownwardStab;
     [SerializeField] KeyCode keyboardDash;
     [SerializeField] KeyCode keyboardJump;
     [SerializeField] KeyCode keyboardShoot;
@@ -27,7 +26,6 @@ public class PlayerInput : MonoBehaviour {
     [Header("Controller Inputs")]
     [SerializeField] KeyCode controllerStab;
     [SerializeField] KeyCode controllerSlash;
-    //[SerializeField] KeyCode controllerDownwardStab;
     [SerializeField] KeyCode controllerDash;
     [SerializeField] KeyCode controllerJump;
     [SerializeField] KeyCode controllerShoot;
@@ -35,53 +33,69 @@ public class PlayerInput : MonoBehaviour {
     // Controls
     KeyCode inputStab;
     KeyCode inputSlash;
-    //KeyCode inputDownwardStab;
     KeyCode inputDash;
     KeyCode inputJump;
     KeyCode inputShoot;
 
-    bool stabStarted = false;
-    bool slashStarted = false;
-    bool dashStarted = false;
-    float combinationWindowTimer = 0;
     bool canInput = true;
 
-    //Movement abilities
-    PlayerMovement movement;
-    DashMovement dash;
-    Stab stab;
-    Slash slash;
-    DownwardStab downwardStab;
-    StabDash stabDash;
-    SlashDash slashDash;
-    EnergyBlast energyBlast;
-
+    InputActionCheck inputActionCheck;
     // Start is called before the first frame update
     void Start() {
-        // Getting components
-        dash = GetComponent<DashMovement>();
-        stab = GetComponent<Stab>();
-        slash = GetComponent<Slash>();
-        movement = GetComponent<PlayerMovement>();
-        downwardStab = GetComponent<DownwardStab>();
-        stabDash = GetComponent<StabDash>();
-        slashDash = GetComponent<SlashDash>();
-        energyBlast = GetComponent<EnergyBlast>();
         
         // Getting camera components
         cameraOrientation = FindObjectOfType<Camera>().transform;
         cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
+        inputActionCheck = GetComponent<InputActionCheck>();
 
-        // Setting ability events
-        stab.OnStabEnd.AddListener(ResetCombination);
-        slash.OnSlashEnd.AddListener(ResetCombination);
-        dash.OnDashEnd.AddListener(ResetCombination);
-        stabDash.OnEndStabDash.AddListener(ResetCombination);
-        slashDash.OnEndSlashDash.AddListener(ResetCombination);
+        SetCurrentController();
+    }
 
+    // Update is called once per frame
+    void Update() {
+        // Initalizing input direction
+        Vector3 inputDirection = Vector3.zero;
+        if (canInput) {
+            //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
+            inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+            CheckAbilities(inputDirection);
+        }
+    }
+    public void DisableInput() {
+        canInput = false;
+    }
+    public void EnableInput() {
+        canInput = true;
+    }
+    private void CheckAbilities(Vector3 direction) {
+        if (Input.GetKeyDown(inputJump)) {
+            inputActionCheck.JumpInput();
+        }
+        if (Input.GetKeyDown(inputDash)) {
+            inputActionCheck.DashInput(direction);
+        }
+        if (Input.GetKey(inputStab)) {
+            inputActionCheck.StabInputHold();
+        }
+        if (Input.GetKeyUp(inputStab)) {
+            inputActionCheck.StabInputRelease();
+        }
+        // Stab Move with combination logic
+        if (Input.GetKeyDown(inputStab)) {
+            inputActionCheck.StabInputPressed();
+        }
+        if (Input.GetKeyDown(inputSlash)) {
+            inputActionCheck.SlashInput();
+        }
+        if (Input.GetKeyDown(inputShoot)) {
+            inputActionCheck.EnergyBlastInput();
+        }
+        inputActionCheck.DirectionalInput(direction);
+    }
+
+    private void SetCurrentController() {
         // Setting controls for camera
-        switch (currentControls)
-        {
+        switch (currentControls) {
             case ControlType.controller:
                 // Setting axis for controller
                 cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
@@ -126,102 +140,5 @@ public class PlayerInput : MonoBehaviour {
             default:
                 break;
         }
-    }
-
-    // Update is called once per frame
-    void Update() {
-        // Initalizing input direction
-        Vector3 inputDirection = Vector3.zero;
-        if (canInput) {
-            //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
-            inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
-            CheckCombinationAbilties(inputDirection);
-            CheckAbilities(inputDirection);
-        }
-        else if (dashStarted || slashStarted || stabStarted) { // Checking inputs for combination abilities
-            combinationWindowTimer += Time.deltaTime;
-            CheckCombinationAbilties(inputDirection);
-        }
-
-        if (Input.GetKeyDown(inputShoot))
-        {
-            energyBlast.Shoot();
-        }
-    }
-    public void DisableInput() {
-        canInput = false;
-    }
-    public void EnableInput() {
-        canInput = true;
-    }
-    private void CheckAbilities(Vector3 direction) {
-        if (Input.GetKeyDown(inputJump)) {
-            movement.JumpInput();
-        }
-        if (Input.GetKey(inputStab)) {
-            downwardStab.TryDownwardStabUpdate();
-        }
-        if (Input.GetKeyUp(inputStab)) {
-            downwardStab.ReleaseDownwardStab();
-        }
-        if (direction.magnitude > 0.01f) {
-            movement.MoveInput(direction);
-        }
-        else {
-            movement.NoMoveInput();
-        }
-    }
-    private void CheckCombinationAbilties(Vector3 direction) {
-        // Stab Move with combination logic
-        if (Input.GetKeyDown(inputStab)) {
-            if (!dashStarted) {
-                stabStarted = true;
-                combinationWindowTimer = 0;
-                stab.StabInput();
-            }
-            else if (combinationWindowTimer < combinationWindow) {
-                dash.InterruptDashInput(true);
-                //ResetCombination();
-                stabDash.TryStartStabDash(direction);
-            }
-        }
-
-        // Slash Move with combination logic
-        if (Input.GetKeyDown(inputSlash)) {
-            if (!dashStarted) {
-                slashStarted = true;
-                combinationWindowTimer = 0;
-                slash.StartSlash();
-            }
-            else if (combinationWindowTimer < combinationWindow) {
-                dash.InterruptDashInput(true);
-                //ResetCombination();
-                slashDash.TryStartSlashDash(direction);
-            }
-        }
-
-        // Dash with combination logic
-        if (Input.GetKeyDown(inputDash)) {
-            if (stabStarted && combinationWindowTimer < combinationWindow) {
-                stab.InterruptStab();
-                //ResetCombination();
-                stabDash.TryStartStabDash(direction);
-            }
-            else if (slashStarted && combinationWindowTimer < combinationWindow) {
-                slash.InterruptSlash();
-                //ResetCombination();
-                slashDash.TryStartSlashDash(direction);
-            }
-            else {
-                dashStarted = true;
-                combinationWindowTimer = 0;
-                dash.DashInput(direction);
-            }
-        }
-    }
-    private void ResetCombination() {
-        stabStarted = false;
-        slashStarted = false;
-        dashStarted = false;
     }
 }

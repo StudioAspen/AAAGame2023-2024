@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class StabDash : MonoBehaviour
+public class StabDashAction : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] SwordMovement swordMovement;

@@ -3,30 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DashMovement : MonoBehaviour
+public class DashAction : PlayerAction
 {
-
     [Header("Movement")]
-    public float dashDistance; // How far the dash will go
-    public float dashDuration; // How long the dash lasts
-    public float dashCooldown; // Cooldown for the dash
+    [SerializeField] float dashDistance; // How far the dash will go
+    [SerializeField] float dashDuration; // How long the dash lasts
+    [SerializeField] float dashCooldown; // Cooldown for the dash
 
     [Header("Boosted Movement")]
-    public float boostedDashDistance; // Distance traveled when max overfed
-    public float boostedDashDuration; // Duration when max overfed
-    public float boostedDashCooldown; // Cooldown when max overfed
+    [SerializeField] float boostedDashDistance; // Distance traveled when max overfed
+    [SerializeField] float boostedDashDuration; // Duration when max overfed
+    [SerializeField] float boostedDashCooldown; // Cooldown when max overfed
 
     bool dashAvailable = true;
-    bool isDashing = false;
     float dashCdTimer;//Time before you can dash again
-
-    [Header("Events")]
-    public UnityEvent OnDashEnd = new UnityEvent();
 
     // References
     MovementModification movementModification;
     PlayerPositionCheck playerPositionCheck;
-    DashAction dashAction;
+    DashMovement dashMovement;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +29,7 @@ public class DashMovement : MonoBehaviour
         // Getting components
         movementModification = GetComponent<MovementModification>();
         playerPositionCheck = GetComponent<PlayerPositionCheck>();
-        dashAction = GetComponentInChildren<DashAction>();
+        dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
     }
 
     // Update is called once per frame
@@ -46,20 +41,21 @@ public class DashMovement : MonoBehaviour
         if (playerPositionCheck.CheckOnGround()) {
             ResetDash();
         }
+        dashMovement.UpdateDashing();
     }
     public void DashInput(Vector3 direction)
     {
-        if (dashCdTimer <= 0 && dashAvailable && !isDashing) {
+        if (dashCdTimer <= 0 && dashAvailable && !dashMovement.isDashing) {
             dashAvailable = false; // Using up the dash
             Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z); // Only using the horizontal component
             
             // Calculating boosts (all boosts are calculated as a linear interpolation between normal and boost amount given a percentage)
             dashCdTimer = Mathf.Lerp(dashCooldown, boostedDashCooldown, movementModification.boostForAll); 
             float netDashDistance = Mathf.Lerp(dashDistance, boostedDashDistance, movementModification.boostForAll);  
-            float netDashDuration = Mathf.Lerp(dashDuration, boostedDashDuration, movementModification.boostForAll); 
+            float netDashDuration = Mathf.Lerp(dashDuration, boostedDashDuration, movementModification.boostForAll);
 
             // Starting Dash
-            dashAction.Dash(netDashDistance, netDashDuration, horizontalDirection);
+            dashMovement.Dash(netDashDistance, netDashDuration, horizontalDirection);
         }
     }
 
@@ -69,18 +65,9 @@ public class DashMovement : MonoBehaviour
         dashAvailable = true;
     }
 
-    public void InterruptDashInput(bool canDashAgain) {
-        if (canDashAgain) {
-            ResetDash();
-        }
-        EndDash();
-    }
-
-    private void EndDash() {
-
+    public override void EndAction() {
         //Ending dash
-        isDashing = false;
-        OnDashEnd.Invoke();
+        dashMovement.EndDash();
+        OnEndAction.Invoke();
     }
-
 }

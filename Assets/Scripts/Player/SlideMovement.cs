@@ -4,7 +4,7 @@ using UnityEngine;
 using PathCreation;
 using UnityEngine.Events;
 
-public class SlideAction {
+public class SlideMovement {
     private Rigidbody rb;
     private Transform transform;
     private PathCreator pathCreator;
@@ -20,7 +20,7 @@ public class SlideAction {
 
     UnityEvent OnEndSlide = new UnityEvent();
 
-    SlideAction(Rigidbody _rb, Transform _transform) {
+    SlideMovement(Rigidbody _rb, Transform _transform) {
         end = EndOfPathInstruction.Stop;
         rb = _rb;
         transform = _transform;

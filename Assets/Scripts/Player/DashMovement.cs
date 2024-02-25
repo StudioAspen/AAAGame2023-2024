@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DashAction {
+public class DashMovement {
     // References needed
     Rigidbody rb;
     Transform transform;
@@ -13,9 +13,9 @@ public class DashAction {
     float dashDurationTimer;
     Vector3 dashVelocity;
     float dragValHolder;
-    bool isDashing = false;
+    public bool isDashing = false;
 
-    DashAction(Transform _transform, Rigidbody _rb) {
+    public DashMovement(Transform _transform, Rigidbody _rb) {
         transform = _transform;
         rb = _rb;
     }
@@ -40,16 +40,19 @@ public class DashAction {
         Debug.DrawLine(rb.position, rb.position + direction * distance, Color.white, 5);
     }
 
+    // This function needs to be constantly run during the update function
     public void UpdateDashing() {
-        // Allowing dashing as long as the dash direction is no in the same direction as the current velocity
-        if (dashDurationTimer > 0) {
-            rb.drag = 0;
-            rb.velocity = dashVelocity;
+        if (isDashing) {
+            // Allowing dashing as long as the dash direction is no in the same direction as the current velocity
+            if (dashDurationTimer > 0) {
+                rb.drag = 0;
+                rb.velocity = dashVelocity;
+            }
+            if (dashDurationTimer <= 0) {
+                EndDash();
+            }
+            dashDurationTimer -= Time.fixedDeltaTime;
         }
-        if (dashDurationTimer <= 0) {
-            EndDash();
-        }
-        dashDurationTimer -= Time.fixedDeltaTime;
     }
     public void EndDash() {
         //Rstoring movement variables
