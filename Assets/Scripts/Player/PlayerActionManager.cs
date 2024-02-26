@@ -18,14 +18,14 @@ public class PlayerActionManager : MonoBehaviour
 
     private void Start() {
         // Getting components
-        basicMovementAction = GetComponent<BasicMovementAction>();
-        dashAction = GetComponent<DashAction>();
-        stabAction = GetComponent<StabAction>();
-        slashAction = GetComponent<SlashAction>();
-        downwardStabAction = GetComponent<DownwardStabAction>();
-        stabDashAction = GetComponent<StabDashAction>();
-        slashDashAction = GetComponent<SlashDashAction>();
-        energyBlast = GetComponent<EnergyBlast>();
+        basicMovementAction = GetComponentInParent<BasicMovementAction>();
+        dashAction = GetComponentInParent<DashAction>();
+        stabAction = GetComponentInParent<StabAction>();
+        slashAction = GetComponentInParent<SlashAction>();
+        downwardStabAction = GetComponentInParent<DownwardStabAction>();
+        stabDashAction = GetComponentInParent<StabDashAction>();
+        slashDashAction = GetComponentInParent<SlashDashAction>();
+        energyBlast = GetComponentInParent<EnergyBlast>();
 
         currentAction = basicMovementAction;
     }

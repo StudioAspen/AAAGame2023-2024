@@ -31,7 +31,7 @@ public class DashThroughAction : PlayerAction
     public void DashThrough(StabableEnviornment stabableEnviornment) {
         collider.isTrigger = true; // Temp implementation for passing through objects
         
-        float dashDuration = (stabableEnviornment.dashLength / Mathf.Lerp(dashSpeed, boostedDashSpeed, movementModification.boostForAll));
+        float dashDuration = (stabableEnviornment.dashLength / movementModification.GetBoost(dashSpeed, boostedDashSpeed, true));
         rb.position = stabableEnviornment.dashStartTransform.position;
         dashMovement.Dash(stabableEnviornment.dashLength, dashDuration, stabableEnviornment.dashDir);
     }

@@ -48,6 +48,8 @@ public class PlayerInput : MonoBehaviour {
         cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
         playerActionManager = GetComponentInChildren<PlayerActionManager>();
 
+        Debug.Log(playerActionManager);
+
         SetCurrentController();
     }
 

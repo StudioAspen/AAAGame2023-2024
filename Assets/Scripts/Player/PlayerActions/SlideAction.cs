@@ -39,7 +39,7 @@ public class SlideAction : PlayerAction{
         pathCreator = pc;
 
         currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
-        Vector3 contactPoint = other.ClosestPoint(swordObject.transform.position);
+        Vector3 contactPoint = other.ClosestPoint(transform.position);
         rb.useGravity = false;
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
         playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
@@ -47,6 +47,8 @@ public class SlideAction : PlayerAction{
     }
     
     private void UpdateSliding() {
+        Debug.Log(dstTravelled);
+        Debug.Log(currentSlideSpeed);
         dstTravelled += currentSlideSpeed * Time.deltaTime;
         transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
         //swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;

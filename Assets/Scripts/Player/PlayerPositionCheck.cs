@@ -14,7 +14,7 @@ public class PlayerPositionCheck : MonoBehaviour {
     bool onGround = false;
 
     private void Start() {
-        collider = GetComponent<Collider>();
+        collider = transform.parent.GetComponent<Collider>();
     }
     private void Update() {
         onGround = Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(collider.bounds.min.y - transform.position.y) + groundCheckOffset, ground);

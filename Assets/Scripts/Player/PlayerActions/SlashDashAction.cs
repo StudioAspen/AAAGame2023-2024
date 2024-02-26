@@ -24,6 +24,7 @@ public class SlashDashAction : PlayerAction {
     Color holder;
 
     // Components
+    Rigidbody rb;
     DashMovement dashMovement;
     SlashContact slashContact;
     MovementModification movementModification;
@@ -32,7 +33,8 @@ public class SlashDashAction : PlayerAction {
     bool isDashing = false;
 
     private void Start() {
-        dashMovement = GetComponent<DashMovement>();
+        rb = GetComponent<Rigidbody>();
+        dashMovement = new DashMovement(transform, rb);
         slashContact = GetComponentInChildren<SlashContact>();
         movementModification = GetComponentInChildren<MovementModification>();
 

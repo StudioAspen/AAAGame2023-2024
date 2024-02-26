@@ -33,7 +33,7 @@ public class DownwardStabAction : PlayerAction {
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
-        playerPositionCheck = GetComponent<PlayerPositionCheck>();
+        playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         stabAction = GetComponent<StabAction>();
         movementModification = GetComponent<MovementModification>();
 
