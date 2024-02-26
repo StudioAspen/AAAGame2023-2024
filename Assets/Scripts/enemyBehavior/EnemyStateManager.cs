@@ -48,10 +48,12 @@ public class EnemyStateManager : MonoBehaviour
         stunState = new EnemyStunState();
         deathState = new EnemyDeathState();
 
-        spawnpoint = transform;
+        if (spawnpoint == null) {
+            spawnpoint = transform;
+        }
 
-        // setting references
-        renderer = GetComponent<Renderer>();
+    // setting references
+    renderer = GetComponent<Renderer>();
         playerTransform = FindObjectOfType<PlayerInput>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
 
