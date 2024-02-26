@@ -35,7 +35,7 @@ public class DownwardStabAction : PlayerAction {
         rb = GetComponent<Rigidbody>();
         playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         stabAction = GetComponent<StabAction>();
-        movementModification = GetComponent<MovementModification>();
+        movementModification = GetComponentInChildren<MovementModification>();
 
         swordMovement.OnContact.AddListener(DownwardStabContact);
     }
@@ -60,7 +60,7 @@ public class DownwardStabAction : PlayerAction {
                 stabAction.EndAction();
                 isStabing = true;
 
-                PlayerActionManager manager = GetComponent<PlayerActionManager>();
+                PlayerActionManager manager = GetComponentInChildren<PlayerActionManager>();
                 manager.ChangeAction(this);
                 swordMovement.DownwardAttackPosition();
             }

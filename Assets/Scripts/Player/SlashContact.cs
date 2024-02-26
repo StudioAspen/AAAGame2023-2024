@@ -29,6 +29,7 @@ public class SlashContact : MonoBehaviour {
         Vector3 slashDirection = transform.forward;
 
         if (other.TryGetComponent(out Slashable slashable)) {
+            OnContact.Invoke();
             slashable.TriggerEffect();
         }
 
@@ -46,6 +47,7 @@ public class SlashContact : MonoBehaviour {
             else {
                 StartSlideAction(pathCreator, other);
             }
+            OnContact.Invoke();
         }
         if (other.TryGetComponent(out SlashableEnviornment slashableEnviornment)) {
             if (slashableEnviornment.canGiveBlood) {
@@ -62,7 +64,7 @@ public class SlashContact : MonoBehaviour {
     }
 
     public void ActivateContactEvent(UnityEvent<Collider> _contactEvent, UnityAction contactCall, float bloodGained) {
-        bloodGainAmount = bloodGained; // Blood gained when 
+        bloodGainAmount = bloodGained; 
         contactEvent = _contactEvent;
         contactEvent.AddListener(StabContactEffect);
         OnContact.AddListener(contactCall);

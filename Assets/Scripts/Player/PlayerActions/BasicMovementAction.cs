@@ -123,7 +123,7 @@ public class BasicMovementAction : PlayerAction
     }
 
     public void Jump(float _jumpForce) {
-        rb.AddForce(transform.up * _jumpForce, ForceMode.VelocityChange);
+        rb.velocity = transform.up * _jumpForce;
     }
     public void ResetJump() {
         readyToJump = true;

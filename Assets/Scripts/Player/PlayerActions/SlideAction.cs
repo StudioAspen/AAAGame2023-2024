@@ -5,8 +5,14 @@ using PathCreation;
 using UnityEngine.Events;
 
 public class SlideAction : PlayerAction{
+    [Header("Regular Variables")]
     [SerializeField] float slideSpeed;
+    [SerializeField] float jumpForce;
+
+    [Header("Boosted Variables")]
     [SerializeField] float boostedSlideSpeed;
+    [SerializeField] float boostedJumpForce;
+
     float currentSlideSpeed;
     
     private Rigidbody rb;
@@ -20,9 +26,12 @@ public class SlideAction : PlayerAction{
     private Vector3 playerOffset;
     //private Vector3 swordOffset;
     private float dstTravelled = 0f;
+
+    BasicMovementAction movementAction;
     
     private void Start() {
         rb = GetComponent<Rigidbody>();
+        movementAction = GetComponent<BasicMovementAction>();
         movementModification = GetComponentInChildren<MovementModification>();
         end = EndOfPathInstruction.Stop;
     }
@@ -47,8 +56,6 @@ public class SlideAction : PlayerAction{
     }
     
     private void UpdateSliding() {
-        Debug.Log(dstTravelled);
-        Debug.Log(currentSlideSpeed);
         dstTravelled += currentSlideSpeed * Time.deltaTime;
         transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
         //swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
@@ -60,9 +67,11 @@ public class SlideAction : PlayerAction{
     }
 
     public override void EndAction() {
+        Debug.Log(movementModification.GetBoost(jumpForce, boostedJumpForce, true));
         dstTravelled = 0f;
         sliding = false;
         rb.useGravity = true;
+        movementAction.Jump(movementModification.GetBoost(jumpForce, boostedJumpForce, true));
         OnEndAction.Invoke();
     }
 }
