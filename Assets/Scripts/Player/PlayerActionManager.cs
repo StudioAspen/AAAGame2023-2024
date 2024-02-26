@@ -102,6 +102,7 @@ public class PlayerActionManager : MonoBehaviour
         currentAction = basicMovementAction;
     }
     public void ChangeAction(PlayerAction action) {
+        currentAction.EndAction();
         currentAction = action;
         currentAction.OnEndAction.AddListener(EndOfAction);
     }

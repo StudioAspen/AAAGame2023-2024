@@ -39,7 +39,7 @@ public class StabDashAction : PlayerAction
         renderer = GetComponent<Renderer>();
 
         // Setting events
-        stabContact.ActivateContactEvent(dashCollider.OnContact, EndAction, bloodGained);
+        stabContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
         dashMovement.OnDashEnd.AddListener(EndAction);
 
         // Temp holder

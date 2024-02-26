@@ -26,9 +26,9 @@ public class StabContact : MonoBehaviour
     }
 
     private void StabContactEffect(Collider other) {
+        PlayerActionManager actionManager = GetComponent<PlayerActionManager>();
         if (other.gameObject.TryGetComponent(out Stabable stabable)) {
             stabable.TriggerEffect();
-            OnContact.Invoke();
         }
         if (other.gameObject.TryGetComponent(out StabableEnviornment enviornment)) {
             if (enviornment.canGiveBlood) {
@@ -36,18 +36,16 @@ public class StabContact : MonoBehaviour
             }
 
             // Setting up and starting dash
-            OnContact.Invoke();
-            GetComponent<PlayerActionManager>().ChangeAction(dashThroughAction);
+            actionManager.ChangeAction(dashThroughAction);
             dashThroughAction.DashThrough(enviornment);
         }
         EndContactEvent();
     }
 
-    public void ActivateContactEvent(UnityEvent<Collider> _contactEvent, UnityAction contactCall, float bloodGained) {
+    public void ActivateContactEvent(UnityEvent<Collider> _contactEvent, float bloodGained) {
         bloodGainAmount = bloodGained;
         contactEvent = _contactEvent;
         contactEvent.AddListener(StabContactEffect);
-        OnContact.AddListener(contactCall);
     }
 
     public void EndContactEvent() {

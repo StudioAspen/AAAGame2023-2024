@@ -16,6 +16,7 @@ public class SlashContact : MonoBehaviour {
     UnityEvent OnContact = new UnityEvent();
     float bloodGainAmount;
     UnityEvent<Collider> contactEvent;
+
     private void Start() {
         slideAction = transform.parent.GetComponent<SlideAction>();
         movementAction = transform.parent.GetComponent<BasicMovementAction>();

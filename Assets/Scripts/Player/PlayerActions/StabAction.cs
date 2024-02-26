@@ -30,19 +30,22 @@ public class StabAction : PlayerAction {
         //Animation Stuff (to be implemented later)
         isStabbing = true;
 
+        // Initalizing stab contact
+        stabContact.ActivateContactEvent(swordMovement.OnContact, bloodGainAmount);
+        
         // Demon sword variables
-        stabContact.ActivateContactEvent(swordMovement.OnContact, EndAction, bloodGainAmount);
         swordMovement.OnEndAction.AddListener(EndOfStabAnimation);
         swordMovement.AttackPosition(attackDuration);
     }
 
 
-    
+    // This occurs at the end of the stab animation
     private void EndOfStabAnimation() {
         swordMovement.OnEndAction.RemoveListener(EndOfStabAnimation);
         EndAction();
     }
 
+    // Checking if you can perform stab
     public bool CanPerformStab() {
         return !isStabbing;
     }

@@ -19,12 +19,13 @@ public class SlideAction : PlayerAction{
     private PathCreator pathCreator;
     MovementModification movementModification;
 
-    private GameObject swordObject;
     private EndOfPathInstruction end;
     private bool sliding = false;
 
+    [Header("References")]
+    [SerializeField] GameObject swordObject;
+    private Vector3 swordOffset;
     private Vector3 playerOffset;
-    //private Vector3 swordOffset;
     private float dstTravelled = 0f;
 
     BasicMovementAction movementAction;
@@ -52,14 +53,14 @@ public class SlideAction : PlayerAction{
         rb.useGravity = false;
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
         playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
-        //swordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
+        swordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
     }
     
     private void UpdateSliding() {
         dstTravelled += currentSlideSpeed * Time.deltaTime;
         transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
-        //swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
-        //swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
+        swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
+        swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
         if (dstTravelled > pathCreator.path.length) {
             EndAction();
@@ -67,7 +68,6 @@ public class SlideAction : PlayerAction{
     }
 
     public override void EndAction() {
-        Debug.Log(movementModification.GetBoost(jumpForce, boostedJumpForce, true));
         dstTravelled = 0f;
         sliding = false;
         rb.useGravity = true;

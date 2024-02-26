@@ -30,6 +30,7 @@ public class DashAction : PlayerAction
         movementModification = GetComponentInChildren<MovementModification>();
         playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
+
     }
 
     // Update is called once per frame
@@ -44,6 +45,8 @@ public class DashAction : PlayerAction
         }
         dashMovement.UpdateDashing();
     }
+
+    // Input for this actio
     public void DashInput(Vector3 direction)
     {
         dashAvailable = false; // Using up the dash
@@ -55,20 +58,29 @@ public class DashAction : PlayerAction
         float netDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
 
         // Starting Dash
+        dashMovement.OnDashEnd.AddListener(EndAction);
         dashMovement.Dash(netDashDistance, netDashDuration, horizontalDirection);
     }
 
+    // Resets the dash allowing player to dash again
     public void ResetDash()
     {
         dashCdTimer = 0;
         dashAvailable = true;
     }
+
+    // Checking if player can perform a dash
     public bool CanPerformDash() {
         return dashCdTimer <= 0 && dashAvailable && !dashMovement.isDashing;
     }
+
+    // End this action
     public override void EndAction() {
         //Ending dash
-        dashMovement.EndDash();
+        if (dashMovement.isDashing) {
+            dashMovement.EndDash();
+        }
+        dashMovement.OnDashEnd.RemoveListener(EndAction);
         OnEndAction.Invoke();
     }
 }
