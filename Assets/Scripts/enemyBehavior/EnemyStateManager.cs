@@ -48,7 +48,9 @@ public class EnemyStateManager : MonoBehaviour
         stunState = new EnemyStunState();
         deathState = new EnemyDeathState();
 
-        spawnpoint = transform;
+        if(spawnpoint == null) {
+            spawnpoint = transform;
+        }
 
     // setting references
     renderer = GetComponent<Renderer>();
