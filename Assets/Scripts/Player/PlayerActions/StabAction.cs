@@ -16,6 +16,7 @@ public class StabAction : PlayerAction {
 
     // Variables
     bool isStabbing = false;
+    public float timer = 0; // used for the stab dash
 
     // Start is called before the first frame update
     void Start()
@@ -24,11 +25,17 @@ public class StabAction : PlayerAction {
         stabContact = GetComponentInChildren<StabContact>();
     }
 
+    private void Update() {
+        if(isStabbing) {
+            timer += Time.deltaTime;
+        }
+    }
 
     public void StabInput()
     {
         //Animation Stuff (to be implemented later)
         isStabbing = true;
+        timer = 0;
 
         // Initalizing stab contact
         stabContact.ActivateContactEvent(swordMovement.OnContact, bloodGainAmount);

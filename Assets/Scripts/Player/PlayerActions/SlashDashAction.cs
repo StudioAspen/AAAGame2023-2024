@@ -9,13 +9,13 @@ public class SlashDashAction : PlayerAction {
     [SerializeField] DashCollider dashCollider;
 
     [Header("Dash Variables")]
-    [SerializeField] float dashDuration;
     [SerializeField] float dashDistance;
+    [SerializeField] float dashDuration;
     [SerializeField] float endDashSpeed;
 
     [Header("Boosted Variables")]
-    [SerializeField] float boostedDashDuration;
     [SerializeField] float boostedDashDistance;
+    [SerializeField] float boostedDashDuration;
     [SerializeField] float boostedEndDashSpeed;
 
     [Header("Other Variables")]
@@ -35,12 +35,17 @@ public class SlashDashAction : PlayerAction {
     bool isDashing = false;
 
     private void Start() {
+        renderer = GetComponent<Renderer>();
         rb = GetComponent<Rigidbody>();
         dashMovement = new DashMovement(transform, rb);
         slashContact = GetComponentInChildren<SlashContact>();
         movementModification = GetComponentInChildren<MovementModification>();
 
         slashContact.ActivateContactEvent(dashCollider.OnContact, EndAction, bloodGained);
+    }
+
+    private void FixedUpdate() {
+        dashMovement.UpdateDashing();
     }
 
     public void SlashDashInput(Vector3 direction) {
@@ -62,6 +67,9 @@ public class SlashDashAction : PlayerAction {
     public override void EndAction() {
         isDashing = false;
         renderer.material.color = holder;
+        if (dashMovement.isDashing) {
+            dashMovement.InteruptDash();
+        }
         slashContact.EndContactEvent();
         OnEndAction.Invoke();
     }

@@ -9,13 +9,13 @@ public class StabDashAction : PlayerAction
     [SerializeField] DashCollider dashCollider;
 
     [Header("Dash Variables")]
-    [SerializeField] float dashDuration;
     [SerializeField] float dashDistance;
+    [SerializeField] float dashDuration;
     [SerializeField] float endDashSpeed;
 
     [Header("Boosted Variables")]
-    [SerializeField] float boostedDashDuration;
     [SerializeField] float boostedDashDistance;
+    [SerializeField] float boostedDashDuration;
     [SerializeField] float boostedEndDashSpeed;
 
     [Header("Other Variables")]
@@ -35,10 +35,11 @@ public class StabDashAction : PlayerAction
     bool isDashing = false;
 
     private void Start() {
-        // Getting components
-        stabContact = GetComponentInChildren<StabContact>();
-        dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
         renderer = GetComponent<Renderer>();
+        // Getting components
+        dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
+        stabContact = GetComponentInChildren<StabContact>();
+        movementModification = GetComponentInChildren<MovementModification>();
 
         // Setting events
         stabContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
@@ -46,6 +47,10 @@ public class StabDashAction : PlayerAction
 
         // Temp holder
         holder = renderer.material.color;
+    }
+
+    private void FixedUpdate() {
+        dashMovement.UpdateDashing();
     }
 
     public void StabDashInput(Vector3 direction) {
@@ -65,6 +70,9 @@ public class StabDashAction : PlayerAction
     public override void EndAction() {
         isDashing = false;
         renderer.material.color = holder;
+        if(dashMovement.isDashing) {
+            dashMovement.InteruptDash();
+        }
         stabContact.EndContactEvent();
         OnEndAction.Invoke();
     }

@@ -16,6 +16,8 @@ public class PlayerActionManager : MonoBehaviour
 
     PlayerAction currentAction;
 
+    public float combinationWindow;
+
     private void Start() {
         // Getting components
         basicMovementAction = GetComponentInParent<BasicMovementAction>();
@@ -57,11 +59,36 @@ public class PlayerActionManager : MonoBehaviour
             ChangeAction(dashAction);
             dashAction.DashInput(input);
         }
+        if(currentAction == stabAction && stabAction.timer < combinationWindow) {
+            stabAction.EndAction();
+            StabDashInput(input);
+        }
+        if(currentAction == slashAction && slashAction.timer < combinationWindow) {
+            slashAction.EndAction();
+            SlashDashInput(input);
+        }
     }
-    public void StabInputPressed() {
+    public void SlashInput(Vector3 input) {
+        if (currentAction == basicMovementAction && slashAction.CanPerformSlash()) {
+            ChangeAction(slashAction);
+            slashAction.SlashInput();
+        }
+        if(currentAction == dashAction && dashAction.timer < combinationWindow) {
+            dashAction.EndAction();
+            SlashDashInput(input);
+        }
+    }
+    public void StabInputPressed(Vector3 input) {
+        // Stab Input
         if(currentAction == basicMovementAction && stabAction.CanPerformStab()) {
             ChangeAction(stabAction);
             stabAction.StabInput();
+        }
+        
+        // Stab Dash input
+        if(currentAction == dashAction && dashAction.timer < combinationWindow) {
+            dashAction.EndAction();
+            StabDashInput(input);
         }
     }
     public void StabInputHold() {
@@ -74,12 +101,6 @@ public class PlayerActionManager : MonoBehaviour
             currentAction == downwardStabAction ||
             currentAction == stabAction) {
             downwardStabAction.DownwardStabInputRelease();
-        }
-    }
-    public void SlashInput() {
-        if(currentAction == basicMovementAction && slashAction.CanPerformSlash()) {
-            ChangeAction(slashAction);
-            slashAction.SlashInput();
         }
     }
     public void StabDashInput(Vector3 input) {

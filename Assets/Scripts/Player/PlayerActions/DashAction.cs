@@ -18,7 +18,8 @@ public class DashAction : PlayerAction
     [SerializeField] float boostedEndDashSpeed; // boosted speed at end of dash
 
     bool dashAvailable = true;
-    float dashCdTimer;//Time before you can dash again
+    float dashCdTimer;// Time before you can dash again
+    public float timer = 0; // Used for starting slash/stab dash
 
     // References
     MovementModification movementModification;
@@ -55,6 +56,10 @@ public class DashAction : PlayerAction
         if (playerPositionCheck.CheckOnGround()) {
             ResetDash();
         }
+
+        if(dashMovement.isDashing) {
+            timer += Time.deltaTime;
+        }
     }
     private void FixedUpdate() {
         dashMovement.UpdateDashing();
@@ -66,6 +71,7 @@ public class DashAction : PlayerAction
         holder = renderer.material.color;
         renderer.material.color = Color.blue;
 
+        timer = 0;
         dashAvailable = false; // Using up the dash
         Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z); // Only using the horizontal component
         

@@ -18,6 +18,7 @@ public class SlashAction : PlayerAction
     private SlashContact slashContact;
 
     private bool isSlashing = false;
+    public float timer = 0; // Used for slash dash
 
     private void Start()
     {
@@ -25,9 +26,16 @@ public class SlashAction : PlayerAction
         slashContact = GetComponentInChildren<SlashContact>();
     }
 
+    private void Update() {
+        if(isSlashing) {
+            timer += Time.deltaTime;
+        }
+    }
+
     public void SlashInput() {
         //Animation Stuff (to be implemented later)
         isSlashing = true;
+        timer = 0;
 
         // Demon sword variables
         slashContact.ActivateContactEvent(swordMovement.OnContact, EndAction, bloodGained);

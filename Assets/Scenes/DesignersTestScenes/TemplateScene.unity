@@ -2094,6 +2094,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: endDashSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedDashSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedEndDashSpeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5266418772859804565, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2139,6 +2154,41 @@ PrefabInstance:
       propertyPath: reticle
       value: 
       objectReference: {fileID: 1049901099}
+    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: bloodGained
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: dashDistance
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: dashDuration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: endDashSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedDashDistance
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedDashDuration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedEndDashSpeed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2188,6 +2238,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: bloodGained
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: dashDistance
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: dashDuration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: endDashSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedDashDistance
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedDashDuration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedEndDashSpeed
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

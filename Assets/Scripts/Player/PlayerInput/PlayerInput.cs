@@ -47,6 +47,7 @@ public class PlayerInput : MonoBehaviour {
         cameraOrientation = FindObjectOfType<Camera>().transform;
         cinemachineCam = FindObjectOfType<CinemachineFreeLook>();
         playerActionManager = GetComponentInChildren<PlayerActionManager>();
+        playerActionManager.combinationWindow = combinationWindow;
 
         SetCurrentController();
     }
@@ -82,10 +83,10 @@ public class PlayerInput : MonoBehaviour {
             playerActionManager.StabInputRelease();
         }
         if (Input.GetKeyDown(inputStab)) {
-            playerActionManager.StabInputPressed();
+            playerActionManager.StabInputPressed(direction);
         }
         if (Input.GetKeyDown(inputSlash)) {
-            playerActionManager.SlashInput();
+            playerActionManager.SlashInput(direction);
         }
         if (Input.GetKeyDown(inputShoot)) {
             playerActionManager.EnergyBlastInput();
