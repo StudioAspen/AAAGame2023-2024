@@ -92,6 +92,10 @@ public class DashAction : PlayerAction
         dashAvailable = true;
     }
 
+    public void ConsumeDash() {
+        dashAvailable = false;
+    }
+
     // Checking if player can perform a dash
     public bool CanPerformDash() {
         return dashCdTimer <= 0 && dashAvailable && !dashMovement.isDashing;

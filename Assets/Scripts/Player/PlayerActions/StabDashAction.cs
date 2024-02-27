@@ -27,6 +27,7 @@ public class StabDashAction : PlayerAction
 
     // Components
     DashMovement dashMovement;
+    DashAction dashAction;
     StabContact stabContact;
     MovementModification movementModification;
 
@@ -39,6 +40,7 @@ public class StabDashAction : PlayerAction
         dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
         stabContact = GetComponentInChildren<StabContact>();
         movementModification = GetComponentInChildren<MovementModification>();
+        dashAction = GetComponent<DashAction>();
 
         // Setting events
         stabContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
@@ -56,6 +58,7 @@ public class StabDashAction : PlayerAction
         if(!isDashing) {
             isDashing = true;
             renderer.material.color = Color.red;
+            dashAction.ConsumeDash();
 
             // Calculating boosted variables
             float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);

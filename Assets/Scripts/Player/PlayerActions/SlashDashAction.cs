@@ -27,6 +27,7 @@ public class SlashDashAction : PlayerAction {
 
     // Components
     DashMovement dashMovement;
+    DashAction dashAction;
     SlashContact slashContact;
     MovementModification movementModification;
 
@@ -38,6 +39,7 @@ public class SlashDashAction : PlayerAction {
         dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
         slashContact = GetComponentInChildren<SlashContact>();
         movementModification = GetComponentInChildren<MovementModification>();
+        dashAction = GetComponent<DashAction>();
 
         slashContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
 
@@ -54,6 +56,7 @@ public class SlashDashAction : PlayerAction {
     public void SlashDashInput(Vector3 direction) {
         if (!isDashing) {
             isDashing = true;
+            dashAction.ConsumeDash();
 
             renderer.material.color = Color.red;
 
