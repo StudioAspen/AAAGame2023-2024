@@ -30,19 +30,23 @@ public class DashAction : PlayerAction
         movementModification = GetComponentInChildren<MovementModification>();
         playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
-
+        dashMovement.OnDashEnd.AddListener(EndAction);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (dashCdTimer > 0) { //if dash is still on cd, count down the timer 
+        // if dash is still on cd, count down the timer 
+        if (dashCdTimer > 0) { 
             dashCdTimer -= Time.deltaTime;
         }
 
+        // Ground Check
         if (playerPositionCheck.CheckOnGround()) {
             ResetDash();
         }
+
+
         dashMovement.UpdateDashing();
     }
 
@@ -58,7 +62,6 @@ public class DashAction : PlayerAction
         float netDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
 
         // Starting Dash
-        dashMovement.OnDashEnd.AddListener(EndAction);
         dashMovement.Dash(netDashDistance, netDashDuration, horizontalDirection);
     }
 
@@ -78,9 +81,8 @@ public class DashAction : PlayerAction
     public override void EndAction() {
         //Ending dash
         if (dashMovement.isDashing) {
-            dashMovement.EndDash();
+            dashMovement.InteruptDash();
         }
-        dashMovement.OnDashEnd.RemoveListener(EndAction);
         OnEndAction.Invoke();
     }
 }

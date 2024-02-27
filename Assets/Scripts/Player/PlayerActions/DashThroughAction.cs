@@ -17,8 +17,9 @@ public class DashThroughAction : PlayerAction
     {
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
-        movementModification = GetComponent<MovementModification>();
+        movementModification = GetComponentInChildren<MovementModification>();
         dashMovement = new DashMovement(transform, rb);
+
         dashMovement.OnDashEnd.AddListener(EndAction);
     }
     
@@ -30,14 +31,19 @@ public class DashThroughAction : PlayerAction
 
     public void DashThrough(StabableEnviornment stabableEnviornment) {
         collider.isTrigger = true; // Temp implementation for passing through objects
-        
+
+        Debug.Log(stabableEnviornment.dashDir);
+
         float dashDuration = (stabableEnviornment.dashLength / movementModification.GetBoost(dashSpeed, boostedDashSpeed, true));
         rb.position = stabableEnviornment.dashStartTransform.position;
         dashMovement.Dash(stabableEnviornment.dashLength, dashDuration, stabableEnviornment.dashDir);
     }
 
     public override void EndAction() {
-
+        collider.isTrigger = false;
+        if(dashMovement.isDashing) {
+            dashMovement.InteruptDash();
+        }
         OnEndAction.Invoke();
     }
     

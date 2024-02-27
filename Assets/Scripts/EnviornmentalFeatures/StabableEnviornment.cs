@@ -11,8 +11,8 @@ public class StabableEnviornment : MonoBehaviour {
 
     Vector3 localDir;
     float localLength;
-    [HideInInspector] public Vector3 dashDir; //direction of the dash
-    [HideInInspector] public float dashLength; //how far the player is launched
+    public Vector3 dashDir; //direction of the dash
+    public float dashLength; //how far the player is launched
 
     private void Start() {
         CalcDash();

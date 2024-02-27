@@ -17,7 +17,7 @@ public class DashMovement {
 
     public DashMovement(Transform _transform, Rigidbody _rb) {
         transform = _transform;
-        rb = _rb;;
+        rb = _rb;
     }
 
     public void Dash(float distance, float duration, Vector3 direction) {
@@ -49,19 +49,22 @@ public class DashMovement {
                 rb.velocity = dashVelocity;
             }
             else {
-                EndDash();
+                EndOfDash();
             }
             dashDurationTimer -= Time.fixedDeltaTime;
         }
     }
-    public void EndDash() {
-        //Rstoring movement variables
+    public void InteruptDash() {
         rb.drag = dragValHolder;
         rb.useGravity = true;
-        rb.velocity = dashVelocity;
+        rb.velocity = Vector3.zero;
 
         isDashing = false;
+    }
 
+    private void EndOfDash() {
+        //Rstoring movement variables
+        InteruptDash();
         OnDashEnd.Invoke();
     }
 }

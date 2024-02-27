@@ -65,7 +65,8 @@ public class PlayerActionManager : MonoBehaviour
     }
     public void StabInputRelease() {
         if (currentAction == basicMovementAction ||
-            currentAction == downwardStabAction) {
+            currentAction == downwardStabAction ||
+            currentAction == stabAction) {
             downwardStabAction.DownwardStabInputRelease();
         }
     }
