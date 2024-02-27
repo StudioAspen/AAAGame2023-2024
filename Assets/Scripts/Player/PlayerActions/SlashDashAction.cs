@@ -22,7 +22,7 @@ public class SlashDashAction : PlayerAction {
     [SerializeField] float bloodGained;
 
     // Temp color change
-    Renderer renderer;
+    Renderer render;
     Color holder;
 
     // Components
@@ -35,7 +35,7 @@ public class SlashDashAction : PlayerAction {
     bool isDashing = false;
 
     private void Start() {
-        renderer = GetComponent<Renderer>();
+        render = GetComponent<Renderer>();
         dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
         slashContact = GetComponentInChildren<SlashContact>();
         movementModification = GetComponentInChildren<MovementModification>();
@@ -46,7 +46,7 @@ public class SlashDashAction : PlayerAction {
         dashMovement.OnDashEnd.AddListener(EndAction);
 
         // Temp holder
-        holder = renderer.material.color;
+        holder = render.material.color;
     }
 
     private void FixedUpdate() {
@@ -58,7 +58,7 @@ public class SlashDashAction : PlayerAction {
             isDashing = true;
             dashAction.ConsumeDash();
 
-            renderer.material.color = Color.red;
+            render.material.color = Color.red;
 
             // Calculating boosted variables
             float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
@@ -72,7 +72,7 @@ public class SlashDashAction : PlayerAction {
 
     public override void EndAction() {
         isDashing = false;
-        renderer.material.color = holder;
+        render.material.color = holder;
         if (dashMovement.isDashing) {
             dashMovement.InteruptDash();
         }

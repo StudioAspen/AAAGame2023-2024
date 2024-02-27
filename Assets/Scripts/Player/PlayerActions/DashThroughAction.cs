@@ -16,7 +16,7 @@ public class DashThroughAction : PlayerAction
     [SerializeField] float stickMag;
 
     Rigidbody rb;
-    Collider collider;
+    Collider playerCollider;
     MovementModification movementModification;
 
     StabableEnviornment stabable;
@@ -27,7 +27,7 @@ public class DashThroughAction : PlayerAction
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
+        playerCollider = GetComponent<Collider>();
         movementModification = GetComponentInChildren<MovementModification>();
     }
 
@@ -38,7 +38,7 @@ public class DashThroughAction : PlayerAction
     }
 
     public void DashThrough(StabableEnviornment stabableEnviornment) {
-        collider.isTrigger = true; // Temp implementation for passing through objects
+        playerCollider.isTrigger = true; // Temp implementation for passing through objects
         isDashing = true;
         stabable = stabableEnviornment;
         distanceTraveled = 0;
@@ -60,7 +60,7 @@ public class DashThroughAction : PlayerAction
     }
 
     public override void EndAction() {
-        collider.isTrigger = false;
+        playerCollider.isTrigger = false;
         isDashing = false;
         rb.useGravity = true;
         OnEndAction.Invoke();

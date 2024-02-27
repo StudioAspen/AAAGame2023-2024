@@ -27,7 +27,7 @@ public class DashAction : PlayerAction
     DashMovement dashMovement;
 
     // Temp for visual clarity
-    Renderer renderer;
+    Renderer render;
     Color holder;
 
     // Start is called before the first frame update
@@ -41,7 +41,7 @@ public class DashAction : PlayerAction
 
 
         // Temp for visual clarity
-        renderer = GetComponent<Renderer>();
+        render = GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -68,8 +68,8 @@ public class DashAction : PlayerAction
     public void DashInput(Vector3 direction)
     {
         // Temp
-        holder = renderer.material.color;
-        renderer.material.color = Color.blue;
+        holder = render.material.color;
+        render.material.color = Color.blue;
 
         timer = 0;
         dashAvailable = false; // Using up the dash
@@ -103,7 +103,7 @@ public class DashAction : PlayerAction
 
     // End this action
     public override void EndAction() {
-        renderer.material.color = holder;
+        render.material.color = holder;
 
         //Ending dash
         if (dashMovement.isDashing) {

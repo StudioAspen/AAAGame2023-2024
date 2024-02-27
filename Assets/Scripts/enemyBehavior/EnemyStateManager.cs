@@ -27,7 +27,7 @@ public class EnemyStateManager : MonoBehaviour
 
     [Header("References")]
     private Killable kill;
-    [HideInInspector] public Renderer renderer;
+    [HideInInspector] public Renderer render;
     private NavMeshAgent agent;
     public Timer timer = new Timer();
     private Transform playerTransform;
@@ -53,7 +53,7 @@ public class EnemyStateManager : MonoBehaviour
         }
 
         // setting references
-        renderer = GetComponent<Renderer>();
+        render = GetComponent<Renderer>();
         playerTransform = FindObjectOfType<PlayerInput>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
 
@@ -143,7 +143,7 @@ public class EnemyStateManager : MonoBehaviour
     // set stun boolean to true
     public void Stun()
     {
-        renderer.material.color = Color.red;
+        render.material.color = Color.red;
         SwitchState(stunState);
     }
 

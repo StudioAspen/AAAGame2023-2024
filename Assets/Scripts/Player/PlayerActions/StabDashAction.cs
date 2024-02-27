@@ -22,7 +22,7 @@ public class StabDashAction : PlayerAction
     [SerializeField] float bloodGained;
 
     // Temp color change
-    Renderer renderer;
+    Renderer render;
     Color holder;
 
     // Components
@@ -36,7 +36,7 @@ public class StabDashAction : PlayerAction
     bool isDashing = false;
 
     private void Start() {
-        renderer = GetComponent<Renderer>();
+        render = GetComponent<Renderer>();
         dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
         stabContact = GetComponentInChildren<StabContact>();
         movementModification = GetComponentInChildren<MovementModification>();
@@ -47,7 +47,7 @@ public class StabDashAction : PlayerAction
         dashMovement.OnDashEnd.AddListener(EndAction);
 
         // Temp holder
-        holder = renderer.material.color;
+        holder = render.material.color;
     }
 
     private void FixedUpdate() {
@@ -57,7 +57,7 @@ public class StabDashAction : PlayerAction
     public void StabDashInput(Vector3 direction) {
         if(!isDashing) {
             isDashing = true;
-            renderer.material.color = Color.red;
+            render.material.color = Color.red;
             dashAction.ConsumeDash();
 
             // Calculating boosted variables
@@ -71,7 +71,7 @@ public class StabDashAction : PlayerAction
 
     public override void EndAction() {
         isDashing = false;
-        renderer.material.color = holder;
+        render.material.color = holder;
         if(dashMovement.isDashing) {
             dashMovement.InteruptDash();
         }
