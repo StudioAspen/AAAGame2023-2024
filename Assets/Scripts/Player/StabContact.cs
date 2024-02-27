@@ -54,7 +54,7 @@ public class StabContact : MonoBehaviour
     }
 
     private void EndOfDash() {
-        movementAction.ResetJump();
+        movementAction.GiveAirJump();
         dashAction.ResetDash();
     }
 }

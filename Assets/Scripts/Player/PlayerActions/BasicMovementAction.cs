@@ -8,7 +8,6 @@ public class BasicMovementAction : PlayerAction
     PlayerPositionCheck playerPositionCheck;
     Rigidbody rb;
     MovementModification movementModification;
-    Collider collider;
 
     [Header("Ground Variables")]
     [SerializeField] float groundAcceleration;
@@ -42,10 +41,10 @@ public class BasicMovementAction : PlayerAction
     [Range(0.0f, 1f)]
     [SerializeField] float rotationSpeed;
 
-    bool readyToJump = true;
-    bool grounded;
+    bool canAirJump = false;
+    [SerializeField] bool grounded;
 
-    bool isMoving = false;
+    [SerializeField] bool isMoving = false;
     Vector3 targetDirection;
 
     void Start() {
@@ -53,10 +52,8 @@ public class BasicMovementAction : PlayerAction
         movementModification = GetComponentInChildren<MovementModification>();
         playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         rb = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
 
         // Setting physics variables
-        collider.material.dynamicFriction = groundFriction;
         rb.drag = airDrag;
     }
 
@@ -67,16 +64,18 @@ public class BasicMovementAction : PlayerAction
         }
 
         //Assinging drag
-        if (!grounded) {
+        if (grounded) {
+            if (rb.velocity.magnitude > 0) {
+                rb.velocity -= rb.velocity.normalized * movementModification.GetBoost(groundFriction, boostedGroundFriction, false) * Time.fixedDeltaTime;
+            }
+        }
+        else {
             rb.velocity += Vector3.down * movementModification.GetBoost(gravityAcceleration, boostedGravityAcceleration, false) * Time.fixedDeltaTime;
         }
     }
     private void Update()
     {
         grounded = playerPositionCheck.CheckOnGround();
-        if(!readyToJump && grounded) {
-            ResetJump();
-        }
     }
 
     #region // Move Methods
@@ -117,19 +116,20 @@ public class BasicMovementAction : PlayerAction
 
     #region // Jump Methods
     public void JumpInput() {
-        readyToJump = false;
-        grounded = false;
-        Jump(Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll));
+        if(grounded || canAirJump) {
+            if(canAirJump) {
+                canAirJump = false;
+            }
+            grounded = false;
+            Jump(Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll));
+        }
     }
 
     public void Jump(float _jumpForce) {
         rb.velocity = transform.up * _jumpForce;
     }
-    public void ResetJump() {
-        readyToJump = true;
-    }
-    public bool CanPerformJump() {
-        return readyToJump && grounded;
+    public void GiveAirJump() {
+        canAirJump = true;
     }
     #endregion
 

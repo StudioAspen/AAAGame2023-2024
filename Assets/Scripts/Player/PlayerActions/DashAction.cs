@@ -45,11 +45,10 @@ public class DashAction : PlayerAction
         if (playerPositionCheck.CheckOnGround()) {
             ResetDash();
         }
-
-
+    }
+    private void FixedUpdate() {
         dashMovement.UpdateDashing();
     }
-
     // Input for this actio
     public void DashInput(Vector3 direction)
     {

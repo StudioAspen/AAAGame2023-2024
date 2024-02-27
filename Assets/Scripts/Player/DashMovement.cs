@@ -57,7 +57,7 @@ public class DashMovement {
     public void InteruptDash() {
         rb.drag = dragValHolder;
         rb.useGravity = true;
-        rb.velocity = Vector3.zero;
+        rb.velocity = dashVelocity;
 
         isDashing = false;
     }

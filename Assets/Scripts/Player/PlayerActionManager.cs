@@ -40,9 +40,12 @@ public class PlayerActionManager : MonoBehaviour
                 basicMovementAction.NoMoveInput();
             }
         }
+        else {
+            basicMovementAction.NoMoveInput();
+        }
     }
     public void JumpInput() {
-        if(currentAction == basicMovementAction && basicMovementAction.CanPerformJump()) {
+        if(currentAction == basicMovementAction) {
             basicMovementAction.JumpInput();
         }
     }

@@ -77,7 +77,7 @@ public class SlashContact : MonoBehaviour {
     }
 
     private void EndOfSlide() {
-        movementAction.ResetJump();
+        movementAction.GiveAirJump();
         dashAction.ResetDash();
     }
 }
