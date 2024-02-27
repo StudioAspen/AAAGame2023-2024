@@ -25,7 +25,4 @@ public class PlayerPositionCheck : MonoBehaviour {
     public bool CheckOnGround() {
         return Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(playerCollider.bounds.min.y - transform.position.y) + groundCheckOffset, ground); ;
     }
-    private void OnDrawGizmos() {
-        Gizmos.DrawWireCube(transform.position + (directionTest*terrainCheckOffset), playerCollider.bounds.size * terrainCheckScale);
-    }
 }

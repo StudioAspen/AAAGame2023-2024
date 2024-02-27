@@ -64,11 +64,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0757b9b976f47244aa022131a400dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCollider: {fileID: 2711925284241185732}
   ground:
     serializedVersion: 2
     m_Bits: 1024
-  groundCheckOffset: 0.001
-  terrainCheckOffset: 0.001
+  groundCheckOffset: 0.01
+  terrainCheckOffset: 0.01
+  terrainCheckScale: 0.9
 --- !u!114 &1554232633083437368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d69ed6531c84940b8ccb08cb8489b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combinationWindow: 0
 --- !u!114 &1009479359832023577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,10 +498,10 @@ MonoBehaviour:
       m_Calls: []
   groundAcceleration: 5
   maxGroundSpeed: 10
-  groundFriction: 50
+  groundFriction: 1
   boostedGroundAcceleration: 7
   boostedMaxGroundSpeed: 15
-  boostedGroundFriction: 50
+  boostedGroundFriction: 1
   airAcceleration: 5
   maxAirSpeed: 10
   airDrag: 2
@@ -506,14 +509,12 @@ MonoBehaviour:
   boostedMaxAirSpeed: 15
   boostedAirDrag: 2
   jumpForce: 30
-  gravityAcceleration: 50
+  gravityAcceleration: 1
   maxFallSpeed: 20
   boostedJumpForce: 32
-  boostedGravityAcceleration: 50
+  boostedGravityAcceleration: 1
   boostedMaxFallSpeed: 20
   rotationSpeed: 0.75
-  grounded: 0
-  isMoving: 0
 --- !u!114 &4531364391987237238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,6 +538,7 @@ MonoBehaviour:
   boostedDashDuration: 0.2
   boostedDashCooldown: 0.5
   boostedEndDashSpeed: 22
+  timer: 0
 --- !u!114 &3902229200159131934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,6 +557,7 @@ MonoBehaviour:
   swordMovement: {fileID: 2230350445419021309}
   bloodGainAmount: 10
   attackDuration: 0.5
+  timer: 0
 --- !u!114 &3088617981437380700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,6 +576,7 @@ MonoBehaviour:
   swordMovement: {fileID: 2230350445419021309}
   bloodGained: 10
   attackDuration: 0.5
+  timer: 0
 --- !u!114 &8671536288844823369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -611,13 +615,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dashCollider: {fileID: 6990662696071883527}
-  dashDuration: 0
-  dashDistance: 0
-  endDashSpeed: 0
-  boostedDashDuration: 0
-  boostedDashDistance: 0
-  boostedEndDashSpeed: 0
-  bloodGained: 0
+  dashDistance: 7
+  dashDuration: 0.25
+  endDashSpeed: 20
+  boostedDashDistance: 7
+  boostedDashDuration: 0.25
+  boostedEndDashSpeed: 20
+  bloodGained: 10
 --- !u!114 &7021382955167843328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,13 +638,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dashCollider: {fileID: 6990662696071883527}
-  dashDuration: 0
-  dashDistance: 0
-  endDashSpeed: 0
-  boostedDashDuration: 0
-  boostedDashDistance: 0
-  boostedEndDashSpeed: 0
-  bloodGained: 0
+  dashDistance: 7
+  dashDuration: 0.25
+  endDashSpeed: 20
+  boostedDashDistance: 7
+  boostedDashDuration: 0.25
+  boostedEndDashSpeed: 20
+  bloodGained: 10
 --- !u!114 &3134688513665312600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,8 +661,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dashSpeed: 20
-  endDashSpeed: 0
-  boostedDashSpeed: 5
+  endDashSpeed: 20
+  boostedDashSpeed: 20
   boostedEndDashSpeed: 0
   stickMag: 0.5
 --- !u!114 &903524653456634431
@@ -785,13 +789,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7150197666325903039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 1.23, y: 0, z: 0.02}
+  m_LocalRotation: {x: 0.6532815, y: 0.27059805, z: -0.27059805, w: 0.6532815}
+  m_LocalPosition: {x: 0.05, y: 0, z: 1.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6356397532985679041}
-  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 45, z: 0}
 --- !u!1 &8843297453516639595
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,12 +6,14 @@ using UnityEngine.Events;
 
 public class SlideAction : PlayerAction{
     [Header("Regular Variables")]
-    [SerializeField] float slideSpeed;
-    [SerializeField] float jumpForce;
+    [SerializeField] float slideSpeed; // How fast you are moving while sliding
+    [SerializeField] float jumpForce; // Jump force at the end fo the slide
+    [SerializeField] float exitOffsetSpeed; // the force applied at the end of the slide HORIZONTALLY based on the player inputs
 
     [Header("Boosted Variables")]
     [SerializeField] float boostedSlideSpeed;
     [SerializeField] float boostedJumpForce;
+    [SerializeField] float boostedExitOffsetSpeed;
 
     float currentSlideSpeed;
     
@@ -26,6 +28,7 @@ public class SlideAction : PlayerAction{
     [SerializeField] GameObject swordObject;
     private Vector3 swordOffset;
     private Vector3 playerOffset;
+    private Vector3 inputDir;
     private float dstTravelled = 0f;
 
     BasicMovementAction movementAction;
@@ -67,11 +70,17 @@ public class SlideAction : PlayerAction{
         }
     }
 
+    public void SlideInput(Vector3 direction) {
+        inputDir = direction;
+    }
+
     public override void EndAction() {
         dstTravelled = 0f;
         sliding = false;
         rb.useGravity = true;
         movementAction.Jump(movementModification.GetBoost(jumpForce, boostedJumpForce, true));
+        Debug.Log(inputDir);
+        rb.velocity += inputDir.normalized * movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true);
         OnEndAction.Invoke();
     }
 }
