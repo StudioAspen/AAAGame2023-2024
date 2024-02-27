@@ -25,6 +25,7 @@ public class StabContact : MonoBehaviour
 
     private void StabContactEffect(Collider other) {
         bool found = false;
+        bool canGiveBlood = false;
 
         PlayerActionManager actionManager = GetComponent<PlayerActionManager>();
         if (other.gameObject.TryGetComponent(out Stabable stabable)) {
@@ -32,9 +33,7 @@ public class StabContact : MonoBehaviour
             stabable.TriggerEffect();
         }
         if (other.gameObject.TryGetComponent(out StabableEnviornment enviornment)) {
-            if (enviornment.canGiveBlood) {
-                GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
-            }
+            canGiveBlood = enviornment.canGiveBlood;
 
             // Setting up and starting dash
             actionManager.ChangeAction(dashThroughAction);
@@ -44,6 +43,9 @@ public class StabContact : MonoBehaviour
         }
         if(found) {
             EndContactEvent();
+        }
+        if(canGiveBlood) {
+            GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
         }
     }
 

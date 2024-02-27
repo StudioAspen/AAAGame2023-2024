@@ -9,9 +9,9 @@ public class StabDashAction : PlayerAction
     [SerializeField] DashCollider dashCollider;
 
     [Header("Dash Variables")]
-    [SerializeField] float dashDistance;
-    [SerializeField] float dashDuration;
-    [SerializeField] float endDashSpeed;
+    [SerializeField] float dashDistance; // How far the dash goes
+    [SerializeField] float dashDuration; // How long the dash takes
+    [SerializeField] float endDashSpeed; // How fast the player is going at the end of the dash
 
     [Header("Boosted Variables")]
     [SerializeField] float boostedDashDistance;
@@ -19,7 +19,7 @@ public class StabDashAction : PlayerAction
     [SerializeField] float boostedEndDashSpeed;
 
     [Header("Other Variables")]
-    [SerializeField] float bloodGained;
+    [SerializeField] float bloodGained; // How much blood is gained when striking something stabable
 
     // Temp color change
     Renderer render;
@@ -43,7 +43,6 @@ public class StabDashAction : PlayerAction
         dashAction = GetComponent<DashAction>();
 
         // Setting events
-        stabContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
         dashMovement.OnDashEnd.AddListener(EndAction);
 
         // Temp holder
@@ -59,6 +58,7 @@ public class StabDashAction : PlayerAction
             isDashing = true;
             render.material.color = Color.red;
             dashAction.ConsumeDash();
+            stabContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
 
             // Calculating boosted variables
             float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);

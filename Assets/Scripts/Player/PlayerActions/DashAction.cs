@@ -8,14 +8,14 @@ public class DashAction : PlayerAction
     [Header("Movement")]
     [SerializeField] float dashDistance; // How far the dash will go
     [SerializeField] float dashDuration; // How long the dash lasts
-    [SerializeField] float dashCooldown; // Cooldown for the dash
+    [SerializeField] float dashCooldown; // Cooldown between consecutive dashes
     [SerializeField] float endDashSpeed; // Speed at the end of the dash
 
     [Header("Boosted Movement")]
-    [SerializeField] float boostedDashDistance; // Distance traveled when max overfed
-    [SerializeField] float boostedDashDuration; // Duration when max overfed
-    [SerializeField] float boostedDashCooldown; // Cooldown when max overfed
-    [SerializeField] float boostedEndDashSpeed; // boosted speed at end of dash
+    [SerializeField] float boostedDashDistance;
+    [SerializeField] float boostedDashDuration;
+    [SerializeField] float boostedDashCooldown;
+    [SerializeField] float boostedEndDashSpeed;
 
     bool dashAvailable = true;
     float dashCdTimer;// Time before you can dash again

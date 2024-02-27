@@ -10,9 +10,9 @@ public class BasicMovementAction : PlayerAction
     MovementModification movementModification;
 
     [Header("Ground Variables")]
-    [SerializeField] float groundAcceleration;
-    [SerializeField] float maxGroundSpeed;
-    [SerializeField] float groundFriction;
+    [SerializeField] float groundAcceleration; // How fast the player accelerates to max speed on the ground
+    [SerializeField] float maxGroundSpeed; // Max ground speed
+    [SerializeField] float groundFriction; // How much the player slows down when on the ground
 
     [Header("Boosted Ground")]
     [SerializeField] float boostedGroundAcceleration;
@@ -20,9 +20,9 @@ public class BasicMovementAction : PlayerAction
     [SerializeField] float boostedGroundFriction;
 
     [Header("Air Variables")]
-    [SerializeField] float airAcceleration;
-    [SerializeField] float maxAirSpeed;
-    [SerializeField] float airDrag;
+    [SerializeField] float airAcceleration; // How fast the player accelerate to max speed in the air
+    [SerializeField] float maxAirSpeed; // Max air speed
+    [SerializeField] float airDrag; // How much the player slows down in the air
 
     [Header("Boosted Air")]
     [SerializeField] float boostedAirAcceleration;
@@ -30,9 +30,9 @@ public class BasicMovementAction : PlayerAction
     [SerializeField] float boostedAirDrag;
 
     [Header("Jump Variables")]
-    [SerializeField] float jumpForce;
-    [SerializeField] float gravityAcceleration;
-    [SerializeField] float maxFallSpeed;
+    [SerializeField] float jumpForce; // How high the player jumps ON PLAYER INPUT JUMP
+    [SerializeField] float gravityAcceleration; // How fast the player accelerates due to gravity
+    [SerializeField] float maxFallSpeed; // The max fall speed DUE TO GRAVITY, things like the downward stab can make you fall faster than this
 
     [Header("Boosted Jump")]
     [SerializeField] float boostedJumpForce;
@@ -41,12 +41,11 @@ public class BasicMovementAction : PlayerAction
 
     [Header("Other Variables")]
     [Range(0.0f, 1f)]
-    [SerializeField] float rotationSpeed;
+    [SerializeField] float rotationSpeed; // How fast the player object turns to the direction inputted by player
 
     bool canAirJump = false;
-    [SerializeField] bool grounded;
-
-    [SerializeField] bool isMoving = false;
+    bool grounded;
+    bool isMoving = false;
     Vector3 targetDirection;
 
     void Start() {
@@ -54,9 +53,6 @@ public class BasicMovementAction : PlayerAction
         movementModification = GetComponentInChildren<MovementModification>();
         playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         rb = GetComponent<Rigidbody>();
-
-        // Setting physics variables
-        rb.drag = airDrag;
     }
 
     private void FixedUpdate() {
@@ -68,7 +64,7 @@ public class BasicMovementAction : PlayerAction
         //Implemented physics
         if (grounded) {
             if (rb.velocity.magnitude > 0) {
-                Vector3 frictionChange = rb.velocity.normalized * movementModification.GetBoost(groundFriction, boostedGroundFriction, false) * Time.fixedDeltaTime;
+                Vector3 frictionChange = rb.velocity.normalized * movementModification.GetBoost(groundFriction, boostedGroundFriction, false);
                 if(frictionChange.magnitude < rb.velocity.magnitude) {
                     rb.velocity -= frictionChange;
                 }
@@ -78,13 +74,18 @@ public class BasicMovementAction : PlayerAction
             }
         }
         else {
-            if(rb.velocity.magnitude < movementModification.GetBoost(maxFallSpeed, boostedMaxFallSpeed, false))
-            rb.velocity += Vector3.down * movementModification.GetBoost(gravityAcceleration, boostedGravityAcceleration, false) * Time.fixedDeltaTime;
+            rb.drag = airDrag;
+            if (rb.velocity.magnitude < movementModification.GetBoost(maxFallSpeed, boostedMaxFallSpeed, false)) {
+                rb.velocity += Vector3.down * movementModification.GetBoost(gravityAcceleration, boostedGravityAcceleration, false);
+            }
         }
     }
     private void Update()
     {
         grounded = playerPositionCheck.CheckOnGround();
+        if(grounded) {
+            canAirJump = false;
+        }
     }
 
     #region // Move Methods

@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.Events;
 public class StabAction : PlayerAction {
     [Header("References")]
-    [SerializeField] SwordMovement swordMovement;
+    [SerializeField] SwordMovement swordMovement; // Do not adjust
 
     [Header("Other Variables")]
-    [SerializeField] float bloodGainAmount;
-    [SerializeField] float attackDuration;
+    [SerializeField] float bloodGainAmount; // Amount of blood gained from striking something 
+    [SerializeField] float attackDuration; // How long the sword swing lasts, temperary implemention for testing
 
     // Movement Compoenents
     StabContact stabContact;

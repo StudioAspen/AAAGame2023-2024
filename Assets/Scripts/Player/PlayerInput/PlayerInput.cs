@@ -11,11 +11,13 @@ public class PlayerInput : MonoBehaviour {
     Transform cameraOrientation;
 
     [Header("Control Type")]
-    [SerializeField] ControlType currentControls;
+    [SerializeField] ControlType currentControls; // Current control set up, keyboard or mouse
 
     [Header("Input Variables")]
-    [SerializeField] float combinationWindow;
+    [SerializeField] float combinationWindow; // The window of time you have to press two inputs at the same time to count as a combination move (StabDashAction and SlashDashAction)
 
+
+    // All of these are inputs for their respective inputs
     [Header("Mouse Keyboard Inputs")]
     [SerializeField] KeyCode keyboardStab;
     [SerializeField] KeyCode keyboardSlash;

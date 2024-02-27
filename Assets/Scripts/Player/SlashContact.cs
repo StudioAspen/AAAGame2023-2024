@@ -27,6 +27,7 @@ public class SlashContact : MonoBehaviour {
 
     private void StabContactEffect(Collider other) {
         bool found = false;
+        bool canGainBlood = false;
 
         Vector3 slashDirection = transform.forward;
 
@@ -53,12 +54,13 @@ public class SlashContact : MonoBehaviour {
             }
         }
         if (other.TryGetComponent(out SlashableEnviornment slashableEnviornment)) {
-            if (slashableEnviornment.canGiveBlood) {
-                GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
-            }
+            canGainBlood = slashableEnviornment.canGiveBlood;
         }
         if(found) {
             EndContactEvent();
+        }
+        if(canGainBlood) {
+            GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
         }
     }
 

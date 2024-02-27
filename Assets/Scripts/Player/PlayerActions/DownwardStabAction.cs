@@ -9,16 +9,16 @@ public class DownwardStabAction : PlayerAction {
     [SerializeField] SwordMovement swordMovement;
 
     [Header("Movement")]
-    [SerializeField] float downwardStabAcceleration;
-    [SerializeField] float downwardStabMaxSpeed;
+    [SerializeField] float downwardStabAcceleration; // How fast the player accelerates to max speed while stabbing
+    [SerializeField] float downwardStabMaxSpeed; // The max speed while downward stabbing
 
     [Header("Boosted Movement")]
     [SerializeField] float boostedDownwardStabAcceleration;
     [SerializeField] float boostedDownwardStabMaxSpeed;
 
     [Header("Other Variables")]
-    [SerializeField] float pressDownTime;
-    [SerializeField] float bloodGain;
+    [SerializeField] float pressDownTime; // Amount of time you need to hold down the stab button before starting downward stab
+    [SerializeField] float bloodGain; // Amount of blood gained when striking a stabable object
 
     //variables for downward stab
     float stabButtonTimer = 0.0f;

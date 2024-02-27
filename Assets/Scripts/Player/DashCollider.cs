@@ -7,7 +7,6 @@ public class DashCollider : MonoBehaviour
     public UnityEvent<Collider> OnContact = new UnityEvent<Collider>();
     private void OnTriggerStay(Collider other) {
         if (other.gameObject.layer != gameObject.layer) {
-            Debug.Log(other.gameObject.name);
             OnContact.Invoke(other);
         }
     }

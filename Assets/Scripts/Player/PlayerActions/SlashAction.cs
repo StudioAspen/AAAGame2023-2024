@@ -11,8 +11,8 @@ public class SlashAction : PlayerAction
     [SerializeField] SwordMovement swordMovement;
 
     [Header("Other Variables")]
-    public float bloodGained;
-    public float attackDuration;
+    public float bloodGained; // Amount of blood gained when striking something you can slash
+    public float attackDuration; // How long the sword stays out, temp implementation for testing
 
     // Components
     private SlashContact slashContact;

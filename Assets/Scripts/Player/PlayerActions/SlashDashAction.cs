@@ -9,9 +9,9 @@ public class SlashDashAction : PlayerAction {
     [SerializeField] DashCollider dashCollider;
 
     [Header("Dash Variables")]
-    [SerializeField] float dashDistance;
-    [SerializeField] float dashDuration;
-    [SerializeField] float endDashSpeed;
+    [SerializeField] float dashDistance; // How far the dash goes
+    [SerializeField] float dashDuration; // How long the dash lasts
+    [SerializeField] float endDashSpeed; // How fast the player is moving at the end of the dash
 
     [Header("Boosted Variables")]
     [SerializeField] float boostedDashDistance;
@@ -19,7 +19,7 @@ public class SlashDashAction : PlayerAction {
     [SerializeField] float boostedEndDashSpeed;
 
     [Header("Other Variables")]
-    [SerializeField] float bloodGained;
+    [SerializeField] float bloodGained; // How much blood the player gains when striking something slashable
 
     // Temp color change
     Renderer render;
@@ -41,7 +41,6 @@ public class SlashDashAction : PlayerAction {
         movementModification = GetComponentInChildren<MovementModification>();
         dashAction = GetComponent<DashAction>();
 
-        slashContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
 
         dashMovement.OnDashEnd.AddListener(EndAction);
 
@@ -57,6 +56,7 @@ public class SlashDashAction : PlayerAction {
         if (!isDashing) {
             isDashing = true;
             dashAction.ConsumeDash();
+            slashContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
 
             render.material.color = Color.red;
 
