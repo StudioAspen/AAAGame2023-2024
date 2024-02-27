@@ -178,8 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e23895af87ac94ba61c6b9571c1cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashStartTransform: {fileID: 0}
+  canGiveBlood: 1
   dashEndTransform: {fileID: 3318144330648956302}
-  canGiveBlood: 0
   dashDir: {x: 3.1729198, y: 2.0682945, z: -0.035415888}
   dashLength: 3.7876794

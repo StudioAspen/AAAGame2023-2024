@@ -79,7 +79,6 @@ public class SlideAction : PlayerAction{
         sliding = false;
         rb.useGravity = true;
         movementAction.Jump(movementModification.GetBoost(jumpForce, boostedJumpForce, true));
-        Debug.Log(inputDir);
         rb.velocity += inputDir.normalized * movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true);
         OnEndAction.Invoke();
     }

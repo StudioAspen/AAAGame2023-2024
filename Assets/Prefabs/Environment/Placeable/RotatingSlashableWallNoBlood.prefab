@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 7372439641910358060}
   - component: {fileID: -4914738668967344491}
   m_Layer: 10
-  m_Name: RotatingSlashableWall
+  m_Name: RotatingSlashableWallNoBlood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -283,4 +283,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161d2b1e29632bd4cbc447883ce161ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canGiveBlood: 1
+  canGiveBlood: 0
