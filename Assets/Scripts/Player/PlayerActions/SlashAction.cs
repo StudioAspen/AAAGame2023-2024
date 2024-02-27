@@ -32,7 +32,7 @@ public class SlashAction : PlayerAction
         // Demon sword variables
         slashContact.ActivateContactEvent(swordMovement.OnContact, EndAction, bloodGained);
         swordMovement.OnEndAction.AddListener(EndOfSlashAnimation);
-        swordMovement.AttackPosition(attackDuration);
+        swordMovement.SlashPosition(attackDuration);
     }
 
     private void EndOfSlashAnimation() {

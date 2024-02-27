@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class DashThroughAction : PlayerAction
 {
+    [Header("Regular")]
     [SerializeField] float dashSpeed;
+    [SerializeField] float endDashSpeed;
+
+    [Header("Boosted")]
     [SerializeField] float boostedDashSpeed;
+    [SerializeField] float boostedEndDashSpeed;
     
     [Range(0.0f, 1f)]
     [SerializeField] float stickMag;
@@ -48,7 +53,8 @@ public class DashThroughAction : PlayerAction
         rb.position = Vector3.Lerp(rb.position, followPos, stickMag);
         distanceTraveled += currentDashSpeed * Time.fixedDeltaTime;
         if(distanceTraveled > stabable.dashLength) {
-            rb.velocity = stabable.dashDir.normalized * currentDashSpeed;
+            // End Dash speed
+            rb.velocity = stabable.dashDir.normalized * movementModification.GetBoost(endDashSpeed, boostedEndDashSpeed, true); ;
             EndAction();
         }
     }

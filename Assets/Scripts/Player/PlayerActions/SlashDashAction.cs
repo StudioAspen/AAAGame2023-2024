@@ -11,10 +11,12 @@ public class SlashDashAction : PlayerAction {
     [Header("Dash Variables")]
     [SerializeField] float dashDuration;
     [SerializeField] float dashDistance;
+    [SerializeField] float endDashSpeed;
 
     [Header("Boosted Variables")]
     [SerializeField] float boostedDashDuration;
     [SerializeField] float boostedDashDistance;
+    [SerializeField] float boostedEndDashSpeed;
 
     [Header("Other Variables")]
     [SerializeField] float bloodGained;
@@ -50,8 +52,9 @@ public class SlashDashAction : PlayerAction {
             // Calculating boosted variables
             float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
             float currentDashDistance = movementModification.GetBoost(dashDistance, boostedDashDistance, true);
+            float currentEndDashSpeed = movementModification.GetBoost(endDashSpeed, boostedEndDashSpeed, true);
 
-            dashMovement.Dash(currentDashDistance, currentDashDuration, direction);
+            dashMovement.Dash(currentDashDistance, currentDashDuration, direction, currentEndDashSpeed);
         }
     }
     

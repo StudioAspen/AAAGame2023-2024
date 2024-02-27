@@ -35,7 +35,7 @@ public class StabAction : PlayerAction {
         
         // Demon sword variables
         swordMovement.OnEndAction.AddListener(EndOfStabAnimation);
-        swordMovement.AttackPosition(attackDuration);
+        swordMovement.StabPosition(attackDuration);
     }
 
 

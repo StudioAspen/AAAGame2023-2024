@@ -135,6 +135,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3770348240250336498}
+  - {fileID: 5266418772859804565}
   - {fileID: 6633661375329885284}
   - {fileID: 6088350622376495114}
   - {fileID: 4336202542278233531}
@@ -151,7 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3770348240250336498}
   m_Layer: 6
-  m_Name: AttackPos
+  m_Name: StabPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -439,7 +440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 100
   currentHP: 0
-  isKillable: 1
+  isKillable: 0
   isDead: 0
   OnHealthChange:
     m_PersistentCalls:
@@ -494,21 +495,25 @@ MonoBehaviour:
       m_Calls: []
   groundAcceleration: 5
   maxGroundSpeed: 10
-  groundFriction: 1
+  groundFriction: 50
   boostedGroundAcceleration: 7
   boostedMaxGroundSpeed: 15
-  boostedGroundFriction: 1
+  boostedGroundFriction: 50
   airAcceleration: 5
   maxAirSpeed: 10
-  airDrag: 5
+  airDrag: 2
   boostedAirAcceleration: 7
   boostedMaxAirSpeed: 15
-  boostedAirDrag: 5
-  jumpForce: 20
-  gravityAcceleration: 0.5
-  boostedJumpForce: 20
-  boostedGravityAcceleration: 0.5
+  boostedAirDrag: 2
+  jumpForce: 30
+  gravityAcceleration: 50
+  maxFallSpeed: 20
+  boostedJumpForce: 32
+  boostedGravityAcceleration: 50
+  boostedMaxFallSpeed: 20
   rotationSpeed: 0.75
+  grounded: 0
+  isMoving: 0
 --- !u!114 &4531364391987237238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,12 +529,14 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  dashDistance: 3
-  dashDuration: 0.1
-  dashCooldown: 0.25
-  boostedDashDistance: 4
-  boostedDashDuration: 0.1
-  boostedDashCooldown: 0.1
+  dashDistance: 7
+  dashDuration: 0.25
+  dashCooldown: 1
+  endDashSpeed: 20
+  boostedDashDistance: 8.5
+  boostedDashDuration: 0.2
+  boostedDashCooldown: 0.5
+  boostedEndDashSpeed: 22
 --- !u!114 &3902229200159131934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,8 +613,10 @@ MonoBehaviour:
   dashCollider: {fileID: 6990662696071883527}
   dashDuration: 0
   dashDistance: 0
+  endDashSpeed: 0
   boostedDashDuration: 0
   boostedDashDistance: 0
+  boostedEndDashSpeed: 0
   bloodGained: 0
 --- !u!114 &7021382955167843328
 MonoBehaviour:
@@ -627,8 +636,10 @@ MonoBehaviour:
   dashCollider: {fileID: 6990662696071883527}
   dashDuration: 0
   dashDistance: 0
+  endDashSpeed: 0
   boostedDashDuration: 0
   boostedDashDistance: 0
+  boostedEndDashSpeed: 0
   bloodGained: 0
 --- !u!114 &3134688513665312600
 MonoBehaviour:
@@ -645,8 +656,11 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  dashSpeed: 0
-  boostedDashSpeed: 0
+  dashSpeed: 20
+  endDashSpeed: 0
+  boostedDashSpeed: 5
+  boostedEndDashSpeed: 0
+  stickMag: 0.5
 --- !u!114 &903524653456634431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,8 +676,11 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  slideSpeed: 0
-  boostedSlideSpeed: 0
+  slideSpeed: 2
+  jumpForce: 20
+  boostedSlideSpeed: 4
+  boostedJumpForce: 20
+  swordObject: {fileID: 6800678773869080880}
 --- !u!114 &6773326116938459665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -744,6 +761,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6356397532985679041}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &7150197666325903039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5266418772859804565}
+  m_Layer: 6
+  m_Name: SlashPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5266418772859804565
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7150197666325903039}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: 1.23, y: 0, z: 0.02}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6356397532985679041}
+  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
 --- !u!1 &8843297453516639595
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,6 +898,16 @@ PrefabInstance:
       objectReference: {fileID: 6088350622376495114}
     - target: {fileID: 5996984886382561609, guid: c66b3c9ba7489084f8c3f641e0306f46,
         type: 3}
+      propertyPath: stabTransform
+      value: 
+      objectReference: {fileID: 3770348240250336498}
+    - target: {fileID: 5996984886382561609, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
+      propertyPath: slashTransform
+      value: 
+      objectReference: {fileID: 5266418772859804565}
+    - target: {fileID: 5996984886382561609, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
       propertyPath: attackTransform
       value: 
       objectReference: {fileID: 3770348240250336498}
@@ -880,12 +938,18 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 5605391723127491252}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6800678773869080880}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c86df6746f668254f9b468be06219d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6800678773869080880 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1417093754190084996, guid: c66b3c9ba7489084f8c3f641e0306f46,
+    type: 3}
+  m_PrefabInstance: {fileID: 5605391723127491252}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7564267098114665675 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2680757558890817151, guid: c66b3c9ba7489084f8c3f641e0306f46,

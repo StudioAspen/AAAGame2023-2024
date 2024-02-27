@@ -32,10 +32,12 @@ public class BasicMovementAction : PlayerAction
     [Header("Jump Variables")]
     [SerializeField] float jumpForce;
     [SerializeField] float gravityAcceleration;
+    [SerializeField] float maxFallSpeed;
 
     [Header("Boosted Jump")]
     [SerializeField] float boostedJumpForce;
     [SerializeField] float boostedGravityAcceleration;
+    [SerializeField] float boostedMaxFallSpeed;
 
     [Header("Other Variables")]
     [Range(0.0f, 1f)]
@@ -63,13 +65,20 @@ public class BasicMovementAction : PlayerAction
             RotationUpdate();
         }
 
-        //Assinging drag
+        //Implemented physics
         if (grounded) {
             if (rb.velocity.magnitude > 0) {
-                rb.velocity -= rb.velocity.normalized * movementModification.GetBoost(groundFriction, boostedGroundFriction, false) * Time.fixedDeltaTime;
+                Vector3 frictionChange = rb.velocity.normalized * movementModification.GetBoost(groundFriction, boostedGroundFriction, false) * Time.fixedDeltaTime;
+                if(frictionChange.magnitude < rb.velocity.magnitude) {
+                    rb.velocity -= frictionChange;
+                }
+                else {
+                    rb.velocity = Vector3.zero;
+                }
             }
         }
         else {
+            if(rb.velocity.magnitude < movementModification.GetBoost(maxFallSpeed, boostedMaxFallSpeed, false))
             rb.velocity += Vector3.down * movementModification.GetBoost(gravityAcceleration, boostedGravityAcceleration, false) * Time.fixedDeltaTime;
         }
     }
@@ -108,7 +117,7 @@ public class BasicMovementAction : PlayerAction
         float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
         Physics.Raycast(rb.position, addedVelocity);
         if (alignment < 1 && !playerPositionCheck.CheckColldingWithTerrain(addedVelocity)) {
-            rb.AddForce(addedVelocity, ForceMode.VelocityChange);
+            rb.velocity += addedVelocity;
         }
     }
     #endregion

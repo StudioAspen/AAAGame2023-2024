@@ -12,6 +12,7 @@ public class DashMovement {
     public UnityEvent OnDashEnd = new UnityEvent();
     float dashDurationTimer;
     Vector3 dashVelocity;
+    Vector3 endDashVelocity;
     float dragValHolder;
     public bool isDashing = false;
 
@@ -20,7 +21,7 @@ public class DashMovement {
         rb = _rb;
     }
 
-    public void Dash(float distance, float duration, Vector3 direction) {
+    public void Dash(float distance, float duration, Vector3 direction, float endDashSpeed) {
         // Default value for no direction given
         if (direction.magnitude == 0) {
             direction = transform.forward;
@@ -29,6 +30,7 @@ public class DashMovement {
         // Setting variables
         dashDurationTimer = duration; // starting dash duration timer
         dashVelocity = (distance / duration) * direction.normalized; // setting velocity for dashing
+        endDashVelocity = endDashSpeed * direction.normalized;
 
         // Set up for physics variables
         isDashing = true;
@@ -57,7 +59,7 @@ public class DashMovement {
     public void InteruptDash() {
         rb.drag = dragValHolder;
         rb.useGravity = true;
-        rb.velocity = dashVelocity;
+        rb.velocity = endDashVelocity;
 
         isDashing = false;
     }

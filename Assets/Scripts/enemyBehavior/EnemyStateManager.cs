@@ -52,8 +52,8 @@ public class EnemyStateManager : MonoBehaviour
             spawnpoint = transform;
         }
 
-    // setting references
-    renderer = GetComponent<Renderer>();
+        // setting references
+        renderer = GetComponent<Renderer>();
         playerTransform = FindObjectOfType<PlayerInput>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
 
@@ -163,7 +163,7 @@ public class EnemyStateManager : MonoBehaviour
 
     public void DeleteOnDeath()
     {
-        playerTransform.gameObject.GetComponent<MovementModification>().AddSpeedBoost(deathSpeedDuration, deathSpeedIncrease);
+        playerTransform.GetComponentInChildren<MovementModification>().AddSpeedBoost(deathSpeedDuration, deathSpeedIncrease);
         Destroy(gameObject);
     }
 

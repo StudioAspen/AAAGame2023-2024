@@ -68,7 +68,7 @@ public class MovementModification : MonoBehaviour
     public float GetBoost(float baseAmount, float boostedAmount, bool useBuff) {
         float output = Mathf.Lerp(baseAmount, boostedAmount, boostForAll);
         if (useBuff) {
-            return CalcBoostedSpeed(output, boostedAmount < baseAmount);
+            return CalcBoostedSpeed(output, boostedAmount > baseAmount);
         }
         return output;
     }

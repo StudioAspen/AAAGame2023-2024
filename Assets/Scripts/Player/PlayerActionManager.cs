@@ -31,7 +31,10 @@ public class PlayerActionManager : MonoBehaviour
     }
 
     public void DirectionalInput(Vector3 input) {
-        if (currentAction == basicMovementAction) {
+        if (currentAction == basicMovementAction ||
+            currentAction == downwardStabAction ||
+            currentAction == stabAction ||
+            currentAction == slashAction) {
             // Since this is continuously getting input, to check when the player is not inputting is checking the magnititute
             if (input.magnitude > 0.01f) {
                 basicMovementAction.MoveInput(input);
