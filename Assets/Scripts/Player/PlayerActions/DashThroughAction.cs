@@ -6,45 +6,57 @@ public class DashThroughAction : PlayerAction
 {
     [SerializeField] float dashSpeed;
     [SerializeField] float boostedDashSpeed;
+    
+    [Range(0.0f, 1f)]
+    [SerializeField] float stickMag;
 
     Rigidbody rb;
     Collider collider;
-    DashMovement dashMovement;
     MovementModification movementModification;
 
+    StabableEnviornment stabable;
+    float distanceTraveled = 0;
+    bool isDashing = false;
+    float currentDashSpeed;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
         movementModification = GetComponentInChildren<MovementModification>();
-        dashMovement = new DashMovement(transform, rb);
-
-        dashMovement.OnDashEnd.AddListener(EndAction);
     }
-    
-    // Update is called once per frame
-    void Update()
-    {
-        dashMovement.UpdateDashing();
+
+    private void FixedUpdate() {
+        if(isDashing) {
+            DashThroughUpdate();
+        }
     }
 
     public void DashThrough(StabableEnviornment stabableEnviornment) {
         collider.isTrigger = true; // Temp implementation for passing through objects
+        isDashing = true;
+        stabable = stabableEnviornment;
+        distanceTraveled = 0;
+        rb.useGravity = false;
+        currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
+    }
 
-        Debug.Log(stabableEnviornment.dashDir);
+    private void DashThroughUpdate() {
+        Vector3 startPos = stabable.gameObject.transform.position;
+        Vector3 followPos = startPos + stabable.dashDir.normalized * distanceTraveled;
 
-        float dashDuration = (stabableEnviornment.dashLength / movementModification.GetBoost(dashSpeed, boostedDashSpeed, true));
-        rb.position = stabableEnviornment.dashStartTransform.position;
-        dashMovement.Dash(stabableEnviornment.dashLength, dashDuration, stabableEnviornment.dashDir);
+        rb.position = Vector3.Lerp(rb.position, followPos, stickMag);
+        distanceTraveled += currentDashSpeed * Time.fixedDeltaTime;
+        if(distanceTraveled > stabable.dashLength) {
+            rb.velocity = stabable.dashDir.normalized * currentDashSpeed;
+            EndAction();
+        }
     }
 
     public override void EndAction() {
         collider.isTrigger = false;
-        if(dashMovement.isDashing) {
-            dashMovement.InteruptDash();
-        }
+        isDashing = false;
+        rb.useGravity = true;
         OnEndAction.Invoke();
     }
-    
 }
