@@ -38,7 +38,7 @@ public class SlashAction : PlayerAction
         timer = 0;
 
         // Demon sword variables
-        slashContact.ActivateContactEvent(swordMovement.OnContact, EndAction, bloodGained);
+        slashContact.ActivateContactEvent(swordMovement.OnContact, bloodGained);
         swordMovement.OnEndAction.AddListener(EndOfSlashAnimation);
         swordMovement.SlashPosition(attackDuration);
     }

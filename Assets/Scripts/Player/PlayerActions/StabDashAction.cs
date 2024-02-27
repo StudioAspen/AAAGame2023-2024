@@ -36,7 +36,6 @@ public class StabDashAction : PlayerAction
 
     private void Start() {
         renderer = GetComponent<Renderer>();
-        // Getting components
         dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
         stabContact = GetComponentInChildren<StabContact>();
         movementModification = GetComponentInChildren<MovementModification>();

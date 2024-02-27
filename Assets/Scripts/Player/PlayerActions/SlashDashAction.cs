@@ -26,7 +26,6 @@ public class SlashDashAction : PlayerAction {
     Color holder;
 
     // Components
-    Rigidbody rb;
     DashMovement dashMovement;
     SlashContact slashContact;
     MovementModification movementModification;
@@ -36,12 +35,16 @@ public class SlashDashAction : PlayerAction {
 
     private void Start() {
         renderer = GetComponent<Renderer>();
-        rb = GetComponent<Rigidbody>();
-        dashMovement = new DashMovement(transform, rb);
+        dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
         slashContact = GetComponentInChildren<SlashContact>();
         movementModification = GetComponentInChildren<MovementModification>();
 
-        slashContact.ActivateContactEvent(dashCollider.OnContact, EndAction, bloodGained);
+        slashContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
+
+        dashMovement.OnDashEnd.AddListener(EndAction);
+
+        // Temp holder
+        holder = renderer.material.color;
     }
 
     private void FixedUpdate() {

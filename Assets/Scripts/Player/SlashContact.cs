@@ -13,7 +13,6 @@ public class SlashContact : MonoBehaviour {
     DashAction dashAction;
 
     // Other variables
-    UnityEvent OnContact = new UnityEvent();
     float bloodGainAmount;
     UnityEvent<Collider> contactEvent;
 
@@ -27,11 +26,13 @@ public class SlashContact : MonoBehaviour {
     }
 
     private void StabContactEffect(Collider other) {
+        bool found = false;
+
         Vector3 slashDirection = transform.forward;
 
         if (other.TryGetComponent(out Slashable slashable)) {
-            OnContact.Invoke();
             slashable.TriggerEffect();
+            found = true;
         }
 
         if (other.TryGetComponent(out PathCreator pathCreator)) {
@@ -43,20 +44,22 @@ public class SlashContact : MonoBehaviour {
 
                 if (directionCheck < 0) {
                     StartSlideAction(pathCreator, other);
+                    found = true;
                 }
             }
             else {
                 StartSlideAction(pathCreator, other);
+                found = true;
             }
-            OnContact.Invoke();
         }
         if (other.TryGetComponent(out SlashableEnviornment slashableEnviornment)) {
             if (slashableEnviornment.canGiveBlood) {
                 GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
             }
         }
-
-        EndContactEvent();
+        if(found) {
+            EndContactEvent();
+        }
     }
 
     private void StartSlideAction(PathCreator pc, Collider other) {
@@ -64,15 +67,13 @@ public class SlashContact : MonoBehaviour {
         slideAction.StartSlide(pc, other);
     }
 
-    public void ActivateContactEvent(UnityEvent<Collider> _contactEvent, UnityAction contactCall, float bloodGained) {
+    public void ActivateContactEvent(UnityEvent<Collider> _contactEvent, float bloodGained) {
         bloodGainAmount = bloodGained; 
         contactEvent = _contactEvent;
         contactEvent.AddListener(StabContactEffect);
-        OnContact.AddListener(contactCall);
     }
 
     public void EndContactEvent() {
-        OnContact.RemoveAllListeners();
         contactEvent.RemoveListener(StabContactEffect);
     }
 

@@ -12,8 +12,6 @@ public class StabContact : MonoBehaviour
     BasicMovementAction movementAction;
     DashAction dashAction;
 
-    // Other variables
-    UnityEvent OnContact = new UnityEvent();
     float bloodGainAmount;
     UnityEvent<Collider> contactEvent;
     private void Start() {
@@ -26,8 +24,11 @@ public class StabContact : MonoBehaviour
     }
 
     private void StabContactEffect(Collider other) {
+        bool found = false;
+
         PlayerActionManager actionManager = GetComponent<PlayerActionManager>();
         if (other.gameObject.TryGetComponent(out Stabable stabable)) {
+            found = true;
             stabable.TriggerEffect();
         }
         if (other.gameObject.TryGetComponent(out StabableEnviornment enviornment)) {
@@ -38,8 +39,12 @@ public class StabContact : MonoBehaviour
             // Setting up and starting dash
             actionManager.ChangeAction(dashThroughAction);
             dashThroughAction.DashThrough(enviornment);
+
+            found = true;
         }
-        EndContactEvent();
+        if(found) {
+            EndContactEvent();
+        }
     }
 
     public void ActivateContactEvent(UnityEvent<Collider> _contactEvent, float bloodGained) {
@@ -49,7 +54,6 @@ public class StabContact : MonoBehaviour
     }
 
     public void EndContactEvent() {
-        OnContact.RemoveAllListeners();
         contactEvent.RemoveListener(StabContactEffect);
     }
 
