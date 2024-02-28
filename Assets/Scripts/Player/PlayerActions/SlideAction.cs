@@ -9,12 +9,15 @@ public class SlideAction : PlayerAction{
     [SerializeField] float slideSpeed; // How fast you are moving while sliding
     [SerializeField] float jumpForce; // Jump force at the end fo the slide
     [SerializeField] float exitOffsetSpeed; // the force applied at the end of the slide HORIZONTALLY based on the player inputs
+    [SerializeField] float initalSpeedScale;  // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
+    
 
     [Header("Boosted Variables")]
     [SerializeField] float boostedSlideSpeed;
     [SerializeField] float boostedJumpForce;
     [SerializeField] float boostedExitOffsetSpeed;
-
+    [SerializeField] float boostedInitialSpeedScale;
+    
     float currentSlideSpeed;
     
     private Rigidbody rb;
@@ -51,7 +54,7 @@ public class SlideAction : PlayerAction{
         // Slide Initalization
         sliding = true;
         pathCreator = pc;
-        startVelocity = rb.velocity;
+        startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitialSpeedScale, false);
 
         currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
         currentSlideSpeed += startVelocity.magnitude;

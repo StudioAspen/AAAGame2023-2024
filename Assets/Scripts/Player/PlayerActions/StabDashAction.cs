@@ -12,11 +12,13 @@ public class StabDashAction : PlayerAction
     [SerializeField] float dashSpeed; // The speed on top of the player velocity
     [SerializeField] float dashDuration; // How long the dash takes
     [SerializeField] float endDashSpeedBonus; // How fast the player is going at the end of the dash
+    [SerializeField] float initalSpeedScale;  // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
 
     [Header("Boosted Variables")]
     [SerializeField] float boostedDashSpeed;
     [SerializeField] float boostedDashDuration;
     [SerializeField] float boostedEndDashSpeedBonus;
+    [SerializeField] float boostedInitialSpeedScale;
 
     [Header("Other Variables")]
     [SerializeField] float bloodGained; // How much blood is gained when striking something stabable
@@ -67,7 +69,7 @@ public class StabDashAction : PlayerAction
             float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
             float currentEndDashSpeedBonus = movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true);
 
-            float velocityAlignment = Vector3.Dot(rb.velocity, direction);
+            float velocityAlignment = Vector3.Dot(rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitialSpeedScale, false), direction);
             dashMovement.Dash(velocityAlignment + currentDashSpeed, currentDashDuration, direction, velocityAlignment + currentDashSpeed + currentEndDashSpeedBonus);
         }
     }

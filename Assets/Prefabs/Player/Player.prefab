@@ -70,7 +70,9 @@ MonoBehaviour:
     m_Bits: 1024
   groundCheckOffset: 0.01
   terrainCheckOffset: 0.01
-  terrainCheckScale: 0.9
+  terrainCheckScale: 1
+  groundCheckScale: 1
+  grounded: 0
 --- !u!114 &1554232633083437368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,14 +532,16 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  dashDistance: 7
+  dashSpeed: 20
   dashDuration: 0.25
   dashCooldown: 1
-  endDashSpeed: 20
-  boostedDashDistance: 8.5
+  endDashSpeedBonus: 5
+  initalSpeedScale: 1
+  boostedDashSpeed: 20
   boostedDashDuration: 0.2
   boostedDashCooldown: 0.5
-  boostedEndDashSpeed: 22
+  boostedEndDashSpeedBonus: 5
+  boostedInitalSpeedScale: 1
   timer: 0
 --- !u!114 &3902229200159131934
 MonoBehaviour:
@@ -595,8 +599,10 @@ MonoBehaviour:
   swordMovement: {fileID: 2230350445419021309}
   downwardStabAcceleration: 5
   downwardStabMaxSpeed: 10
+  initalSpeedScale: 1
   boostedDownwardStabAcceleration: 7
   boostedDownwardStabMaxSpeed: 15
+  boostedInitalSpeedScale: 1
   pressDownTime: 0.25
   bloodGain: 10
 --- !u!114 &8012279846651036797
@@ -615,12 +621,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dashCollider: {fileID: 6990662696071883527}
-  dashDistance: 7
+  dashSpeed: 20
   dashDuration: 0.25
-  endDashSpeed: 20
-  boostedDashDistance: 7
+  endDashSpeedBonus: 1
+  initalSpeedScale: 1
+  boostedDashSpeed: 20
   boostedDashDuration: 0.25
-  boostedEndDashSpeed: 20
+  boostedEndDashSpeedBonus: 1
+  boostedInitialSpeedScale: 1
   bloodGained: 10
 --- !u!114 &7021382955167843328
 MonoBehaviour:
@@ -638,12 +646,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dashCollider: {fileID: 6990662696071883527}
-  dashDistance: 7
+  dashSpeed: 20
   dashDuration: 0.25
-  endDashSpeed: 20
-  boostedDashDistance: 7
+  endDashSpeedBonus: 1
+  initalSpeedScale: 1
+  boostedDashSpeed: 20
   boostedDashDuration: 0.25
-  boostedEndDashSpeed: 20
+  boostedEndDashSpeedBonus: 1
+  boostedInitialSpeedScale: 1
   bloodGained: 10
 --- !u!114 &3134688513665312600
 MonoBehaviour:
@@ -661,9 +671,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dashSpeed: 20
-  endDashSpeed: 20
+  endDashSpeedBonus: 1
+  initalSpeedScale: 1
   boostedDashSpeed: 20
-  boostedEndDashSpeed: 0
+  boostedEndDashSpeedBonus: 1
+  boostedInitalSpeedScale: 1
   stickMag: 0.5
 --- !u!114 &903524653456634431
 MonoBehaviour:
@@ -681,9 +693,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   slideSpeed: 2
-  jumpForce: 20
+  jumpForce: 30
+  exitOffsetSpeed: 10
+  initalSpeedScale: 0.1
   boostedSlideSpeed: 4
-  boostedJumpForce: 20
+  boostedJumpForce: 30
+  boostedExitOffsetSpeed: 10
+  boostedInitialSpeedScale: 0.1
   swordObject: {fileID: 6800678773869080880}
 --- !u!114 &6773326116938459665
 MonoBehaviour:

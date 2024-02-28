@@ -7,11 +7,13 @@ public class DashThroughAction : PlayerAction
     [Header("Regular")]
     [SerializeField] float dashSpeed; // How fast you move through the dash, this is speed for consistency
     [SerializeField] float endDashSpeedBonus; // How fast you are moving at the end of the dash
+    [SerializeField] float initalSpeedScale;  // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
 
     [Header("Boosted")]
     [SerializeField] float boostedDashSpeed;
     [SerializeField] float boostedEndDashSpeedBonus;
-    
+    [SerializeField] float boostedInitalSpeedScale;
+
     [Range(0.0f, 1f)]
     [SerializeField] float stickMag; // How smoothly you transision from your position to the dash, a value of 1 would make you teleport to the center of the object the moment you stab it
 
@@ -44,7 +46,7 @@ public class DashThroughAction : PlayerAction
         distanceTraveled = 0;
         rb.useGravity = false;
         currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
-        currentDashSpeed += rb.velocity.magnitude;
+        currentDashSpeed += rb.velocity.magnitude * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
     }
 
     private void DashThroughUpdate() {

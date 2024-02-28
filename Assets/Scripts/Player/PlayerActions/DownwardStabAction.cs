@@ -11,10 +11,12 @@ public class DownwardStabAction : PlayerAction {
     [Header("Movement")]
     [SerializeField] float downwardStabAcceleration; // How fast the player accelerates to max speed while stabbing
     [SerializeField] float downwardStabMaxSpeed; // The max speed while downward stabbing
+    [SerializeField] float initalSpeedScale; // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
 
     [Header("Boosted Movement")]
     [SerializeField] float boostedDownwardStabAcceleration;
     [SerializeField] float boostedDownwardStabMaxSpeed;
+    [SerializeField] float boostedInitalSpeedScale;
 
     [Header("Other Variables")]
     [SerializeField] float pressDownTime; // Amount of time you need to hold down the stab button before starting downward stab
@@ -60,7 +62,7 @@ public class DownwardStabAction : PlayerAction {
             if (stabButtonTimer >= pressDownTime) {
                 stabAction.EndAction();
                 isStabing = true;
-                startVelocity = rb.velocity;
+                startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
 
                 PlayerActionManager manager = GetComponentInChildren<PlayerActionManager>();
                 manager.ChangeAction(this);

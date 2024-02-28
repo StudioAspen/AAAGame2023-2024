@@ -62,7 +62,7 @@ public class PlayerInput : MonoBehaviour {
 
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
             inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
-            CheckAbilities(inputDirection);
+            CheckAbilities(new Vector3(inputDirection.x, 0, inputDirection.z));
         }
     }
     public void DisableInput() {

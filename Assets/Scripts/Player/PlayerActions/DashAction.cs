@@ -10,12 +10,14 @@ public class DashAction : PlayerAction
     [SerializeField] float dashDuration; // How long the dash lasts
     [SerializeField] float dashCooldown; // Cooldown between consecutive dashes
     [SerializeField] float endDashSpeedBonus; // Speed at the end of the dash
+    [SerializeField] float initalSpeedScale; // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
 
     [Header("Boosted Movement")]
     [SerializeField] float boostedDashSpeed;
     [SerializeField] float boostedDashDuration;
     [SerializeField] float boostedDashCooldown;
     [SerializeField] float boostedEndDashSpeedBonus;
+    [SerializeField] float boostedInitalSpeedScale;
 
     bool dashAvailable = true;
     float dashCdTimer;// Time before you can dash again
@@ -82,7 +84,7 @@ public class DashAction : PlayerAction
         float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
         float currentEndDashSpeedBonus = movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true);
 
-        float velocityAlignment = Vector3.Dot(rb.velocity, direction);
+        float velocityAlignment = Vector3.Dot(rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false), direction);
         dashMovement.Dash(velocityAlignment + currentDashSpeed, currentDashDuration, direction, velocityAlignment + currentDashSpeed + currentEndDashSpeedBonus);
     }
 
