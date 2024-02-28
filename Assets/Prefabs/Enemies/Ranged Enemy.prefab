@@ -167,8 +167,8 @@ MonoBehaviour:
   bulletSpeed: 2
   bulletDamage: 10
   enemyAttackCooldown: 1
-  deathSpeedIncrease: 1
-  deathSpeedDuration: 10
+  deathSpeedIncrease: 0.1
+  deathSpeedDuration: 1
   renderer: {fileID: 0}
 --- !u!114 &7728476627684303212
 MonoBehaviour:

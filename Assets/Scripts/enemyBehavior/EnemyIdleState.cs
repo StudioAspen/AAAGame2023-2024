@@ -13,7 +13,7 @@ public class EnemyIdleState : EnemyBaseState
     {
         //Debug.Log("Enter Idle State");
         // no longer stunned when going back to idle
-        enemy.renderer.material.color = Color.gray;
+        enemy.render.material.color = Color.gray;
         enemy.GetComponent<SausageEnergyBlast>().isStunned = false;
     }
 

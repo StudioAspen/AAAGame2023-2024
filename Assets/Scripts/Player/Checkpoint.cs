@@ -12,10 +12,10 @@ public class Checkpoint : MonoBehaviour
     public int index; // Set by the checkpoint manager based on index in heirarchy
     public bool triggered = false; // Set by the manager
     public CheckPointManager checkPointManager; // Used to check if they can be used as checkpoint
-    public Renderer renderer; // Temperary component use for testing
+    public Renderer render; // Temperary component use for testing
 
     private void Start() {
-        renderer = GetComponent<Renderer>();
+        render = GetComponent<Renderer>();
     }
 
     void OnTriggerEnter(Collider collider)
@@ -23,7 +23,7 @@ public class Checkpoint : MonoBehaviour
         if (collider.transform.CompareTag("Player"))// checks if the collider is a checkpoint
         {
             if(checkPointManager.CanActivateCheckpoint(index)) {
-                renderer.material.color = Color.blue;
+                render.material.color = Color.blue;
                 collider.transform.GetComponent<PlayerKillable>().respawnPosition = transform.position; // setting player respawn position if valid checkpoint
             }
         }
@@ -31,6 +31,6 @@ public class Checkpoint : MonoBehaviour
 
     public void ActivateCheckpoint() {
         triggered = true;
-        renderer.material.color = Color.cyan; // Temperary visual to show it has been activated
+        render.material.color = Color.cyan; // Temperary visual to show it has been activated
     }
 }
