@@ -6,22 +6,23 @@ using UnityEngine.Events;
 public class DashAction : PlayerAction
 {
     [Header("Movement")]
-    [SerializeField] float dashDistance; // How far the dash will go
+    [SerializeField] float dashSpeed; // The speed player will add onto current speed
     [SerializeField] float dashDuration; // How long the dash lasts
     [SerializeField] float dashCooldown; // Cooldown between consecutive dashes
-    [SerializeField] float endDashSpeed; // Speed at the end of the dash
+    [SerializeField] float endDashSpeedBonus; // Speed at the end of the dash
 
     [Header("Boosted Movement")]
-    [SerializeField] float boostedDashDistance;
+    [SerializeField] float boostedDashSpeed;
     [SerializeField] float boostedDashDuration;
     [SerializeField] float boostedDashCooldown;
-    [SerializeField] float boostedEndDashSpeed;
+    [SerializeField] float boostedEndDashSpeedBonus;
 
     bool dashAvailable = true;
     float dashCdTimer;// Time before you can dash again
     public float timer = 0; // Used for starting slash/stab dash
 
     // References
+    Rigidbody rb;
     MovementModification movementModification;
     PlayerPositionCheck playerPositionCheck;
     DashMovement dashMovement;
@@ -34,9 +35,10 @@ public class DashAction : PlayerAction
     void Start()
     {
         // Getting components
+        rb = GetComponent<Rigidbody>();
         movementModification = GetComponentInChildren<MovementModification>();
         playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
-        dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
+        dashMovement = new DashMovement(transform, rb);
         dashMovement.OnDashEnd.AddListener(EndAction);
 
 
@@ -73,16 +75,15 @@ public class DashAction : PlayerAction
 
         timer = 0;
         dashAvailable = false; // Using up the dash
-        Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z); // Only using the horizontal component
         
         // Calculating boosts (all boosts are calculated as a linear interpolation between normal and boost amount given a percentage)
         dashCdTimer = movementModification.GetBoost(dashCooldown, boostedDashCooldown, true); 
-        float currentDashDistance = movementModification.GetBoost(dashDistance, boostedDashDistance, true);  
+        float currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);  
         float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
-        float currentEndDashSpeed = movementModification.GetBoost(endDashSpeed, boostedEndDashSpeed, true);
+        float currentEndDashSpeedBonus = movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true);
 
-        // Starting Dash
-        dashMovement.Dash(currentDashDistance, currentDashDuration, horizontalDirection, currentEndDashSpeed);
+        float velocityAlignment = Vector3.Dot(rb.velocity, direction);
+        dashMovement.Dash(velocityAlignment + currentDashSpeed, currentDashDuration, direction, velocityAlignment + currentDashSpeed + currentEndDashSpeedBonus);
     }
 
     // Resets the dash allowing player to dash again

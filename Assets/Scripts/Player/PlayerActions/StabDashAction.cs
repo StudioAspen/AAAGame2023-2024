@@ -9,14 +9,14 @@ public class StabDashAction : PlayerAction
     [SerializeField] DashCollider dashCollider;
 
     [Header("Dash Variables")]
-    [SerializeField] float dashDistance; // How far the dash goes
+    [SerializeField] float dashSpeed; // The speed on top of the player velocity
     [SerializeField] float dashDuration; // How long the dash takes
-    [SerializeField] float endDashSpeed; // How fast the player is going at the end of the dash
+    [SerializeField] float endDashSpeedBonus; // How fast the player is going at the end of the dash
 
     [Header("Boosted Variables")]
-    [SerializeField] float boostedDashDistance;
+    [SerializeField] float boostedDashSpeed;
     [SerializeField] float boostedDashDuration;
-    [SerializeField] float boostedEndDashSpeed;
+    [SerializeField] float boostedEndDashSpeedBonus;
 
     [Header("Other Variables")]
     [SerializeField] float bloodGained; // How much blood is gained when striking something stabable
@@ -26,6 +26,7 @@ public class StabDashAction : PlayerAction
     Color holder;
 
     // Components
+    Rigidbody rb;
     DashMovement dashMovement;
     DashAction dashAction;
     StabContact stabContact;
@@ -36,6 +37,7 @@ public class StabDashAction : PlayerAction
     bool isDashing = false;
 
     private void Start() {
+        rb = GetComponent<Rigidbody>();
         render = GetComponent<Renderer>();
         dashMovement = new DashMovement(transform, GetComponent<Rigidbody>());
         stabContact = GetComponentInChildren<StabContact>();
@@ -61,11 +63,12 @@ public class StabDashAction : PlayerAction
             stabContact.ActivateContactEvent(dashCollider.OnContact, bloodGained);
 
             // Calculating boosted variables
+            float currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
             float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
-            float currentDashDistance = movementModification.GetBoost(dashDistance, boostedDashDistance, true);
-            float currentEndDashSpeed = movementModification.GetBoost(endDashSpeed, boostedEndDashSpeed, true);
+            float currentEndDashSpeedBonus = movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true);
 
-            dashMovement.Dash(currentDashDistance, currentDashDuration, direction, currentEndDashSpeed);
+            float velocityAlignment = Vector3.Dot(rb.velocity, direction);
+            dashMovement.Dash(velocityAlignment + currentDashSpeed, currentDashDuration, direction, velocityAlignment + currentDashSpeed + currentEndDashSpeedBonus);
         }
     }
 

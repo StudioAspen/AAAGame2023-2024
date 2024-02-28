@@ -60,7 +60,7 @@ public class SlashContact : MonoBehaviour {
             EndContactEvent();
         }
         if(canGainBlood) {
-            GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
+            GetComponentInParent<BloodThirst>().GainBlood(bloodGainAmount, true);
         }
     }
 

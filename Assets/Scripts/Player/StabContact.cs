@@ -45,7 +45,7 @@ public class StabContact : MonoBehaviour
             EndContactEvent();
         }
         if(canGiveBlood) {
-            GetComponent<BloodThirst>().GainBlood(bloodGainAmount, true);
+            GetComponentInParent<BloodThirst>().GainBlood(bloodGainAmount, true);
         }
     }
 

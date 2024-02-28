@@ -117,6 +117,7 @@ public class BasicMovementAction : PlayerAction
         // Applying horizontal movement and limiting speed based on max velocity
         float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
         Physics.Raycast(rb.position, addedVelocity);
+
         if (alignment < 1 && !playerPositionCheck.CheckColldingWithTerrain(addedVelocity)) {
             rb.velocity += addedVelocity;
         }
@@ -136,7 +137,12 @@ public class BasicMovementAction : PlayerAction
     }
 
     public void Jump(float _jumpForce) {
-        rb.velocity = transform.up * _jumpForce;
+        if(rb.velocity.y < 0) {
+            rb.velocity = transform.up * _jumpForce;
+        }
+        else {
+            rb.velocity += transform.up * _jumpForce;
+        }
     }
     public void GiveAirJump() {
         canAirJump = true;

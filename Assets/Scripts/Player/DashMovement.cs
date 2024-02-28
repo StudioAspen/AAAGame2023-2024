@@ -21,7 +21,7 @@ public class DashMovement {
         rb = _rb;
     }
 
-    public void Dash(float distance, float duration, Vector3 direction, float endDashSpeed) {
+    public void Dash(float speed, float duration, Vector3 direction, float endDashSpeed) {
         // Default value for no direction given
         if (direction.magnitude == 0) {
             direction = transform.forward;
@@ -29,7 +29,7 @@ public class DashMovement {
 
         // Setting variables
         dashDurationTimer = duration; // starting dash duration timer
-        dashVelocity = (distance / duration) * direction.normalized; // setting velocity for dashing
+        dashVelocity = speed * direction.normalized; // setting velocity for dashing
         endDashVelocity = endDashSpeed * direction.normalized;
 
         // Set up for physics variables
@@ -37,9 +37,6 @@ public class DashMovement {
         dragValHolder = rb.drag;
         rb.useGravity = false;
         rb.velocity = dashVelocity;
-
-        // Vizualization of how far the player SHOULD go
-        Debug.DrawLine(rb.position, rb.position + direction * distance, Color.white, 5);
     }
 
     // This function needs to be constantly run during the update function

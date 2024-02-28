@@ -24,6 +24,7 @@ public class DownwardStabAction : PlayerAction {
     float stabButtonTimer = 0.0f;
     bool canDownwardStab = true;
     bool isStabing = false;
+    Vector3 startVelocity;
 
     // Components
     Rigidbody rb;
@@ -59,6 +60,7 @@ public class DownwardStabAction : PlayerAction {
             if (stabButtonTimer >= pressDownTime) {
                 stabAction.EndAction();
                 isStabing = true;
+                startVelocity = rb.velocity;
 
                 PlayerActionManager manager = GetComponentInChildren<PlayerActionManager>();
                 manager.ChangeAction(this);
@@ -77,6 +79,9 @@ public class DownwardStabAction : PlayerAction {
     private void DownwardStabMovementUpdate() {
         Vector3 addedVelocity = Vector3.down * movementModification.GetBoost(downwardStabAcceleration, boostedDownwardStabMaxSpeed, true);
         Vector3 maxVelocity = Vector3.down * movementModification.GetBoost(downwardStabMaxSpeed, boostedDownwardStabMaxSpeed, true);
+        float velocityAlignment = Vector3.Dot(startVelocity, maxVelocity);
+        maxVelocity = maxVelocity + (velocityAlignment*maxVelocity.normalized);
+
         Vector3 currentVerticalVelocity = new Vector3(0, rb.velocity.y, 0);
 
         // Applying vertical movement if the speed is higher than the max velocity
