@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class EnemyAttackState : EnemyBaseState
 {
+    float attackDistance;
+
+    public EnemyAttackState(float _attackDistance) {
+        attackDistance = _attackDistance;
+    }
     public override void EnterState(EnemyStateManager enemy)
     {
         //Debug.Log("Enter Attack State");
@@ -14,7 +19,7 @@ public class EnemyAttackState : EnemyBaseState
         //Debug.Log("Enter Attack Update");
 
         // if enemy is out of range for attack
-        if (!(enemy.RayCastCheck(6f)))
+        if (!(enemy.RayCastCheck(attackDistance)))
             enemy.SwitchState(enemy.aggroState);
 
         // NOT DONE
@@ -22,7 +27,7 @@ public class EnemyAttackState : EnemyBaseState
         // stop moving then rotates to face player and shoot projectile at them
         // projectile travels straight and does some damage
         enemy.StopPosition();
-        Debug.Log("enemy stopped, shoot now");
+        //Debug.Log("enemy stopped, shoot now");
         enemy.ShootBullet();
     }
 }

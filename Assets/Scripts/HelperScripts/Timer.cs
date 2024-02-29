@@ -16,7 +16,7 @@ public class Timer
         currentTime -= Time.deltaTime;
         if(currentTime <= 0 && isActive) {
             isActive = false;
-            OnTimerFinish.Invoke();
+            EndTimer();
         }
     }
     public void AddEventToEnd(UnityAction call) {
