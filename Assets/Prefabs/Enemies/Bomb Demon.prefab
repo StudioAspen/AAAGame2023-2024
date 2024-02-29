@@ -70,8 +70,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1
-  m_Acceleration: 8
+  m_Speed: 5
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -94,11 +94,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 620f1e85f2156e74caa19fe96aaa81fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aggroRange: 15.45
-  attackRange: 6.87
-  updateNavFrequencyPerSecond: 2
+  aggroRange: 30
+  attackRange: 5
+  zigzagSpeed: 5
+  zigzagMagnitude: 10
+  updateNavFrequencyPerSecond: 3
   state: 0
-  explosionRadius: 0
+  explosionRadius: 6
   bloodLoss: 0
   horizontalForce: 8
   verticalForce: 8

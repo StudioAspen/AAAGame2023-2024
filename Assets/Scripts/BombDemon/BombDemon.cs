@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TreeEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,10 @@ public class BombDemon : MonoBehaviour
 {
     public float aggroRange;
     public float attackRange;
+
+    public float zigzagSpeed;
+    public float zigzagMagnitude;
+
     public float updateNavFrequencyPerSecond;
 
     public enum State {idle, attacking, exploding};
@@ -103,7 +108,16 @@ public class BombDemon : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player");
             if (player)
             {
-                navMeshAgent.SetDestination(player.transform.position);
+                Vector3 a = transform.position - player.transform.position;
+                Vector3 b = Vector3.up;
+                Vector3 c = Vector3.Cross(a, b).normalized;
+
+                float magnitude = Mathf.Sin(Time.time * zigzagSpeed) * zigzagMagnitude;
+                c *= magnitude;
+
+                Vector3 result = player.transform.position + c;
+                navMeshAgent.SetDestination(result);
+
                 if (NavMesh.CalculatePath(transform.position, player.transform.position, navMeshAgent.areaMask, path))
                 {
                     float dist = Vector3.Distance(transform.position, path.corners[0]);
