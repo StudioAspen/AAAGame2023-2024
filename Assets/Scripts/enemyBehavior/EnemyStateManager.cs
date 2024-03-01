@@ -32,6 +32,10 @@ public class EnemyStateManager : MonoBehaviour
     public Timer timer = new Timer();
     private Transform playerTransform;
 
+    [Header("Animations")]
+    public Animator animator;
+
+
     // all the states of the enemies
     public EnemyBaseState currentState;
     public EnemyIdleState idleState;
@@ -66,6 +70,7 @@ public class EnemyStateManager : MonoBehaviour
         // "this" is a ref to the context (this EXACT monobehavior script)
         // will call logic from EnterState
         currentState.EnterState(this);
+
     }
 
     void Update()

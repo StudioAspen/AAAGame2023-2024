@@ -6,12 +6,16 @@ public class EnemyAttackState : EnemyBaseState
 {
     float attackDistance;
 
+    public Animator animator;
+
     public EnemyAttackState(float _attackDistance) {
         attackDistance = _attackDistance;
     }
     public override void EnterState(EnemyStateManager enemy)
     {
         //Debug.Log("Enter Attack State");
+        enemy.animator.SetBool("isAttacking", true);
+
     }
 
     public override void UpdateState(EnemyStateManager enemy)
@@ -21,6 +25,7 @@ public class EnemyAttackState : EnemyBaseState
         // if enemy is out of range for attack
         if (!(enemy.RayCastCheck(attackDistance)))
             enemy.SwitchState(enemy.aggroState);
+            enemy.animator.SetBool("isAttacking", false);
 
         // NOT DONE
         // "plants their feet and only rotates from their position to aim and shoot projectiles at the player character"
@@ -29,5 +34,6 @@ public class EnemyAttackState : EnemyBaseState
         enemy.StopPosition();
         //Debug.Log("enemy stopped, shoot now");
         enemy.ShootBullet();
+
     }
 }
