@@ -7,7 +7,8 @@ public class SwordMovement : MonoBehaviour
 {
     [Header("Player Positions")]
     [SerializeField] Transform followTarget;
-    [SerializeField] Transform attackTransform;
+    [SerializeField] Transform stabTransform;
+    [SerializeField] Transform slashTransform;
     [SerializeField] Transform downwardStabTransform;
     [SerializeField] Transform dashAttackTransform;
 
@@ -22,6 +23,7 @@ public class SwordMovement : MonoBehaviour
 
     // Other variables
     private bool isFollowing = true;
+    public bool isAttacking = false;
     Transform currentFollow;
 
     private void Start() {
@@ -40,19 +42,28 @@ public class SwordMovement : MonoBehaviour
     }
 
     //Most likely a TEMPERARY FUNCTION used to put the sword in the right place for attacks before we have animations
-    public void AttackPosition(float duration)
+    public void StabPosition(float duration)
     {
-        currentFollow = attackTransform;
+        currentFollow = stabTransform;
+        isAttacking = true;
+        Invoke("EndAttackPosition", duration);
+    }
+    public void SlashPosition(float duration) {
+        currentFollow = slashTransform;
+        isAttacking = true;
         Invoke("EndAttackPosition", duration);
     }
     public void DownwardAttackPosition() {
         currentFollow = downwardStabTransform;
+        isAttacking = true;
     }
     public void DashAttackPosition() {
         currentFollow = dashAttackTransform;
+        isAttacking = true;
     }
     public void EndAttackPosition() {
         currentFollow = followTarget;
+        isAttacking = false;
         CancelInvoke();
         OnEndAction.Invoke();
     }

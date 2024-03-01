@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 980003998084056239}
   - component: {fileID: 7228672636442118444}
   - component: {fileID: 6351703599296744676}
+  - component: {fileID: 1109078101873367810}
   m_Layer: 10
   m_Name: SlashableWall
   m_TagString: Untagged
@@ -159,3 +160,16 @@ MonoBehaviour:
     showNormalsHelpInfo: 0
     tabIndex: 0
   initialized: 1
+--- !u!114 &1109078101873367810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7232653331359568082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 161d2b1e29632bd4cbc447883ce161ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canGiveBlood: 1
