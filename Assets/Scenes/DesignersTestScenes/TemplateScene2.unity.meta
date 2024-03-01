@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/TestScenes/KyleTestScene.meta
+guid: 44e9039395ac8024b9b1693173543e2d
+folderAsset: yes
+========
 guid: 79a4283a9b11fd34893a9e646c643e2a
+>>>>>>>> develop:Assets/Scenes/DesignersTestScenes/TemplateScene2.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

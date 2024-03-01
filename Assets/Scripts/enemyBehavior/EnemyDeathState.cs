@@ -11,6 +11,7 @@ public class EnemyDeathState : EnemyBaseState
         // grants temp speed boost to player
         // if the enemy is stunned when killed, drop more hp/blood
         // UNDONE
+        enemy.DeleteOnDeath();
     }
 
     public override void UpdateState(EnemyStateManager enemy)
