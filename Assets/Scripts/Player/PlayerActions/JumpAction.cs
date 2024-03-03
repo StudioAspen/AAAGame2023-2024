@@ -33,7 +33,18 @@ public class JumpAction : PlayerAction
         movementModification = GetComponent<MovementModification>();
     }
 
+    private void FixedUpdate() {
 
+        if (jumping) {
+            jumpTimer += Time.deltaTime;
+            if (jumpTimer < maxTimeForAppliedForce) {
+                rb.velocity += Vector3.up * appliedForce;
+            }
+            else {
+                jumping = false;
+            }
+        }
+    }
 
     public void JumpInputPressed() {
         Jump(initalSpeed);
@@ -41,14 +52,10 @@ public class JumpAction : PlayerAction
     }
 
     public void JumpInputHold() {
-        jumpTimer += Time.deltaTime;
-        if(jumpTimer < maxTimeForAppliedForce && jumping) {
-            rb.velocity += Vector3.up * appliedForce;
-        }
-        else {
-            jumping = false;
+        if(jumping) {
         }
     }
+
     public void JumpInputRelease() {
         jumpTimer = 0;
         jumping = false;

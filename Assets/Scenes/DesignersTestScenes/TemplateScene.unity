@@ -3145,9 +3145,9 @@ MonoBehaviour:
   jumpForce: 0
   gravityAcceleration: 0
   maxFallSpeed: 0
-  maxTimeForAppliedForce: 0.5
-  initalSpeed: 5
-  appliedForce: 1
+  maxTimeForAppliedForce: 0.2
+  initalSpeed: 10
+  appliedForce: 2
   boostedJumpForce: 0
   boostedGravityAcceleration: 0
   boostedMaxFallSpeed: 0
