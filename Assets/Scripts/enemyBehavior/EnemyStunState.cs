@@ -22,7 +22,7 @@ public class EnemyStunState : EnemyBaseState
         Debug.Log("stunned");
         // after amount of time no longer stunned
         enemy.IsStunned();
-        enemy.animator.SetBool("isStunned", false);
+        //enemy.animator.SetBool("isStunned", false);
 
     }
 }

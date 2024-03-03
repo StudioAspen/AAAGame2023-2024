@@ -134,8 +134,10 @@ public class EnemyStateManager : MonoBehaviour
     // switches state to idle, unstuns enemy if stunned
     public void Idle()
     {
-        if (gameObject.GetComponent<SausageEnergyBlast>().isStunned)
+        if (gameObject.GetComponent<SausageEnergyBlast>().isStunned) {
             gameObject.GetComponent<SausageEnergyBlast>().isStunned = false;
+            animator.SetBool("isStunned", false);
+        }
         SwitchState(idleState);
     }
 
