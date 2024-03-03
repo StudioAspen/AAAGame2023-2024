@@ -58,6 +58,9 @@ public class PlayerActionManager : MonoBehaviour
         if(currentAction == basicMovementAction) {
             basicMovementAction.JumpInput();
         }
+        if(currentAction == slideAction) {
+            currentAction.EndAction();
+        }
     }
     public void DashInput(Vector3 input) {
         if (currentAction == basicMovementAction && dashAction.CanPerformDash()) {
