@@ -6,6 +6,7 @@ public class PlayerActionManager : MonoBehaviour
 {
     //Movement abilities
     BasicMovementAction basicMovementAction;
+    JumpAction jumpAction;
     DashAction dashAction;
     StabAction stabAction;
     SlashAction slashAction;
@@ -22,6 +23,7 @@ public class PlayerActionManager : MonoBehaviour
     private void Start() {
         // Getting components
         basicMovementAction = GetComponentInParent<BasicMovementAction>();
+        jumpAction = GetComponentInParent<JumpAction>();
         dashAction = GetComponentInParent<DashAction>();
         stabAction = GetComponentInParent<StabAction>();
         slashAction = GetComponentInParent<SlashAction>();
@@ -54,13 +56,20 @@ public class PlayerActionManager : MonoBehaviour
             slideAction.SlideInput(input);
         }
     }
-    public void JumpInput() {
-        if(currentAction == basicMovementAction) {
-            basicMovementAction.JumpInput();
+    public void JumpInputPressed() {
+        if(currentAction == basicMovementAction && jumpAction.CanJump()) {
+            //basicMovementAction.JumpInput();
+            jumpAction.JumpInputPressed();
         }
         if(currentAction == slideAction) {
             currentAction.EndAction();
         }
+    }
+    public void JumpInputHold() {
+        jumpAction.JumpInputHold();
+    }
+    public void JumpInputRelease() {
+        jumpAction.JumpInputRelease();
     }
     public void DashInput(Vector3 input) {
         if (currentAction == basicMovementAction && dashAction.CanPerformDash()) {
