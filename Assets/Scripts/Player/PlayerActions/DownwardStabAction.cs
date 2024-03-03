@@ -95,11 +95,16 @@ public class DownwardStabAction : PlayerAction {
 
     private void DownwardStabContact(Collider other) {
         if(isStabing) {
-            if(other.TryGetComponent(out DownwardStabEffect effect)) {
-                effect.TriggerEffect();
-                GetComponent<BloodThirst>().GainBlood(bloodGain, true);
-                EndAction();
+            if(other.TryGetComponent(out DownwardStabEffect downwardStabEffect)) {
+                downwardStabEffect.TriggerEffect();
             }
+            if(other.TryGetComponent(out BouncePadEffect bouncePad)) {
+                // Setting new velocity
+                float newVerticalSpeed = rb.velocity.y * bouncePad.initalSpeedScale;
+                newVerticalSpeed = MathF.Max(newVerticalSpeed, bouncePad.minimumExitSpeed); // Setting speed to minimum
+                rb.velocity = new Vector3(rb.velocity.x, newVerticalSpeed, rb.velocity.z);
+            }
+            EndAction();
         }
     }
 
