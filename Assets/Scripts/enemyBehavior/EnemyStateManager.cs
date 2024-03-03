@@ -136,7 +136,6 @@ public class EnemyStateManager : MonoBehaviour
     {
         if (gameObject.GetComponent<SausageEnergyBlast>().isStunned) {
             gameObject.GetComponent<SausageEnergyBlast>().isStunned = false;
-            animator.SetBool("isStunned", false);
         }
         SwitchState(idleState);
     }
