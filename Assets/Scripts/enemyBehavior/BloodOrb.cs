@@ -5,8 +5,7 @@ using UnityEngine;
 public class BloodOrb : MonoBehaviour
 {
     [Header("Variables")]
-    [SerializeField] float gainBloodAmount;
-    [SerializeField] float despawnTime;
+    [SerializeField] public float gainBloodAmount;
 
     private void OnTriggerEnter(Collider other)
     {
