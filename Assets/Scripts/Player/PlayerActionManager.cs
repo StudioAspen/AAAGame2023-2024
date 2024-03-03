@@ -125,7 +125,8 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void EnergyBlastInput() {
-        if(currentAction == basicMovementAction) {
+        if(currentAction == basicMovementAction ||
+            currentAction == slideAction) {
             energyBlast.Shoot();
         }
     }
