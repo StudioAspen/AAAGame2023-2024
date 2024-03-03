@@ -6,10 +6,13 @@ public class EnemyDeathState : EnemyBaseState
 {
 
     public Animator animator;
+    public float disapearTimer;
+
 
     public override void EnterState(EnemyStateManager enemy)
     {
         enemy.animator.SetBool("isDead", true);
+        disapearTimer = enemy.deleteTimer;
 
         Debug.Log("Enter Death State");
         // drop a number of hp/blood to player
@@ -22,5 +25,13 @@ public class EnemyDeathState : EnemyBaseState
     public override void UpdateState(EnemyStateManager enemy)
     {
         Debug.Log("Enter Death Update");
+        disapearTimer -= Time.deltaTime;
+        if(disapearTimer <= 0) {
+            Delete(enemy);
+        }
+    }
+
+    private void Delete(EnemyStateManager enemy) {
+        enemy.DeleteOnDeath();
     }
 }

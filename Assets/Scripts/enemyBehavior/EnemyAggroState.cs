@@ -23,6 +23,8 @@ public class EnemyAggroState : EnemyBaseState
     public override void UpdateState(EnemyStateManager enemy)
     {
         //Debug.Log("Enter Aggro Update");
+        // moves towards player until in/out of range
+        enemy.MoveTowardsPlayer();
 
         // if enemy is out of deaggro range
         if (!(enemy.RayCastCheck(deaggroDistance)))
@@ -36,12 +38,9 @@ public class EnemyAggroState : EnemyBaseState
 
            enemy.animator.SetBool("isWalking", false);
         }
-
         // if enemy is in range for attack
-        else if (enemy.RayCastCheck(attackDistance))
+        if (enemy.RayCastCheck(attackDistance)) {
             enemy.SwitchState(enemy.attackState);
-
-        // moves towards player until in/out of range
-        enemy.MoveTowardsPlayer();
+        }
     }
 }

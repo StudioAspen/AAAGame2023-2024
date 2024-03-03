@@ -12,6 +12,7 @@ public class EnemyStateManager : MonoBehaviour
     public float attackDistance;
     public float idleAtPlayerLastPositionDuration;
     public float stunDuration;
+    public float deleteTimer;
     public Transform spawnpoint;
 
     [Header ("Enemy Projectile Variables")]
@@ -57,7 +58,7 @@ public class EnemyStateManager : MonoBehaviour
         }
 
         // setting references
-        render = GetComponent<Renderer>();
+        render = GetComponentInChildren<Renderer>();
         playerTransform = FindObjectOfType<PlayerInput>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
 
@@ -77,6 +78,7 @@ public class EnemyStateManager : MonoBehaviour
     {   
         // will call any logic in UpdateState from the current state every frame
         timer.UpdateTimer();
+        Debug.Log(currentState);
         currentState.UpdateState(this);
     }
 
@@ -126,7 +128,7 @@ public class EnemyStateManager : MonoBehaviour
     {
         // change the state then call the EnterState from the new state
         currentState = state;
-        state.EnterState(this);
+        currentState.EnterState(this);
     }
 
     // switches state to idle, unstuns enemy if stunned
