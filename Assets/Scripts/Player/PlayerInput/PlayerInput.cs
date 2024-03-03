@@ -16,6 +16,13 @@ public class PlayerInput : MonoBehaviour {
     [Header("Input Variables")]
     [SerializeField] float combinationWindow; // The window of time you have to press two inputs at the same time to count as a combination move (StabDashAction and SlashDashAction)
 
+    [Header("Mouse and Keyboard Camera Sensitivity")]
+    [SerializeField] float MKXSensitivity; // Camera X sensitivity MK
+    [SerializeField] float MKYSensitivity; // Camera Y sensitivity MK
+
+    [Header("Controller Camera Sensitivity")]
+    [SerializeField] float ControllerXSensitivity; // Camera X sensitivity for controller
+    [SerializeField] float ControllerYSensitivity; // Camera Y sensitivity for controller
 
     // All of these are inputs for their respective inputs
     [Header("Mouse Keyboard Inputs")]
@@ -118,6 +125,11 @@ public class PlayerInput : MonoBehaviour {
                 inputDash = (controllerDash);
                 inputJump = (controllerJump);
                 inputShoot = (controllerShoot);
+
+                //set the sensitivity of the camera with ControllerXsensitivity and ControllerYsensitivity
+                cinemachineCam.m_XAxis.m_MaxSpeed = ControllerXSensitivity;
+                cinemachineCam.m_YAxis.m_MaxSpeed = ControllerYSensitivity;
+
                 Debug.Log(inputJump);
                 break;
             case ControlType.mouseAndKeyboard:
@@ -132,10 +144,14 @@ public class PlayerInput : MonoBehaviour {
                 // Setting inputs for keyboard
                 inputStab = keyboardStab;
                 inputSlash = keyboardSlash;
+
                 //inputDownwardStab = keyboardDownwardStab;
                 inputDash = keyboardDash;
                 inputJump = keyboardJump;
 
+                //set the sensitivity of the camera with MKXSensitivity and MKYSensitivity
+                cinemachineCam.m_XAxis.m_MaxSpeed = MKXSensitivity;
+                cinemachineCam.m_YAxis.m_MaxSpeed = MKYSensitivity;
 
                 inputShoot = keyboardShoot;
 
