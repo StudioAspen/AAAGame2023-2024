@@ -82,6 +82,7 @@ public class EnemyStateManager : MonoBehaviour
         currentState.UpdateState(this);
     }
 
+    /*
     // checks if ray is hitting at a given distance and returns a bool because of it
     public bool RayCastCheck(float distance)
     {
@@ -97,6 +98,12 @@ public class EnemyStateManager : MonoBehaviour
             Debug.DrawRay(transform.position, (playerTransform.transform.position - transform.position) * distance, Color.green);
             return false;
         }
+    }
+    */
+
+    public bool RayCastCheck(float distance)
+    {
+        return (playerTransform.position - transform.position).magnitude < distance;
     }
 
     #region Enemy Movement 
