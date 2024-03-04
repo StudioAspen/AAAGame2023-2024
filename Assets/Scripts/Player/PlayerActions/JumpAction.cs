@@ -50,15 +50,21 @@ public class JumpAction : PlayerAction
         }
     }
 
+    // Run for player input jump
     public void JumpInputPressed() {
         // Performing jump
         if (CanPerformJump()) {
             if(canAirJump) {
                 canAirJump = false;
             }
-            Jump(movementModification.GetBoost(initalSpeed, boostedInitalSpeed, true));
-            jumping = true;
+            JumpStart();
         }
+    }
+
+    // Starts the actual jump
+    public void JumpStart() {
+        Jump(movementModification.GetBoost(initalSpeed, boostedInitalSpeed, true));
+        jumping = true;
     }
 
     public void JumpInputRelease() {
