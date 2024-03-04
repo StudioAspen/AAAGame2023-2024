@@ -35,11 +35,11 @@ public class SlideAction : PlayerAction{
     private Vector3 startVelocity;
     private float dstTravelled = 0f;
 
-    BasicMovementAction movementAction;
+    JumpAction jumpAction;
     
     private void Start() {
         rb = GetComponent<Rigidbody>();
-        movementAction = GetComponent<BasicMovementAction>();
+        jumpAction = GetComponent<JumpAction>();
         movementModification = GetComponentInChildren<MovementModification>();
         end = EndOfPathInstruction.Stop;
     }
@@ -59,7 +59,6 @@ public class SlideAction : PlayerAction{
         currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
         currentSlideSpeed += startVelocity.magnitude;
         Vector3 contactPoint = other.ClosestPoint(transform.position);
-        rb.useGravity = false;
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
         playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
         swordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
@@ -71,7 +70,10 @@ public class SlideAction : PlayerAction{
         swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
         swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
+        // Ending the dash with movement abilities
         if (dstTravelled > pathCreator.path.length) {
+            jumpAction.Jump(movementModification.GetBoost(jumpForce, boostedJumpForce, true) + startVelocity.magnitude);
+            ApplyHorizontalOffset();
             EndAction();
         }
     }
@@ -79,13 +81,13 @@ public class SlideAction : PlayerAction{
     public void SlideInput(Vector3 direction) {
         inputDir = direction;
     }
-
+    public void ApplyHorizontalOffset() {
+        rb.velocity += inputDir.normalized * (movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true) + startVelocity.magnitude);
+    }
     public override void EndAction() {
         dstTravelled = 0f;
         sliding = false;
-        rb.useGravity = true;
-        movementAction.Jump(movementModification.GetBoost(jumpForce, boostedJumpForce, true) + startVelocity.magnitude);
-        rb.velocity += inputDir.normalized * (movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true) + startVelocity.magnitude);
+
         OnEndAction.Invoke();
     }
 }
