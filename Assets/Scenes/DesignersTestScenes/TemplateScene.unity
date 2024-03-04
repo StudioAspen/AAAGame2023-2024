@@ -3082,7 +3082,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
-      insertIndex: -1
+      insertIndex: 8
       addedObject: {fileID: 6555729506036273881}
   m_SourcePrefab: {fileID: 100100000, guid: 88512be50a530374189e930db8c0502d, type: 3}
 --- !u!114 &6555729506036273863 stripped
@@ -3142,15 +3142,12 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  jumpForce: 0
-  gravityAcceleration: 0
-  maxFallSpeed: 0
-  maxTimeForAppliedForce: 0.2
-  initalSpeed: 10
-  appliedForce: 2
-  boostedJumpForce: 0
-  boostedGravityAcceleration: 0
-  boostedMaxFallSpeed: 0
+  initalSpeed: 40
+  dampWindow: 0.2
+  damping: 0.6
+  boostedInitalSpeed: 40
+  boostedDampWindow: 0.2
+  boostedDamping: 0.6
 --- !u!1001 &6824557940459019280
 PrefabInstance:
   m_ObjectHideFlags: 0

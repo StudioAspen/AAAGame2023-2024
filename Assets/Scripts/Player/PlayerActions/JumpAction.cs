@@ -10,70 +10,84 @@ public class JumpAction : PlayerAction
     MovementModification movementModification;
 
     [Header("Jump Variables")]
-    [SerializeField] float jumpForce; // How high the player jumps ON PLAYER INPUT JUMP
-    [SerializeField] float gravityAcceleration; // How fast the player accelerates due to gravity
-    [SerializeField] float maxFallSpeed; // The max fall speed DUE TO GRAVITY, things like the downward stab can make you fall faster than this
-
-    [SerializeField] float maxTimeForAppliedForce; // How long the force is going to be applied
     [SerializeField] float initalSpeed; // Inital Speed that is applied reguardless of how long pressed
-    [SerializeField] float appliedForce; // force applied while holding down button
+    [SerializeField] float dampWindow; // how long the player has until they can dampen the jump
+    [Range(0, 1)]
+    [SerializeField] float damping; // how much the jump is decreased by (0.2 will decrease the jump height by 20% when released)
 
     [Header("Boosted Jump")]
-    [SerializeField] float boostedJumpForce;
-    [SerializeField] float boostedGravityAcceleration;
-    [SerializeField] float boostedMaxFallSpeed;
+    [SerializeField] float boostedInitalSpeed;
+    [SerializeField] float boostedDampWindow; 
+    [Range(0, 1)]
+    [SerializeField] float boostedDamping;
 
     float jumpTimer = 0f;
     bool jumping = false;
-    
+    bool canAirJump = false;
+    bool grounded = false;
+
     private void Start() {
         // Getting references
         rb = GetComponent<Rigidbody>();
         positionCheck = GetComponentInChildren<PlayerPositionCheck>();
-        movementModification = GetComponent<MovementModification>();
+        movementModification = GetComponentInChildren<MovementModification>();
     }
 
     private void FixedUpdate() {
-
-        if (jumping) {
+        if(jumping) {
             jumpTimer += Time.deltaTime;
-            if (jumpTimer < maxTimeForAppliedForce) {
-                rb.velocity += Vector3.up * appliedForce;
-            }
-            else {
+            if (jumpTimer > movementModification.GetBoost(dampWindow, boostedDampWindow, false)) {
+                JumpInputRelease();
                 jumping = false;
             }
         }
     }
 
-    public void JumpInputPressed() {
-        Jump(initalSpeed);
-        jumping = true;
+    private void Update() {
+        grounded = positionCheck.CheckOnGround();
+        if(grounded) {
+            canAirJump = false;
+        }
     }
 
-    public void JumpInputHold() {
-        if(jumping) {
+    public void JumpInputPressed() {
+        // Performing jump
+        if (CanPerformJump()) {
+            if(canAirJump) {
+                canAirJump = false;
+            }
+            Jump(movementModification.GetBoost(initalSpeed, boostedInitalSpeed, true));
+            jumping = true;
         }
     }
 
     public void JumpInputRelease() {
-        jumpTimer = 0;
-        jumping = false;
+        // Dampeneing the speed when below the boosted amount
+        if(-rb.velocity.y <= boostedInitalSpeed && rb.velocity.y > 0) {
+            rb.velocity -= rb.velocity * movementModification.GetBoost(damping, boostedDamping, true);
+            EndAction();
+        }
     }
 
-    public void Jump(float _jumpForce) {
+    public void Jump(float jumpForce) {
         if (rb.velocity.y < 0) {
-            rb.velocity = transform.up * _jumpForce;
+            rb.velocity = transform.up * jumpForce;
         }
         else {
-            rb.velocity += transform.up * _jumpForce;
+            rb.velocity += transform.up * jumpForce;
         }
     }
-
-    public bool CanJump() {
-        return positionCheck.CheckOnGround();
+    public void GiveAirJump() {
+        canAirJump = true;
     }
+
+    public bool CanPerformJump() {
+        return grounded || canAirJump;
+    }
+
     public override void EndAction() {
-        throw new System.NotImplementedException();
+        jumping = false;
+        jumpTimer = 0;
+        OnEndAction.Invoke();
     }
 }

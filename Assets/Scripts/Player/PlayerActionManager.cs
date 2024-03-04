@@ -40,7 +40,8 @@ public class PlayerActionManager : MonoBehaviour
         if (currentAction == basicMovementAction ||
             currentAction == downwardStabAction ||
             currentAction == stabAction ||
-            currentAction == slashAction) {
+            currentAction == slashAction ||
+            currentAction == jumpAction) {
             // Since this is continuously getting input, to check when the player is not inputting is checking the magnititute
             if (input.magnitude > 0.01f) {
                 basicMovementAction.MoveInput(input);
@@ -57,22 +58,24 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void JumpInputPressed() {
-        if(currentAction == basicMovementAction && jumpAction.CanJump()) {
-            //basicMovementAction.JumpInput();
+        if(currentAction == basicMovementAction && jumpAction.CanPerformJump()) {
+            ChangeAction(jumpAction);
             jumpAction.JumpInputPressed();
         }
         if(currentAction == slideAction) {
-            currentAction.EndAction();
+            slideAction.ApplyHorizontalOffset();
+            ChangeAction(jumpAction);
+            jumpAction.JumpInputPressed();
         }
     }
-    public void JumpInputHold() {
-        jumpAction.JumpInputHold();
-    }
     public void JumpInputRelease() {
-        jumpAction.JumpInputRelease();
+        if(currentAction == jumpAction) {
+            jumpAction.JumpInputRelease();
+        }
     }
     public void DashInput(Vector3 input) {
-        if (currentAction == basicMovementAction && dashAction.CanPerformDash()) {
+        if ((currentAction == basicMovementAction || currentAction == jumpAction) && 
+            dashAction.CanPerformDash()) {
             ChangeAction(dashAction);
             dashAction.DashInput(input);
         }
@@ -86,7 +89,8 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void SlashInput(Vector3 input) {
-        if (currentAction == basicMovementAction && slashAction.CanPerformSlash()) {
+        if ((currentAction == basicMovementAction || currentAction == jumpAction) && 
+            slashAction.CanPerformSlash()) {
             ChangeAction(slashAction);
             slashAction.SlashInput();
         }
@@ -97,7 +101,8 @@ public class PlayerActionManager : MonoBehaviour
     }
     public void StabInputPressed(Vector3 input) {
         // Stab Input
-        if(currentAction == basicMovementAction && stabAction.CanPerformStab()) {
+        if((currentAction == basicMovementAction || currentAction == jumpAction) && 
+            stabAction.CanPerformStab()) {
             ChangeAction(stabAction);
             stabAction.StabInput();
         }
@@ -115,6 +120,7 @@ public class PlayerActionManager : MonoBehaviour
     }
     public void StabInputRelease() {
         if (currentAction == basicMovementAction ||
+            currentAction == jumpAction ||
             currentAction == downwardStabAction ||
             currentAction == stabAction) {
             downwardStabAction.DownwardStabInputRelease();
@@ -122,6 +128,7 @@ public class PlayerActionManager : MonoBehaviour
     }
     public void StabDashInput(Vector3 input) {
         if (currentAction == basicMovementAction ||
+            currentAction == jumpAction ||
             currentAction == stabDashAction ||
             currentAction == dashAction) {
             ChangeAction(stabDashAction);
@@ -129,7 +136,8 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void SlashDashInput(Vector3 input) {
-        if(currentAction == basicMovementAction || 
+        if (currentAction == basicMovementAction ||
+            currentAction == jumpAction ||
             currentAction == slashAction || 
             currentAction == dashAction) {
             ChangeAction(slashDashAction);
@@ -137,7 +145,8 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void EnergyBlastInput() {
-        if(currentAction == basicMovementAction) {
+        if (currentAction == basicMovementAction ||
+            currentAction == jumpAction) {
             energyBlast.Shoot();
         }
     }

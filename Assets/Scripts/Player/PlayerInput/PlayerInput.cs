@@ -75,9 +75,6 @@ public class PlayerInput : MonoBehaviour {
         if (Input.GetKeyDown(inputJump)) {
             playerActionManager.JumpInputPressed();
         }
-        if(Input.GetKey(inputJump)) {
-            playerActionManager.JumpInputHold();
-        }
         if (Input.GetKeyUp(inputJump)) {
             playerActionManager.JumpInputRelease();
         }
