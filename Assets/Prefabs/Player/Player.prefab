@@ -296,6 +296,7 @@ GameObject:
   - component: {fileID: 8596804024649230227}
   - component: {fileID: 6003801723596019275}
   - component: {fileID: 7281945831924435466}
+  - component: {fileID: 7076914383633396891}
   - component: {fileID: 4531364391987237238}
   - component: {fileID: 3902229200159131934}
   - component: {fileID: 3088617981437380700}
@@ -510,13 +511,32 @@ MonoBehaviour:
   boostedAirAcceleration: 7
   boostedMaxAirSpeed: 15
   boostedAirDrag: 2
-  jumpForce: 30
   gravityAcceleration: 1
   maxFallSpeed: 20
-  boostedJumpForce: 32
   boostedGravityAcceleration: 1
   boostedMaxFallSpeed: 20
   rotationSpeed: 0.75
+--- !u!114 &7076914383633396891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aaf6ab16ccee848be97b8648318b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
+  initalSpeed: 40
+  dampWindow: 0.2
+  damping: 0.6
+  boostedInitalSpeed: 40
+  boostedDampWindow: 0.2
+  boostedDamping: 0.6
 --- !u!114 &4531364391987237238
 MonoBehaviour:
   m_ObjectHideFlags: 0

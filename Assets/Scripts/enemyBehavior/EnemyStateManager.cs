@@ -78,7 +78,6 @@ public class EnemyStateManager : MonoBehaviour
     {   
         // will call any logic in UpdateState from the current state every frame
         timer.UpdateTimer();
-        Debug.Log(currentState);
         currentState.UpdateState(this);
     }
 
