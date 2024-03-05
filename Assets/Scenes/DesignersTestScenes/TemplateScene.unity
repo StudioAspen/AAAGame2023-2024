@@ -2726,12 +2726,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2045207180}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2142439095 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6555729506036273862}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1671384688638446315
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2886,156 +2880,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: jumpForce
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: exitOffsetSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedJumpForce
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedExitOffsetSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitialSpeedScale
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3009765542485322922, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: groundCheckScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3009765542485322922, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: groundCheckOffset
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 3009765542485322922, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: terrainCheckScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3009765542485322922, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: terrainCheckOffset
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: endDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedEndDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: minDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: endDashSpeedBonus
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedMinDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedEndDashSpeedBonus
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6773326116938459665, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: reticle
       value: 
       objectReference: {fileID: 1049901099}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: endDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedEndDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitialSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3086,54 +2940,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: endDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedEndDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitialSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      insertIndex: 8
-      addedObject: {fileID: 6555729506036273881}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88512be50a530374189e930db8c0502d, type: 3}
 --- !u!114 &6555729506036273863 stripped
 MonoBehaviour:
@@ -3141,7 +2951,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 6555729506036273862}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142439095}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d02df61c988e81e4fa4db148fa2fc638, type: 3}
@@ -3159,7 +2969,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 6555729506036273862}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142439095}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8b13fe390e6f5d4c8cb221e08254b48, type: 3}
@@ -3171,33 +2981,12 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 6555729506036273862}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142439095}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6555729506036273881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142439095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92aaf6ab16ccee848be97b8648318b6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnEndAction:
-    m_PersistentCalls:
-      m_Calls: []
-  initalSpeed: 40
-  dampWindow: 0.2
-  damping: 0.6
-  boostedInitalSpeed: 40
-  boostedDampWindow: 0.2
-  boostedDamping: 0.6
 --- !u!1001 &6824557940459019280
 PrefabInstance:
   m_ObjectHideFlags: 0

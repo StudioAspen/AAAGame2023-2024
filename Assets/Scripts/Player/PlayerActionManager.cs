@@ -37,6 +37,7 @@ public class PlayerActionManager : MonoBehaviour
     }
 
     public void DirectionalInput(Vector3 input) {
+        // Basic walking around
         if (currentAction == basicMovementAction ||
             currentAction == downwardStabAction ||
             currentAction == stabAction ||
@@ -53,47 +54,60 @@ public class PlayerActionManager : MonoBehaviour
         else {
             basicMovementAction.NoMoveInput();
         }
+
+        // Giving horizontal input for slide for the jump off slide
         if(currentAction == slideAction) {
             slideAction.SlideInput(input);
         }
     }
     public void JumpInputPressed() {
+        // Normal jump input when on ground
         if(currentAction == basicMovementAction && jumpAction.CanPerformJump()) {
             ChangeAction(jumpAction);
             jumpAction.JumpInputPressed();
         }
-        if(currentAction == slideAction) {
+        // Interupting slide with jump only if you are sliding
+        else if (currentAction == slideAction) {
             slideAction.ApplyHorizontalOffset();
             ChangeAction(jumpAction);
-            jumpAction.JumpInputPressed();
+            jumpAction.JumpStart();
         }
     }
     public void JumpInputRelease() {
+        // Releaseing jump button to cut of velocity
         if(currentAction == jumpAction) {
             jumpAction.JumpInputRelease();
         }
     }
     public void DashInput(Vector3 input) {
+        // Regular dash input
         if ((currentAction == basicMovementAction || currentAction == jumpAction) && 
             dashAction.CanPerformDash()) {
             ChangeAction(dashAction);
             dashAction.DashInput(input);
         }
+
+        // Checking input for stab dash action
         if(currentAction == stabAction && stabAction.timer < combinationWindow) {
             stabAction.EndAction();
             StabDashInput(input);
         }
+
+        // checking input for slash dash action
         if(currentAction == slashAction && slashAction.timer < combinationWindow) {
             slashAction.EndAction();
             SlashDashInput(input);
         }
     }
     public void SlashInput(Vector3 input) {
+        // Check input for slash
         if ((currentAction == basicMovementAction || currentAction == jumpAction) && 
             slashAction.CanPerformSlash()) {
             ChangeAction(slashAction);
             slashAction.SlashInput();
         }
+
+        // Check input for slash dash
         if(currentAction == dashAction && dashAction.timer < combinationWindow) {
             dashAction.EndAction();
             SlashDashInput(input);
@@ -114,11 +128,13 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void StabInputHold() {
+        // Holding down stab input for downward stab
         if(currentAction == stabAction) {
             downwardStabAction.DownwardStabInputUpdate();
         }
     }
     public void StabInputRelease() {
+        // Release for reseting downward stab
         if (currentAction == basicMovementAction ||
             currentAction == jumpAction ||
             currentAction == downwardStabAction ||
@@ -127,6 +143,7 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void StabDashInput(Vector3 input) {
+        // Regular input for stabdash
         if (currentAction == basicMovementAction ||
             currentAction == jumpAction ||
             currentAction == stabDashAction ||
@@ -136,6 +153,7 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void SlashDashInput(Vector3 input) {
+        // Regular input for slash dash
         if (currentAction == basicMovementAction ||
             currentAction == jumpAction ||
             currentAction == slashAction || 
@@ -145,6 +163,7 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
     public void EnergyBlastInput() {
+        // Energy blast input
         if (currentAction == basicMovementAction ||
             currentAction == jumpAction) {
             energyBlast.Shoot();
