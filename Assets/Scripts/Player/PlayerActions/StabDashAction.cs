@@ -13,12 +13,14 @@ public class StabDashAction : PlayerAction
     [SerializeField] float dashDuration; // How long the dash takes
     [SerializeField] float endDashSpeedBonus; // How fast the player is going at the end of the dash
     [SerializeField] float initalSpeedScale;  // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
+    [SerializeField] float speedLimit; // The max speed AFTER inital velocity + speed + bonus speed CALCULATION (so this limit applies for both the exit speed and the action itself) 
 
     [Header("Boosted Variables")]
     [SerializeField] float boostedDashSpeed;
     [SerializeField] float boostedDashDuration;
     [SerializeField] float boostedEndDashSpeedBonus;
-    [SerializeField] float boostedInitialSpeedScale;
+    [SerializeField] float boostedInitalSpeedScale;
+    [SerializeField] float boostsedSpeedLimit;
 
     [Header("Other Variables")]
     [SerializeField] float bloodGained; // How much blood is gained when striking something stabable
@@ -68,9 +70,14 @@ public class StabDashAction : PlayerAction
             float currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
             float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
             float currentEndDashSpeedBonus = movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true);
+            float currentVelocity = rb.velocity.magnitude * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
 
-            float velocityAlignment = Vector3.Dot(rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitialSpeedScale, false), direction);
-            dashMovement.Dash(velocityAlignment + currentDashSpeed, currentDashDuration, direction, velocityAlignment + currentDashSpeed + currentEndDashSpeedBonus);
+            // Limiting Speed
+            float currentMaxSpeed = movementModification.GetBoost(speedLimit, boostsedSpeedLimit, false);
+            float appliedDashSpeed = Mathf.Min(currentMaxSpeed, currentVelocity + currentDashSpeed);
+            float appliedExitSpeed = Mathf.Min(currentMaxSpeed, appliedDashSpeed + currentEndDashSpeedBonus);
+
+            dashMovement.Dash(appliedDashSpeed, currentDashDuration, direction, appliedExitSpeed);
         }
     }
 

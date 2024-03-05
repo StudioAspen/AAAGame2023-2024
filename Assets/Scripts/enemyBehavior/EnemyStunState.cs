@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class EnemyStunState : EnemyBaseState
 {
+
+    public Animator animator;
+
     public override void EnterState(EnemyStateManager enemy)
     {
         //Debug.Log("Enter Stun State");
+        enemy.animator.SetBool("isStunned", true);
+
     }
 
     public override void UpdateState(EnemyStateManager enemy)
@@ -17,5 +22,7 @@ public class EnemyStunState : EnemyBaseState
         Debug.Log("stunned");
         // after amount of time no longer stunned
         enemy.IsStunned();
+        enemy.animator.SetBool("isStunned", false);
+
     }
 }

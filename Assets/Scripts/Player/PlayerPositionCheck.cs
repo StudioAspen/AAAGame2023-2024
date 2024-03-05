@@ -26,7 +26,9 @@ public class PlayerPositionCheck : MonoBehaviour {
         return Physics.BoxCast(transform.position, terrainCheckHalfSize, direction, Quaternion.identity, terrainCheckOffset, ground);
     }
     public bool CheckOnGround() {
-        return Physics.SphereCast(transform.position, playerCollider.bounds.extents.x*groundCheckScale, Vector3.down, out RaycastHit holder, groundCheckOffset, ground);
+        return Physics.OverlapBox(transform.position+(Vector3.down*groundCheckOffset), playerCollider.bounds.extents*groundCheckScale, Quaternion.identity, ground).Length > 0;
+
+        //return Physics.SphereCast(transform.position, playerCollider.bounds.extents.x*groundCheckScale, Vector3.down, out RaycastHit hit, playerCollider.bounds.extents.y + groundCheckOffset, ground);
         //return Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(playerCollider.bounds.min.y - transform.position.y) + groundCheckOffset, ground);
     }
 }
