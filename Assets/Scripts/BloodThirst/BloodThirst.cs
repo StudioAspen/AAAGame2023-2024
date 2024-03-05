@@ -95,4 +95,12 @@ public class BloodThirst : MonoBehaviour
         }
         OnBloodChange.Invoke();
     }
+
+    public void LoseBlood(float amount)
+    {
+        currentBlood -= amount;
+        currentBlood = Mathf.Clamp(currentBlood, 0, maxBlood);
+
+        OnBloodChange.Invoke();
+    }
 }
