@@ -171,11 +171,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerUI
       objectReference: {fileID: 0}
-    - target: {fileID: 5143833700581377426, guid: ebe4cb8c4726c844a99ddefdd502302e,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6948064354820620955, guid: ebe4cb8c4726c844a99ddefdd502302e,
         type: 3}
       propertyPath: bloodThirst
@@ -2885,166 +2880,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: jumpForce
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: exitOffsetSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedJumpForce
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedExitOffsetSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitialSpeedScale
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3009765542485322922, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: groundCheckScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3009765542485322922, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: terrainCheckScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: endDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedEndDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: minDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: endDashSpeedBonus
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedMinDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedEndDashSpeedBonus
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: MKXSensitivity
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: MKYSensitivity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: ControllerXSensitivity
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: ControllerYSensitivity
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6773326116938459665, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: reticle
       value: 
       objectReference: {fileID: 1049901099}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: endDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedEndDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitialSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3094,46 +2939,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: endDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedEndDashSpeedBonus
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitialSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
