@@ -2880,76 +2880,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: speedLimit
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: jumpForceLimit
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostsedSpeedLimit
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedJumpForceLimit
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: speedLimit
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostsedSpeedLimit
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: speedLimit
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedMaxSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostsedSpeedLimit
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6773326116938459665, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: reticle
       value: 
       objectReference: {fileID: 1049901099}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: speedLimit
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostsedSpeedLimit
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2999,31 +2939,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: speedLimit
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostsedSpeedLimit
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8012279846651036797, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: speedLimit
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedSpeedLimit
-      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
