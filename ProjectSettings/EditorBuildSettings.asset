@@ -5,7 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/DesignersTestScenes/Wilfreddy's Playground/WilfreddyTestScene.unity
+    guid: 6d13345d9f12ed54f896ede50417262b
+  - enabled: 1
+    path: Assets/Scenes/DesignersTestScenes/Wilfreddy's Playground/2ndHalf.unity
+    guid: a0ec80ead297cab4c98db7473c22c816
+  - enabled: 1
+    path: Assets/Scenes/DesignersTestScenes/Wilfreddy's Playground/Restart.unity
+    guid: ae833df322d48c94e99e023fdf77e8b7
   m_configObjects: {}

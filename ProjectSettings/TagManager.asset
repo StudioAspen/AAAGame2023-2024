@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Dashable
   - Checkpoint
+  - Death
+  - Level2
+  - Restart1
   layers:
   - Default
   - TransparentFX
