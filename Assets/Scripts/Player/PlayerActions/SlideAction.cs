@@ -10,13 +10,16 @@ public class SlideAction : PlayerAction{
     [SerializeField] float jumpForce; // Jump force at the end fo the slide
     [SerializeField] float exitOffsetSpeed; // the force applied at the end of the slide HORIZONTALLY based on the player inputs
     [SerializeField] float initalSpeedScale;  // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
-    
+    [SerializeField] float speedLimit; // The max speed AFTER inital velocity + speed + bonus speed CALCULATION (so this limit applies for both the exit speed and the action itself) 
+    [SerializeField] float jumpForceLimit; // Same as the speed limit but applied to the jump force
 
     [Header("Boosted Variables")]
     [SerializeField] float boostedSlideSpeed;
     [SerializeField] float boostedJumpForce;
     [SerializeField] float boostedExitOffsetSpeed;
-    [SerializeField] float boostedInitialSpeedScale;
+    [SerializeField] float boostedInitalSpeedScale;
+    [SerializeField] float boostsedSpeedLimit;
+    [SerializeField] float boostedJumpForceLimit;
     
     float currentSlideSpeed;
     
@@ -54,10 +57,17 @@ public class SlideAction : PlayerAction{
         // Slide Initalization
         sliding = true;
         pathCreator = pc;
-        startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitialSpeedScale, false);
 
+        // Calculating inital speed
+        startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
         currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
         currentSlideSpeed += startVelocity.magnitude;
+
+        // Limiting Speed
+        float currentSpeedLimit = movementModification.GetBoost(speedLimit, boostsedSpeedLimit, false);
+        currentSlideSpeed = Mathf.Min(currentSpeedLimit, currentSlideSpeed);
+
+        // Initalizing offset
         Vector3 contactPoint = other.ClosestPoint(transform.position);
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
         playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
@@ -65,6 +75,7 @@ public class SlideAction : PlayerAction{
     }
     
     private void UpdateSliding() {
+        // Applying speed
         dstTravelled += currentSlideSpeed * Time.fixedDeltaTime;
         transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
         swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
@@ -72,7 +83,12 @@ public class SlideAction : PlayerAction{
 
         // Ending the dash with movement abilities
         if (dstTravelled > pathCreator.path.length) {
-            jumpAction.Jump(movementModification.GetBoost(jumpForce, boostedJumpForce, true) + startVelocity.magnitude);
+            // Calculating jump variables and limits
+            float currentJumpLimit = movementModification.GetBoost(jumpForceLimit, boostedJumpForceLimit, false);
+            float currentJumpForce = movementModification.GetBoost(jumpForce, boostedJumpForce, true) + startVelocity.magnitude;
+            
+            // Applying limits
+            jumpAction.Jump(Mathf.Min(currentJumpLimit, currentJumpForce));
             ApplyHorizontalOffset();
             EndAction();
         }
