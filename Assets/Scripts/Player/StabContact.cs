@@ -7,6 +7,7 @@ public class StabContact : MonoBehaviour
 {
     // Contact Action
     DashThroughAction dashThroughAction;
+    FlickAction flickAction;
 
     // For resets
     JumpAction jumpAction;
@@ -16,6 +17,7 @@ public class StabContact : MonoBehaviour
     UnityEvent<Collider> contactEvent;
     private void Start() {
         dashThroughAction = GetComponentInParent<DashThroughAction>();
+        flickAction = GetComponentInParent<FlickAction>();
         jumpAction = GetComponentInParent<JumpAction>();
         dashAction = GetComponentInParent<DashAction>();
 
@@ -40,6 +42,10 @@ public class StabContact : MonoBehaviour
             dashThroughAction.DashThrough(enviornment);
 
             found = true;
+        }
+        if(other.gameObject.TryGetComponent(out FlickEnemyStabable flickEnemy)) {
+            actionManager.ChangeAction(flickAction);
+            flickAction.Stick(flickEnemy);
         }
         if(found) {
             EndContactEvent();
