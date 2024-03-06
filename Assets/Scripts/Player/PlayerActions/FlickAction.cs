@@ -60,6 +60,7 @@ public class FlickAction : PlayerAction
         stickPos = transform.position;
         swordStickPos = swordObject.transform.position;
         initalVelocity = rb.velocity;
+        rb.velocity = Vector3.zero;
     }
 
     // Input gotten from player
