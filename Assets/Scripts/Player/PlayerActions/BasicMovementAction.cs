@@ -58,12 +58,6 @@ public class BasicMovementAction : PlayerAction
             RotationUpdate();
         }
 
-
-        RaycastHit hit = playerPositionCheck.CheckColldingWithTerrain(transform.forward);
-        float collisionAlignment = Vector3.Dot(hit.normal, transform.forward);
-
-        Debug.DrawLine(transform.position, hit.point, Color.blue, 1f);
-
         //Implemented physics
         if (grounded) {
             if (rb.velocity.magnitude > 0) {
@@ -111,15 +105,16 @@ public class BasicMovementAction : PlayerAction
 
         // Applying horizontal movement and limiting speed based on max velocity
         float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
-        Physics.Raycast(rb.position, addedVelocity);
 
+        // Checking collision to calculate force perpendicular to the surface of collider (for sticky wall bug)
+        if(playerPositionCheck.TryGetNormalOfClosestHoriontalCollider(addedVelocity, out Vector3 normal)) {
+            if (Vector3.Dot(normal.normalized, addedVelocity.normalized) < 0) { // Checking if the added velocity is going into the surface
+                Vector3 rotatedNormal = MyMath.RotateXZAngle(normal, 90f);
+                float perpendicularProjection = Vector3.Dot(rotatedNormal.normalized, addedVelocity);
+                addedVelocity = perpendicularProjection * rotatedNormal.normalized;
+            }
+        }
 
-        //RaycastHit hit = playerPositionCheck.CheckColldingWithTerrain(addedVelocity);
-        //float collisionAlignment = Vector3.Dot(hit.normal, addedVelocity);
-
-        //Debug.DrawLine(transform.position, hit.point, Color.blue, 1f);
-
-        //Debug.Log(collisionAlignment);
         if (alignment < 1) {
             rb.velocity += addedVelocity;
         }
