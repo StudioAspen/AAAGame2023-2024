@@ -73,7 +73,10 @@ public class PlayerInput : MonoBehaviour {
     }
     private void CheckAbilities(Vector3 direction) {
         if (Input.GetKeyDown(inputJump)) {
-            playerActionManager.JumpInput();
+            playerActionManager.JumpInputPressed();
+        }
+        if (Input.GetKeyUp(inputJump)) {
+            playerActionManager.JumpInputRelease();
         }
         if (Input.GetKeyDown(inputDash)) {
             playerActionManager.DashInput(direction);

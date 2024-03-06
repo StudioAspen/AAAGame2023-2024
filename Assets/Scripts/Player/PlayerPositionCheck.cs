@@ -50,7 +50,6 @@ public class PlayerPositionCheck : MonoBehaviour {
         return hitInfo;
     }
     public bool CheckOnGround() {
-
         Vector3 extents = playerCollider.bounds.extents * groundCheckScale;
         //Debug.Log(playerCollider.bounds.extents * groundCheckScale);
         //extents.y = 1f;

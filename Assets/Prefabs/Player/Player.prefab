@@ -296,6 +296,7 @@ GameObject:
   - component: {fileID: 8596804024649230227}
   - component: {fileID: 6003801723596019275}
   - component: {fileID: 7281945831924435466}
+  - component: {fileID: 7076914383633396891}
   - component: {fileID: 4531364391987237238}
   - component: {fileID: 3902229200159131934}
   - component: {fileID: 3088617981437380700}
@@ -304,6 +305,7 @@ GameObject:
   - component: {fileID: 7021382955167843328}
   - component: {fileID: 3134688513665312600}
   - component: {fileID: 903524653456634431}
+  - component: {fileID: 3462496366872794715}
   - component: {fileID: 6773326116938459665}
   - component: {fileID: 3739281105588693709}
   m_Layer: 6
@@ -510,13 +512,32 @@ MonoBehaviour:
   boostedAirAcceleration: 7
   boostedMaxAirSpeed: 15
   boostedAirDrag: 2
-  jumpForce: 30
   gravityAcceleration: 1
   maxFallSpeed: 20
-  boostedJumpForce: 32
   boostedGravityAcceleration: 1
   boostedMaxFallSpeed: 20
   rotationSpeed: 0.75
+--- !u!114 &7076914383633396891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aaf6ab16ccee848be97b8648318b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
+  initalSpeed: 40
+  dampWindow: 0.2
+  damping: 0.6
+  boostedInitalSpeed: 40
+  boostedDampWindow: 0.2
+  boostedDamping: 0.6
 --- !u!114 &4531364391987237238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,11 +558,13 @@ MonoBehaviour:
   dashCooldown: 1
   endDashSpeedBonus: 5
   initalSpeedScale: 1
+  speedLimit: 50
   boostedDashSpeed: 20
   boostedDashDuration: 0.2
   boostedDashCooldown: 0.5
   boostedEndDashSpeedBonus: 5
   boostedInitalSpeedScale: 1
+  boostsedSpeedLimit: 50
   timer: 0
 --- !u!114 &3902229200159131934
 MonoBehaviour:
@@ -600,9 +623,11 @@ MonoBehaviour:
   downwardStabAcceleration: 5
   downwardStabMaxSpeed: 10
   initalSpeedScale: 1
+  speedLimit: 50
   boostedDownwardStabAcceleration: 7
   boostedDownwardStabMaxSpeed: 15
   boostedInitalSpeedScale: 1
+  boostedSpeedLimit: 50
   pressDownTime: 0.25
   bloodGain: 10
 --- !u!114 &8012279846651036797
@@ -625,10 +650,12 @@ MonoBehaviour:
   dashDuration: 0.25
   endDashSpeedBonus: 1
   initalSpeedScale: 1
+  speedLimit: 50
   boostedDashSpeed: 20
   boostedDashDuration: 0.25
   boostedEndDashSpeedBonus: 1
-  boostedInitialSpeedScale: 1
+  boostedInitalSpeedScale: 1
+  boostsedSpeedLimit: 50
   bloodGained: 10
 --- !u!114 &7021382955167843328
 MonoBehaviour:
@@ -650,10 +677,12 @@ MonoBehaviour:
   dashDuration: 0.25
   endDashSpeedBonus: 1
   initalSpeedScale: 1
+  speedLimit: 50
   boostedDashSpeed: 20
   boostedDashDuration: 0.25
   boostedEndDashSpeedBonus: 1
-  boostedInitialSpeedScale: 1
+  boostedInitalSpeedScale: 1
+  boostsedSpeedLimit: 50
   bloodGained: 10
 --- !u!114 &3134688513665312600
 MonoBehaviour:
@@ -673,9 +702,11 @@ MonoBehaviour:
   dashSpeed: 20
   endDashSpeedBonus: 1
   initalSpeedScale: 1
+  speedLimit: 50
   boostedDashSpeed: 20
   boostedEndDashSpeedBonus: 1
   boostedInitalSpeedScale: 1
+  boostsedSpeedLimit: 50
   stickMag: 0.5
 --- !u!114 &903524653456634431
 MonoBehaviour:
@@ -696,11 +727,43 @@ MonoBehaviour:
   jumpForce: 30
   exitOffsetSpeed: 10
   initalSpeedScale: 0.1
+  speedLimit: 10
+  jumpForceLimit: 50
   boostedSlideSpeed: 4
   boostedJumpForce: 30
   boostedExitOffsetSpeed: 10
-  boostedInitialSpeedScale: 0.1
+  boostedInitalSpeedScale: 0
+  boostsedSpeedLimit: 10
+  boostedJumpForceLimit: 50
   swordObject: {fileID: 6800678773869080880}
+--- !u!114 &3462496366872794715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 170442c324a81fd46a9b6dba40a152a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
+  swordObject: {fileID: 6800678773869080880}
+  jumpForce: 30
+  horizontalForce: 10
+  initalSpeedScale: 1
+  horizontalSpeedLimit: 30
+  jumpSpeedLimit: 50
+  stunnedEnemyBonus: 10
+  boostedJumpForce: 30
+  boostedHorizontalForce: 10
+  boostedInitalSpeedScale: 1
+  boostedHorizontalSpeedLimit: 30
+  boostedJumpSpeedLimit: 50
+  boostedStunnedEnemyBonus: 10
 --- !u!114 &6773326116938459665
 MonoBehaviour:
   m_ObjectHideFlags: 0

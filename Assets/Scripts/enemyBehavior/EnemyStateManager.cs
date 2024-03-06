@@ -12,6 +12,7 @@ public class EnemyStateManager : MonoBehaviour
     public float attackDistance;
     public float idleAtPlayerLastPositionDuration;
     public float stunDuration;
+    public float deleteTimer;
     public Transform spawnpoint;
 
     [Header ("Enemy Projectile Variables")]
@@ -31,6 +32,10 @@ public class EnemyStateManager : MonoBehaviour
     private NavMeshAgent agent;
     public Timer timer = new Timer();
     private Transform playerTransform;
+
+    [Header("Animations")]
+    public Animator animator;
+
 
     // all the states of the enemies
     public EnemyBaseState currentState;
@@ -53,7 +58,7 @@ public class EnemyStateManager : MonoBehaviour
         }
 
         // setting references
-        render = GetComponent<Renderer>();
+        render = GetComponentInChildren<Renderer>();
         playerTransform = FindObjectOfType<PlayerInput>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
 
@@ -66,6 +71,7 @@ public class EnemyStateManager : MonoBehaviour
         // "this" is a ref to the context (this EXACT monobehavior script)
         // will call logic from EnterState
         currentState.EnterState(this);
+
     }
 
     void Update()
@@ -75,6 +81,7 @@ public class EnemyStateManager : MonoBehaviour
         currentState.UpdateState(this);
     }
 
+    /*
     // checks if ray is hitting at a given distance and returns a bool because of it
     public bool RayCastCheck(float distance)
     {
@@ -90,6 +97,12 @@ public class EnemyStateManager : MonoBehaviour
             Debug.DrawRay(transform.position, (playerTransform.transform.position - transform.position) * distance, Color.green);
             return false;
         }
+    }
+    */
+
+    public bool RayCastCheck(float distance)
+    {
+        return (playerTransform.position - transform.position).magnitude < distance;
     }
 
     #region Enemy Movement 
@@ -121,14 +134,15 @@ public class EnemyStateManager : MonoBehaviour
     {
         // change the state then call the EnterState from the new state
         currentState = state;
-        state.EnterState(this);
+        currentState.EnterState(this);
     }
 
     // switches state to idle, unstuns enemy if stunned
     public void Idle()
     {
-        if (gameObject.GetComponent<SausageEnergyBlast>().isStunned)
+        if (gameObject.GetComponent<SausageEnergyBlast>().isStunned) {
             gameObject.GetComponent<SausageEnergyBlast>().isStunned = false;
+        }
         SwitchState(idleState);
     }
 

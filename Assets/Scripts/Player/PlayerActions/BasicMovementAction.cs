@@ -29,13 +29,11 @@ public class BasicMovementAction : PlayerAction
     [SerializeField] float boostedMaxAirSpeed;
     [SerializeField] float boostedAirDrag;
 
-    [Header("Jump Variables")]
-    [SerializeField] float jumpForce; // How high the player jumps ON PLAYER INPUT JUMP
+    [Header("Gravity Variables")]
     [SerializeField] float gravityAcceleration; // How fast the player accelerates due to gravity
     [SerializeField] float maxFallSpeed; // The max fall speed DUE TO GRAVITY, things like the downward stab can make you fall faster than this
 
-    [Header("Boosted Jump")]
-    [SerializeField] float boostedJumpForce;
+    [Header("Gravity Jump")]
     [SerializeField] float boostedGravityAcceleration;
     [SerializeField] float boostedMaxFallSpeed;
 
@@ -43,7 +41,6 @@ public class BasicMovementAction : PlayerAction
     [Range(0.0f, 1f)]
     [SerializeField] float rotationSpeed; // How fast the player object turns to the direction inputted by player
 
-    bool canAirJump = false;
     bool grounded;
     bool isMoving = false;
     Vector3 targetDirection;
@@ -81,20 +78,12 @@ public class BasicMovementAction : PlayerAction
         }
         else {
             rb.drag = airDrag;
-            if (rb.velocity.magnitude < movementModification.GetBoost(maxFallSpeed, boostedMaxFallSpeed, false)) {
+            if (-rb.velocity.y < movementModification.GetBoost(maxFallSpeed, boostedMaxFallSpeed, false)) {
                 rb.velocity += Vector3.down * movementModification.GetBoost(gravityAcceleration, boostedGravityAcceleration, false);
             }
         }
     }
-    private void Update()
-    {
-        grounded = playerPositionCheck.CheckOnGround();
-        if(grounded) {
-            canAirJump = false;
-        }
-    }
 
-    #region // Move Methods
     public void MoveInput(Vector3 inputDirection)
     {
         isMoving = true;
@@ -135,32 +124,6 @@ public class BasicMovementAction : PlayerAction
             rb.velocity += addedVelocity;
         }
     }
-    #endregion
-
-
-    #region // Jump Methods
-    public void JumpInput() {
-        if(grounded || canAirJump) {
-            if(canAirJump) {
-                canAirJump = false;
-            }
-            grounded = false;
-            Jump(Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll));
-        }
-    }
-
-    public void Jump(float _jumpForce) {
-        if(rb.velocity.y < 0) {
-            rb.velocity = transform.up * _jumpForce;
-        }
-        else {
-            rb.velocity += transform.up * _jumpForce;
-        }
-    }
-    public void GiveAirJump() {
-        canAirJump = true;
-    }
-    #endregion
 
     private void RotationUpdate() {
         transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, rotationSpeed);
