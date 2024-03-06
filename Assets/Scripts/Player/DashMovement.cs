@@ -11,7 +11,7 @@ public class DashMovement {
     // temperary variables
     public UnityEvent OnDashEnd = new UnityEvent();
     float dashDurationTimer;
-    Vector3 dashVelocity;
+    public Vector3 dashVelocity;
     Vector3 endDashVelocity;
     float dragValHolder;
     public bool isDashing = false;

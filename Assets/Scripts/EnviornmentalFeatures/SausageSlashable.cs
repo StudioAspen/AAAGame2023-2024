@@ -36,6 +36,5 @@ public class SausageSlashable : Slashable
                 gameObject.GetComponent<EnemyStateManager>().Death();
             }
         }
-        
     }
 }

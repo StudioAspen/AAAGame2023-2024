@@ -7,17 +7,19 @@ public class StabContact : MonoBehaviour
 {
     // Contact Action
     DashThroughAction dashThroughAction;
+    FlickAction flickAction;
 
     // For resets
-    BasicMovementAction movementAction;
+    JumpAction jumpAction;
     DashAction dashAction;
 
     float bloodGainAmount;
     UnityEvent<Collider> contactEvent;
     private void Start() {
-        dashThroughAction = transform.parent.GetComponent<DashThroughAction>();
-        movementAction = transform.parent.GetComponent<BasicMovementAction>();
-        dashAction = transform.parent.GetComponent<DashAction>();
+        dashThroughAction = GetComponentInParent<DashThroughAction>();
+        flickAction = GetComponentInParent<FlickAction>();
+        jumpAction = GetComponentInParent<JumpAction>();
+        dashAction = GetComponentInParent<DashAction>();
 
         // End of events
         dashThroughAction.OnEndAction.AddListener(EndOfDash);
@@ -41,6 +43,10 @@ public class StabContact : MonoBehaviour
 
             found = true;
         }
+        if(other.gameObject.TryGetComponent(out FlickEnemyStabable flickEnemy)) {
+            actionManager.ChangeAction(flickAction);
+            flickAction.Stick(flickEnemy);
+        }
         if(found) {
             EndContactEvent();
         }
@@ -60,7 +66,7 @@ public class StabContact : MonoBehaviour
     }
 
     private void EndOfDash() {
-        movementAction.GiveAirJump();
+        jumpAction.GiveAirJump();
         dashAction.ResetDash();
     }
 }
