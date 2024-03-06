@@ -18,6 +18,13 @@ public class MyMath : MonoBehaviour
         Vector2 v2 = new Vector2(-Mathf.Sin(rad), Mathf.Cos(rad));
         return v.x*v1 + v.y*v2;
     }
+    // Returns the rotated angle based on inputed angle
+    public static Vector3 RotateXZAngle(Vector3 v, float angle) {
+        Vector2 holder = RotateAngle(new Vector2(v.x, v.z), angle);
+
+
+        return new Vector3(holder.x, v.y, holder.y);
+    }
 
     // Returns 1 or -1 based on side of source vector (if they are perpendicular default is 1)
     public static int OnSide(Vector2 source, Vector2 check) {

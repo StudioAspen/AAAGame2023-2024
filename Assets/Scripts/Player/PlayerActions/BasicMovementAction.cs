@@ -61,6 +61,12 @@ public class BasicMovementAction : PlayerAction
             RotationUpdate();
         }
 
+
+        RaycastHit hit = playerPositionCheck.CheckColldingWithTerrain(transform.forward);
+        float collisionAlignment = Vector3.Dot(hit.normal, transform.forward);
+
+        Debug.DrawLine(transform.position, hit.point, Color.blue, 1f);
+
         //Implemented physics
         if (grounded) {
             if (rb.velocity.magnitude > 0) {
@@ -118,7 +124,14 @@ public class BasicMovementAction : PlayerAction
         float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
         Physics.Raycast(rb.position, addedVelocity);
 
-        if (alignment < 1 && !playerPositionCheck.CheckColldingWithTerrain(addedVelocity)) {
+
+        //RaycastHit hit = playerPositionCheck.CheckColldingWithTerrain(addedVelocity);
+        //float collisionAlignment = Vector3.Dot(hit.normal, addedVelocity);
+
+        //Debug.DrawLine(transform.position, hit.point, Color.blue, 1f);
+
+        //Debug.Log(collisionAlignment);
+        if (alignment < 1) {
             rb.velocity += addedVelocity;
         }
     }
