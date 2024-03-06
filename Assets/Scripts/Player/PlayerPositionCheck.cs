@@ -50,11 +50,7 @@ public class PlayerPositionCheck : MonoBehaviour {
         return hitInfo;
     }
     public bool CheckOnGround() {
-        Vector3 extents = playerCollider.bounds.extents * groundCheckScale;
-        //Debug.Log(playerCollider.bounds.extents * groundCheckScale);
-        //extents.y = 1f;
-        return Physics.BoxCast(transform.position, extents, Vector3.down, out RaycastHit hit, Quaternion.identity, playerCollider.bounds.extents.y + groundCheckOffset, ground);
-        //return Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(playerCollider.bounds.min.y - transform.position.y) + groundCheckOffset, ground);
+        return Physics.OverlapBox(transform.position + (Vector3.down * groundCheckOffset), playerCollider.bounds.extents * groundCheckScale, Quaternion.identity, ground).Length > 0;
     }
     private void OnDrawGizmos() {
         Gizmos.DrawWireCube(transform.position + (gizmoDir*terrainCheckOffset), (playerCollider.bounds.size * terrainCheckScale));
