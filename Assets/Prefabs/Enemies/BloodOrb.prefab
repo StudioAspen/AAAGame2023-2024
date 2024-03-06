@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5053543253276533109}
   - component: {fileID: 5928467008385099669}
   m_Layer: 0
-  m_Name: Blood
+  m_Name: BloodOrb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
