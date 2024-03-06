@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    DashAction dashAction;
 
-    DashMovement dashMovement;
     Animator anim;
     Rigidbody rb;
 
@@ -13,7 +14,11 @@ public class PlayerAnimation : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();; 
+        rb = GetComponentInParent<Rigidbody>();
+        dashAction = GetComponentInParent<DashAction>();
+
+        dashAction.onActionStart.AddListener(DashAnimation);
+        dashAction.OnEndAction.AddListener(EndDashAnimation);
     }
 
     // Update is called once per frame
@@ -24,17 +29,10 @@ public class PlayerAnimation : MonoBehaviour
 
     void Animation()
     {
+
         if (rb.velocity.x != 0)
         {
-            if (dashMovement.isDashing)
-            {
-                anim.SetBool("isDashing", true);
-            }
-            else
-            {
-                anim.SetBool("isDashing", false);
-                anim.SetBool("isWalking", true);
-            }
+            anim.SetBool("isWalking", true);
         }
         else
         {
@@ -48,6 +46,16 @@ public class PlayerAnimation : MonoBehaviour
         else
         {
             anim.SetBool("isJumping", false);
-        }  
+        }
+    }
+
+    public void DashAnimation()
+    {
+        anim.SetBool("isDashing", true);
+    }
+
+    public void EndDashAnimation()
+    {
+        anim.SetBool("isDashing", false);
     }
 }

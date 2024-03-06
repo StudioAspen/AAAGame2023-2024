@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class DashAction : PlayerAction
 {
+    public UnityEvent onActionStart = new UnityEvent();
+
     [Header("Movement")]
     [SerializeField] float dashSpeed; // The speed player will add onto current speed
     [SerializeField] float dashDuration; // How long the dash lasts
@@ -77,15 +79,17 @@ public class DashAction : PlayerAction
 
         timer = 0;
         dashAvailable = false; // Using up the dash
-        
+
         // Calculating boosts (all boosts are calculated as a linear interpolation between normal and boost amount given a percentage)
-        dashCdTimer = movementModification.GetBoost(dashCooldown, boostedDashCooldown, true); 
-        float currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);  
+        dashCdTimer = movementModification.GetBoost(dashCooldown, boostedDashCooldown, true);
+        float currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
         float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
         float currentEndDashSpeedBonus = movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true);
 
         float velocityAlignment = Vector3.Dot(rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false), direction);
         dashMovement.Dash(velocityAlignment + currentDashSpeed, currentDashDuration, direction, velocityAlignment + currentDashSpeed + currentEndDashSpeedBonus);
+
+        onActionStart.Invoke();
     }
 
     // Resets the dash allowing player to dash again
