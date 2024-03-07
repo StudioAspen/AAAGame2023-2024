@@ -14,6 +14,7 @@ public class PlayerActionManager : MonoBehaviour
     StabDashAction stabDashAction;
     SlashDashAction slashDashAction;
     SlideAction slideAction;
+    FlickAction flickAction;
     EnergyBlast energyBlast;
 
     PlayerAction currentAction;
@@ -31,6 +32,7 @@ public class PlayerActionManager : MonoBehaviour
         stabDashAction = GetComponentInParent<StabDashAction>();
         slashDashAction = GetComponentInParent<SlashDashAction>();
         slideAction = GetComponentInParent<SlideAction>();
+        flickAction = GetComponentInParent<FlickAction>();
         energyBlast = GetComponentInParent<EnergyBlast>();
 
         currentAction = basicMovementAction;
@@ -71,6 +73,9 @@ public class PlayerActionManager : MonoBehaviour
             slideAction.ApplyHorizontalOffset();
             ChangeAction(jumpAction);
             jumpAction.JumpStart();
+        }
+        else if(currentAction == flickAction) {
+            flickAction.FlickOff();
         }
     }
     public void JumpInputRelease() {
