@@ -22,7 +22,7 @@ public class TESTsfx2 : MonoBehaviour
         }
 
         if(Input.GetKeyDown(KeyCode.Alpha3)){
-            Debug.Log("3 key pressed, stopping audio source");
+            Debug.Log("3 key pressed, stopping right audio source");
             AudioManager.GetInstance().StopAudio(audioSource);
         }
     }
