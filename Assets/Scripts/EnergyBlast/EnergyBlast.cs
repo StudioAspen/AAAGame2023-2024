@@ -8,20 +8,23 @@ public class EnergyBlast : MonoBehaviour
 {
     [System.NonSerialized]
     public UnityEvent OnChargesChanged = new UnityEvent();
+    public UnityEvent OnChargeTimer = new UnityEvent();
 
+    [Header("References")]
     public GameObject energyBlast;
     public RectTransform reticle;
     public LayerMask ignoredLayers;
 
-    public float maxRange;
-    public int maxNumOfCharges;
-    public float rechargeTimer;
-    public float timeBetweenShots;
+    [Header("Variables")]
+    public float maxRange; // How far you can shoot
+    public int maxNumOfCharges; // Maximum number of shots you ahve
+    public float rechargeTimer; // How long it takes to gain another charge
+    public float timeBetweenShots; // Time it takes to fire another shot after just shooting one
 
     [System.NonSerialized]
     public int currNumOfCharges;
 
-    private float currRechargeTimer = 0f;
+    public float currRechargeTimer = 0f;
     private float currTimeBetweenShots;
 
     private void Start()
@@ -47,7 +50,6 @@ public class EnergyBlast : MonoBehaviour
         {
             ShootInternal();
             currTimeBetweenShots = 0f;
-            currRechargeTimer = 0f;
             currNumOfCharges--;
             OnChargesChanged.Invoke();
         }
@@ -89,6 +91,7 @@ public class EnergyBlast : MonoBehaviour
                 currRechargeTimer = 0f;
                 OnChargesChanged.Invoke();
             }
+            OnChargeTimer.Invoke();
         }
     }
 

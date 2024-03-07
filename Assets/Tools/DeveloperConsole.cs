@@ -86,9 +86,8 @@ public class DeveloperConsole : MonoBehaviour
     {
         DirectoryInfo enemyFolder = new DirectoryInfo(ENEMIES_FOLDER_PATH);
         FileInfo[] enemyFiles = enemyFolder.GetFiles();
-
-        for (int i = 0; i < enemyFiles.Length; i++)
-        {
+        enemyNames = new string[enemyFiles.Length];
+        for (int i = 0; i < enemyFiles.Length; i++) {
             enemyNames[i] = enemyFiles[i].Name;
         }
     }
