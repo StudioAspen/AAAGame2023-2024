@@ -58,6 +58,8 @@ public class BasicMovementAction : PlayerAction
             RotationUpdate();
         }
 
+        grounded = playerPositionCheck.CheckOnGround();
+
         //Implemented physics
         if (grounded) {
             if (rb.velocity.magnitude > 0) {
@@ -103,18 +105,24 @@ public class BasicMovementAction : PlayerAction
             maxVelocity = targetDirection.normalized * movementModification.GetBoost(maxAirSpeed, boostedMaxAirSpeed, true);
         }
 
-        // Applying horizontal movement and limiting speed based on max velocity
-        float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
-
         // Checking collision to calculate force perpendicular to the surface of collider (for sticky wall bug)
-        if(playerPositionCheck.TryGetNormalOfClosestHoriontalCollider(addedVelocity, out Vector3 normal)) {
-            if (Vector3.Dot(normal.normalized, addedVelocity.normalized) < 0) { // Checking if the added velocity is going into the surface
-                Vector3 rotatedNormal = MyMath.RotateXZAngle(normal, 90f);
-                float perpendicularProjection = Vector3.Dot(rotatedNormal.normalized, addedVelocity);
-                addedVelocity = perpendicularProjection * rotatedNormal.normalized;
+        if (playerPositionCheck.TryGetNormalOfClosestHoriontalCollider(addedVelocity, out Vector3 normal)) {
+            if (Vector3.Dot(normal.normalized, addedVelocity.normalized) <= 0) { // Checking if the added velocity is going into the surface
+                // Finding perpendicular vector to the surface normal
+                Vector3 rotationVector = Vector3.Cross(normal.normalized, addedVelocity.normalized);
+                Vector3 perpendicularToNormal = MyMath.RotateAboutAxis(normal, rotationVector, 90f);
+
+                Debug.DrawLine(transform.position, transform.position + perpendicularToNormal*2, Color.green);
+                Debug.DrawLine(transform.position, transform.position + normal*2, Color.blue);
+
+                float perpendicularProjection = Vector3.Dot(perpendicularToNormal.normalized, addedVelocity);
+                //float perpendicularProjection = addedVelocity.magnitude;
+                addedVelocity = perpendicularProjection * perpendicularToNormal.normalized;
             }
         }
 
+        // Applying horizontal movement and limiting speed based on max velocity
+        float alignment = Vector3.Dot(horizontalVelocity / maxVelocity.magnitude, maxVelocity / maxVelocity.magnitude);
         if (alignment < 1) {
             rb.velocity += addedVelocity;
         }

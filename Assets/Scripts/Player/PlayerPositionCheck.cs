@@ -62,8 +62,8 @@ public class PlayerPositionCheck : MonoBehaviour {
         foreach(Collider collider in colliders) {
             float valCheck = (collider.ClosestPoint(transform.position) - transform.position).magnitude;
             if (valCheck < closestDist) {
-                closestCollider = collider;
-                closestDist = valCheck;
+                closestCollider = collider; 
+                closestDist = valCheck; 
             }
         }
 
@@ -71,6 +71,7 @@ public class PlayerPositionCheck : MonoBehaviour {
         Ray rayToCollider = new Ray(transform.position, closestCollider.ClosestPoint(transform.position)-transform.position);
         closestCollider.Raycast(rayToCollider, out RaycastHit hit, extents.magnitude);
 
+        
         // output
         normal = hit.normal;
         return true;
