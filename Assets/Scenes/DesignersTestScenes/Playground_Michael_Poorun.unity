@@ -2803,12 +2803,12 @@ PrefabInstance:
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000034861984
+      value: -0.000000035461927
       objectReference: {fileID: 0}
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000028307776
+      value: 0.000000028794943
       objectReference: {fileID: 0}
     - target: {fileID: 1311952080287650324, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -4773,6 +4773,46 @@ PrefabInstance:
       propertyPath: jumpMultiplier
       value: 1.75
       objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: jumpForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: horizontalForce
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedJumpForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: initalSpeedScale
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: horizontalSpeedLimit
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedHorizontalForce
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedInitalSpeedScale
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedHorizontalSpeedLimit
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: maxBlood
@@ -4871,7 +4911,7 @@ PrefabInstance:
     - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: initalSpeedScale
-      value: 1.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
@@ -4900,13 +4940,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
+      propertyPath: maxGroundSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
       propertyPath: boostedJumpForce
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
+      propertyPath: groundAcceleration
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
       propertyPath: gravityAcceleration
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedGroundFriction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedAirAcceleration
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
