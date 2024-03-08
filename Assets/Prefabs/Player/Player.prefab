@@ -68,10 +68,11 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 1024
-  groundCheckOffset: 0.01
+  groundCheckOffset: 0.1
   terrainCheckOffset: 0.01
-  terrainCheckScale: 1
-  groundCheckScale: 1
+  terrainCheckScaleXZ: 1.01
+  terrainCheckScaleY: 0.5
+  groundCheckScale: 0.95
   grounded: 0
 --- !u!114 &1554232633083437368
 MonoBehaviour:
@@ -500,18 +501,18 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  groundAcceleration: 5
-  maxGroundSpeed: 10
-  groundFriction: 1
+  groundAcceleration: 7
+  maxGroundSpeed: 15
+  groundFriction: 4
   boostedGroundAcceleration: 7
   boostedMaxGroundSpeed: 15
-  boostedGroundFriction: 1
+  boostedGroundFriction: 4
   airAcceleration: 5
   maxAirSpeed: 10
-  airDrag: 2
+  airDrag: 1
   boostedAirAcceleration: 7
   boostedMaxAirSpeed: 15
-  boostedAirDrag: 2
+  boostedAirDrag: 1
   gravityAcceleration: 1
   maxFallSpeed: 20
   boostedGravityAcceleration: 1
