@@ -6,10 +6,12 @@ public class SausageEnergyBlast : EnergyBlastedEffect
 {
     [HideInInspector] public bool isStunned;
     private EnemyStateManager enemy;
+    private MeleeEnemyStateManager meleeEnemy;
 
     private void Start()
     {
         enemy = gameObject.GetComponent<EnemyStateManager>();
+        meleeEnemy = gameObject.GetComponent<MeleeEnemyStateManager>();
     }
 
     public override void TriggerEffect()
@@ -20,6 +22,7 @@ public class SausageEnergyBlast : EnergyBlastedEffect
         {
             isStunned = true;
             enemy.Stun();
+            meleeEnemy.Stun();
         }
     }
 }
