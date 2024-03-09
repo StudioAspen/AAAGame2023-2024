@@ -14,6 +14,7 @@ public class RibPlatform : MonoBehaviour
     [SerializeField] Collider knockbackTrigger;//trigger collider that pushes the player away when the platform closes
     [SerializeField] Collider openCollider;//platform collider when ribs r open
     [SerializeField] Collider closedCollider;//platform collider when ribs r closed (should probably be round so the player cant stand on it)
+    [SerializeField] float bloodLostOnHit; //blood lost when hit by knockback volume
     MeshRenderer renderer; //using to change the platform's color when open/closed
 
     Timer timerTillClosed = new Timer();
@@ -88,7 +89,9 @@ public class RibPlatform : MonoBehaviour
         if (other.TryGetComponent<PlayerInput>(out PlayerInput playerInput))
         {
             Rigidbody rb = playerInput.GetComponent<Rigidbody>();
+            BloodThirst bloodThirst = playerInput.GetComponent<BloodThirst>();
             playerInput.DisableInput();//player input is disabled for an instant so we can apply a knockback force to 'em
+            bloodThirst.LoseBlood(bloodLostOnHit); //player loses blood when they get hit by the volume
             rb.AddForce(Vector3.Normalize(-rb.transform.forward + transform.up) * launchForce, ForceMode.Impulse);
             knockbackTrigger.enabled = false; //should be disabled by the animation instead I think,, once we have it,,,
             playerInput.EnableInput();
