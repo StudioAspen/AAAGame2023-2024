@@ -88,11 +88,10 @@ public class RibPlatform : MonoBehaviour
 
         if (other.TryGetComponent<PlayerInput>(out PlayerInput playerInput))
         {
-            Rigidbody rb = playerInput.GetComponent<Rigidbody>();
             BloodThirst bloodThirst = playerInput.GetComponent<BloodThirst>();
             playerInput.DisableInput();//player input is disabled for an instant so we can apply a knockback force to 'em
             bloodThirst.LoseBlood(bloodLostOnHit); //player loses blood when they get hit by the volume
-            rb.AddForce(Vector3.Normalize(-rb.transform.forward + transform.up) * launchForce, ForceMode.Impulse);
+            playerInput.GetComponentInChildren<PlayerActionManager>().KnockBack(transform.position, launchForce); // Applying knockback
             knockbackTrigger.enabled = false; //should be disabled by the animation instead I think,, once we have it,,,
             playerInput.EnableInput();
         }
