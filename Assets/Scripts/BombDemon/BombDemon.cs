@@ -26,7 +26,7 @@ public class BombDemon : MonoBehaviour
     public State state;
 
     public GameObject explosionEffect;
-    public GameObject explo;
+    private GameObject explo;
     private GameObject player;
     private Rigidbody rb;
     private NavMeshAgent navMeshAgent;
@@ -37,8 +37,7 @@ public class BombDemon : MonoBehaviour
 
 
     public LayerMask explosionLayer;
-    public bool isAttacking;
-    public bool madeContact;
+    private bool isAttacking;
 
     private void Start()
     {
