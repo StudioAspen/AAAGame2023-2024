@@ -54,6 +54,8 @@ public class DashThroughAction : PlayerAction
         float currentInitalSpeedCalc = rb.velocity.magnitude * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
         float currentSpeedLimitCalc = movementModification.GetBoost(speedLimit, boostsedSpeedLimit, false);
         currentDashSpeed = Mathf.Min(currentSpeedLimitCalc, currentDashSpeedCalc + currentInitalSpeedCalc);
+
+        OnStartAction.Invoke();
     }
 
     private void DashThroughUpdate() {
