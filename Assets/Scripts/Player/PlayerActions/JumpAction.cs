@@ -65,6 +65,7 @@ public class JumpAction : PlayerAction
     public void JumpStart() {
         Jump(movementModification.GetBoost(initalSpeed, boostedInitalSpeed, true));
         jumping = true;
+        OnStartAction.Invoke();
     }
 
     public void JumpInputRelease() {

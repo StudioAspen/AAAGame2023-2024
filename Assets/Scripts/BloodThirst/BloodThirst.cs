@@ -14,6 +14,8 @@ public class BloodThirst : MonoBehaviour
     [SerializeField] float bloodDrainRate; // Blood drain rate
     [SerializeField] float overfedDrainRate; // Blood drain rate when overfed
 
+    [SerializeField] bool canDrainBlood = true;
+
     [Header("Other Variables")]
     [SerializeField] PlayerKillable playerKillable;
     [SerializeField] float playerHealthDrainRate; // How much are you draining from the player
@@ -65,16 +67,16 @@ public class BloodThirst : MonoBehaviour
     }
     private void DrainBlood()
     {
-        // Draining blood based on overfed and limiting limit to 0
-        if (currentBlood < maxBlood)
-        {
-            currentBlood = Mathf.Max(currentBlood - (bloodDrainRate * Time.deltaTime), 0);
+        if (canDrainBlood) {
+            // Draining blood based on overfed and limiting limit to 0
+            if (currentBlood < maxBlood) {
+                currentBlood = Mathf.Max(currentBlood - (bloodDrainRate * Time.deltaTime), 0);
+            }
+            else {
+                currentBlood -= overfedDrainRate * Time.deltaTime;
+            }
+            OnBloodChange.Invoke();
         }
-        else
-        {
-            currentBlood -= overfedDrainRate * Time.deltaTime;
-        }
-        OnBloodChange.Invoke();
     }
     private void ApplyMovementModification()
     {

@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: 3462496366872794715}
   - component: {fileID: 6773326116938459665}
   - component: {fileID: 3739281105588693709}
+  - component: {fileID: 546761205629445124}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -476,6 +477,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentControls: 1
   combinationWindow: 0.2
+  MKXSensitivity: 300
+  MKYSensitivity: 2
+  ControllerXSensitivity: 300
+  ControllerYSensitivity: 2
   keyboardStab: 101
   keyboardSlash: 113
   keyboardDash: 304
@@ -501,12 +506,15 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
+  OnStartAction:
+    m_PersistentCalls:
+      m_Calls: []
   groundAcceleration: 7
-  maxGroundSpeed: 15
-  groundFriction: 4
-  boostedGroundAcceleration: 7
+  maxGroundSpeed: 10
+  groundFriction: 1
+  boostedGroundAcceleration: 10
   boostedMaxGroundSpeed: 15
-  boostedGroundFriction: 4
+  boostedGroundFriction: 1
   airAcceleration: 5
   maxAirSpeed: 10
   airDrag: 1
@@ -514,10 +522,10 @@ MonoBehaviour:
   boostedMaxAirSpeed: 15
   boostedAirDrag: 1
   gravityAcceleration: 1
-  maxFallSpeed: 20
+  maxFallSpeed: 30
   boostedGravityAcceleration: 1
   boostedMaxFallSpeed: 20
-  rotationSpeed: 0.75
+  rotationSpeed: 0.85
 --- !u!114 &7076914383633396891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,6 +539,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartAction:
     m_PersistentCalls:
       m_Calls: []
   initalSpeed: 40
@@ -554,10 +565,13 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  dashSpeed: 20
+  OnStartAction:
+    m_PersistentCalls:
+      m_Calls: []
+  dashSpeed: 17.5
   dashDuration: 0.25
   dashCooldown: 1
-  endDashSpeedBonus: 5
+  endDashSpeedBonus: 3
   initalSpeedScale: 1
   speedLimit: 50
   boostedDashSpeed: 20
@@ -582,9 +596,12 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
+  OnStartAction:
+    m_PersistentCalls:
+      m_Calls: []
   swordMovement: {fileID: 2230350445419021309}
-  bloodGainAmount: 10
-  attackDuration: 0.5
+  bloodGainAmount: 12
+  attackDuration: 0.375
   timer: 0
 --- !u!114 &3088617981437380700
 MonoBehaviour:
@@ -601,8 +618,11 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
+  OnStartAction:
+    m_PersistentCalls:
+      m_Calls: []
   swordMovement: {fileID: 2230350445419021309}
-  bloodGained: 10
+  bloodGained: 12
   attackDuration: 0.5
   timer: 0
 --- !u!114 &8671536288844823369
@@ -620,13 +640,16 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
+  OnStartAction:
+    m_PersistentCalls:
+      m_Calls: []
   swordMovement: {fileID: 2230350445419021309}
-  downwardStabAcceleration: 5
-  downwardStabMaxSpeed: 10
+  downwardStabAcceleration: 10
+  downwardStabMaxSpeed: 17.5
   initalSpeedScale: 1
   speedLimit: 50
-  boostedDownwardStabAcceleration: 7
-  boostedDownwardStabMaxSpeed: 15
+  boostedDownwardStabAcceleration: 14
+  boostedDownwardStabMaxSpeed: 30
   boostedInitalSpeedScale: 1
   boostedSpeedLimit: 50
   pressDownTime: 0.25
@@ -644,6 +667,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OnEndAction:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartAction:
     m_PersistentCalls:
       m_Calls: []
   dashCollider: {fileID: 6990662696071883527}
@@ -673,6 +699,9 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
+  OnStartAction:
+    m_PersistentCalls:
+      m_Calls: []
   dashCollider: {fileID: 6990662696071883527}
   dashSpeed: 20
   dashDuration: 0.25
@@ -700,6 +729,9 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
+  OnStartAction:
+    m_PersistentCalls:
+      m_Calls: []
   dashSpeed: 20
   endDashSpeedBonus: 1
   initalSpeedScale: 1
@@ -724,18 +756,21 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
-  slideSpeed: 2
-  jumpForce: 30
+  OnStartAction:
+    m_PersistentCalls:
+      m_Calls: []
+  slideSpeed: 1.25
+  jumpForce: 25
   exitOffsetSpeed: 10
   initalSpeedScale: 0.1
   speedLimit: 10
-  jumpForceLimit: 50
-  boostedSlideSpeed: 4
-  boostedJumpForce: 30
+  jumpForceLimit: 35
+  boostedSlideSpeed: 2
+  boostedJumpForce: 25
   boostedExitOffsetSpeed: 10
   boostedInitalSpeedScale: 0
   boostsedSpeedLimit: 10
-  boostedJumpForceLimit: 50
+  boostedJumpForceLimit: 35
   swordObject: {fileID: 6800678773869080880}
 --- !u!114 &3462496366872794715
 MonoBehaviour:
@@ -752,17 +787,20 @@ MonoBehaviour:
   OnEndAction:
     m_PersistentCalls:
       m_Calls: []
+  OnStartAction:
+    m_PersistentCalls:
+      m_Calls: []
   swordObject: {fileID: 6800678773869080880}
-  jumpForce: 30
-  horizontalForce: 10
-  initalSpeedScale: 1
-  horizontalSpeedLimit: 30
+  jumpForce: 10
+  horizontalForce: 30
+  initalSpeedScale: 5
+  horizontalSpeedLimit: 60
   jumpSpeedLimit: 50
   stunnedEnemyBonus: 10
-  boostedJumpForce: 30
-  boostedHorizontalForce: 10
-  boostedInitalSpeedScale: 1
-  boostedHorizontalSpeedLimit: 30
+  boostedJumpForce: 10
+  boostedHorizontalForce: 40
+  boostedInitalSpeedScale: 5
+  boostedHorizontalSpeedLimit: 60
   boostedJumpSpeedLimit: 50
   boostedStunnedEnemyBonus: 10
 --- !u!114 &6773326116938459665
@@ -777,9 +815,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02df61c988e81e4fa4db148fa2fc638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnChargeTimer:
-    m_PersistentCalls:
-      m_Calls: []
   energyBlast: {fileID: 6611711599269637238, guid: f145e05c8467bca4d91a3b48bd1333c2,
     type: 3}
   reticle: {fileID: 0}
@@ -787,10 +822,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   maxRange: 20
-  maxNumOfCharges: 3
-  rechargeTimer: 2
   timeBetweenShots: 1
-  currRechargeTimer: 0
+  bloodPerShot: 0
 --- !u!114 &3739281105588693709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -803,17 +836,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodThirstThreshold: 20
-  maxBlood: 100
-  maxBloodForOverfed: 120
+  bloodThirstThreshold: 30
+  maxBlood: 105
+  maxBloodForOverfed: 150
   currentBlood: 0
   bloodDrainRate: 5
   overfedDrainRate: 5
+  canDrainBlood: 1
   playerKillable: {fileID: 8596804024649230227}
-  playerHealthDrainRate: 10
+  playerHealthDrainRate: 0.1
   OnBloodChange:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &546761205629445124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762887234727674899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d02df61c988e81e4fa4db148fa2fc638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyBlast: {fileID: 6611711599269637238, guid: f145e05c8467bca4d91a3b48bd1333c2,
+    type: 3}
+  reticle: {fileID: 0}
+  ignoredLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  maxRange: 20
+  timeBetweenShots: 1
+  bloodPerShot: 0
 --- !u!1 &3410584284265416894
 GameObject:
   m_ObjectHideFlags: 0
