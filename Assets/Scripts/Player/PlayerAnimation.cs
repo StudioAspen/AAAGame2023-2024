@@ -17,7 +17,7 @@ public class PlayerAnimation : MonoBehaviour
         rb = GetComponentInParent<Rigidbody>();
         dashAction = GetComponentInParent<DashAction>();
 
-        dashAction.onActionStart.AddListener(DashAnimation);
+        dashAction.OnStartAction.AddListener(DashAnimation);
         dashAction.OnEndAction.AddListener(EndDashAnimation);
     }
 

@@ -61,6 +61,8 @@ public class FlickAction : PlayerAction
         swordStickPos = swordObject.transform.position;
         initalVelocity = rb.velocity;
         rb.velocity = Vector3.zero;
+
+        OnStartAction.Invoke();
     }
 
     // Input gotten from player
