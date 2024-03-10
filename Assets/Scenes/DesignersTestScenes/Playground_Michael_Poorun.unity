@@ -2793,7 +2793,7 @@ PrefabInstance:
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.77630544
+      value: 0.7763054
       objectReference: {fileID: 0}
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -2803,12 +2803,12 @@ PrefabInstance:
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000012123218
+      value: 0.00000003486197
       objectReference: {fileID: 0}
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000009844006
+      value: -0.000000028307781
       objectReference: {fileID: 0}
     - target: {fileID: 1311952080287650324, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -2878,12 +2878,12 @@ PrefabInstance:
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000003891063
+      value: -0.00000003891063
       objectReference: {fileID: 0}
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000033918973
+      value: 0.000000033918973
       objectReference: {fileID: 0}
     - target: {fileID: 6864274708768680152, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -2933,12 +2933,12 @@ PrefabInstance:
     - target: {fileID: 7522325351238352795, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000007782129
+      value: -0.00000007782129
       objectReference: {fileID: 0}
     - target: {fileID: 7522325351238352795, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000006783797
+      value: 0.00000006783797
       objectReference: {fileID: 0}
     - target: {fileID: 8547251516777677223, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -4498,46 +4498,31 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &1387070839 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1528005327}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1387070840 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
     type: 3}
   m_PrefabInstance: {fileID: 1528005327}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1387070841
+--- !u!114 &1387070841 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 546761205629445124, guid: 88512be50a530374189e930db8c0502d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1528005327}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387070839}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d02df61c988e81e4fa4db148fa2fc638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyBlast: {fileID: 6611711599269637238, guid: f145e05c8467bca4d91a3b48bd1333c2,
-    type: 3}
-  reticle: {fileID: 1469992849}
-  ignoredLayers:
-    serializedVersion: 2
-    m_Bits: 64
-  maxRange: 20
-  timeBetweenShots: 1
-  bloodPerShot: 0
 --- !u!114 &1387070842 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8596804024649230227, guid: 88512be50a530374189e930db8c0502d,
     type: 3}
   m_PrefabInstance: {fileID: 1528005327}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387070839}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8b13fe390e6f5d4c8cb221e08254b48, type: 3}
@@ -4549,7 +4534,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1528005327}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387070839}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0275fc88435de3d468a6d14def8d76c3, type: 3}
@@ -4755,271 +4740,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
+    - target: {fileID: 546761205629445124, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
-      propertyPath: jumpForce
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: slideSpeed
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: jumpForceLimit
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedJumpForce
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedSlideSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedJumpForceLimit
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: reticle
+      value: 
+      objectReference: {fileID: 1469992849}
     - target: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3088617981437380700, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: bloodGained
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 3088617981437380700, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: jumpMultiplier
-      value: 1.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: jumpForce
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: horizontalForce
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedJumpForce
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: horizontalSpeedLimit
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedHorizontalForce
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedInitalSpeedScale
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedHorizontalSpeedLimit
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: maxBlood
-      value: 105
-      objectReference: {fileID: 0}
-    - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: bloodDrainRate
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: overfedDrainRate
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: maxBloodForOverfed
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: bloodThirstThreshold
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: playerHealthDrainRate
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3902229200159131934, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: attackDuration
-      value: 0.375
-      objectReference: {fileID: 0}
-    - target: {fileID: 3902229200159131934, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: bloodGainAmount
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashSpeed
-      value: 17.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashCooldown
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashDistance
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: dashDuration
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: endDashSpeedBonus
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashCooldown
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashDistance
-      value: 8.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDashDuration
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: keyboardStab
-      value: 101
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003801723596019275, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: keyboardSlash
-      value: 113
       objectReference: {fileID: 0}
     - target: {fileID: 6773326116938459665, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: reticle
       value: 
       objectReference: {fileID: 1469992849}
-    - target: {fileID: 7021382955167843328, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: initalSpeedScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: jumpForce
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: groundDrag
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: maxFallSpeed
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: rotationSpeed
-      value: 0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: groundFriction
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: maxGroundSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedJumpForce
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: groundAcceleration
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: gravityAcceleration
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedGroundFriction
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedAirAcceleration
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedGroundAcceleration
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7281945831924435466, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedGravityAcceleration
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5070,34 +4805,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: downwardStabMaxSpeed
-      value: 17.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: downwardStabAcceleration
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDownwardStabMaxSpeed
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      propertyPath: boostedDownwardStabAcceleration
-      value: 14
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2762887234727674899, guid: 88512be50a530374189e930db8c0502d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1387070841}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88512be50a530374189e930db8c0502d, type: 3}
 --- !u!1 &1543046116
 GameObject:
