@@ -19,7 +19,7 @@ public class BombDemonSlashable : Slashable
             {
                 Instantiate(bloodPrefab, transform.position, Quaternion.identity);
             }
-
+            bombDemon.state = BombDemon.State.dead;
         }
 
     }  

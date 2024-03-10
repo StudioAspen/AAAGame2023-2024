@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 1601227346848069220}
   - component: {fileID: 3491244969230101381}
   - component: {fileID: 8422013526667354321}
+  - component: {fileID: 7229489899993775193}
+  - component: {fileID: 4403752927507272148}
   m_Layer: 0
   m_Name: Bomb Demon
   m_TagString: Untagged
@@ -171,8 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f63850cebb6c143a5e38adf1bb612e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aggroRange: 30
-  attackRange: 10
+  aggroRange: 20
+  attackRange: 7
   zigzagSpeed: 5
   zigzagMagnitude: 10
   updateNavFrequencyPerSecond: 3
@@ -199,6 +201,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bombDemon: {fileID: 1601227346848069220}
 --- !u!114 &8422013526667354321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5503810578031880460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a144e4b463be034d8e0d612e0ef5214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bombDemon: {fileID: 1601227346848069220}
+  bloodPrefab: {fileID: 7959290666730999954, guid: 6d3004141710547468d2b677ddc35683,
+    type: 3}
+  bloodDropAmount: 4
+--- !u!114 &7229489899993775193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5503810578031880460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed76f32e6a09d84bb4c1d3189e28b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bombDemon: {fileID: 1601227346848069220}
+--- !u!114 &4403752927507272148
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
