@@ -17,7 +17,7 @@ public class EnergyBlast : MonoBehaviour
 
     [Header("Variables")]
     public float maxRange; // How far you can shoot
-    public float rechargeTimer; // How long it takes to gain another charge
+    private float rechargeTimer; // How long it takes to gain another charge
     public float timeBetweenShots; // Time it takes to fire another shot after just shooting one\
     public float bloodPerShot; //Amount of used per energy blast.
 
