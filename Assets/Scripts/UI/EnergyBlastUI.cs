@@ -12,15 +12,15 @@ public class EnergyBlastUI : MonoBehaviour
 
     private void Start()
     {
-        energyBlast.OnChargesChanged.AddListener(UpdateCharges);
-        energyBlast.OnChargeTimer.AddListener(UpdateChargeTimer);
+       // energyBlast.OnChargesChanged.AddListener(UpdateCharges);
+       //energyBlast.OnChargeTimer.AddListener(UpdateChargeTimer);
     }
 
     private void UpdateCharges()
     {
-        charges.text = energyBlast.currNumOfCharges.ToString() + " / " + energyBlast.maxNumOfCharges.ToString();
+       // charges.text = energyBlast.currNumOfCharges.ToString() + " / " + energyBlast.maxNumOfCharges.ToString();
     }
     private void UpdateChargeTimer() {
-        slider.value = energyBlast.currRechargeTimer / energyBlast.rechargeTimer;
+       // slider.value = energyBlast.currRechargeTimer / energyBlast.rechargeTimer;
     }
 }
