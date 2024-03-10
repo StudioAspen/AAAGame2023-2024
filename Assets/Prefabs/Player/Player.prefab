@@ -476,6 +476,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentControls: 1
   combinationWindow: 0.2
+  MKXSensitivity: 300
+  MKYSensitivity: 2
+  ControllerXSensitivity: 300
+  ControllerYSensitivity: 2
   keyboardStab: 101
   keyboardSlash: 113
   keyboardDash: 304
