@@ -287,7 +287,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4483420627925000472, guid: ebe4cb8c4726c844a99ddefdd502302e, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ebe4cb8c4726c844a99ddefdd502302e, type: 3}
@@ -1023,12 +1024,12 @@ PrefabInstance:
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000041658982
+      value: 0.00000004165896
       objectReference: {fileID: 0}
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000035001793
+      value: -0.00000003500178
       objectReference: {fileID: 0}
     - target: {fileID: 1311952080287650324, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -1432,6 +1433,11 @@ PrefabInstance:
       propertyPath: reticle
       value: 
       objectReference: {fileID: 1049901099}
+    - target: {fileID: 6773326116938459665, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: bloodPerShot
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 7569982482725669098, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: m_LocalPosition.x

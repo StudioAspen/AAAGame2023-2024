@@ -70,6 +70,7 @@ public class DownwardStabAction : PlayerAction {
                 PlayerActionManager manager = GetComponentInChildren<PlayerActionManager>();
                 manager.ChangeAction(this);
                 swordMovement.DownwardAttackPosition();
+                OnStartAction.Invoke();
             }
         }
     }

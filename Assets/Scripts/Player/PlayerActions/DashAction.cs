@@ -5,8 +5,6 @@ using UnityEngine.Events;
 
 public class DashAction : PlayerAction
 {
-    public UnityEvent onActionStart = new UnityEvent();
-
     [Header("Movement")]
     [SerializeField] float dashSpeed; // The speed player will add onto current speed
     [SerializeField] float dashDuration; // How long the dash lasts
@@ -96,7 +94,7 @@ public class DashAction : PlayerAction
 
         dashMovement.Dash(appliedDashSpeed, currentDashDuration, direction, appliedExitSpeed);
 
-        onActionStart.Invoke();
+        OnStartAction.Invoke();
     }
 
     // Resets the dash allowing player to dash again
