@@ -1,7 +1,11 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class BombDemon : MonoBehaviour
 {
@@ -13,9 +17,16 @@ public class BombDemon : MonoBehaviour
 
     public float updateNavFrequencyPerSecond;
 
-    public enum State { idle, attacking, exploding };
+    public float explosionRadius;
+    public float explosionBloodLoss;
+
+    public float deadTime;
+
+    public enum State { idle, attacking, exploding, dead };
     public State state;
 
+    public GameObject explosionEffect;
+    public GameObject explo;
     private GameObject player;
     private Rigidbody rb;
     private NavMeshAgent navMeshAgent;
@@ -23,6 +34,11 @@ public class BombDemon : MonoBehaviour
 
     private float updateNavDelay;
     private float elapsed = 0f;
+
+
+    public LayerMask explosionLayer;
+    public bool isAttacking;
+    public bool madeContact;
 
     private void Start()
     {
@@ -36,6 +52,7 @@ public class BombDemon : MonoBehaviour
 
     private void Update()
     {
+        
         switch (state)
         {
             case State.idle:
@@ -47,7 +64,15 @@ public class BombDemon : MonoBehaviour
                 break;
 
             case State.exploding:
-                Exploding();
+               
+                if (CheckContact() && isAttacking)
+                {
+                    Exploding();
+                    isAttacking = false;
+                }
+                break;
+            case State.dead:
+                DeadState();
                 break;
         }
     }
@@ -77,6 +102,8 @@ public class BombDemon : MonoBehaviour
             }
         }
     }
+
+
 
     private void Attacking()
     {
@@ -115,9 +142,37 @@ public class BombDemon : MonoBehaviour
         }
     }
 
-    private void Exploding()
+    public void Exploding()
     {
-        
+         explo = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+
+        explo.transform.localScale =  new Vector3(explosionRadius, explosionRadius, explosionRadius);
+
+        Collider[] collider = Physics.OverlapSphere(transform.position, explosionRadius);
+
+        foreach (Collider hit in collider)
+        {
+            //if( hit.TryGetComponent<Killable>(out Killable killable))
+            //  {
+            // killable.TakeDamage(explosionDamage); 
+            // Debug.Log("Took Damage");
+            // }
+            if (hit.TryGetComponent<BloodThirst>(out BloodThirst bloodThirst))
+            {
+                bloodThirst.LoseBlood(explosionBloodLoss);
+                Debug.Log(explosionBloodLoss);
+                state = State.dead;
+            }
+
+
+
+        }
+        Invoke("DestroyExplosionEffect", 0.5f);
+    }
+
+    public void DestroyExplosionEffect()
+    {
+        Destroy(explo);
     }
 
     private void Jump(Transform target)
@@ -134,5 +189,43 @@ public class BombDemon : MonoBehaviour
         float T_lowEnergy = Mathf.Sqrt(Mathf.Sqrt(toTarget.sqrMagnitude * 4f / gSquared));
         Vector3 velocity = toTarget / T_lowEnergy - Physics.gravity * T_lowEnergy / 2f;
         rb.AddForce(velocity, ForceMode.VelocityChange);
+        isAttacking = true;
     }
+
+    private void DeadState()
+    {
+        deadTime -= Time.deltaTime;
+        if(deadTime < 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+    private bool CheckContact()
+    {
+        Collider[] hit;
+        hit = Physics.OverlapSphere(transform.position, 0.5f, explosionLayer);
+
+             if(hit.Length > 0)
+        {
+            return true;
+        }
+
+        return false;
+           
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, aggroRange);
+
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        
+    }
+
+
 }

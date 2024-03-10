@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class BombDemonSlashable : Slashable
 {
-    public BombDemon BombDemon;
-    public int bloodDropAmount;
+    public BombDemon bombDemon;
     public GameObject bloodPrefab;
+    public int bloodDropAmount;
+   
 
     public override void TriggerEffect()
     {
 
         //Die
-        for (int i = 0; i < bloodDropAmount; i++)
+        if (bombDemon.state != BombDemon.State.dead)
         {
-            Instantiate(bloodPrefab, transform.position, Quaternion.identity);
+            for (int i = 0; i < bloodDropAmount; i++)
+            {
+                Instantiate(bloodPrefab, transform.position, Quaternion.identity);
+            }
+
         }
-            
-    }
 
-
-
+    }  
 }
