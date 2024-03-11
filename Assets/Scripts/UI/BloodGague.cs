@@ -7,8 +7,10 @@ public class BloodGague : MonoBehaviour
     [SerializeField] Slider currentBlood;
     [SerializeField] Slider maxBloodHandle;
     [SerializeField] Slider bloodThirstThreshold;
-    [SerializeField] BloodThirst bloodThirst;
+    [SerializeField] Slider bloodCost; 
 
+    [SerializeField] BloodThirst bloodThirst;
+    [SerializeField] EnergyBlast energyBlast;
 
     private void Start()
     {
@@ -23,6 +25,7 @@ public class BloodGague : MonoBehaviour
 
     public void UpdateBar()
     {
+        bloodCost.value = (bloodThirst.currentBlood - energyBlast.bloodPerShot) / bloodThirst.maxBloodForOverfed;
         currentBlood.value = bloodThirst.currentBlood / bloodThirst.maxBloodForOverfed;
     }
 }

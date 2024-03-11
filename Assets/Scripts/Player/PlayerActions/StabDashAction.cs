@@ -78,6 +78,8 @@ public class StabDashAction : PlayerAction
             float appliedExitSpeed = Mathf.Min(currentMaxSpeed, appliedDashSpeed + currentEndDashSpeedBonus);
 
             dashMovement.Dash(appliedDashSpeed, currentDashDuration, direction, appliedExitSpeed);
+
+            OnStartAction.Invoke();
         }
     }
 
