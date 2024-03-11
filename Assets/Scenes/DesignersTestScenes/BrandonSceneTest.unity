@@ -7482,7 +7482,12 @@ PrefabInstance:
     - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: jumpForce
-      value: 30
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: slideSpeed
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
@@ -7492,7 +7497,7 @@ PrefabInstance:
     - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: boostedJumpForce
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 903524653456634431, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
@@ -7529,6 +7534,11 @@ PrefabInstance:
       propertyPath: terrainCheckScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3088617981437380700, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: bloodGained
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 3134688513665312600, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: initalSpeedScale
@@ -7549,6 +7559,36 @@ PrefabInstance:
       propertyPath: boostedEndDashSpeedBonus
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: jumpSpeedLimit
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: horizontalForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: horizontalSpeedLimit
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedJumpSpeedLimit
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedHorizontalForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedHorizontalSpeedLimit
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: maxBlood
@@ -7559,10 +7599,20 @@ PrefabInstance:
       propertyPath: maxBloodForOverfed
       value: 260
       objectReference: {fileID: 0}
+    - target: {fileID: 3902229200159131934, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: attackDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902229200159131934, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: bloodGainAmount
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: dashSpeed
-      value: 20
+      value: 17.5
       objectReference: {fileID: 0}
     - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
@@ -7582,7 +7632,7 @@ PrefabInstance:
     - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: endDashSpeedBonus
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4531364391987237238, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
@@ -7741,8 +7791,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
+      propertyPath: downwardStabMaxSpeed
+      value: 17.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
       propertyPath: boostedInitalSpeedScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: downwardStabAcceleration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedDownwardStabMaxSpeed
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671536288844823369, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedDownwardStabAcceleration
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12767,6 +12837,11 @@ PrefabInstance:
     - target: {fileID: 7199361549137555110, guid: ebe4cb8c4726c844a99ddefdd502302e,
         type: 3}
       propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7730636283798776217, guid: ebe4cb8c4726c844a99ddefdd502302e,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8581370806035910357, guid: ebe4cb8c4726c844a99ddefdd502302e,
@@ -27516,6 +27591,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4690563714100525876, guid: 9b2873f70a4074d4c88794eafb349745,
+        type: 3}
+      propertyPath: field of view
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 5050441904315412739, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_XDamping
@@ -27559,17 +27639,17 @@ PrefabInstance:
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 511.92996
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -43.930008
+      value: 5.0099945
       objectReference: {fileID: 0}
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 78.369995
+      value: 6.8200073
       objectReference: {fileID: 0}
     - target: {fileID: 6021029726639351301, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -27625,6 +27705,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_YAxis.Value
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864274708768680152, guid: 9b2873f70a4074d4c88794eafb349745,
+        type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 6945013630502058536, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
