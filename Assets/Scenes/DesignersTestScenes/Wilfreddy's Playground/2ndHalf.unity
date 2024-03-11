@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10656,6 +10656,36 @@ PrefabInstance:
       propertyPath: jumpMultiplier
       value: 1.75
       objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: jumpSpeedLimit
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: horizontalForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: horizontalSpeedLimit
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedJumpSpeedLimit
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedHorizontalForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462496366872794715, guid: 88512be50a530374189e930db8c0502d,
+        type: 3}
+      propertyPath: boostedHorizontalSpeedLimit
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 3739281105588693709, guid: 88512be50a530374189e930db8c0502d,
         type: 3}
       propertyPath: maxBlood
@@ -19874,9 +19904,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02df61c988e81e4fa4db148fa2fc638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnChargeTimer:
-    m_PersistentCalls:
-      m_Calls: []
   energyBlast: {fileID: 6611711599269637238, guid: f145e05c8467bca4d91a3b48bd1333c2,
     type: 3}
   reticle: {fileID: 1643444486}
@@ -19884,10 +19911,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   maxRange: 20
-  maxNumOfCharges: 3
-  rechargeTimer: 2
   timeBetweenShots: 1
-  currRechargeTimer: 0
+  bloodPerShot: 0
 --- !u!114 &912178326 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8596804024649230227, guid: 88512be50a530374189e930db8c0502d,
@@ -40439,12 +40464,12 @@ PrefabInstance:
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000006072785
+      value: 0.00000006072785
       objectReference: {fileID: 0}
     - target: {fileID: 664471403081914690, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000051023434
+      value: -0.000000051023434
       objectReference: {fileID: 0}
     - target: {fileID: 1311952080287650324, guid: 9b2873f70a4074d4c88794eafb349745,
         type: 3}
@@ -45924,7 +45949,9 @@ MonoBehaviour:
   currentBlood: {fileID: 350583768}
   maxBloodHandle: {fileID: 89369937}
   bloodThirstThreshold: {fileID: 1958895931}
+  bloodCost: {fileID: 0}
   bloodThirst: {fileID: 912178327}
+  energyBlast: {fileID: 0}
 --- !u!114 &2103218245
 MonoBehaviour:
   m_ObjectHideFlags: 0
