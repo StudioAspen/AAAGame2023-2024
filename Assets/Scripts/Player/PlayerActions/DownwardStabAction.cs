@@ -12,11 +12,14 @@ public class DownwardStabAction : PlayerAction {
     [SerializeField] float downwardStabAcceleration; // How fast the player accelerates to max speed while stabbing
     [SerializeField] float downwardStabMaxSpeed; // The max speed while downward stabbing
     [SerializeField] float initalSpeedScale; // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
+    [SerializeField] float speedLimit; // The limit speed AFTER inital velocity + speed CALCULATION (so this limit applies for both just the max speed, acceleration is unaffected) 
 
     [Header("Boosted Movement")]
     [SerializeField] float boostedDownwardStabAcceleration;
     [SerializeField] float boostedDownwardStabMaxSpeed;
     [SerializeField] float boostedInitalSpeedScale;
+    [SerializeField] float boostedSpeedLimit;
+
 
     [Header("Other Variables")]
     [SerializeField] float pressDownTime; // Amount of time you need to hold down the stab button before starting downward stab
@@ -67,6 +70,7 @@ public class DownwardStabAction : PlayerAction {
                 PlayerActionManager manager = GetComponentInChildren<PlayerActionManager>();
                 manager.ChangeAction(this);
                 swordMovement.DownwardAttackPosition();
+                OnStartAction.Invoke();
             }
         }
     }
@@ -79,27 +83,34 @@ public class DownwardStabAction : PlayerAction {
         }
     }
     private void DownwardStabMovementUpdate() {
-        Vector3 addedVelocity = Vector3.down * movementModification.GetBoost(downwardStabAcceleration, boostedDownwardStabMaxSpeed, true);
-        Vector3 maxVelocity = Vector3.down * movementModification.GetBoost(downwardStabMaxSpeed, boostedDownwardStabMaxSpeed, true);
-        float velocityAlignment = Vector3.Dot(startVelocity, maxVelocity);
-        maxVelocity = maxVelocity + (velocityAlignment*maxVelocity.normalized);
+        // Calculating inital variables
+        float addedSpeed = movementModification.GetBoost(downwardStabAcceleration, boostedDownwardStabMaxSpeed, true);
+        float maxSpeed = movementModification.GetBoost(downwardStabMaxSpeed, boostedDownwardStabMaxSpeed, true);
 
-        Vector3 currentVerticalVelocity = new Vector3(0, rb.velocity.y, 0);
+        maxSpeed += startVelocity.magnitude;
+
+        //Limiting speed
+        float currentMaxSpeed = movementModification.GetBoost(speedLimit, boostedSpeedLimit, false);
+        maxSpeed = Math.Min(currentMaxSpeed, maxSpeed);
 
         // Applying vertical movement if the speed is higher than the max velocity
-        float alignment = Vector3.Dot(currentVerticalVelocity / maxVelocity.magnitude, maxVelocity / maxVelocity.magnitude);
-        if (alignment < 1) {
-            rb.AddForce(addedVelocity, ForceMode.VelocityChange);
+        if (-rb.velocity.y < maxSpeed) {
+            rb.velocity += Vector3.down*addedSpeed;
         }
     }
 
     private void DownwardStabContact(Collider other) {
         if(isStabing) {
-            if(other.TryGetComponent(out DownwardStabEffect effect)) {
-                effect.TriggerEffect();
-                GetComponent<BloodThirst>().GainBlood(bloodGain, true);
-                EndAction();
+            if(other.TryGetComponent(out DownwardStabEffect downwardStabEffect)) {
+                downwardStabEffect.TriggerEffect();
             }
+            if(other.TryGetComponent(out BouncePadEffect bouncePad)) {
+                // Setting new velocity
+                float newVerticalSpeed = rb.velocity.y * bouncePad.initalSpeedScale;
+                newVerticalSpeed = MathF.Max(newVerticalSpeed, bouncePad.minimumExitSpeed); // Setting speed to minimum
+                rb.velocity = new Vector3(rb.velocity.x, newVerticalSpeed, rb.velocity.z);
+            }
+            EndAction();
         }
     }
 

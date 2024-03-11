@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/DesignersTestScenes/BrandonSceneTest.unity
-    guid: 48d7a0c3ce5a65f44bc54fcae03900cf
+    path: Assets/Scenes/DesignersTestScenes/Playground_Michael_Poorun.unity
+    guid: 1bcbc73a489622c4fb04069cf426ca25
   m_configObjects: {}

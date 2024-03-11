@@ -9,7 +9,7 @@ public class SlashContact : MonoBehaviour {
     SlideAction slideAction;
 
     // For resets
-    BasicMovementAction movementAction;
+    JumpAction jumpAction;
     DashAction dashAction;
 
     // Other variables
@@ -17,9 +17,9 @@ public class SlashContact : MonoBehaviour {
     UnityEvent<Collider> contactEvent;
 
     private void Start() {
-        slideAction = transform.parent.GetComponent<SlideAction>();
-        movementAction = transform.parent.GetComponent<BasicMovementAction>();
-        dashAction = transform.parent.GetComponent<DashAction>();
+        slideAction = GetComponentInParent<SlideAction>();
+        jumpAction = GetComponentInParent<JumpAction>();
+        dashAction = GetComponentInParent<DashAction>();
 
         // End of events
         slideAction.OnEndAction.AddListener(EndOfSlide);
@@ -80,7 +80,7 @@ public class SlashContact : MonoBehaviour {
     }
 
     private void EndOfSlide() {
-        movementAction.GiveAirJump();
+        jumpAction.GiveAirJump();
         dashAction.ResetDash();
     }
 }

@@ -29,13 +29,11 @@ public class BasicMovementAction : PlayerAction
     [SerializeField] float boostedMaxAirSpeed;
     [SerializeField] float boostedAirDrag;
 
-    [Header("Jump Variables")]
-    [SerializeField] float jumpForce; // How high the player jumps ON PLAYER INPUT JUMP
+    [Header("Gravity Variables")]
     [SerializeField] float gravityAcceleration; // How fast the player accelerates due to gravity
     [SerializeField] float maxFallSpeed; // The max fall speed DUE TO GRAVITY, things like the downward stab can make you fall faster than this
 
-    [Header("Boosted Jump")]
-    [SerializeField] float boostedJumpForce;
+    [Header("Gravity Jump")]
     [SerializeField] float boostedGravityAcceleration;
     [SerializeField] float boostedMaxFallSpeed;
 
@@ -43,7 +41,6 @@ public class BasicMovementAction : PlayerAction
     [Range(0.0f, 1f)]
     [SerializeField] float rotationSpeed; // How fast the player object turns to the direction inputted by player
 
-    bool canAirJump = false;
     bool grounded;
     bool isMoving = false;
     Vector3 targetDirection;
@@ -61,6 +58,8 @@ public class BasicMovementAction : PlayerAction
             RotationUpdate();
         }
 
+        grounded = playerPositionCheck.CheckOnGround();
+
         //Implemented physics
         if (grounded) {
             if (rb.velocity.magnitude > 0) {
@@ -75,20 +74,12 @@ public class BasicMovementAction : PlayerAction
         }
         else {
             rb.drag = airDrag;
-            if (rb.velocity.magnitude < movementModification.GetBoost(maxFallSpeed, boostedMaxFallSpeed, false)) {
+            if (-rb.velocity.y < movementModification.GetBoost(maxFallSpeed, boostedMaxFallSpeed, false)) {
                 rb.velocity += Vector3.down * movementModification.GetBoost(gravityAcceleration, boostedGravityAcceleration, false);
             }
         }
     }
-    private void Update()
-    {
-        grounded = playerPositionCheck.CheckOnGround();
-        if(grounded) {
-            canAirJump = false;
-        }
-    }
 
-    #region // Move Methods
     public void MoveInput(Vector3 inputDirection)
     {
         isMoving = true;
@@ -114,40 +105,28 @@ public class BasicMovementAction : PlayerAction
             maxVelocity = targetDirection.normalized * movementModification.GetBoost(maxAirSpeed, boostedMaxAirSpeed, true);
         }
 
-        // Applying horizontal movement and limiting speed based on max velocity
-        float alignment = Vector3.Dot(horizontalVelocity/maxVelocity.magnitude, maxVelocity/maxVelocity.magnitude);
-        Physics.Raycast(rb.position, addedVelocity);
+        // Checking collision to calculate force perpendicular to the surface of collider (for sticky wall bug)
+        if (playerPositionCheck.TryGetNormalOfClosestHoriontalCollider(addedVelocity, out Vector3 normal)) {
+            if (Vector3.Dot(normal.normalized, addedVelocity.normalized) <= 0) { // Checking if the added velocity is going into the surface
+                // Finding perpendicular vector to the surface normal
+                Vector3 rotationVector = Vector3.Cross(normal.normalized, addedVelocity.normalized);
+                Vector3 perpendicularToNormal = MyMath.RotateAboutAxis(normal, rotationVector, 90f);
 
-        if (alignment < 1 && !playerPositionCheck.CheckColldingWithTerrain(addedVelocity)) {
+                Debug.DrawLine(transform.position, transform.position + perpendicularToNormal*2, Color.green);
+                Debug.DrawLine(transform.position, transform.position + normal*2, Color.blue);
+
+                float perpendicularProjection = Vector3.Dot(perpendicularToNormal.normalized, addedVelocity);
+                //float perpendicularProjection = addedVelocity.magnitude;
+                addedVelocity = perpendicularProjection * perpendicularToNormal.normalized;
+            }
+        }
+
+        // Applying horizontal movement and limiting speed based on max velocity
+        float alignment = Vector3.Dot(horizontalVelocity / maxVelocity.magnitude, maxVelocity / maxVelocity.magnitude);
+        if (alignment < 1) {
             rb.velocity += addedVelocity;
         }
     }
-    #endregion
-
-
-    #region // Jump Methods
-    public void JumpInput() {
-        if(grounded || canAirJump) {
-            if(canAirJump) {
-                canAirJump = false;
-            }
-            grounded = false;
-            Jump(Mathf.Lerp(jumpForce, boostedJumpForce, movementModification.boostForAll));
-        }
-    }
-
-    public void Jump(float _jumpForce) {
-        if(rb.velocity.y < 0) {
-            rb.velocity = transform.up * _jumpForce;
-        }
-        else {
-            rb.velocity += transform.up * _jumpForce;
-        }
-    }
-    public void GiveAirJump() {
-        canAirJump = true;
-    }
-    #endregion
 
     private void RotationUpdate() {
         transform.forward = Vector3.Lerp(transform.forward, targetDirection.normalized, rotationSpeed);

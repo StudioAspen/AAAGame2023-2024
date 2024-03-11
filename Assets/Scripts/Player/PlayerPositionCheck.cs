@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerPositionCheck : MonoBehaviour {
+    // References
+    //Rigidbody rb;
+
     // Components
     [SerializeField] Collider playerCollider;
 
@@ -11,22 +14,72 @@ public class PlayerPositionCheck : MonoBehaviour {
     [SerializeField] LayerMask ground;
     [SerializeField] float groundCheckOffset;
     [SerializeField] float terrainCheckOffset;
-    [Range(0f,1f)]
-    [SerializeField] float terrainCheckScale;
+    [SerializeField] float terrainCheckScaleXZ;
+    [SerializeField] float terrainCheckScaleY;
     [Range(0f, 1f)]
     [SerializeField] float groundCheckScale;
     public bool grounded;
+
+    Vector3 gizmoDir;
+    private void Start() {
+        //rb = playerCollider.GetComponent<Rigidbody>();
+    }
     private void Update() {
         grounded = CheckOnGround();
     }
-    public bool CheckColldingWithTerrain(Vector3 direction) {
-        // Debug.DrawLine(transform.position, transform.position + direction.normalized * (Mathf.Abs(collider.bounds.min.z - transform.position.z) + terrainCheckOffset)); // Ground Check
-        // return Physics.Raycast(transform.position, direction.normalized, Mathf.Abs(playerCollider.bounds.min.z - transform.position.z) + terrainCheckOffset, ground);
-        Vector3 terrainCheckHalfSize = (playerCollider.bounds.size * terrainCheckScale)/ 2;
-        return Physics.BoxCast(transform.position, terrainCheckHalfSize, direction, Quaternion.identity, terrainCheckOffset, ground);
+    public void WallStickCheck(Collision collision, Rigidbody rb) {
+        ContactPoint[] points = new ContactPoint[collision.contactCount];
+
+        Vector3 average = Vector3.zero;
+        foreach (ContactPoint point in collision.contacts) {
+            average += point.normal;
+        }
+        average = average / points.Length;
+
+        Vector3 rotatedAngle = MyMath.RotateXZAngle(average, 90f);
+        float alignment = Vector3.Dot(rotatedAngle, rb.velocity);
+        
+    }
+
+    // Checks whats colliding with and returning the closest collider
+    public bool TryGetNormalOfClosestHoriontalCollider(Vector3 direction, out Vector3 normal) {
+        // Scaling Y extents seperatly
+        Vector3 extents = new Vector3(playerCollider.bounds.extents.x*terrainCheckScaleXZ, 
+            playerCollider.bounds.extents.y*terrainCheckScaleY, 
+            playerCollider.bounds.extents.z*terrainCheckScaleXZ);
+
+        // Checking colliders
+        Collider[] colliders = Physics.OverlapBox(transform.position, extents, Quaternion.LookRotation(direction.normalized), ground);
+        
+        if(colliders.Length == 0) {
+            normal = Vector3.zero;
+            return false;
+        }
+
+        // Finding clostest collider
+        Collider closestCollider = null;
+        float closestDist = float.MaxValue;
+        foreach(Collider collider in colliders) {
+            float valCheck = (collider.ClosestPoint(transform.position) - transform.position).magnitude;
+            if (valCheck < closestDist) {
+                closestCollider = collider; 
+                closestDist = valCheck; 
+            }
+        }
+
+        // Getting normal from
+        Ray rayToCollider = new Ray(transform.position, closestCollider.ClosestPoint(transform.position)-transform.position);
+        closestCollider.Raycast(rayToCollider, out RaycastHit hit, extents.magnitude);
+
+        
+        // output
+        normal = hit.normal;
+        return true;
     }
     public bool CheckOnGround() {
-        return Physics.SphereCast(transform.position, playerCollider.bounds.extents.x*groundCheckScale, Vector3.down, out RaycastHit holder, groundCheckOffset, ground);
-        //return Physics.Raycast(transform.position, Vector3.down, Mathf.Abs(playerCollider.bounds.min.y - transform.position.y) + groundCheckOffset, ground);
+        return Physics.OverlapBox(transform.position + (Vector3.down * groundCheckOffset), playerCollider.bounds.extents * groundCheckScale, Quaternion.identity, ground).Length > 0;
+    }
+    private void OnDrawGizmos() {
+        //Gizmos.DrawWireCube(transform.position + (gizmoDir*terrainCheckOffset), (playerCollider.bounds.size * terrainCheckScale));
     }
 }
