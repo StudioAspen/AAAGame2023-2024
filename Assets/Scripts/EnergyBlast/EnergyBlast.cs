@@ -7,31 +7,29 @@ using UnityEngine.Rendering.Universal.Internal;
 public class EnergyBlast : MonoBehaviour
 {
     [System.NonSerialized]
-    public UnityEvent OnChargesChanged = new UnityEvent();
     public UnityEvent OnChargeTimer = new UnityEvent();
 
     [Header("References")]
     public GameObject energyBlast;
     public RectTransform reticle;
     public LayerMask ignoredLayers;
+    BloodThirst bloodThirst;
 
     [Header("Variables")]
     public float maxRange; // How far you can shoot
-    public int maxNumOfCharges; // Maximum number of shots you ahve
-    public float rechargeTimer; // How long it takes to gain another charge
-    public float timeBetweenShots; // Time it takes to fire another shot after just shooting one
+    private float rechargeTimer; // How long it takes to gain another charge
+    public float timeBetweenShots; // Time it takes to fire another shot after just shooting one\
+    public float bloodPerShot; //Amount of used per energy blast.
 
     [System.NonSerialized]
-    public int currNumOfCharges;
 
     public float currRechargeTimer = 0f;
     private float currTimeBetweenShots;
 
+
     private void Start()
     {
-        currNumOfCharges = maxNumOfCharges;
         currTimeBetweenShots = timeBetweenShots;
-        OnChargesChanged.Invoke();
     }
 
     private void Update()
@@ -46,12 +44,12 @@ public class EnergyBlast : MonoBehaviour
 
     public void Shoot()
     {
-        if (currTimeBetweenShots >= timeBetweenShots && currNumOfCharges > 0)
+        if (currTimeBetweenShots >= timeBetweenShots)
         {
             ShootInternal();
             currTimeBetweenShots = 0f;
-            currNumOfCharges--;
-            OnChargesChanged.Invoke();
+            GetComponent<BloodThirst>().LoseBlood(bloodPerShot);
+
         }
     }
 
@@ -79,20 +77,17 @@ public class EnergyBlast : MonoBehaviour
 
     private void Recharge()
     {
-        if (currNumOfCharges < maxNumOfCharges)
-        {
+        
             if (currRechargeTimer < rechargeTimer)
             {
                 currRechargeTimer += Time.deltaTime;
             }
             else
             {
-                currNumOfCharges++;
                 currRechargeTimer = 0f;
-                OnChargesChanged.Invoke();
             }
-            OnChargeTimer.Invoke();
-        }
+              OnChargeTimer.Invoke();
+        
     }
 
     private Vector3 MidPoint(Vector3 start, Vector3 end)

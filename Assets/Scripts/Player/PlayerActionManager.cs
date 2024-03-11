@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerActionManager : MonoBehaviour
 {
-    //Movement abilities
+    // Other Components
+    Rigidbody rb;
+
+    // Movement abilities
     BasicMovementAction basicMovementAction;
     JumpAction jumpAction;
     DashAction dashAction;
@@ -14,6 +17,7 @@ public class PlayerActionManager : MonoBehaviour
     StabDashAction stabDashAction;
     SlashDashAction slashDashAction;
     SlideAction slideAction;
+    FlickAction flickAction;
     EnergyBlast energyBlast;
 
     PlayerAction currentAction;
@@ -21,6 +25,9 @@ public class PlayerActionManager : MonoBehaviour
     public float combinationWindow;
 
     private void Start() {
+        // Getting other Components
+        rb = GetComponentInParent<Rigidbody>();
+
         // Getting components
         basicMovementAction = GetComponentInParent<BasicMovementAction>();
         jumpAction = GetComponentInParent<JumpAction>();
@@ -31,6 +38,7 @@ public class PlayerActionManager : MonoBehaviour
         stabDashAction = GetComponentInParent<StabDashAction>();
         slashDashAction = GetComponentInParent<SlashDashAction>();
         slideAction = GetComponentInParent<SlideAction>();
+        flickAction = GetComponentInParent<FlickAction>();
         energyBlast = GetComponentInParent<EnergyBlast>();
 
         currentAction = basicMovementAction;
@@ -59,6 +67,9 @@ public class PlayerActionManager : MonoBehaviour
         if(currentAction == slideAction) {
             slideAction.SlideInput(input);
         }
+        if(currentAction == flickAction) {
+            flickAction.HorizontalInput(input);
+        }
     }
     public void JumpInputPressed() {
         // Normal jump input when on ground
@@ -71,6 +82,9 @@ public class PlayerActionManager : MonoBehaviour
             slideAction.ApplyHorizontalOffset();
             ChangeAction(jumpAction);
             jumpAction.JumpStart();
+        }
+        else if(currentAction == flickAction) {
+            flickAction.FlickOff();
         }
     }
     public void JumpInputRelease() {
@@ -169,7 +183,12 @@ public class PlayerActionManager : MonoBehaviour
             energyBlast.Shoot();
         }
     }
-    
+
+    public void KnockBack(Vector3 source, float launchForce) {
+        currentAction.EndAction();
+        rb.velocity = ((rb.transform.position-source) + transform.up).normalized * launchForce;
+    }
+
     public void EndOfAction() {
         currentAction.OnEndAction.RemoveListener(EndOfAction);
         currentAction = basicMovementAction;

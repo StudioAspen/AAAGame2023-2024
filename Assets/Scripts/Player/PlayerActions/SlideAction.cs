@@ -72,6 +72,8 @@ public class SlideAction : PlayerAction{
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
         playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
         swordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
+
+        OnStartAction.Invoke();
     }
     
     private void UpdateSliding() {
