@@ -67,6 +67,9 @@ public class PlayerActionManager : MonoBehaviour
         if(currentAction == slideAction) {
             slideAction.SlideInput(input);
         }
+        if(currentAction == flickAction) {
+            flickAction.HorizontalInput(input);
+        }
     }
     public void JumpInputPressed() {
         // Normal jump input when on ground
