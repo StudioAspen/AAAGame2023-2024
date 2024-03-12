@@ -8,19 +8,9 @@ using UnityEngine;
 /// abke to pull in like a vacuum.
 /// 
 [RequireComponent(typeof(Collider))]
-public class Vacuumable : MonoBehaviour
+public class VacuumTrigger : MonoBehaviour
 {
-    [SerializeField] private float vacuumSpeed = 2f;
     [SerializeField] private float vacuumRange = 1f;
-
-    private Transform mainObject;
-
-    ///-//////////////////////////////////////////////////////////////////////
-    ///
-    private void Awake()
-    {
-        mainObject = transform.parent;
-    }
 
     ///-//////////////////////////////////////////////////////////////////////
     ///
@@ -31,20 +21,21 @@ public class Vacuumable : MonoBehaviour
 
     ///-//////////////////////////////////////////////////////////////////////
     ///
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        PlayerKillable player = other.transform.GetComponent<PlayerKillable>();
-        if (player != null)
+        if (other.transform.TryGetComponent<VacuumableObject>(out VacuumableObject vacuumableObject))
         {
-            Vector3 direction = Vector3.ProjectOnPlane(player.transform.position - transform.position, Vector3.up);
-            MoveTowards(direction);
+            vacuumableObject.inVacuum = true;
         }
     }
 
     ///-//////////////////////////////////////////////////////////////////////
     ///
-    private void MoveTowards(Vector3 direction)
+    private void OnTriggerExit(Collider other)
     {
-        mainObject.Translate(direction * vacuumSpeed * Time.deltaTime);
+        if (other.transform.TryGetComponent<VacuumableObject>(out VacuumableObject vacuumableObject))
+        {
+            vacuumableObject.inVacuum = false;
+        }
     }
 }
