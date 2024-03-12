@@ -13,11 +13,10 @@ public class PlayerPositionCheck : MonoBehaviour {
     [Header("Checks")]
     [SerializeField] LayerMask ground;
     [SerializeField] float groundCheckOffset;
-    [SerializeField] float terrainCheckOffset;
     [SerializeField] float terrainCheckScaleXZ;
     [SerializeField] float terrainCheckScaleY;
     [Range(0f, 1f)]
-    [SerializeField] float groundCheckScale;
+    [SerializeField] float groundCheckScaleXZ;
     public bool grounded;
 
     Vector3 gizmoDir;
@@ -76,8 +75,32 @@ public class PlayerPositionCheck : MonoBehaviour {
         normal = hit.normal;
         return true;
     }
+
+    // Checking collision to calculate force perpendicular to the surface of collider (for sticky wall bug)
+    public Vector3 CorrectVelocityCollision(Vector3 addedVelocity) {
+        if (TryGetNormalOfClosestHoriontalCollider(addedVelocity, out Vector3 normal)) {
+            if (Vector3.Dot(normal.normalized, addedVelocity.normalized) <= 0) { // Checking if the added velocity is going into the surface
+                // Finding perpendicular vector to the surface normal
+                Vector3 rotationVector = Vector3.Cross(normal.normalized, addedVelocity.normalized);
+                Vector3 perpendicularToNormal = MyMath.RotateAboutAxis(normal, rotationVector, 90f);
+
+                Debug.DrawLine(transform.position, transform.position + normal, Color.blue);
+                Debug.DrawLine(transform.position, transform.position + perpendicularToNormal, Color.green);
+
+
+                float perpendicularProjection = Vector3.Dot(perpendicularToNormal.normalized, addedVelocity);
+                //float perpendicularProjection = addedVelocity.magnitude;
+                addedVelocity = perpendicularProjection * perpendicularToNormal.normalized;
+            }
+        }
+
+        return addedVelocity;
+    }
     public bool CheckOnGround() {
-        return Physics.OverlapBox(transform.position + (Vector3.down * groundCheckOffset), playerCollider.bounds.extents * groundCheckScale, Quaternion.identity, ground).Length > 0;
+        Vector3 extents = new Vector3(playerCollider.bounds.extents.x * groundCheckScaleXZ,
+            playerCollider.bounds.extents.y,
+            playerCollider.bounds.extents.z * groundCheckScaleXZ);
+        return Physics.OverlapBox(transform.position + (Vector3.down * groundCheckOffset), extents, Quaternion.LookRotation(transform.forward) , ground).Length > 0;
     }
     private void OnDrawGizmos() {
         //Gizmos.DrawWireCube(transform.position + (gizmoDir*terrainCheckOffset), (playerCollider.bounds.size * terrainCheckScale));
