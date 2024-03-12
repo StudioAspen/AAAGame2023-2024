@@ -24,7 +24,10 @@ public class SausageSlashable : Slashable
             {
                 bloodPrefab.GetComponent<BloodOrb>().gainBloodAmount = singleBloodAmount;
                 Instantiate(bloodPrefab, bulletFirePoint.transform.position, Quaternion.identity);
-                gameObject.GetComponent<EnemyStateManager>().Death();
+                if (gameObject.TryGetComponent(out EnemyStateManager range))
+                    range.Death();
+                if (gameObject.TryGetComponent(out MeleeEnemyStateManager melee))
+                    melee.Death();
             }
         }
         else
@@ -33,7 +36,10 @@ public class SausageSlashable : Slashable
             {
                 bloodPrefab.GetComponent<BloodOrb>().gainBloodAmount = singleBloodAmount;
                 Instantiate(bloodPrefab, bulletFirePoint.transform.position, Quaternion.identity);
-                gameObject.GetComponent<EnemyStateManager>().Death();
+                if (gameObject.TryGetComponent(out EnemyStateManager range))
+                    range.Death();
+                if (gameObject.TryGetComponent(out MeleeEnemyStateManager melee))
+                    melee.Death();
             }
         }
     }

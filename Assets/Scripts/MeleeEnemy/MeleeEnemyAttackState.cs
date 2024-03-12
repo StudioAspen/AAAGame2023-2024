@@ -23,6 +23,7 @@ public class MeleeEnemyAttackState : MeleeEnemyBaseState
     {
         // NOT DONE
         // melee attack?
+        enemy.MeleeAttack();
 
 
         //Debug.Log("Enter Attack Update");

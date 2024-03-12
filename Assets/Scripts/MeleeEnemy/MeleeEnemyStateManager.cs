@@ -15,8 +15,14 @@ public class MeleeEnemyStateManager : MonoBehaviour
     public float deleteTimer;
     public Transform spawnpoint;
 
-    [Header ("Melee Enemy Variables")]
+    [Header("Melee Enemy Variables")]
+    public GameObject enemyWeapon;
+    public float enemyDamage;
     public float enemyAttackCooldown;
+    public float enemyAttackDuration;
+    private float enemyCDTimer = 0;
+
+    [Header("Enemy Death Speed Boost Variables")]
     public float deathSpeedIncrease;
     public float deathSpeedDuration;
 
@@ -26,6 +32,7 @@ public class MeleeEnemyStateManager : MonoBehaviour
     private NavMeshAgent agent;
     public Timer timer = new Timer();
     private Transform playerTransform;
+    private bool canAttack;
 
     [Header("Animations")]
     public Animator animator;
@@ -55,6 +62,7 @@ public class MeleeEnemyStateManager : MonoBehaviour
         render = GetComponentInChildren<Renderer>();
         playerTransform = FindObjectOfType<PlayerInput>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
+        enemyWeapon.SetActive(false);
 
         // get component and when enemy dies, switch the state
         kill = GetComponent<Killable>();
@@ -73,26 +81,10 @@ public class MeleeEnemyStateManager : MonoBehaviour
         // will call any logic in UpdateState from the current state every frame
         timer.UpdateTimer();
         currentState.UpdateState(this);
-    }
 
-    /*
-    // checks if ray is hitting at a given distance and returns a bool because of it
-    public bool RayCastCheck(float distance)
-    {
-        if (Physics.Raycast(transform.position, (playerTransform.transform.position - transform.position), out RaycastHit hitInfo, distance))
-        {
-            // draws the ray in scene when hit, RED
-            Debug.DrawRay(transform.position, (playerTransform.transform.position - transform.position) * hitInfo.distance, Color.red);
-            return true;
-        }
-        else
-        {
-            // draws the ray in scene when NOT hit, GREEN
-            Debug.DrawRay(transform.position, (playerTransform.transform.position - transform.position) * distance, Color.green);
-            return false;
-        }
+        //
+        enemyCDTimer -= Time.deltaTime;
     }
-    */
 
     public bool RayCastCheck(float distance)
     {
@@ -174,6 +166,28 @@ public class MeleeEnemyStateManager : MonoBehaviour
     {
         playerTransform.GetComponentInChildren<MovementModification>().AddSpeedBoost(deathSpeedDuration, deathSpeedIncrease);
         Destroy(gameObject);
+    }
+
+    // checks if enemy cd 
+    public void MeleeAttack()
+    {
+        if(enemyCDTimer <= 0)
+        {
+            enemyWeapon.GetComponent<MeleeSword>().hitPlayer = false;
+            enemyWeapon.SetActive(true);
+            enemyCDTimer = enemyAttackCooldown;
+            if (!timer.IsActive())
+                timer.StartTimer(enemyAttackDuration, EndMelee);
+            Debug.Log("sword active");
+        }
+    }
+    
+    // turns the melee sword hitbox off
+    public void EndMelee()
+    {
+        enemyWeapon.GetComponent<MeleeSword>().damage = enemyDamage;
+        enemyWeapon.SetActive(false);
+        Debug.Log("set false");
     }
 
     private void OnDrawGizmos() {

@@ -8,12 +8,6 @@ public class SausageEnergyBlast : EnergyBlastedEffect
     private EnemyStateManager enemy;
     private MeleeEnemyStateManager meleeEnemy;
 
-    private void Start()
-    {
-        enemy = gameObject.GetComponent<EnemyStateManager>();
-        meleeEnemy = gameObject.GetComponent<MeleeEnemyStateManager>();
-    }
-
     public override void TriggerEffect()
     {
         // Energy blasts stun this enemy for a few seconds.
@@ -21,8 +15,10 @@ public class SausageEnergyBlast : EnergyBlastedEffect
         if(!isStunned)
         {
             isStunned = true;
-            enemy.Stun();
-            meleeEnemy.Stun();
+            if (gameObject.TryGetComponent(out EnemyStateManager range))
+                range.Stun();
+            if (gameObject.TryGetComponent(out MeleeEnemyStateManager melee))
+                melee.Stun();
         }
     }
 }
