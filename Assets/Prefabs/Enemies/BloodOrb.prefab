@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2940965730785318587}
+  - component: {fileID: 5928467008385099669}
   - component: {fileID: 136108890744760622}
   - component: {fileID: 4037998644124410333}
   - component: {fileID: 1377208551754985555}
   - component: {fileID: -6790119255735088774}
   - component: {fileID: 5053543253276533109}
-  - component: {fileID: 5928467008385099669}
   m_Layer: 0
   m_Name: BloodOrb
   m_TagString: Untagged
@@ -37,6 +37,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5928467008385099669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7959290666730999954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a68df59e630cf54e8eb9cd1b6c22671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vacuumSpeed: 1
+  gainBloodAmount: 1
 --- !u!33 &136108890744760622
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -156,16 +170,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5928467008385099669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7959290666730999954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a68df59e630cf54e8eb9cd1b6c22671, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gainBloodAmount: 1
