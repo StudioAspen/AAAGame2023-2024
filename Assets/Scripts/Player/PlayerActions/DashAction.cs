@@ -79,10 +79,10 @@ public class DashAction : PlayerAction
 
         timer = 0;
         dashAvailable = false; // Using up the dash
-        
+
         // Calculating boosts (all boosts are calculated as a linear interpolation between normal and boost amount given a percentage)
-        dashCdTimer = movementModification.GetBoost(dashCooldown, boostedDashCooldown, true); 
-        float currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);  
+        dashCdTimer = movementModification.GetBoost(dashCooldown, boostedDashCooldown, true);
+        float currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
         float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
         float currentEndDashSpeedBonus = movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true);
         float currentVelocity = rb.velocity.magnitude * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
@@ -93,6 +93,8 @@ public class DashAction : PlayerAction
         float appliedExitSpeed = Mathf.Min(currentMaxSpeed, appliedDashSpeed + currentEndDashSpeedBonus);
 
         dashMovement.Dash(appliedDashSpeed, currentDashDuration, direction, appliedExitSpeed);
+
+        OnStartAction.Invoke();
     }
 
     // Resets the dash allowing player to dash again

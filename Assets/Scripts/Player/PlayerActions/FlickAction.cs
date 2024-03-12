@@ -61,11 +61,13 @@ public class FlickAction : PlayerAction
         swordStickPos = swordObject.transform.position;
         initalVelocity = rb.velocity;
         rb.velocity = Vector3.zero;
+
+        OnStartAction.Invoke();
     }
 
     // Input gotten from player
     public void HorizontalInput(Vector3 direction) {
-        directionInput = direction;
+        directionInput = direction.normalized;
     }
 
     public void FlickOff() {
@@ -89,6 +91,9 @@ public class FlickAction : PlayerAction
             currentJump += currentBonus;
         }
 
+        // Killing enemy before movement
+        flickStabable.Die();
+
         // Setting Limits
         Vector3 horizontalVelocity = Mathf.Min(currentHorizontalLimit, currentHorizontal) * directionInput;
         currentJump = Mathf.Min(currentJumpLimit, currentJump);
@@ -98,7 +103,6 @@ public class FlickAction : PlayerAction
         rb.velocity += horizontalVelocity;
 
         // Ending Action
-        flickStabable.Die();
         EndAction();
     }
     private void StickUpdate() {

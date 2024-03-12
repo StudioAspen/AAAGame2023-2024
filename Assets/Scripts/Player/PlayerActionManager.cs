@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerActionManager : MonoBehaviour
 {
-    //Movement abilities
+    // Other Components
+    Rigidbody rb;
+
+    // Movement abilities
     BasicMovementAction basicMovementAction;
     JumpAction jumpAction;
     DashAction dashAction;
@@ -22,6 +25,9 @@ public class PlayerActionManager : MonoBehaviour
     public float combinationWindow;
 
     private void Start() {
+        // Getting other Components
+        rb = GetComponentInParent<Rigidbody>();
+
         // Getting components
         basicMovementAction = GetComponentInParent<BasicMovementAction>();
         jumpAction = GetComponentInParent<JumpAction>();
@@ -60,6 +66,9 @@ public class PlayerActionManager : MonoBehaviour
         // Giving horizontal input for slide for the jump off slide
         if(currentAction == slideAction) {
             slideAction.SlideInput(input);
+        }
+        if(currentAction == flickAction) {
+            flickAction.HorizontalInput(input);
         }
     }
     public void JumpInputPressed() {
@@ -174,7 +183,12 @@ public class PlayerActionManager : MonoBehaviour
             energyBlast.Shoot();
         }
     }
-    
+
+    public void KnockBack(Vector3 source, float launchForce) {
+        currentAction.EndAction();
+        rb.velocity = ((rb.transform.position-source) + transform.up).normalized * launchForce;
+    }
+
     public void EndOfAction() {
         currentAction.OnEndAction.RemoveListener(EndOfAction);
         currentAction = basicMovementAction;
