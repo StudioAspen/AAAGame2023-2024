@@ -15,7 +15,7 @@ public class RibPlatform : MonoBehaviour
     [SerializeField] Collider openCollider;//platform collider when ribs r open
     [SerializeField] Collider closedCollider;//platform collider when ribs r closed (should probably be round so the player cant stand on it)
     [SerializeField] float bloodLostOnHit; //blood lost when hit by knockback volume
-    MeshRenderer renderer; //using to change the platform's color when open/closed
+    MeshRenderer render; //using to change the platform's color when open/closed
 
     Timer timerTillClosed = new Timer();
     Timer timerTillOpened = new Timer();
@@ -23,7 +23,7 @@ public class RibPlatform : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        renderer= GetComponent<MeshRenderer>();
+        render = GetComponent<MeshRenderer>();
     
     }
 
@@ -34,11 +34,11 @@ public class RibPlatform : MonoBehaviour
         timerTillOpened.UpdateTimer();
         if(ribsOpen)
         {
-            renderer.material.color = Color.red;
+            render.material.color = Color.red;
         }
         else
         {
-            renderer.material.color = Color.green;
+            render.material.color = Color.green;
         }
 
     }

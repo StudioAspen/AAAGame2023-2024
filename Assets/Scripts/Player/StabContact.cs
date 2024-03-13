@@ -13,6 +13,8 @@ public class StabContact : MonoBehaviour
     JumpAction jumpAction;
     DashAction dashAction;
 
+    DashThroughEnemy stabableThrough;
+
     float bloodGainAmount;
     UnityEvent<Collider> contactEvent;
     private void Start() {
@@ -34,12 +36,22 @@ public class StabContact : MonoBehaviour
             found = true;
             stabable.TriggerEffect();
         }
-        if (other.gameObject.TryGetComponent(out StabableEnviornment enviornment)) {
-            canGiveBlood = enviornment.canGiveBlood;
+        if(other.gameObject.TryGetComponent(out DashThroughEnemy dashThroughEnemy)) {
+            stabableThrough = dashThroughEnemy;
+
+            canGiveBlood = dashThroughEnemy.canGiveBlood;
+
+            // Setting up and starting dash
+            dashThroughAction.OnEndAction.AddListener(EndEnemy);
+            actionManager.ChangeAction(dashThroughAction);
+            dashThroughAction.DashThrough(dashThroughEnemy);
+        }
+        else if (other.gameObject.TryGetComponent(out StabableDashThrough dashThrough)) {
+            canGiveBlood = dashThrough.canGiveBlood;
 
             // Setting up and starting dash
             actionManager.ChangeAction(dashThroughAction);
-            dashThroughAction.DashThrough(enviornment);
+            dashThroughAction.DashThrough(dashThrough);
 
             found = true;
         }
@@ -59,6 +71,13 @@ public class StabContact : MonoBehaviour
         bloodGainAmount = bloodGained;
         contactEvent = _contactEvent;
         contactEvent.AddListener(StabContactEffect);
+    }
+
+    private void EndEnemy() {
+        if (stabableThrough != null) {
+            stabableThrough.Die();
+        }
+        dashThroughAction.OnEndAction.RemoveListener(EndEnemy);
     }
 
     public void EndContactEvent() {
