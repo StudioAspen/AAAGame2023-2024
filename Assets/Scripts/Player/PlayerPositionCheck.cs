@@ -49,6 +49,9 @@ public class PlayerPositionCheck : MonoBehaviour {
             playerCollider.bounds.extents.z*terrainCheckScaleXZ);
 
         // Checking colliders
+        if(direction.magnitude <= 0) {
+            direction = transform.forward;
+        }
         Collider[] colliders = Physics.OverlapBox(transform.position, extents, Quaternion.LookRotation(direction.normalized), ground);
         
         if(colliders.Length == 0) {

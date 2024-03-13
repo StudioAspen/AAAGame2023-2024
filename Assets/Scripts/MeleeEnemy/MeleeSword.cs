@@ -13,8 +13,6 @@ public class MeleeSword : MonoBehaviour
         {
             blood.LoseBlood(damage);
             hitPlayer = true;
-            Debug.Log("PLAYER TAKE DAMAGE");
         }
-        Debug.Log("checkkkk");
     }
 }
