@@ -23,7 +23,7 @@ public class DashThroughAction : PlayerAction
     Collider playerCollider;
     MovementModification movementModification;
 
-    StabableEnviornment stabable;
+    StabableDashThrough stabable;
     float distanceTraveled = 0;
     bool isDashing = false;
     float currentDashSpeed;
@@ -41,11 +41,13 @@ public class DashThroughAction : PlayerAction
         }
     }
 
-    public void DashThrough(StabableEnviornment stabableEnviornment) {
+    public void DashThrough(StabableDashThrough dashThrough) {
+        dashThrough.CalculateDash(gameObject);
+
         // Setting variables
         playerCollider.isTrigger = true; // Temp implementation for passing through objects
         isDashing = true;
-        stabable = stabableEnviornment;
+        stabable = dashThrough;
         distanceTraveled = 0;
         rb.useGravity = false;
 

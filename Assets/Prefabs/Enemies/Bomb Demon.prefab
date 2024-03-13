@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 8422013526667354321}
   - component: {fileID: 7229489899993775193}
   - component: {fileID: 4403752927507272148}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bomb Demon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

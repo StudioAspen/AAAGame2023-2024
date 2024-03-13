@@ -157,6 +157,7 @@ public class MeleeEnemyStateManager : MonoBehaviour
     // switch state to deathstate
     public void Death()
     {
+        render.material.color = Color.black;
         SwitchState(deathState);
     }
     #endregion
