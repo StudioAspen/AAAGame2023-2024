@@ -64,13 +64,23 @@ public class PlayerInput : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (canInput) {
-            //CheckInputChange();
+            CheckInputChange();
             Debug.Log(Input.inputString);
             // Initalizing input direction
             Vector3 inputDirection = Vector3.zero;
 
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
-            inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+
+            switch (currentControls)
+            {
+                case ControlType.controller:
+                    inputDirection = cameraOrientation.right * Input.GetAxis("Left Stick Horizontal") + cameraOrientation.forward * Input.GetAxis("Left Stick Vertical");
+                    break;
+                case ControlType.mouseAndKeyboard:
+                    inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+                    break;
+                default: break;
+            }
             CheckAbilities(new Vector3(inputDirection.x, 0, inputDirection.z));
         }
     }
@@ -123,35 +133,52 @@ public class PlayerInput : MonoBehaviour {
     }
     // This is used to swap the control scheme whenever the player presses any key in any scheme
     private void CheckInputChange() {
-        if(PressedController()) {
-            SetControllerControls();
+
+        switch (currentControls)
+        {
+            case ControlType.controller:
+                if (PressedKeyboardMouse())
+                {
+                    SetMouseKeyboardControls();
+                    Debug.Log("switch to keyboard");
+
+                }
+                break;
+            case ControlType.mouseAndKeyboard:
+                if (PressedController())
+                {
+                    SetControllerControls();
+                    Debug.Log("switch to controller");
+
+                }
+                break;
+            default : break;
         }
-        if(PressedKeyboardMouse()) {
-            SetMouseKeyboardControls();
-        }
+       
+        
     }
 
     private bool PressedController() {
-        if(Input.GetKeyDown(controllerStab)) {
+        if(Mathf.Abs(Input.GetAxisRaw("Right Stick Horizontal")) > 0.1f)
+        {
             return true;
         }
-        if (Input.GetKeyDown(controllerStab)) {
+        if(Mathf.Abs(Input.GetAxisRaw("Right Stick Vertical")) > 0.1f)
+        {
             return true;
         }
-        if (Input.GetKeyDown(controllerStab)) {
-            return true;
-        }
-        if (Input.GetKeyDown(controllerStab)) {
-            return true;
-        }
-        if (Input.GetKeyDown(controllerStab)) {
-            return true;
-        }
-
 
         return false;
     }
     private bool PressedKeyboardMouse() {
+        if(Mathf.Abs( Input.GetAxisRaw("Mouse X")) > 0.1f)
+        {
+            return true;
+        }
+        if(Mathf.Abs(Input.GetAxisRaw("Mouse Y")) > 0.1f)
+        {
+            return true;
+        }
         return false;
     }
     private void SetControllerControls() {
@@ -171,6 +198,7 @@ public class PlayerInput : MonoBehaviour {
         //set the sensitivity of the camera with ControllerXsensitivity and ControllerYsensitivity
         cinemachineCam.m_XAxis.m_MaxSpeed = ControllerXSensitivity;
         cinemachineCam.m_YAxis.m_MaxSpeed = ControllerYSensitivity;
+        currentControls = ControlType.controller;
     }
 
     private void SetMouseKeyboardControls() {
@@ -193,5 +221,6 @@ public class PlayerInput : MonoBehaviour {
         cinemachineCam.m_YAxis.m_MaxSpeed = MKYSensitivity;
 
         inputShoot = keyboardShoot + 7; // Keycode enums are offset when set in the editor (mouse inputs here)
+        currentControls = ControlType.mouseAndKeyboard;
     }
 }
