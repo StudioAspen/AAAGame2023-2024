@@ -14,7 +14,6 @@ public class EnemyDeathState : EnemyBaseState
         enemy.animator.SetBool("isDead", true);
         disapearTimer = enemy.deleteTimer;
 
-        Debug.Log("Enter Death State");
         // drop a number of hp/blood to player
         // grants temp speed boost to player
         // if the enemy is stunned when killed, drop more hp/blood
@@ -24,7 +23,6 @@ public class EnemyDeathState : EnemyBaseState
 
     public override void UpdateState(EnemyStateManager enemy)
     {
-        Debug.Log("Enter Death Update");
         disapearTimer -= Time.deltaTime;
         if(disapearTimer <= 0) {
             Delete(enemy);
