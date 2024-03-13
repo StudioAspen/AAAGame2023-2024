@@ -11,7 +11,6 @@ public class InitializeTools
     }
     static void OnLoadScene(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Added Method");
         if (GameObject.Find("DeveloperConsole") == null)
         {
             string devConsolePath = "Tools/DeveloperConsole"; // the enemy folder path
