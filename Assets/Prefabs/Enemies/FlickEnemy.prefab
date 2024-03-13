@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8942169342917635675}
   - component: {fileID: 2391083636169062666}
   - component: {fileID: 3730667037262038832}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FlickEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 2986863351317142199}
   - component: {fileID: 5104841024641144038}
   - component: {fileID: 3896014209172367775}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RangedEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,8 +38,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.38, y: 2.32, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7572899283278089856}
   - {fileID: 4114196221939484483}
@@ -133,7 +133,7 @@ MonoBehaviour:
   attackDistance: 7
   idleAtPlayerLastPositionDuration: 5
   stunDuration: 2
-  deleteTimer: 3
+  deleteTimer: 2
   spawnpoint: {fileID: 0}
   bulletPrefab: {fileID: 3113997752838417528, guid: d5d9f454918076d4689292dc56796b97,
     type: 3}
@@ -284,7 +284,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 0}
-  playerSlideAction: {fileID: 0}
 --- !u!114 &5104841024641144038
 MonoBehaviour:
   m_ObjectHideFlags: 0
