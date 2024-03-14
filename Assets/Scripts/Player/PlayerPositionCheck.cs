@@ -15,6 +15,9 @@ public class PlayerPositionCheck : MonoBehaviour {
     [SerializeField] float groundCheckOffset;
     [SerializeField] float terrainCheckScaleXZ;
     [SerializeField] float terrainCheckScaleY;
+    [SerializeField] float terrainCastScaleZ;
+    [Range(0f, 1f)]
+    [SerializeField] float terrainCastScaleXY;
     [Range(0f, 1f)]
     [SerializeField] float groundCheckScaleXZ;
     public bool grounded;
@@ -70,7 +73,8 @@ public class PlayerPositionCheck : MonoBehaviour {
         Ray rayToCollider = new Ray(transform.position, closestCollider.ClosestPoint(transform.position)-transform.position);
         closestCollider.Raycast(rayToCollider, out RaycastHit hit, extents.magnitude);
 
-        
+        Debug.DrawLine(transform.position, closestCollider.ClosestPoint(transform.position), Color.red);
+
         // output
         normal = hit.normal;
         return true;
@@ -79,7 +83,7 @@ public class PlayerPositionCheck : MonoBehaviour {
     // Checking collision to calculate force perpendicular to the surface of collider (for sticky wall bug)
     public Vector3 CorrectVelocityCollision(Vector3 addedVelocity) {
         if (TryGetNormalOfClosestHoriontalCollider(addedVelocity, out Vector3 normal)) {
-            if (Vector3.Dot(normal.normalized, addedVelocity.normalized) <= 0) { // Checking if the added velocity is going into the surface
+            if (Vector3.Dot(normal.normalized, addedVelocity.normalized) < 0) { // Checking if the added velocity is going into the surface
                 // Finding perpendicular vector to the surface normal
                 Vector3 rotationVector = Vector3.Cross(normal.normalized, addedVelocity.normalized);
                 Vector3 perpendicularToNormal = MyMath.RotateAboutAxis(normal, rotationVector, 90f);
@@ -87,10 +91,19 @@ public class PlayerPositionCheck : MonoBehaviour {
                 Debug.DrawLine(transform.position, transform.position + normal, Color.blue);
                 Debug.DrawLine(transform.position, transform.position + perpendicularToNormal, Color.green);
 
-
                 float perpendicularProjection = Vector3.Dot(perpendicularToNormal.normalized, addedVelocity);
                 //float perpendicularProjection = addedVelocity.magnitude;
                 addedVelocity = perpendicularProjection * perpendicularToNormal.normalized;
+
+
+
+                // Checking if the corrected velocity is going into an object
+                Vector3 extents = new Vector3(playerCollider.bounds.extents.x * terrainCastScaleXY,
+                    playerCollider.bounds.extents.y * terrainCastScaleXY,
+                    playerCollider.bounds.extents.z * terrainCastScaleZ);
+                if (Physics.OverlapBox(transform.position + (addedVelocity.normalized*(extents.z/2)), extents, Quaternion.LookRotation(addedVelocity), ground).Length > 0) {
+                    //addedVelocity = Vector3.zero;
+                }
             }
         }
 
