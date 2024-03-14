@@ -70,9 +70,9 @@ public class PlayerInput : MonoBehaviour {
             Vector3 inputDirection = Vector3.zero;
 
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
-
             switch (currentControls)
             {
+                //switch so that you can't control the player with a control scheme if it isn't assigned
                 case ControlType.controller:
                     inputDirection = cameraOrientation.right * Input.GetAxis("Left Stick Horizontal") + cameraOrientation.forward * Input.GetAxis("Left Stick Vertical");
                     break;
@@ -136,6 +136,8 @@ public class PlayerInput : MonoBehaviour {
 
         switch (currentControls)
         {
+            //depending on the control scheme you're using, the game will check
+            //if the control scheme that isn't in use gets input on the camera look axis
             case ControlType.controller:
                 if (PressedKeyboardMouse())
                 {
@@ -158,7 +160,7 @@ public class PlayerInput : MonoBehaviour {
         
     }
 
-    private bool PressedController() {
+    private bool PressedController() {//checking if camera look has been input on the controller
         if(Mathf.Abs(Input.GetAxisRaw("Right Stick Horizontal")) > 0.1f)
         {
             return true;
@@ -170,7 +172,7 @@ public class PlayerInput : MonoBehaviour {
 
         return false;
     }
-    private bool PressedKeyboardMouse() {
+    private bool PressedKeyboardMouse() {// ^^ same but for keyboard
         if(Mathf.Abs( Input.GetAxisRaw("Mouse X")) > 0.1f)
         {
             return true;
