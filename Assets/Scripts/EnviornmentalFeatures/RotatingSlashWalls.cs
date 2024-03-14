@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RotatingSlashWalls : EnergyBlastedEffect
 {
-
     [SerializeField] private float rotationSmoothness = 1.0f;
 
     private Quaternion targetRotation;

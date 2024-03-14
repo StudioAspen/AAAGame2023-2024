@@ -58,18 +58,25 @@ public class SlideAction : PlayerAction{
 
         currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
         currentSlideSpeed += startVelocity.magnitude;
+
         Vector3 contactPoint = other.ClosestPoint(transform.position);
         rb.useGravity = false;
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
-        playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
-        swordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
+
+        transform.SetParent(pathCreator.transform, true);
+
+        playerOffset = pathCreator.transform.InverseTransformPoint(transform.position);
+        swordOffset = pathCreator.transform.InverseTransformPoint(swordObject.transform.position);
     }
     
     private void UpdateSliding() {
         dstTravelled += currentSlideSpeed * Time.fixedDeltaTime;
-        transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
-        swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
-        swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
+        Vector3 pathPoint = pathCreator.path.GetPointAtDistance(dstTravelled, end);
+        Vector3 pathNormal = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
+
+        transform.localPosition = pathCreator.transform.InverseTransformPoint(pathPoint) + playerOffset;
+        swordObject.transform.localPosition = pathCreator.transform.InverseTransformPoint(pathPoint) + swordOffset;
+        swordObject.transform.up = pathNormal;
 
         if (dstTravelled > pathCreator.path.length) {
             EndAction();
@@ -81,6 +88,7 @@ public class SlideAction : PlayerAction{
     }
 
     public override void EndAction() {
+        transform.SetParent(null);
         dstTravelled = 0f;
         sliding = false;
         rb.useGravity = true;
