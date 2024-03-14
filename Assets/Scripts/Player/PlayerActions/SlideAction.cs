@@ -59,9 +59,10 @@ public class SlideAction : PlayerAction{
         pathCreator = pc;
 
         // Calculating inital speed
-        startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
+        /*startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
         currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
-        currentSlideSpeed += startVelocity.magnitude;
+        currentSlideSpeed += startVelocity.magnitude;*/
+        currentSlideSpeed = slideSpeed;
 
         // Limiting Speed
         float currentSpeedLimit = movementModification.GetBoost(speedLimit, boostsedSpeedLimit, false);
