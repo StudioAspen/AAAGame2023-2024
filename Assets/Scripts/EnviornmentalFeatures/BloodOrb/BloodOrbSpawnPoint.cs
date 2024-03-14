@@ -26,8 +26,10 @@ public class BloodOrbSpawnPoint : MonoBehaviour
 
     // Resetting blood orb
     private void ResetBloodOrb() {
-        currentBloodOrb = Instantiate(bloodOrb, transform);
-        SetOrb(currentBloodOrb.GetComponent<BloodOrb>());
+        if (currentBloodOrb == null) {
+            currentBloodOrb = Instantiate(bloodOrb, transform);
+            SetOrb(currentBloodOrb.GetComponent<BloodOrb>());
+        }
     }
 
     private void SetOrb(BloodOrb orb) {

@@ -64,11 +64,22 @@ public class PlayerInput : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (canInput) {
+            CheckInputChange();
             // Initalizing input direction
             Vector3 inputDirection = Vector3.zero;
 
             //player input direction is calculated by multiplying forward and right by the horizontal and vertical axes
-            inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+            switch (currentControls)
+            {
+                //switch so that you can't control the player with a control scheme if it isn't assigned
+                case ControlType.controller:
+                    inputDirection = cameraOrientation.right * Input.GetAxis("Left Stick Horizontal") + cameraOrientation.forward * Input.GetAxis("Left Stick Vertical");
+                    break;
+                case ControlType.mouseAndKeyboard:
+                    inputDirection = cameraOrientation.right * Input.GetAxis("Horizontal") + cameraOrientation.forward * Input.GetAxis("Vertical");
+                    break;
+                default: break;
+            }
             CheckAbilities(new Vector3(inputDirection.x, 0, inputDirection.z));
         }
     }
@@ -110,57 +121,123 @@ public class PlayerInput : MonoBehaviour {
         // Setting controls for camera
         switch (currentControls) {
             case ControlType.controller:
-                // Setting axis for controller
-                cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
-                cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
-
-
-                // Controller keycode enums are offset when they are set in the editor this is to correct them (controller inputs here)
-                controllerStab += 4;
-                controllerSlash += 4;
-                controllerDash += 4;
-                controllerJump += 4;
-                controllerShoot += 4;
-
-                // Setting inputs for controller
-                inputStab = (controllerStab);
-                inputSlash = (controllerSlash);
-                inputDash = (controllerDash);
-                inputJump = (controllerJump);
-                inputShoot = (controllerShoot);
-
-                //set the sensitivity of the camera with ControllerXsensitivity and ControllerYsensitivity
-                cinemachineCam.m_XAxis.m_MaxSpeed = ControllerXSensitivity;
-                cinemachineCam.m_YAxis.m_MaxSpeed = ControllerYSensitivity;
-
-                Debug.Log(inputJump);
+                SetControllerControls();
                 break;
             case ControlType.mouseAndKeyboard:
-                // Setting axis for keyboard
-                cinemachineCam.m_XAxis.m_InputAxisName = "Mouse X";
-                cinemachineCam.m_YAxis.m_InputAxisName = "Mouse Y";
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-
-                keyboardShoot += 7; // Keycode enums are offset when set in the editor (mouse inputs here)
-
-                // Setting inputs for keyboard
-                inputStab = keyboardStab;
-                inputSlash = keyboardSlash;
-
-                //inputDownwardStab = keyboardDownwardStab;
-                inputDash = keyboardDash;
-                inputJump = keyboardJump;
-
-                //set the sensitivity of the camera with MKXSensitivity and MKYSensitivity
-                cinemachineCam.m_XAxis.m_MaxSpeed = MKXSensitivity;
-                cinemachineCam.m_YAxis.m_MaxSpeed = MKYSensitivity;
-
-                inputShoot = keyboardShoot;
-
+                SetMouseKeyboardControls();
                 break;
             default:
                 break;
         }
+    }
+    // This is used to swap the control scheme whenever the player presses any key in any scheme
+    private void CheckInputChange() {
+
+        switch (currentControls)
+        {
+            //depending on the control scheme you're using, the game will check
+            //if the control scheme that isn't in use gets input on the camera look axis
+            case ControlType.controller:
+                if (PressedKeyboardMouse())
+                {
+                    SetMouseKeyboardControls();
+                    Debug.Log("switch to keyboard");
+
+                }
+                break;
+            case ControlType.mouseAndKeyboard:
+                if (PressedController())
+                {
+                    SetControllerControls();
+                    Debug.Log("switch to controller");
+
+                }
+                break;
+            default : break;
+        }
+       
+        
+    }
+
+    private bool PressedController() {//checking if camera look has been input on the controller
+        if(Mathf.Abs(Input.GetAxisRaw("Right Stick Horizontal")) > 0.1f)
+        {
+            return true;
+        }
+        if(Mathf.Abs(Input.GetAxisRaw("Right Stick Vertical")) > 0.1f)
+        {
+            return true;
+        }
+        if(Mathf.Abs(Input.GetAxisRaw("Left Stick Horizontal")) > 0.1f)
+        {
+            return true;
+        }
+        if (Mathf.Abs(Input.GetAxisRaw("Left Stick Vertical")) > 0.1f)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    private bool PressedKeyboardMouse() {// ^^ same but for keyboard
+        if(Mathf.Abs( Input.GetAxisRaw("Mouse X")) > 0.1f)
+        {
+            return true;
+        }
+        if(Mathf.Abs(Input.GetAxisRaw("Mouse Y")) > 0.1f)
+        {
+            return true;
+        }
+        if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f)
+        {
+            return true;
+        }
+        if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f)
+        {
+            return true;
+        }
+        return false;
+    }
+    private void SetControllerControls() {
+        // Setting axis for controller
+        cinemachineCam.m_XAxis.m_InputAxisName = "Right Stick Horizontal";
+        cinemachineCam.m_YAxis.m_InputAxisName = "Right Stick Vertical";
+
+
+        // Controller keycode enums are offset when they are set in the editor this is to correct them (controller inputs here)
+        // Setting inputs for controller
+        inputStab = controllerStab + 4;
+        inputSlash = controllerSlash + 4;
+        inputDash = controllerDash + 4;
+        inputJump = controllerJump + 4;
+        inputShoot = controllerShoot + 4;
+
+        //set the sensitivity of the camera with ControllerXsensitivity and ControllerYsensitivity
+        cinemachineCam.m_XAxis.m_MaxSpeed = ControllerXSensitivity;
+        cinemachineCam.m_YAxis.m_MaxSpeed = ControllerYSensitivity;
+        currentControls = ControlType.controller;
+    }
+
+    private void SetMouseKeyboardControls() {
+        // Setting axis for keyboard
+        cinemachineCam.m_XAxis.m_InputAxisName = "Mouse X";
+        cinemachineCam.m_YAxis.m_InputAxisName = "Mouse Y";
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        // Setting inputs for keyboard
+        inputStab = keyboardStab;
+        inputSlash = keyboardSlash;
+
+        //inputDownwardStab = keyboardDownwardStab;
+        inputDash = keyboardDash;
+        inputJump = keyboardJump;
+
+        //set the sensitivity of the camera with MKXSensitivity and MKYSensitivity
+        cinemachineCam.m_XAxis.m_MaxSpeed = MKXSensitivity;
+        cinemachineCam.m_YAxis.m_MaxSpeed = MKYSensitivity;
+
+        inputShoot = keyboardShoot + 7; // Keycode enums are offset when set in the editor (mouse inputs here)
+        currentControls = ControlType.mouseAndKeyboard;
     }
 }
