@@ -169,6 +169,14 @@ public class PlayerInput : MonoBehaviour {
         {
             return true;
         }
+        if(Mathf.Abs(Input.GetAxisRaw("Left Stick Horizontal")) > 0.1f)
+        {
+            return true;
+        }
+        if (Mathf.Abs(Input.GetAxisRaw("Left Stick Vertical")) > 0.1f)
+        {
+            return true;
+        }
 
         return false;
     }
@@ -178,6 +186,14 @@ public class PlayerInput : MonoBehaviour {
             return true;
         }
         if(Mathf.Abs(Input.GetAxisRaw("Mouse Y")) > 0.1f)
+        {
+            return true;
+        }
+        if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f)
+        {
+            return true;
+        }
+        if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f)
         {
             return true;
         }
