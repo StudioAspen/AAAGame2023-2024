@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using PathCreation;
 using UnityEngine;
 using UnityEngine.Events;
-using PathCreation;
 
 public class SlashContact : MonoBehaviour {
     // Action to perform
@@ -11,6 +9,8 @@ public class SlashContact : MonoBehaviour {
     // For resets
     JumpAction jumpAction;
     DashAction dashAction;
+
+    SlidableEnemy slidableEnemy;
 
     // Other variables
     float bloodGainAmount;
@@ -35,8 +35,13 @@ public class SlashContact : MonoBehaviour {
             slashable.TriggerEffect();
             found = true;
         }
-
-        if (other.TryGetComponent(out PathCreator pathCreator)) {
+        
+        if(other.TryGetComponent(out SlidableEnemy enemy)) {
+            slidableEnemy = enemy;
+            StartSlideAction(enemy.pathCreator, other);
+            found = true;
+        }
+        else if (other.TryGetComponent(out PathCreator pathCreator)) {
             if (other.TryGetComponent(out WallDirection wallDir)) {
                 Vector3 wallForward = wallDir.GetForwardVector();
 
@@ -66,7 +71,15 @@ public class SlashContact : MonoBehaviour {
 
     private void StartSlideAction(PathCreator pc, Collider other) {
         GetComponent<PlayerActionManager>().ChangeAction(slideAction);
+        slideAction.OnEndAction.AddListener(EndEnemy);
         slideAction.StartSlide(pc, other);
+    }
+
+    private void EndEnemy() {
+        if (slidableEnemy != null) {
+            slidableEnemy.Die();
+        }
+        slideAction.OnEndAction.RemoveListener(EndEnemy);
     }
 
     public void ActivateContactEvent(UnityEvent<Collider> _contactEvent, float bloodGained) {
