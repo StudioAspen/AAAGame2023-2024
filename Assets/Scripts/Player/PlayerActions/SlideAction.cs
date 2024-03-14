@@ -24,6 +24,7 @@ public class SlideAction : PlayerAction{
     float currentSlideSpeed;
     
     private Rigidbody rb;
+    private Collider playerCollider;
     private PathCreator pathCreator;
     MovementModification movementModification;
     PlayerPositionCheck playerPositionCheck;
@@ -43,6 +44,7 @@ public class SlideAction : PlayerAction{
     
     private void Start() {
         rb = GetComponent<Rigidbody>();
+        playerCollider = GetComponent<Collider>();
         jumpAction = GetComponent<JumpAction>();
         movementModification = GetComponentInChildren<MovementModification>();
         playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();

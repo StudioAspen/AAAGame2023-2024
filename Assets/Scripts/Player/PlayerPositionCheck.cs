@@ -44,7 +44,7 @@ public class PlayerPositionCheck : MonoBehaviour {
     }
 
     // Checks whats colliding with and returning the closest collider
-    public bool TryGetNormalOfClosestHoriontalCollider(Vector3 direction, out Vector3 normal) {
+    public bool TryGetClosestColliders(Vector3 direction, out Collider[] colliders) {
         // Scaling Y extents seperatly
         Vector3 extents = new Vector3(playerCollider.bounds.extents.x*terrainCheckScaleXZ, 
             playerCollider.bounds.extents.y*terrainCheckScaleY, 
@@ -54,10 +54,12 @@ public class PlayerPositionCheck : MonoBehaviour {
         if(direction.magnitude <= 0) {
             direction = transform.forward;
         }
-        Collider[] colliders = Physics.OverlapBox(transform.position, extents, Quaternion.LookRotation(direction.normalized), ground);
-        
-        if(colliders.Length == 0) {
-            normal = Vector3.zero;
+        Collider[] foundColliders = Physics.OverlapBox(transform.position, extents, Quaternion.LookRotation(direction.normalized), ground);
+        colliders = foundColliders;
+        if(foundColliders.Length > 0) {
+            return true;
+        }
+        else {
             return false;
         }
 
@@ -71,41 +73,27 @@ public class PlayerPositionCheck : MonoBehaviour {
                 closestDist = valCheck; 
             }
         }
-
-        // Getting normal from
-        Ray rayToCollider = new Ray(transform.position, closestCollider.ClosestPoint(transform.position)-transform.position);
-        closestCollider.Raycast(rayToCollider, out RaycastHit hit, extents.magnitude);
-
-        Debug.DrawLine(transform.position, closestCollider.ClosestPoint(transform.position), Color.red);
-
-        // output
-        normal = hit.normal;
-        return true;
     }
 
     // Checking collision to calculate force perpendicular to the surface of collider (for sticky wall bug)
     public Vector3 CorrectVelocityCollision(Vector3 addedVelocity) {
-        if (TryGetNormalOfClosestHoriontalCollider(addedVelocity, out Vector3 normal)) {
-            if (Vector3.Dot(normal.normalized, addedVelocity.normalized) < 0) { // Checking if the added velocity is going into the surface
-                // Finding perpendicular vector to the surface normal
-                Vector3 rotationVector = Vector3.Cross(normal.normalized, addedVelocity.normalized);
-                Vector3 perpendicularToNormal = MyMath.RotateAboutAxis(normal, rotationVector, 90f);
+        if (TryGetClosestColliders(addedVelocity, out Collider[] colliders)) {
+            // Calculate velocity based on colliders
+            foreach (Collider collider in colliders) {
+                Vector3 normal = transform.position-collider.ClosestPoint(transform.position);
 
-                Debug.DrawLine(transform.position, transform.position + normal, Color.blue);
-                Debug.DrawLine(transform.position, transform.position + perpendicularToNormal, Color.green);
+                // Calculating velocity
+                if (Vector3.Dot(normal.normalized, addedVelocity.normalized) < 0) { // Checking if the added velocity is going into the surface
+                                                                                    // Finding perpendicular vector to the surface normal
+                    Vector3 rotationVector = Vector3.Cross(normal.normalized, addedVelocity.normalized);
+                    Vector3 perpendicularToNormal = MyMath.RotateAboutAxis(normal, rotationVector, 90f);
 
-                float perpendicularProjection = Vector3.Dot(perpendicularToNormal.normalized, addedVelocity);
-                //float perpendicularProjection = addedVelocity.magnitude;
-                addedVelocity = perpendicularProjection * perpendicularToNormal.normalized;
+                    Debug.DrawLine(transform.position, transform.position + normal, Color.blue);
+                    Debug.DrawLine(transform.position, transform.position + perpendicularToNormal, Color.green);
 
-
-
-                // Checking if the corrected velocity is going into an object
-                Vector3 extents = new Vector3(playerCollider.bounds.extents.x * terrainCastScaleXY,
-                    playerCollider.bounds.extents.y * terrainCastScaleXY,
-                    playerCollider.bounds.extents.z * terrainCastScaleZ);
-                if (Physics.OverlapBox(transform.position + (addedVelocity.normalized*(extents.z/2)), extents, Quaternion.LookRotation(addedVelocity), ground).Length > 0) {
-                    //addedVelocity = Vector3.zero;
+                    float perpendicularProjection = Vector3.Dot(perpendicularToNormal.normalized, addedVelocity);
+                    //float perpendicularProjection = addedVelocity.magnitude;
+                    addedVelocity = perpendicularProjection * perpendicularToNormal.normalized;
                 }
             }
         }

@@ -65,7 +65,6 @@ public class PlayerInput : MonoBehaviour {
     void Update() {
         if (canInput) {
             CheckInputChange();
-            Debug.Log(Input.inputString);
             // Initalizing input direction
             Vector3 inputDirection = Vector3.zero;
 
