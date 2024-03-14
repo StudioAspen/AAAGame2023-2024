@@ -123,7 +123,7 @@ public class PlayerActionManager : MonoBehaviour
 
         // Check input for slash dash
         if(currentAction == dashAction && dashAction.timer < combinationWindow) {
-            dashAction.EndAction();
+            dashAction.InteruptDash();
             SlashDashInput(input);
         }
     }
@@ -137,7 +137,7 @@ public class PlayerActionManager : MonoBehaviour
         
         // Stab Dash input
         if(currentAction == dashAction && dashAction.timer < combinationWindow) {
-            dashAction.EndAction();
+            dashAction.InteruptDash();
             StabDashInput(input);
         }
     }

@@ -24,6 +24,7 @@ public class DashAction : PlayerAction
     bool dashAvailable = true;
     float dashCdTimer;// Time before you can dash again
     public float timer = 0; // Used for starting slash/stab dash
+    Vector3 playerInitalVelocity;
 
     // References
     Rigidbody rb;
@@ -76,6 +77,7 @@ public class DashAction : PlayerAction
         // Temp
         holder = render.material.color;
         render.material.color = Color.blue;
+        playerInitalVelocity = rb.velocity;
 
         timer = 0;
         dashAvailable = false; // Using up the dash
@@ -111,6 +113,12 @@ public class DashAction : PlayerAction
     // Checking if player can perform a dash
     public bool CanPerformDash() {
         return dashCdTimer <= 0 && dashAvailable && !dashMovement.isDashing;
+    }
+
+    // This is used for comination inputs to interupt the dash and start the actual action
+    public void InteruptDash() {
+        EndAction();
+        rb.velocity = playerInitalVelocity;
     }
 
     // End this action
