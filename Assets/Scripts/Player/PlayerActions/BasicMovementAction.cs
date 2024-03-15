@@ -41,7 +41,7 @@ public class BasicMovementAction : PlayerAction
     [Range(0.0f, 1f)]
     [SerializeField] float rotationSpeed; // How fast the player object turns to the direction inputted by player
 
-    bool grounded;
+    public bool grounded;
     bool isMoving = false;
     Vector3 targetDirection;
 

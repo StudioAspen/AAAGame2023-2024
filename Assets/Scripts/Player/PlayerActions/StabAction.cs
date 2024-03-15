@@ -15,7 +15,7 @@ public class StabAction : PlayerAction {
     StabContact stabContact;
 
     // Variables
-    bool isStabbing = false;
+    public bool isStabbing = false;
     public float timer = 0; // used for the stab dash
 
     // Start is called before the first frame update
