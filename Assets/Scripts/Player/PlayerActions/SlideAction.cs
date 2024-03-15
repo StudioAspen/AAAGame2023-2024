@@ -93,8 +93,8 @@ public class SlideAction : PlayerAction{
         Vector3 pathNormal = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
         transform.localPosition = pathCreator.transform.InverseTransformPoint(pathPoint) + playerOffset;
-        swordObject.transform.localPosition = pathCreator.transform.InverseTransformPoint(pathPoint) + swordOffset;
-        swordObject.transform.up = pathNormal;
+        //swordObject.transform.localPosition = pathCreator.transform.InverseTransformPoint(pathPoint) + swordOffset;
+        //swordObject.transform.up = pathNormal;
 
         // Ending the dash with movement abilities
         if (dstTravelled > pathCreator.path.length) {

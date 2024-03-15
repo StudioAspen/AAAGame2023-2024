@@ -28,7 +28,7 @@ public class RotatingSlashWalls : EnergyBlastedEffect
     {
         if ((transform.eulerAngles - targetRotation.eulerAngles).magnitude < 0.75f)
         {
-            targetRotation = Quaternion.Euler(transform.eulerAngles + 180f * Vector3.up);
+            targetRotation = Quaternion.AngleAxis(180f, transform.up)*targetRotation;
         }
     }
 
