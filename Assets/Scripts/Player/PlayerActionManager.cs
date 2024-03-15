@@ -179,7 +179,8 @@ public class PlayerActionManager : MonoBehaviour
     public void EnergyBlastInput() {
         // Energy blast input
         if (currentAction == basicMovementAction ||
-            currentAction == jumpAction) {
+            currentAction == jumpAction ||
+            currentAction == slideAction) {
             energyBlast.Shoot();
         }
     }
