@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DesignersTestScenes/Wilfreddy's Playground/Scenes/Area4&5.unity
     guid: a0ec80ead297cab4c98db7473c22c816
+  - enabled: 1
+    path: Assets/Scenes/DesignersTestScenes/Wilfreddy's Playground/Scenes/Restart.unity
+    guid: ae833df322d48c94e99e023fdf77e8b7
   m_configObjects: {}
