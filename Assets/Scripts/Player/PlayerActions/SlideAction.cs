@@ -24,8 +24,10 @@ public class SlideAction : PlayerAction{
     float currentSlideSpeed;
     
     private Rigidbody rb;
+    private Collider playerCollider;
     private PathCreator pathCreator;
     MovementModification movementModification;
+    PlayerPositionCheck playerPositionCheck;
 
     private EndOfPathInstruction end;
     private bool sliding = false;
@@ -42,8 +44,10 @@ public class SlideAction : PlayerAction{
     
     private void Start() {
         rb = GetComponent<Rigidbody>();
+        playerCollider = GetComponent<Collider>();
         jumpAction = GetComponent<JumpAction>();
         movementModification = GetComponentInChildren<MovementModification>();
+        playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         end = EndOfPathInstruction.Stop;
     }
 
@@ -97,10 +101,13 @@ public class SlideAction : PlayerAction{
     }
 
     public void SlideInput(Vector3 direction) {
-        inputDir = direction;
+        inputDir = direction.normalized;
     }
     public void ApplyHorizontalOffset() {
-        rb.velocity += inputDir.normalized * (movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true) + startVelocity.magnitude);
+        Vector3 addedVelocity = inputDir.normalized * (movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true) + startVelocity.magnitude);
+        addedVelocity = playerPositionCheck.CorrectVelocityCollision(addedVelocity);
+
+        rb.velocity += addedVelocity;
     }
     public override void EndAction() {
         dstTravelled = 0f;

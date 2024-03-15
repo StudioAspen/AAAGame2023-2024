@@ -183,7 +183,7 @@ public class PlayerActionManager : MonoBehaviour
             energyBlast.Shoot();
         }
     }
-
+    
     public void KnockBack(Vector3 source, float launchForce) {
         currentAction.EndAction();
         rb.velocity = ((rb.transform.position-source) + transform.up).normalized * launchForce;
