@@ -8,11 +8,13 @@ public class DashThroughAction : PlayerAction
     [SerializeField] float dashSpeed; // How fast you move through the dash, this is speed for consistency
     [SerializeField] float endDashSpeedBonus; // How fast you are moving at the end of the dash
     [SerializeField] float initalSpeedScale;  // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
+    [SerializeField] float speedLimit; // The max speed AFTER inital velocity + speed + bonus speed CALCULATION (so this limit applies for both the exit speed and the action itself) 
 
     [Header("Boosted")]
     [SerializeField] float boostedDashSpeed;
     [SerializeField] float boostedEndDashSpeedBonus;
     [SerializeField] float boostedInitalSpeedScale;
+    [SerializeField] float boostsedSpeedLimit;
 
     [Range(0.0f, 1f)]
     [SerializeField] float stickMag; // How smoothly you transision from your position to the dash, a value of 1 would make you teleport to the center of the object the moment you stab it
@@ -21,7 +23,7 @@ public class DashThroughAction : PlayerAction
     Collider playerCollider;
     MovementModification movementModification;
 
-    StabableEnviornment stabable;
+    StabableDashThrough stabable;
     float distanceTraveled = 0;
     bool isDashing = false;
     float currentDashSpeed;
@@ -39,14 +41,23 @@ public class DashThroughAction : PlayerAction
         }
     }
 
-    public void DashThrough(StabableEnviornment stabableEnviornment) {
+    public void DashThrough(StabableDashThrough dashThrough) {
+        dashThrough.CalculateDash(gameObject);
+
+        // Setting variables
         playerCollider.isTrigger = true; // Temp implementation for passing through objects
         isDashing = true;
-        stabable = stabableEnviornment;
+        stabable = dashThrough;
         distanceTraveled = 0;
         rb.useGravity = false;
-        currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
-        currentDashSpeed += rb.velocity.magnitude * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
+
+        // Speed values
+        float currentDashSpeedCalc = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
+        float currentInitalSpeedCalc = rb.velocity.magnitude * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
+        float currentSpeedLimitCalc = movementModification.GetBoost(speedLimit, boostsedSpeedLimit, false);
+        currentDashSpeed = Mathf.Min(currentSpeedLimitCalc, currentDashSpeedCalc + currentInitalSpeedCalc);
+
+        OnStartAction.Invoke();
     }
 
     private void DashThroughUpdate() {
@@ -57,7 +68,10 @@ public class DashThroughAction : PlayerAction
         distanceTraveled += currentDashSpeed * Time.fixedDeltaTime;
         if(distanceTraveled > stabable.dashLength) {
             // End Dash speed
-            rb.velocity = stabable.dashDir.normalized * (currentDashSpeed + movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true));
+            float currentSpeedLimitCalc = movementModification.GetBoost(speedLimit, boostsedSpeedLimit, false);
+            float exitSpeed = Mathf.Min(currentSpeedLimitCalc, currentDashSpeed + movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true));
+
+            rb.velocity = stabable.dashDir.normalized * exitSpeed;
             EndAction();
         }
     }

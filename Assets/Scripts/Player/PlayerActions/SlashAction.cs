@@ -41,6 +41,8 @@ public class SlashAction : PlayerAction
         slashContact.ActivateContactEvent(swordMovement.OnContact, bloodGained);
         swordMovement.OnEndAction.AddListener(EndOfSlashAnimation);
         swordMovement.SlashPosition(attackDuration);
+
+        OnStartAction.Invoke();
     }
 
     private void EndOfSlashAnimation() {

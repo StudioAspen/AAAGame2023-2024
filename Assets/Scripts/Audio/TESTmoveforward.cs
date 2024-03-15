@@ -8,6 +8,8 @@ public class TESTmoveforward : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(0, 0, speed * Time.deltaTime);
+        if(Input.GetKey(KeyCode.W)){
+            transform.Translate(0, 0, speed * Time.deltaTime);
+        }
     }
 }

@@ -7,17 +7,21 @@ public class StabContact : MonoBehaviour
 {
     // Contact Action
     DashThroughAction dashThroughAction;
+    FlickAction flickAction;
 
     // For resets
-    BasicMovementAction movementAction;
+    JumpAction jumpAction;
     DashAction dashAction;
+
+    DashThroughEnemy stabableThrough;
 
     float bloodGainAmount;
     UnityEvent<Collider> contactEvent;
     private void Start() {
-        dashThroughAction = transform.parent.GetComponent<DashThroughAction>();
-        movementAction = transform.parent.GetComponent<BasicMovementAction>();
-        dashAction = transform.parent.GetComponent<DashAction>();
+        dashThroughAction = GetComponentInParent<DashThroughAction>();
+        flickAction = GetComponentInParent<FlickAction>();
+        jumpAction = GetComponentInParent<JumpAction>();
+        dashAction = GetComponentInParent<DashAction>();
 
         // End of events
         dashThroughAction.OnEndAction.AddListener(EndOfDash);
@@ -32,14 +36,28 @@ public class StabContact : MonoBehaviour
             found = true;
             stabable.TriggerEffect();
         }
-        if (other.gameObject.TryGetComponent(out StabableEnviornment enviornment)) {
-            canGiveBlood = enviornment.canGiveBlood;
+        if(other.gameObject.TryGetComponent(out DashThroughEnemy dashThroughEnemy)) {
+            stabableThrough = dashThroughEnemy;
+
+            canGiveBlood = dashThroughEnemy.canGiveBlood;
+
+            // Setting up and starting dash
+            dashThroughAction.OnEndAction.AddListener(EndEnemy);
+            actionManager.ChangeAction(dashThroughAction);
+            dashThroughAction.DashThrough(dashThroughEnemy);
+        }
+        else if (other.gameObject.TryGetComponent(out StabableDashThrough dashThrough)) {
+            canGiveBlood = dashThrough.canGiveBlood;
 
             // Setting up and starting dash
             actionManager.ChangeAction(dashThroughAction);
-            dashThroughAction.DashThrough(enviornment);
+            dashThroughAction.DashThrough(dashThrough);
 
             found = true;
+        }
+        if(other.gameObject.TryGetComponent(out FlickEnemyStabable flickEnemy)) {
+            actionManager.ChangeAction(flickAction);
+            flickAction.Stick(flickEnemy);
         }
         if(found) {
             EndContactEvent();
@@ -55,12 +73,19 @@ public class StabContact : MonoBehaviour
         contactEvent.AddListener(StabContactEffect);
     }
 
+    private void EndEnemy() {
+        if (stabableThrough != null) {
+            stabableThrough.Die();
+        }
+        dashThroughAction.OnEndAction.RemoveListener(EndEnemy);
+    }
+
     public void EndContactEvent() {
         contactEvent.RemoveListener(StabContactEffect);
     }
 
     private void EndOfDash() {
-        movementAction.GiveAirJump();
+        jumpAction.GiveAirJump();
         dashAction.ResetDash();
     }
 }

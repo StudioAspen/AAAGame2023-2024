@@ -11,6 +11,7 @@ public class DashAction : PlayerAction
     [SerializeField] float dashCooldown; // Cooldown between consecutive dashes
     [SerializeField] float endDashSpeedBonus; // Speed at the end of the dash
     [SerializeField] float initalSpeedScale; // How much the player impacts the speed, measured in percent (i.e. value of 0.1 == 10% of player speed is factored)
+    [SerializeField] float speedLimit; // The max speed AFTER inital velocity + speed + bonus speed CALCULATION (so this limit applies for both the exit speed and the action itself) 
 
     [Header("Boosted Movement")]
     [SerializeField] float boostedDashSpeed;
@@ -18,10 +19,12 @@ public class DashAction : PlayerAction
     [SerializeField] float boostedDashCooldown;
     [SerializeField] float boostedEndDashSpeedBonus;
     [SerializeField] float boostedInitalSpeedScale;
+    [SerializeField] float boostsedSpeedLimit;
 
     bool dashAvailable = true;
     float dashCdTimer;// Time before you can dash again
     public float timer = 0; // Used for starting slash/stab dash
+    Vector3 playerInitalVelocity;
 
     // References
     Rigidbody rb;
@@ -74,18 +77,26 @@ public class DashAction : PlayerAction
         // Temp
         holder = render.material.color;
         render.material.color = Color.blue;
+        playerInitalVelocity = rb.velocity;
 
         timer = 0;
         dashAvailable = false; // Using up the dash
-        
+
         // Calculating boosts (all boosts are calculated as a linear interpolation between normal and boost amount given a percentage)
-        dashCdTimer = movementModification.GetBoost(dashCooldown, boostedDashCooldown, true); 
-        float currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);  
+        dashCdTimer = movementModification.GetBoost(dashCooldown, boostedDashCooldown, true);
+        float currentDashSpeed = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
         float currentDashDuration = movementModification.GetBoost(dashDuration, boostedDashDuration, true);
         float currentEndDashSpeedBonus = movementModification.GetBoost(endDashSpeedBonus, boostedEndDashSpeedBonus, true);
+        float currentVelocity = rb.velocity.magnitude * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
 
-        float velocityAlignment = Vector3.Dot(rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false), direction);
-        dashMovement.Dash(velocityAlignment + currentDashSpeed, currentDashDuration, direction, velocityAlignment + currentDashSpeed + currentEndDashSpeedBonus);
+        // Limiting Speed
+        float currentMaxSpeed = movementModification.GetBoost(speedLimit, boostsedSpeedLimit, false);
+        float appliedDashSpeed = Mathf.Min(currentMaxSpeed, currentVelocity + currentDashSpeed);
+        float appliedExitSpeed = Mathf.Min(currentMaxSpeed, appliedDashSpeed + currentEndDashSpeedBonus);
+
+        dashMovement.Dash(appliedDashSpeed, currentDashDuration, direction, appliedExitSpeed);
+
+        OnStartAction.Invoke();
     }
 
     // Resets the dash allowing player to dash again
@@ -102,6 +113,12 @@ public class DashAction : PlayerAction
     // Checking if player can perform a dash
     public bool CanPerformDash() {
         return dashCdTimer <= 0 && dashAvailable && !dashMovement.isDashing;
+    }
+
+    // This is used for comination inputs to interupt the dash and start the actual action
+    public void InteruptDash() {
+        EndAction();
+        rb.velocity = playerInitalVelocity;
     }
 
     // End this action
