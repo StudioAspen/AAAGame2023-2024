@@ -5,6 +5,8 @@ using UnityEngine;
 public class RotatingSlashWalls : EnergyBlastedEffect
 {
     [SerializeField] private float rotationSmoothness = 1.0f;
+    [Range(0, 1)]
+    [SerializeField] private float canRotate; // The percentage of a complete rotation before you can do it again
 
     private Quaternion targetRotation;
 
@@ -26,7 +28,7 @@ public class RotatingSlashWalls : EnergyBlastedEffect
     ///
     public override void TriggerEffect()
     {
-        if ((transform.eulerAngles - targetRotation.eulerAngles).magnitude < 0.75f)
+        if ((transform.eulerAngles - targetRotation.eulerAngles).magnitude < canRotate)
         {
             targetRotation = Quaternion.AngleAxis(180f, transform.up)*targetRotation;
         }

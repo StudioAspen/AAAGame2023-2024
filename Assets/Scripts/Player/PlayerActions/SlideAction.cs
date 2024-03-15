@@ -34,11 +34,14 @@ public class SlideAction : PlayerAction{
 
     [Header("References")]
     [SerializeField] GameObject swordObject;
-    private Vector3 swordOffset;
-    private Vector3 playerOffset;
+    private Vector3 initialSwordOffset;
+    private Vector3 initialPlayerOffset;
+    private Quaternion initialPlayerRotation;
     private Vector3 inputDir;
     private Vector3 startVelocity;
     private float dstTravelled = 0f;
+
+    private Quaternion initialWallRotation;
 
     JumpAction jumpAction;
     
@@ -75,26 +78,34 @@ public class SlideAction : PlayerAction{
         Vector3 contactPoint = other.ClosestPoint(transform.position);
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
 
-        //transform.SetParent(pathCreator.transform, true);
+        // saving initalizing values for rotations
+        initialWallRotation = pathCreator.transform.rotation;
+        initialPlayerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
+        initialPlayerRotation = transform.rotation;
+        initialSwordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
 
-        //playerOffset = pathCreator.transform.InverseTransformPoint(transform.position);
-        //swordOffset = pathCreator.transform.InverseTransformPoint(swordObject.transform.position);
-        
-        playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
-        swordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
-
+        // On start action event
         OnStartAction.Invoke();
     }
     
     private void UpdateSliding() {
+        // Initalizing offsets by rotation transformation
+        Quaternion rotationTransformation = pathCreator.transform.rotation * Quaternion.Inverse(initialWallRotation);
+        Vector3 playerOffset = rotationTransformation * initialPlayerOffset;
+        Vector3 swordOffset = rotationTransformation * initialSwordOffset;
+
+
         // Applying speed
         dstTravelled += currentSlideSpeed * Time.fixedDeltaTime;
         Vector3 pathPoint = pathCreator.path.GetPointAtDistance(dstTravelled, end);
         Vector3 pathNormal = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
-        transform.localPosition = pathCreator.transform.InverseTransformPoint(pathPoint) + playerOffset;
-        //swordObject.transform.localPosition = pathCreator.transform.InverseTransformPoint(pathPoint) + swordOffset;
-        //swordObject.transform.up = pathNormal;
+
+
+        transform.position = pathPoint + playerOffset;
+        transform.rotation = rotationTransformation*initialPlayerRotation;
+        swordObject.transform.position = pathPoint + swordOffset;
+        swordObject.transform.up = pathNormal;
 
         // Ending the dash with movement abilities
         if (dstTravelled > pathCreator.path.length) {
