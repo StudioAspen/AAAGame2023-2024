@@ -69,10 +69,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   groundCheckOffset: 0.1
-  terrainCheckOffset: 0.01
-  terrainCheckScaleXZ: 1.01
-  terrainCheckScaleY: 0.5
-  groundCheckScale: 0.95
+  terrainCheckScaleXZ: 1.1
+  terrainCheckScaleY: 1.1
+  terrainCastScaleZ: 0
+  terrainCastScaleXY: 0
+  groundCheckScaleXZ: 0.5
   grounded: 0
 --- !u!114 &1554232633083437368
 MonoBehaviour:
