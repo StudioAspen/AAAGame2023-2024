@@ -38,7 +38,6 @@ public class JumpAction : PlayerAction
             jumpTimer += Time.deltaTime;
             if (jumpTimer > movementModification.GetBoost(dampWindow, boostedDampWindow, false)) {
                 JumpInputRelease();
-                jumping = false;
             }
         }
     }
@@ -70,10 +69,10 @@ public class JumpAction : PlayerAction
 
     public void JumpInputRelease() {
         // Dampeneing the speed when below the boosted amount
-        if(-rb.velocity.y <= boostedInitalSpeed && rb.velocity.y > 0) {
+        if(rb.velocity.y <= boostedInitalSpeed && rb.velocity.y > 0) {
             rb.velocity -= rb.velocity * movementModification.GetBoost(damping, boostedDamping, true);
-            EndAction();
         }
+        EndAction();
     }
 
     public void Jump(float jumpForce) {

@@ -271,6 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSmoothness: 5
+  canRotate: 1
 --- !u!114 &-4914738668967344491
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 1951858722545280346}
   - component: {fileID: 6089342359487218860}
   - component: {fileID: 8122668087378495011}
-  - component: {fileID: 327281705224957036}
   - component: {fileID: 2986863351317142199}
   - component: {fileID: 5104841024641144038}
   - component: {fileID: 3896014209172367775}
@@ -258,19 +257,6 @@ MonoBehaviour:
     showNormalsHelpInfo: 0
     tabIndex: 0
   initialized: 1
---- !u!114 &327281705224957036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3966855605319378575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 161d2b1e29632bd4cbc447883ce161ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canGiveBlood: 1
 --- !u!114 &2986863351317142199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,6 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 0}
+  movementBonus: 10
 --- !u!114 &5104841024641144038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,10 +283,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8abef243855372d4f99a9fdae2f6133b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canGiveBlood: 1
   dashDir: {x: 0, y: 0, z: 0}
   dashLength: 0
+  canGiveBlood: 1
   inputDashLength: 3
+  movementBonus: 10
 --- !u!114 &3896014209172367775
 MonoBehaviour:
   m_ObjectHideFlags: 0

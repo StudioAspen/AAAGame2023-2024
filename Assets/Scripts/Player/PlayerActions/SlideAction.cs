@@ -24,26 +24,34 @@ public class SlideAction : PlayerAction{
     float currentSlideSpeed;
     
     private Rigidbody rb;
+    private Collider playerCollider;
     private PathCreator pathCreator;
     MovementModification movementModification;
+    PlayerPositionCheck playerPositionCheck;
 
     private EndOfPathInstruction end;
     private bool sliding = false;
 
     [Header("References")]
     [SerializeField] GameObject swordObject;
-    private Vector3 swordOffset;
-    private Vector3 playerOffset;
+    private Vector3 initialSwordOffset;
+    private Vector3 initialPlayerOffset;
+    private Quaternion initialPlayerRotation;
     private Vector3 inputDir;
     private Vector3 startVelocity;
+    private float initialEnemyBonus;
     private float dstTravelled = 0f;
+
+    private Quaternion initialWallRotation;
 
     JumpAction jumpAction;
     
     private void Start() {
         rb = GetComponent<Rigidbody>();
+        playerCollider = GetComponent<Collider>();
         jumpAction = GetComponent<JumpAction>();
         movementModification = GetComponentInChildren<MovementModification>();
+        playerPositionCheck = GetComponentInChildren<PlayerPositionCheck>();
         end = EndOfPathInstruction.Stop;
     }
 
@@ -53,14 +61,15 @@ public class SlideAction : PlayerAction{
         }
     }
 
-    public void StartSlide(PathCreator pc, Collider other) {
+    public void StartSlide(PathCreator pc, Collider other, float enemyBonus = 0) {
         // Slide Initalization
         sliding = true;
         pathCreator = pc;
+        initialEnemyBonus = enemyBonus;
 
         // Calculating inital speed
         startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
-        currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
+        currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true) + initialEnemyBonus;
         currentSlideSpeed += startVelocity.magnitude;
 
         // Limiting Speed
@@ -70,24 +79,41 @@ public class SlideAction : PlayerAction{
         // Initalizing offset
         Vector3 contactPoint = other.ClosestPoint(transform.position);
         dstTravelled = pathCreator.path.GetClosestDistanceAlongPath(contactPoint);
-        playerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
-        swordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
 
+        // saving initalizing values for rotations
+        initialWallRotation = pathCreator.transform.rotation;
+        initialPlayerOffset = transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
+        initialPlayerRotation = transform.rotation;
+        initialSwordOffset = swordObject.transform.position - pathCreator.path.GetPointAtDistance(dstTravelled, end);
+
+        // On start action event
         OnStartAction.Invoke();
     }
     
     private void UpdateSliding() {
+        // Initalizing offsets by rotation transformation
+        Quaternion rotationTransformation = pathCreator.transform.rotation * Quaternion.Inverse(initialWallRotation);
+        Vector3 playerOffset = rotationTransformation * initialPlayerOffset;
+        Vector3 swordOffset = rotationTransformation * initialSwordOffset;
+
+
         // Applying speed
         dstTravelled += currentSlideSpeed * Time.fixedDeltaTime;
-        transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
-        swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
-        swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
+        Vector3 pathPoint = pathCreator.path.GetPointAtDistance(dstTravelled, end);
+        Vector3 pathNormal = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
+
+
+
+        transform.position = pathPoint + playerOffset;
+        transform.rotation = rotationTransformation*initialPlayerRotation;
+        swordObject.transform.position = pathPoint + swordOffset;
+        swordObject.transform.up = pathNormal;
 
         // Ending the dash with movement abilities
         if (dstTravelled > pathCreator.path.length) {
             // Calculating jump variables and limits
             float currentJumpLimit = movementModification.GetBoost(jumpForceLimit, boostedJumpForceLimit, false);
-            float currentJumpForce = movementModification.GetBoost(jumpForce, boostedJumpForce, true) + startVelocity.magnitude;
+            float currentJumpForce = movementModification.GetBoost(jumpForce, boostedJumpForce, true) + startVelocity.magnitude + initialEnemyBonus;
             
             // Applying limits
             jumpAction.Jump(Mathf.Min(currentJumpLimit, currentJumpForce));
@@ -97,14 +123,19 @@ public class SlideAction : PlayerAction{
     }
 
     public void SlideInput(Vector3 direction) {
-        inputDir = direction;
+        inputDir = direction.normalized;
     }
     public void ApplyHorizontalOffset() {
-        rb.velocity += inputDir.normalized * (movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true) + startVelocity.magnitude);
+        Vector3 addedVelocity = inputDir.normalized * (movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true) + startVelocity.magnitude + initialEnemyBonus);
+        addedVelocity = playerPositionCheck.CorrectVelocityCollision(addedVelocity);
+
+        rb.velocity += addedVelocity;
     }
     public override void EndAction() {
+        transform.SetParent(null);
         dstTravelled = 0f;
         sliding = false;
+        initialEnemyBonus = 0;
 
         OnEndAction.Invoke();
     }
