@@ -62,17 +62,6 @@ public class PlayerPositionCheck : MonoBehaviour {
         else {
             return false;
         }
-
-        // Finding clostest collider
-        Collider closestCollider = null;
-        float closestDist = float.MaxValue;
-        foreach(Collider collider in colliders) {
-            float valCheck = (collider.ClosestPoint(transform.position) - transform.position).magnitude;
-            if (valCheck < closestDist) {
-                closestCollider = collider; 
-                closestDist = valCheck; 
-            }
-        }
     }
 
     // Checking collision to calculate force perpendicular to the surface of collider (for sticky wall bug)

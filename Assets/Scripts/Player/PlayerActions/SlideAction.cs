@@ -39,6 +39,7 @@ public class SlideAction : PlayerAction{
     private Quaternion initialPlayerRotation;
     private Vector3 inputDir;
     private Vector3 startVelocity;
+    private float initialEnemyBonus;
     private float dstTravelled = 0f;
 
     private Quaternion initialWallRotation;
@@ -60,14 +61,15 @@ public class SlideAction : PlayerAction{
         }
     }
 
-    public void StartSlide(PathCreator pc, Collider other) {
+    public void StartSlide(PathCreator pc, Collider other, float enemyBonus = 0) {
         // Slide Initalization
         sliding = true;
         pathCreator = pc;
+        initialEnemyBonus = enemyBonus;
 
         // Calculating inital speed
         startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
-        currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
+        currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true) + initialEnemyBonus;
         currentSlideSpeed += startVelocity.magnitude;
 
         // Limiting Speed
@@ -111,7 +113,7 @@ public class SlideAction : PlayerAction{
         if (dstTravelled > pathCreator.path.length) {
             // Calculating jump variables and limits
             float currentJumpLimit = movementModification.GetBoost(jumpForceLimit, boostedJumpForceLimit, false);
-            float currentJumpForce = movementModification.GetBoost(jumpForce, boostedJumpForce, true) + startVelocity.magnitude;
+            float currentJumpForce = movementModification.GetBoost(jumpForce, boostedJumpForce, true) + startVelocity.magnitude + initialEnemyBonus;
             
             // Applying limits
             jumpAction.Jump(Mathf.Min(currentJumpLimit, currentJumpForce));
@@ -124,7 +126,7 @@ public class SlideAction : PlayerAction{
         inputDir = direction.normalized;
     }
     public void ApplyHorizontalOffset() {
-        Vector3 addedVelocity = inputDir.normalized * (movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true) + startVelocity.magnitude);
+        Vector3 addedVelocity = inputDir.normalized * (movementModification.GetBoost(exitOffsetSpeed, boostedExitOffsetSpeed, true) + startVelocity.magnitude + initialEnemyBonus);
         addedVelocity = playerPositionCheck.CorrectVelocityCollision(addedVelocity);
 
         rb.velocity += addedVelocity;
@@ -133,6 +135,7 @@ public class SlideAction : PlayerAction{
         transform.SetParent(null);
         dstTravelled = 0f;
         sliding = false;
+        initialEnemyBonus = 0;
 
         OnEndAction.Invoke();
     }

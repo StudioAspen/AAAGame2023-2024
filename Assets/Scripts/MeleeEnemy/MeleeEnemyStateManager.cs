@@ -51,7 +51,7 @@ public class MeleeEnemyStateManager : MonoBehaviour
         idleState = new MeleeEnemyIdleState(aggroDistance);
         aggroState = new MeleeEnemyAggroState(deagroDistance, attackDistance);
         attackState = new MeleeEnemyAttackState(attackDistance);
-        stunState = new MeleeEnemyStunState();
+        stunState = new MeleeEnemyStunState(stunDuration);
         deathState = new MeleeEnemyDeathState();
 
         if (spawnpoint == null) {
@@ -145,13 +145,6 @@ public class MeleeEnemyStateManager : MonoBehaviour
     {
         render.material.color = Color.red;
         SwitchState(stunState);
-    }
-
-    // STUNNED for amount of time before going back to idle
-    public void IsStunned()
-    {
-        if (!timer.IsActive())
-            timer.StartTimer(stunDuration, Idle);
     }
 
     // switch state to deathstate
