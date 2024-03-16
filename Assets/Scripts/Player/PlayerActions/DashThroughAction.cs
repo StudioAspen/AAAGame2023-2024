@@ -41,7 +41,7 @@ public class DashThroughAction : PlayerAction
         }
     }
 
-    public void DashThrough(StabableDashThrough dashThrough) {
+    public void DashThrough(StabableDashThrough dashThrough, float enemyBonus = 0) {
         dashThrough.CalculateDash(gameObject);
 
         // Setting variables
@@ -52,7 +52,7 @@ public class DashThroughAction : PlayerAction
         rb.useGravity = false;
 
         // Speed values
-        float currentDashSpeedCalc = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true);
+        float currentDashSpeedCalc = movementModification.GetBoost(dashSpeed, boostedDashSpeed, true) + enemyBonus;
         float currentInitalSpeedCalc = rb.velocity.magnitude * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
         float currentSpeedLimitCalc = movementModification.GetBoost(speedLimit, boostsedSpeedLimit, false);
         currentDashSpeed = Mathf.Min(currentSpeedLimitCalc, currentDashSpeedCalc + currentInitalSpeedCalc);
