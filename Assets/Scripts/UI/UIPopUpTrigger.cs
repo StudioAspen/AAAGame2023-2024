@@ -22,4 +22,8 @@ public class UIPopUpTrigger : MonoBehaviour {
     void OnTriggerExit() {
         uiPopUpCanvas.HideText();
     }
+
+    void OnDrawGizmos() {
+        Gizmos.DrawIcon(transform.position, "icon_speech_balloon.png", true);
+    }
 }
