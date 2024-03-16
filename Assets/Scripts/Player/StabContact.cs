@@ -44,7 +44,7 @@ public class StabContact : MonoBehaviour
             // Setting up and starting dash
             dashThroughAction.OnEndAction.AddListener(EndEnemy);
             actionManager.ChangeAction(dashThroughAction);
-            dashThroughAction.DashThrough(dashThroughEnemy);
+            dashThroughAction.DashThrough(dashThroughEnemy, dashThroughEnemy.GetBonus());
         }
         else if (other.gameObject.TryGetComponent(out StabableDashThrough dashThrough)) {
             canGiveBlood = dashThrough.canGiveBlood;

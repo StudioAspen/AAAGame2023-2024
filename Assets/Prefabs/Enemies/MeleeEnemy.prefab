@@ -215,10 +215,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8abef243855372d4f99a9fdae2f6133b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canGiveBlood: 0
   dashDir: {x: 0, y: 0, z: 0}
   dashLength: 0
+  canGiveBlood: 0
   inputDashLength: 3
+  movementBonus: 10
 --- !u!114 &8137375598343779426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 0}
+  movementBonus: 10
 --- !u!114 &324212804842820303
 MonoBehaviour:
   m_ObjectHideFlags: 0
