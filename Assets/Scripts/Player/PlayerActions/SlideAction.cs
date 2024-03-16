@@ -37,6 +37,7 @@ public class SlideAction : PlayerAction{
     private Vector3 inputDir;
     private Vector3 startVelocity;
     private float dstTravelled = 0f;
+    private float slideableObjectScaleOffset = 1f;
 
     JumpAction jumpAction;
     
@@ -57,12 +58,12 @@ public class SlideAction : PlayerAction{
         // Slide Initalization
         sliding = true;
         pathCreator = pc;
+        slideableObjectScaleOffset = 1f / other.transform.localScale.y;
 
         // Calculating inital speed
-        /*startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
+        startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
         currentSlideSpeed = movementModification.GetBoost(slideSpeed, boostedSlideSpeed, true);
-        currentSlideSpeed += startVelocity.magnitude;*/
-        currentSlideSpeed = slideSpeed;
+        currentSlideSpeed += startVelocity.magnitude;
 
         // Limiting Speed
         float currentSpeedLimit = movementModification.GetBoost(speedLimit, boostsedSpeedLimit, false);
@@ -79,7 +80,7 @@ public class SlideAction : PlayerAction{
     
     private void UpdateSliding() {
         // Applying speed
-        dstTravelled += currentSlideSpeed * Time.fixedDeltaTime;
+        dstTravelled += currentSlideSpeed * slideableObjectScaleOffset * Time.fixedDeltaTime;
         transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + playerOffset;
         swordObject.transform.position = pathCreator.path.GetPointAtDistance(dstTravelled, end) + swordOffset;
         swordObject.transform.up = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
