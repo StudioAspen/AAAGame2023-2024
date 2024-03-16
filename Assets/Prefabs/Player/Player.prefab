@@ -962,7 +962,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 7, y: 7, z: 7}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7569982482725669098}
@@ -1000,7 +1000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daed6d9595588d149a9dbd9f491a5804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vacuumRange: 5
+  vacuumRange: 7
 --- !u!1 &7150197666325903039
 GameObject:
   m_ObjectHideFlags: 0

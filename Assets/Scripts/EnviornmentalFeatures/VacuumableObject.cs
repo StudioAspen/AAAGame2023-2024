@@ -19,7 +19,7 @@ public class VacuumableObject : MonoBehaviour
     ///
     protected virtual void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindAnyObjectByType<PlayerInput>().transform;
     }
 
     ///-//////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ public class VacuumableObject : MonoBehaviour
     ///
     protected void MoveTowards(Vector3 argDirection)
     {
-        transform.Translate(argDirection * vacuumSpeed * Time.deltaTime);
+        transform.position += (argDirection * vacuumSpeed * Time.deltaTime);
     }
 
 }

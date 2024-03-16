@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a68df59e630cf54e8eb9cd1b6c22671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vacuumSpeed: 3
+  vacuumSpeed: 4
   gainBloodAmount: 50
 --- !u!33 &136108890744760622
 MeshFilter:
