@@ -726,10 +726,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2137915501}
     m_Modifications:
+    - target: {fileID: 1601227346848069220, guid: 3ad2f30930958f642ac676370cd0876a,
+        type: 3}
+      propertyPath: deadTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601227346848069220, guid: 3ad2f30930958f642ac676370cd0876a,
+        type: 3}
+      propertyPath: attackRange
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601227346848069220, guid: 3ad2f30930958f642ac676370cd0876a,
+        type: 3}
+      propertyPath: explosionRadius
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601227346848069220, guid: 3ad2f30930958f642ac676370cd0876a,
+        type: 3}
+      propertyPath: explosionBloodLoss
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5328065263646142479, guid: 3ad2f30930958f642ac676370cd0876a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.51
+      value: -29.53
       objectReference: {fileID: 0}
     - target: {fileID: 5328065263646142479, guid: 3ad2f30930958f642ac676370cd0876a,
         type: 3}
@@ -1594,6 +1614,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2137915501}
     m_Modifications:
+    - target: {fileID: 2140793749135220256, guid: 5bf3cde02d767d84483d6fca34846329,
+        type: 3}
+      propertyPath: enemyDamage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2140793749135220256, guid: 5bf3cde02d767d84483d6fca34846329,
+        type: 3}
+      propertyPath: aggroDistance
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2140793749135220256, guid: 5bf3cde02d767d84483d6fca34846329,
+        type: 3}
+      propertyPath: attackDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2140793749135220256, guid: 5bf3cde02d767d84483d6fca34846329,
+        type: 3}
+      propertyPath: deagroDistance
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2140793749135220256, guid: 5bf3cde02d767d84483d6fca34846329,
+        type: 3}
+      propertyPath: enemyAttackDuration
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2702828146198153179, guid: 5bf3cde02d767d84483d6fca34846329,
         type: 3}
       propertyPath: m_Name
@@ -1603,6 +1648,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3381282248697628721, guid: 5bf3cde02d767d84483d6fca34846329,
+        type: 3}
+      propertyPath: m_Speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3381282248697628721, guid: 5bf3cde02d767d84483d6fca34846329,
+        type: 3}
+      propertyPath: m_Acceleration
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5871551250476882534, guid: 5bf3cde02d767d84483d6fca34846329,
         type: 3}
@@ -1617,7 +1672,7 @@ PrefabInstance:
     - target: {fileID: 5871551250476882534, guid: 5bf3cde02d767d84483d6fca34846329,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.7553816
+      value: -10.15
       objectReference: {fileID: 0}
     - target: {fileID: 5871551250476882534, guid: 5bf3cde02d767d84483d6fca34846329,
         type: 3}
@@ -2344,6 +2399,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2137915501}
     m_Modifications:
+    - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
+        type: 3}
+      propertyPath: bulletSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
+        type: 3}
+      propertyPath: deleteTimer
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
+        type: 3}
+      propertyPath: bulletDamage
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
+        type: 3}
+      propertyPath: aggroDistance
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
+        type: 3}
+      propertyPath: attackDistance
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
+        type: 3}
+      propertyPath: deagroDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
+        type: 3}
+      propertyPath: enemyAttackCooldown
+      value: 1.75
+      objectReference: {fileID: 0}
     - target: {fileID: 3966855605319378575, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
       propertyPath: m_Name
@@ -2354,10 +2444,20 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6089342359487218860, guid: 798eb078d59d8e84a8608a2abda2c685,
+        type: 3}
+      propertyPath: m_Speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6089342359487218860, guid: 798eb078d59d8e84a8608a2abda2c685,
+        type: 3}
+      propertyPath: m_Acceleration
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7490239480676857856, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5525837
+      value: -32.159996
       objectReference: {fileID: 0}
     - target: {fileID: 7490239480676857856, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
@@ -2367,7 +2467,7 @@ PrefabInstance:
     - target: {fileID: 7490239480676857856, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.4512844
+      value: 24.33
       objectReference: {fileID: 0}
     - target: {fileID: 7490239480676857856, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
