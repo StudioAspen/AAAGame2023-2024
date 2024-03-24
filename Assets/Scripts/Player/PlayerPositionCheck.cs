@@ -13,11 +13,13 @@ public class PlayerPositionCheck : MonoBehaviour {
     [Header("Checks")]
     [SerializeField] LayerMask ground;
     [SerializeField] float groundCheckOffset;
-    [SerializeField] float terrainCheckOffset;
     [SerializeField] float terrainCheckScaleXZ;
     [SerializeField] float terrainCheckScaleY;
+    [SerializeField] float terrainCastScaleZ;
     [Range(0f, 1f)]
-    [SerializeField] float groundCheckScale;
+    [SerializeField] float terrainCastScaleXY;
+    [Range(0f, 1f)]
+    [SerializeField] float groundCheckScaleXZ;
     public bool grounded;
 
     Vector3 gizmoDir;
@@ -42,7 +44,7 @@ public class PlayerPositionCheck : MonoBehaviour {
     }
 
     // Checks whats colliding with and returning the closest collider
-    public bool TryGetNormalOfClosestHoriontalCollider(Vector3 direction, out Vector3 normal) {
+    public bool TryGetClosestColliders(Vector3 direction, out Collider[] colliders) {
         // Scaling Y extents seperatly
         Vector3 extents = new Vector3(playerCollider.bounds.extents.x*terrainCheckScaleXZ, 
             playerCollider.bounds.extents.y*terrainCheckScaleY, 
@@ -52,35 +54,46 @@ public class PlayerPositionCheck : MonoBehaviour {
         if(direction.magnitude <= 0) {
             direction = transform.forward;
         }
-        Collider[] colliders = Physics.OverlapBox(transform.position, extents, Quaternion.LookRotation(direction.normalized), ground);
-        
-        if(colliders.Length == 0) {
-            normal = Vector3.zero;
+        Collider[] foundColliders = Physics.OverlapBox(transform.position, extents, Quaternion.LookRotation(direction.normalized), ground);
+        colliders = foundColliders;
+        if(foundColliders.Length > 0) {
+            return true;
+        }
+        else {
             return false;
         }
+    }
 
-        // Finding clostest collider
-        Collider closestCollider = null;
-        float closestDist = float.MaxValue;
-        foreach(Collider collider in colliders) {
-            float valCheck = (collider.ClosestPoint(transform.position) - transform.position).magnitude;
-            if (valCheck < closestDist) {
-                closestCollider = collider; 
-                closestDist = valCheck; 
+    // Checking collision to calculate force perpendicular to the surface of collider (for sticky wall bug)
+    public Vector3 CorrectVelocityCollision(Vector3 addedVelocity) {
+        if (TryGetClosestColliders(addedVelocity, out Collider[] colliders)) {
+            // Calculate velocity based on colliders
+            foreach (Collider collider in colliders) {
+                Vector3 normal = transform.position-collider.ClosestPoint(transform.position);
+
+                // Calculating velocity
+                if (Vector3.Dot(normal.normalized, addedVelocity.normalized) < 0) { // Checking if the added velocity is going into the surface
+                                                                                    // Finding perpendicular vector to the surface normal
+                    Vector3 rotationVector = Vector3.Cross(normal.normalized, addedVelocity.normalized);
+                    Vector3 perpendicularToNormal = MyMath.RotateAboutAxis(normal, rotationVector, 90f);
+
+                    Debug.DrawLine(transform.position, transform.position + normal, Color.blue);
+                    Debug.DrawLine(transform.position, transform.position + perpendicularToNormal, Color.green);
+
+                    float perpendicularProjection = Vector3.Dot(perpendicularToNormal.normalized, addedVelocity);
+                    //float perpendicularProjection = addedVelocity.magnitude;
+                    addedVelocity = perpendicularProjection * perpendicularToNormal.normalized;
+                }
             }
         }
 
-        // Getting normal from
-        Ray rayToCollider = new Ray(transform.position, closestCollider.ClosestPoint(transform.position)-transform.position);
-        closestCollider.Raycast(rayToCollider, out RaycastHit hit, extents.magnitude);
-
-        
-        // output
-        normal = hit.normal;
-        return true;
+        return addedVelocity;
     }
     public bool CheckOnGround() {
-        return Physics.OverlapBox(transform.position + (Vector3.down * groundCheckOffset), playerCollider.bounds.extents * groundCheckScale, Quaternion.identity, ground).Length > 0;
+        Vector3 extents = new Vector3(playerCollider.bounds.extents.x * groundCheckScaleXZ,
+            playerCollider.bounds.extents.y,
+            playerCollider.bounds.extents.z * groundCheckScaleXZ);
+        return Physics.OverlapBox(transform.position + (Vector3.down * groundCheckOffset), extents, Quaternion.LookRotation(transform.forward) , ground).Length > 0;
     }
     private void OnDrawGizmos() {
         //Gizmos.DrawWireCube(transform.position + (gizmoDir*terrainCheckOffset), (playerCollider.bounds.size * terrainCheckScale));

@@ -38,7 +38,7 @@ public class SlashContact : MonoBehaviour {
         
         if(other.TryGetComponent(out SlidableEnemy enemy)) {
             slidableEnemy = enemy;
-            StartSlideAction(enemy.pathCreator, other);
+            StartSlideAction(enemy.pathCreator, other, enemy.GetBonus());
             found = true;
         }
         else if (other.TryGetComponent(out PathCreator pathCreator)) {
@@ -69,10 +69,10 @@ public class SlashContact : MonoBehaviour {
         }
     }
 
-    private void StartSlideAction(PathCreator pc, Collider other) {
+    private void StartSlideAction(PathCreator pc, Collider other, float enemyBonus = 0) {
         GetComponent<PlayerActionManager>().ChangeAction(slideAction);
         slideAction.OnEndAction.AddListener(EndEnemy);
-        slideAction.StartSlide(pc, other);
+        slideAction.StartSlide(pc, other, enemyBonus);
     }
 
     private void EndEnemy() {

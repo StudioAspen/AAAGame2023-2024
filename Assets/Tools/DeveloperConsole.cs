@@ -50,7 +50,10 @@ public class DeveloperConsole : MonoBehaviour
     [SerializeField]
     string[] loadableScenes = new string[]
     {
-        "exampleScene"
+        "exampleScene",
+        "Area3",
+        "Area4&5",
+        "MichelleLevelScene"
     };
 
     #region Unity Constructors
