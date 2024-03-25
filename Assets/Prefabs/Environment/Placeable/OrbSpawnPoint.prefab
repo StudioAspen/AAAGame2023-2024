@@ -107,6 +107,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5928467008385099669, guid: 6d3004141710547468d2b677ddc35683,
+        type: 3}
+      propertyPath: gainBloodAmount
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 7959290666730999954, guid: 6d3004141710547468d2b677ddc35683,
         type: 3}
       propertyPath: m_Name
