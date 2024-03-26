@@ -65,7 +65,9 @@ public class PlayerPositionCheck : MonoBehaviour {
     }
 
     // Checking collision to calculate force perpendicular to the surface of collider (for sticky wall bug)
+    // THIS WILL NO LONGER BE USED THERE IS AN EASIER IMPLEMENTATION
     public Vector3 CorrectVelocityCollision(Vector3 addedVelocity) {
+        
         if (TryGetClosestColliders(addedVelocity, out Collider[] colliders)) {
             // Calculate velocity based on colliders
             foreach (Collider collider in colliders) {

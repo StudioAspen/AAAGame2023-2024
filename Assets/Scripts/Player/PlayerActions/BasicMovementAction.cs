@@ -105,13 +105,10 @@ public class BasicMovementAction : PlayerAction
             maxVelocity = targetDirection.normalized * movementModification.GetBoost(maxAirSpeed, boostedMaxAirSpeed, true);
         }
 
-        // Correcting velocity for sticky walls
-        addedVelocity = playerPositionCheck.CorrectVelocityCollision(addedVelocity);
-
         // Applying horizontal movement and limiting speed based on max velocity
         float alignment = Vector3.Dot(horizontalVelocity / maxVelocity.magnitude, maxVelocity / maxVelocity.magnitude);
         if (alignment < 1) {
-            rb.velocity += addedVelocity;
+            rb.AddForce(addedVelocity, ForceMode.VelocityChange);
         }
     }
 
