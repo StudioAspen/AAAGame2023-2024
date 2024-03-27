@@ -41,7 +41,6 @@ public class SlideAction : PlayerAction{
     private Vector3 startVelocity;
     private float initialEnemyBonus;
     private float dstTravelled = 0f;
-    private float slideableObjectScaleOffset = 1f;
 
     private Quaternion initialWallRotation;
 
@@ -67,8 +66,6 @@ public class SlideAction : PlayerAction{
         sliding = true;
         pathCreator = pc;
         initialEnemyBonus = enemyBonus;
-
-        slideableObjectScaleOffset = 1f / other.transform.localScale.y;
 
         // Calculating inital speed
         startVelocity = rb.velocity * movementModification.GetBoost(initalSpeedScale, boostedInitalSpeedScale, false);
@@ -103,7 +100,7 @@ public class SlideAction : PlayerAction{
         Vector3 pathNormal = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
         // Applying speed
-        dstTravelled += currentSlideSpeed * slideableObjectScaleOffset * Time.fixedDeltaTime;
+        dstTravelled += (currentSlideSpeed * Time.fixedDeltaTime) / pathCreator.path.CalculatePathWorldLength();
         transform.position = pathPoint + playerOffset;
         transform.rotation = rotationTransformation*initialPlayerRotation;
         swordObject.transform.position = pathPoint + swordOffset;
