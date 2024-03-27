@@ -1136,6 +1136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5996984886382561609, guid: c66b3c9ba7489084f8c3f641e0306f46,
         type: 3}
+      propertyPath: notAttackableLayer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5996984886382561609, guid: c66b3c9ba7489084f8c3f641e0306f46,
+        type: 3}
       propertyPath: dashAttackTransform
       value: 
       objectReference: {fileID: 4336202542278233531}
