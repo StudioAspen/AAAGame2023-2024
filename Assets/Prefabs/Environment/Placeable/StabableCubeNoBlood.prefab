@@ -96,7 +96,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: f6b8abb5d5e81934cbcccff43314885e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e23895af87ac94ba61c6b9571c1cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashDir: {x: 2.89, y: 2.92, z: -0.05}
+  dashLength: 4.1086497
   canGiveBlood: 0
   dashEndTransform: {fileID: 3318144330648956302}
-  dashDir: {x: 3.1729198, y: 2.0682945, z: -0.035415888}
-  dashLength: 3.7876794
