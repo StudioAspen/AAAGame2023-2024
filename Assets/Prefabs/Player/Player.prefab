@@ -761,17 +761,17 @@ MonoBehaviour:
   OnStartAction:
     m_PersistentCalls:
       m_Calls: []
-  slideSpeed: 1.25
+  slideSpeed: 20
   jumpForce: 25
   exitOffsetSpeed: 10
   initalSpeedScale: 0.1
-  speedLimit: 10
+  speedLimit: 20
   jumpForceLimit: 35
-  boostedSlideSpeed: 2
+  boostedSlideSpeed: 20
   boostedJumpForce: 25
   boostedExitOffsetSpeed: 10
   boostedInitalSpeedScale: 0
-  boostsedSpeedLimit: 10
+  boostsedSpeedLimit: 20
   boostedJumpForceLimit: 35
   swordObject: {fileID: 6800678773869080880}
 --- !u!114 &3462496366872794715
