@@ -298,6 +298,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5078b5e81b3c2304b9011ae5800a2ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadableScenes:
+  - exampleScene
+  - Area3
+  - Area4&5
+  - MichelleLevelScene
 --- !u!1 &2801766995454299587
 GameObject:
   m_ObjectHideFlags: 0

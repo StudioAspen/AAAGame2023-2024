@@ -69,10 +69,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   groundCheckOffset: 0.1
-  terrainCheckOffset: 0.01
-  terrainCheckScaleXZ: 1.01
-  terrainCheckScaleY: 0.5
-  groundCheckScale: 0.95
+  terrainCheckScaleXZ: 1.2
+  terrainCheckScaleY: 1.2
+  terrainCastScaleZ: 0
+  terrainCastScaleXY: 0
+  groundCheckScaleXZ: 0.5
   grounded: 0
 --- !u!114 &1554232633083437368
 MonoBehaviour:
@@ -309,7 +310,6 @@ GameObject:
   - component: {fileID: 3462496366872794715}
   - component: {fileID: 6773326116938459665}
   - component: {fileID: 3739281105588693709}
-  - component: {fileID: 546761205629445124}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -850,27 +850,6 @@ MonoBehaviour:
   OnBloodChange:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &546761205629445124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2762887234727674899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d02df61c988e81e4fa4db148fa2fc638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  energyBlast: {fileID: 6611711599269637238, guid: f145e05c8467bca4d91a3b48bd1333c2,
-    type: 3}
-  reticle: {fileID: 0}
-  ignoredLayers:
-    serializedVersion: 2
-    m_Bits: 64
-  maxRange: 20
-  timeBetweenShots: 1
-  bloodPerShot: 0
 --- !u!1 &3410584284265416894
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,7 +906,7 @@ Transform:
   m_GameObject: {fileID: 4221186380633916153}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -961,7 +940,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 7, y: 7, z: 7}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7569982482725669098}
@@ -999,7 +978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daed6d9595588d149a9dbd9f491a5804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vacuumRange: 5
+  vacuumRange: 7
 --- !u!1 &7150197666325903039
 GameObject:
   m_ObjectHideFlags: 0

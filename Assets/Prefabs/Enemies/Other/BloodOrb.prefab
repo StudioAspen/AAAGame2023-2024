@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a68df59e630cf54e8eb9cd1b6c22671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vacuumSpeed: 3
+  vacuumSpeed: 4
   gainBloodAmount: 50
 --- !u!33 &136108890744760622
 MeshFilter:
@@ -79,7 +79,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 174d01a8485731b4ca0fc2936e016b13, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
