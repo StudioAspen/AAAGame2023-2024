@@ -19,7 +19,6 @@ public class EnemySpawnPointManager : MonoBehaviour
         timer -= Time.deltaTime;
         if(timer <= 0f) {
             // Checking number of enemies within area and spawning accordingly
-            Debug.Log(CheckNumberOfEnemies());
             if(CheckNumberOfEnemies() <= enemyCountThreshold) {
                 SpawnEnemies();
             }
@@ -34,7 +33,6 @@ public class EnemySpawnPointManager : MonoBehaviour
 
     // Spawning enemies from spawn points
     private void SpawnEnemies() {
-        Debug.Log(spawnPoints.Count);
         foreach(EnemySpawnPoint point in spawnPoints) {
             point.SpawnEnemy();
         }
