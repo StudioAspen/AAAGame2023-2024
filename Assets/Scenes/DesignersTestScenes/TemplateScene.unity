@@ -2660,17 +2660,17 @@ PrefabInstance:
     - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
       propertyPath: aggroDistance
-      value: 15
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
       propertyPath: attackDistance
-      value: 12
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
       propertyPath: deagroDistance
-      value: 20
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 1402132625037281584, guid: 798eb078d59d8e84a8608a2abda2c685,
         type: 3}
@@ -3450,12 +3450,22 @@ PrefabInstance:
     - target: {fileID: 6849875112867513670, guid: 52fecf37fa75b8d419a7a6ce2aff9f3f,
         type: 3}
       propertyPath: height
-      value: 5.01
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6849875112867513670, guid: 52fecf37fa75b8d419a7a6ce2aff9f3f,
         type: 3}
       propertyPath: radius
       value: 4.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6849875112867513670, guid: 52fecf37fa75b8d419a7a6ce2aff9f3f,
+        type: 3}
+      propertyPath: geyserMaxSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6849875112867513670, guid: 52fecf37fa75b8d419a7a6ce2aff9f3f,
+        type: 3}
+      propertyPath: geyserAcceleration
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9099286656876420241, guid: 52fecf37fa75b8d419a7a6ce2aff9f3f,
         type: 3}
