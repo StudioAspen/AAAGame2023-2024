@@ -252,7 +252,6 @@ namespace PathCreation {
             {
                 distance += (Vector3.Scale(localPoints[i + 1], scalar) - Vector3.Scale(localPoints[i], scalar)).magnitude;
             }
-            Debug.Log(distance);
             return distance;
         }
 
