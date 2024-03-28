@@ -96,14 +96,11 @@ public class SlideAction : PlayerAction{
         Vector3 playerOffset = rotationTransformation * initialPlayerOffset;
         Vector3 swordOffset = rotationTransformation * initialSwordOffset;
 
-
-        // Applying speed
-        dstTravelled += currentSlideSpeed * Time.fixedDeltaTime;
         Vector3 pathPoint = pathCreator.path.GetPointAtDistance(dstTravelled, end);
         Vector3 pathNormal = pathCreator.path.GetNormalAtDistance(dstTravelled, end);
 
-
-
+        // Applying speed
+        dstTravelled += (currentSlideSpeed * Time.fixedDeltaTime) / pathCreator.path.CalculatePathWorldLength();
         transform.position = pathPoint + playerOffset;
         transform.rotation = rotationTransformation*initialPlayerRotation;
         swordObject.transform.position = pathPoint + swordOffset;

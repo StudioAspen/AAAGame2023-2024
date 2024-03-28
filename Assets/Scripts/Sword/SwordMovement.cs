@@ -16,6 +16,7 @@ public class SwordMovement : MonoBehaviour
     [Range(0f,1f)]
     [SerializeField] float followingSpeed;
     [SerializeField] int playerLayerNumber;
+    [SerializeField] int notAttackableLayer;
 
     [Header("Events")]
     public UnityEvent<Collider> OnContact = new UnityEvent<Collider>();
@@ -70,7 +71,7 @@ public class SwordMovement : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //Debug.Log(other.gameObject.layer.ToString() + " " + playerLayerNumber.ToString());
-        if (other.gameObject.layer != gameObject.layer) {
+        if (other.gameObject.layer != gameObject.layer && other.gameObject.layer != notAttackableLayer) {
             OnContact.Invoke(other);
             EndAttackPosition();
         }

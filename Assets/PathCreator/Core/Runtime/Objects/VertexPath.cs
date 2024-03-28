@@ -244,6 +244,17 @@ namespace PathCreation {
             return Mathf.Lerp (cumulativeLengthAtEachVertex[data.previousIndex], cumulativeLengthAtEachVertex[data.nextIndex], data.percentBetweenIndices);
         }
 
+        public float CalculatePathWorldLength()
+        {
+            float distance = 0;
+            Vector3 scalar = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            for (int i = 0; i < NumPoints - 1; i++)
+            {
+                distance += (Vector3.Scale(localPoints[i + 1], scalar) - Vector3.Scale(localPoints[i], scalar)).magnitude;
+            }
+            return distance;
+        }
+
         #endregion
 
         #region Internal methods
